@@ -1,0 +1,78 @@
+﻿@model int
+@{
+	Layout = null;
+	var dialogId = Guid.NewGuid();
+	var dtId = Guid.NewGuid();
+	var canEdit = User.IsInRole(FixedRoles.Admin);
+}
+<p>If applicable, 01 Jan 2013 and 01 Aug 2016 are default dates and should not be used as a reference point. These dates may or may not reflect the client’s eligibility as of that date.</p>
+<table id="@dtId"></table>
+
+<script>
+	$(function () {
+		var oTable = $('table#@dtId').dataTable({
+			"aaSorting": [[0, "desc"]],
+			"bProcessing": true,
+			"bFilter": false,
+			"bServerSide": true,
+			"bJQueryUI": true,
+			"cache": false,
+			"bLengthChange": false,
+			"sPaginationType": "full_numbers",
+			"sAjaxSource": '@Url.Action("Data")',
+			"fnServerParams": function (aoData) {
+				aoData.push({ name: "ClientId", value: '@Model' });
+			},
+			"fnRowCallback": function (nRow, aData, iDisplayIndex) {
+				/* set tr id. assume the id is in the first column of data */
+				if (aData["Id"]) {
+					$(nRow).attr("id", aData["Id"]);
+				}
+				return nRow;
+			},
+			"aoColumns": [{
+				"mData": "StartDate",
+				"sTitle": "Approval Status Date",
+				"sClass": "ui-datepicker-inline",
+				"mRender": function (val) { return renderDate(val); },
+			},
+			{
+				"mData": "@ViewBag.ShowFundStatusColumn" == "True" ? "FundStatusName" : null,
+				"sTitle": "Fund Status",
+				"bVisible": "@ViewBag.ShowFundStatusColumn" == "True",
+				"mRender": function (val) { return val == null ? "N/A" : val; }
+			}, {
+				"mData": "ApprovalStatusName",
+				"sTitle": "JNV Status",
+				"mRender": function (val) { return val == null ? "N/A" : val; }
+			}, {
+				"mData": "HcStatusName",
+				"sTitle": "Homecare Approval Status",
+				"mRender": function (val) { return val == null ? "N/A" : val; }
+			}, ]
+		});
+		$('table#@dtId button.edit').live('click', function () {
+
+		});
+	});
+</script>
+@if (canEdit)
+{
+	<script type="text/javascript">
+		$(function () {
+			var oTable = $('table#@dtId').dataTable().makeEditable({
+				aoColumns: [{ type: "datepicker" }, null, null],
+				sUpdateURL: '@Url.Action("Update")',
+				fnOnEdited: function (result, sOldValue, sNewValue, iRowIndex, iColumnIndex, iRealColumnIndex) {
+					$('#historyDataTable').dataTable().fnDraw(false);
+				},
+				fnShowError: function (a, b, c) {
+					if (a != "Success") {
+						alert("Invalid Approval Status Date value.");
+					}
+				}
+			});
+		});
+	</script>
+
+}

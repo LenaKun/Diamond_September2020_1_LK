@@ -1,0 +1,76 @@
+﻿@model CC.Data.App
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+@Html.ValidationSummary()
+<fieldset>
+    <legend>App</legend>
+
+    <div class="display-label">@Html.LabelFor(model=>model.FundId)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Fund.Name)
+    </div>
+    <div class="display-label">@Html.LabelFor(model=>model.AgencyGroupId)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.AgencyGroup.Name)
+    </div>
+
+    <div class="display-label">@Html.LabelFor(model=>model.Name)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Name)
+    </div>
+
+    <div class="display-label">@Html.LabelFor(model=>model.CurrencyId)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.CurrencyId)
+    </div>
+
+    <div class="display-label">@Html.LabelFor(model=>model.AgencyContribution)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.AgencyContribution)
+    </div>
+
+    <div class="display-label">@Html.LabelFor(model=>model.CcGrant)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.CcGrant)
+    </div>
+
+    <div class="display-label">@Html.LabelFor(model=>model.RequiredMatch)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.RequiredMatch)
+    </div>
+
+    <div class="display-label">@Html.LabelFor(model=>model.CalendaricYear)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.CalendaricYear)
+    </div>
+    <div class="display-label">@Html.LabelFor(model=>model.EndOfYearValidationOnly)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.EndOfYearValidationOnly)
+    </div>
+    <div class="display-label">@Html.LabelFor(model=>model.InterlineTransfer)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.InterlineTransfer)
+    </div>
+	<div class="display-label">@Html.LabelFor(model=>model.MaxAdminAmount)</div>
+	<div class="display-field"> @Html.DisplayFor(model=>model.MaxAdminAmount) </div>
+	<div class="display-label">@Html.LabelFor(model => model.MaxNonHcAmount)</div>
+	<div class="display-field"> @Html.DisplayFor(model=>model.MaxNonHcAmount) </div>
+	<div class="display-label">@Html.LabelFor(model=>model.HistoricalExpenditureAmount)</div>
+	<div class="display-field"> @Html.DisplayFor(model=>model.HistoricalExpenditureAmount) </div>
+	<div class="display-label">@Html.LabelFor(model => model.MaxHcCaseManagementPersonnel)</div>
+	<div class="display-field"> @Html.DisplayFor(model => model.MaxHcCaseManagementPersonnel) </div>
+	<div class="display-label">@Html.LabelFor(model => model.MaxServicesPersonnelOther)</div>
+	<div class="display-field"> @Html.DisplayFor(model => model.MaxServicesPersonnelOther) </div>
+</fieldset>
+@using (Html.BeginForm()) {
+    <p>
+        <input type="submit" value="Delete" /> |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+}

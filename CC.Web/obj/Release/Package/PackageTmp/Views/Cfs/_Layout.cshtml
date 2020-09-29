@@ -1,0 +1,22 @@
+﻿@{
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Header{
+	@RenderSection("Header", false)
+}
+@section SubMenu{
+	@{
+		var roleId = (CC.Data.FixedRoles)(((CC.Web.Security.CcPrincipal)HttpContext.Current.User).CcUser.RoleId);
+	}
+	<ul id="subMenu" class="menu">
+		<li>@Html.ActionLink("CFS List", "Default", "Cfs")</li>
+		@if (roleId == FixedRoles.Admin || roleId == FixedRoles.CfsAdmin)
+		{
+			<li><a href="@Url.Action("CfsWaitingApproval", "Cfs")">CFS Waiting Approval</a></li>
+			<li><a href="@Url.Action("Upload", "Cfs")">Import</a></li>
+			<li><a href="@Url.Action("Exports", "Cfs")">Exports</a></li>
+		}
+		@RenderSection("SubMenu", false)
+	</ul>
+}
+@RenderBody()

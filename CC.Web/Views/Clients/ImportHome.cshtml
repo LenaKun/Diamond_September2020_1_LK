@@ -1,0 +1,38 @@
+﻿@{
+	ViewBag.Title = "Import Clients Options";
+}
+@section SubMenu{
+}
+
+<h2>@ViewBag.Title</h2>
+<p>
+
+	<a href="@Url.Action("UploadNew", "Clients")" class="button">Import New Clients Personal Details</a>
+</p>
+<p>
+	<a href="@Url.Action("UploadExisting", "Clients")" class="button">Update Clients Personal Details</a>
+</p>
+<p>
+	<a href="@Url.Action("ExportIds", "Clients")" class="button">Export New Clients CC ID</a>
+</p>
+<p>
+	<a href="@Url.Action("Upload", "FunctionalityScores")" class="button">Update Clients – Diagnostic Score.</a>
+</p>
+<p>
+	<a href="@Url.Action("Upload", "HomeCareEntitledPeriods")" class="button">Update Clients- Service Periods.</a>
+</p>
+<p>
+	<a href="@Url.Action("GovHcHoursUpload", "Clients")" class="button">Update GovHcHours.</a>
+</p>
+@if (User.IsInRole(FixedRoles.Admin) || User.IsInRole(FixedRoles.Ser) || User.IsInRole(FixedRoles.AgencyUser) || User.IsInRole(FixedRoles.SerAndReviewer) || User.IsInRole(FixedRoles.AgencyUserAndReviewer))
+{
+	<p>
+		<a href="@Url.Action("UnmetNeedsUpload", "Clients")" class="button">Update Unmet Needs.</a>
+	</p>
+	<p>
+		<a href="@Url.Action("UnmetNeedsOtherUpload", "Clients", new { newRows = false })" class="button">Update Unmet Needs - Other - Import Update Rows.</a>
+	</p>
+	<p>
+		<a href="@Url.Action("UnmetNeedsOtherUpload", "Clients", new { newRows = true })" class="button">Update Unmet Needs - Other - Import New Rows.</a>
+</p>
+}

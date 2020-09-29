@@ -1,0 +1,640 @@
+﻿@model AppBudgetDetailsModel
+<h2>
+    Budget Details
+</h2>
+@{
+    ViewBag.Title = "Budget Details";
+}
+
+@section Header
+{
+    <style>
+        span.display-item {
+            display: inline-block;
+            margin-right: 2em;
+        }
+    </style>
+
+    <script>
+		window.updateTotals = function () {
+			$('div#totals').load('@Url.Action("Totals", new { id = Model.Data.Id })' + '?IE=' + Math.random());
+		};
+		window.updateCcGrant = function (id) {
+			var xhr = $.get('@Url.Action("CCGrant")' + '/' + id, function (ccgrant) {
+					var dataTable = $('table.#@Html.FieldIdFor(f => f.AppBudgetServices)').dataTable();
+					var $tr = $('table.#@Html.FieldIdFor(f => f.AppBudgetServices) tr[id="' + id + '"]');
+					var tr = $tr.get(0);
+					dataTable.fnUpdate(ccgrant, tr, 4);
+				});
+			};
+    </script>
+    <script type="text/javascript">
+		$(function () {
+			Dialogs('#Submit', '#SubmitButton');
+			Dialogs('#Revise', '#ReviseButton');
+			Dialogs('#ApproveByRpo', '#ApproveByRpoButton');
+            Dialogs('#RejectByRpo', '#RejectByRpoButton');
+            Dialogs('#AwaitingAgencyResponseByRpo', '#AwaitingAgencyResponseByRpoButton');
+            Dialogs('#AwaitingAgencyResponseByGpo', '#AwaitingAgencyResponseByGpoButton');
+			Dialogs('#ApproveByGpo', '#ApproveByGpoButton');
+			Dialogs('#RejectByGpo', '#RejectByGpoButton');
+            Dialogs('#AwaitingRegionalPoApproval', '#AwaitingRegionalPoApprovalButton');
+            Dialogs('#AwaitingGlobalPoApproval', '#AwaitingGlobalPoApprovalButton');
+		});
+
+		function Dialogs(dialogSelector, triggerButtonSelector) {
+			$(dialogSelector).dialog({
+				autoOpen: false,
+				height: 'auto',
+				width: 'auto',
+				buttons: {},
+				modal: true,
+				buttons:
+                {
+                	"Submit": function () {
+                		if (typeof tinyMCE !== "undefined") {
+                			tinyMCE.triggerSave();
+                		}
+                		$(dialogSelector).validate();
+                		if ($(dialogSelector).valid()) { $(dialogSelector).submit(); }
+                	},
+                	"Cancel": function () { $(this).dialog('close'); }
+                },
+				close: function () {
+					$(this).find(':input:not([name="id"])').val('');
+
+					$(this).find('.field-validation-error')
+                        .removeClass('field-validation-error')
+                        .addClass('field-validation-valid');
+
+					$(this).find('.input-validation-error')
+                        .removeClass('input-validation-error')
+                        .addClass('valid');
+				}
+			});
+
+			$(triggerButtonSelector).click(function () {
+				var isAudit = '@Model.AgencyGroupIsAudit' == 'True';
+				if (!isAudit || confirm("The agency is currently being audited by Claims Conference grant auditors. Are you sure you wish to change the status of this Budget/Report?")) {
+					$(dialogSelector).dialog('open');
+					$(dialogSelector).find('button.cancel').click(function () {
+						$(dialogSelector).dialog('close');
+					});
+				}
+				return false;
+			});
+		}
+    </script>
+}
+@Html.ValidationSummary()
+
+@Html.Partial("Header", Model.Data)
+
+<p>
+    <a href="@Url.Action("ExportAppBudgetServices", new { id = Model.Data.Id })" class="button">Export to Excel</a>
+    @if (User.IsInRole(CC.Data.FixedRoles.Admin.ToString()) || User.IsInRole(CC.Data.FixedRoles.RegionAssistant.ToString()) || User.IsInRole(CC.Data.FixedRoles.RegionOfficer.ToString()) || User.IsInRole(CC.Data.FixedRoles.GlobalOfficer.ToString()) || User.IsInRole(CC.Data.FixedRoles.GlobalReadOnly.ToString()) || User.IsInRole(CC.Data.FixedRoles.RegionReadOnly.ToString()) || User.IsInRole(CC.Data.FixedRoles.AuditorReadOnly.ToString()))
+    {
+        <a href="@Url.Action("ExportToPdf", new { id = Model.Data.Id })" class="button">Fluxx Export</a>
+    }
+    @if (User.IsInRole(CC.Data.FixedRoles.Admin.ToString()))
+    {
+        <a href="@Url.Action("ExportToPdf", new { id = Model.Data.Id, ifCtera = true })" class="button">Update PDF</a>
+    }
+    <a href="@Url.Action("RevisionHistory", new { id = Model.Data.Id })" class="button">Revision History</a>
+    <a href="@Url.Action("StatusHistory", new { id = Model.Data.Id })" class="button">Status History</a>
+</p>
+@Html.Grid(Model.AppBudgetServices).Attributes(new Dictionary<string, object> { { "id", Html.FieldIdFor(f => f.AppBudgetServices) } }).Columns(column =>
+{
+
+    column.For(f => f.Id);
+    column.For(f => f.AgencyName).Named("Agency");
+    column.For(f => f.ServiceType).Named("Service Type");
+    column.For(f => f.ServiceName).Named("Service");
+    column.For(f => f.CCGrant).Named("CC Grant");
+    column.For(f => f.RequiredMatch).Named("Required Match");
+    column.For(f => f.AgencyContribution).Named("Agency Contribution");
+    column.For(f => f.RemarksShort).Encode(false).Named("Remarks");
+    column.For(f => f.OriginalCcGrant).Named("Original CC Grant");
+    column.For(f => string.Empty).Named(string.Empty);
+    column.For(f => f.ServicePersonnel);
+})
+@if (Model.AppBudgetServices.Any())
+{
+    <script>
+        $(document).ready(function () {
+			var isNotBmf = '@User.IsInRole("BMF")' == 'False';
+			var isRevised = '@Model.Data.Revised' == 'True';
+			var md = function (source, type, val, name) {
+
+
+				if (type === 'set') {
+					source[name] = val;
+					// Store the computed dislay and filter values for efficiency
+					source[name + "_display"] = renderDecimal(val);
+
+					return;
+				}
+				else if (type === 'display') {
+					return source[name+"_display"];
+				}
+
+				// 'sort', 'type' and undefined all just use the integer
+				return source[name];
+			};
+			var oTable = $('table.#@Html.FieldIdFor(f => f.AppBudgetServices)').dataTable({
+				"bJQueryUI": true,
+				"sPaginationType": "full_numbers",
+				"aaSorting": [[1, "asc"], [2, "asc"], [3, "asc"]],
+				"fnRowCallback": function (nRow, aData, iDisplayIndex) { $(nRow).attr("id", aData[0]); return nRow; },
+				"aoColumnDefs": [
+					{
+						"aTargets": [0, 10], "bVisible": false
+					},
+					{
+						"aTargets": [4], "sClass": "ccgrant",
+						"mData": function (source, type, val) {
+							return md(source, type, val, "CcGrant");
+						}
+					},
+					{
+					    "aTargets": [5], "bVisible": isNotBmf,
+						"mData": function (source, type, val) {
+							return md(source, type, val, "RequiredMatch");
+						}
+
+					},
+					{
+					    "aTargets": [6], "bVisible": isNotBmf,
+						"mData": function (source, type, val) {
+							return md(source, type, val, "AgencyContribution");
+						}
+
+					},
+					{
+						"aTargets": [8], "sClass": "origccgrant",
+						"bVisible": isRevised,
+						"mData": function (source, type, val) {
+							return md(source, type, val, "OrigCcGrant");
+						}
+					},
+					{
+						"aTargets": [9],
+						"mValue": '10',
+						"bSortable": false,
+						"mRender": function (data, type, full) {
+							var html = '';
+							if (full[10] == "True") {
+								html += '<button type="button" class="personnel">Personnel</button>';
+							}
+							return html;
+						}
+					}
+				]
+			});
+			$('table.#@Html.FieldIdFor(f => f.AppBudgetServices) > tbody > tr> td:last-child > button.personnel').live('click', function () {
+				var $tr = $(this).closest('tr');
+				var tr = $tr.get(0);
+				var dataArray = $('table.#@Html.FieldIdFor(f => f.AppBudgetServices)').dataTable().fnGetData(tr);
+				var url = '@Url.Action("Personnel")' + '/' + dataArray[0] + '?edit=false';
+				$('<div><form/></div>').dialog({
+					modal: true,
+					open: function () { $(this).find('form').load(url); },
+					close: function () { $(this).find('form').html(''); },
+					height: 700,
+					width: 900,
+					title: 'Personnel  (Agency:' + dataArray[1] + ', Service:' + dataArray[1] + ')',
+					buttons: [{ text: "Close", click: function () { $(this).dialog("close"); } }]
+				});
+			});
+		});
+    </script>
+}
+<div id="totals">
+    @Html.Action("Totals", new { id = Model.Data.Id })
+</div>
+@if (Model.CanBeEdited())
+{
+    <p>
+        <a href="@Url.Action("Edit", new { id = Model.Data.Id })" class="button">Edit</a>
+    </p>
+}
+
+@if (Model.CanUpdateStatus())
+{
+    <fieldset>
+        <legend>Update approval status</legend>
+
+        @using (Html.BeginForm("UpdateStatus", "AppBudgets", FormMethod.Post, new { id = "updateStatusForm" }))
+        {
+            @Html.HiddenFor(f => f.Data.Id)
+            @Html.HiddenFor(f => f.SendEmail)
+            <div class="display-item">
+                @Html.LabelFor(f => Model.Data.StatusId, "New approval status")
+                @Html.DropDownListFor(model => model.Data.StatusId, new SelectList(EnumExtensions.EnumToDictionary<AppBudgetApprovalStatuses>(), "Key", "Value", Model.Data.StatusId), "")
+                <button onclick="UpdateAndEmail(true, event)">Update and Email</button>
+                <button onclick="UpdateAndEmail(false, event)">Update without Email</button>
+            </div>
+        }
+
+        @if (Model.Data.StatusId == 8)
+        {
+            <button type="button" class="submit" id="AwaitingRegionalPoApprovalButton">
+                Change Status To Awaiting Approval
+            </button>
+            using (Html.BeginForm("AwaitingRegionalPoApproval", "AppBudgets", FormMethod.Post, new { id = "AwaitingRegionalPoApproval", title = "Awaiting Approval" }))
+            {
+                @Html.ValidationSummary()
+                @Html.Hidden("id", Model.Data.Id)
+                <div>
+                    <label>
+                        Password:
+                    </label>
+                    <input type="password" name="password" data-val="true" data-val-required="password is required" />
+                </div>
+            }
+        }
+
+        @if (Model.Data.StatusId == 9)
+        {
+            <button type="button" class="submit" id="AwaitingGlobalPoApprovalButton">
+                Change Status To Awaiting Approval
+            </button>
+            using (Html.BeginForm("AwaitingGlobalPoApproval", "AppBudgets", FormMethod.Post, new { id = "AwaitingGlobalPoApproval", title = "Awaiting Approval" }))
+            {
+                @Html.ValidationSummary()
+                @Html.Hidden("id", Model.Data.Id)
+                <div>
+                    <label>
+                        Password:
+                    </label>
+                    <input type="password" name="password" data-val="true" data-val-required="password is required" />
+                </div>
+            }
+
+
+        }
+
+
+
+        <script>
+            function UpdateAndEmail(sendEmail, e)
+            {
+            	var isAudit = '@Model.AgencyGroupIsAudit' == 'True';
+            	if (!isAudit || confirm("The agency is currently being audited by Claims Conference grant auditors. Are you sure you wish to change the status of this Budget/Report?")) {
+                    $("#@Html.FieldIdFor(f => f.SendEmail)").val(sendEmail);
+                     $("#updateStatusForm").submit();
+            	}
+            	else {
+                    e.preventDefault();
+
+            	}
+            }
+
+        </script>
+    </fieldset>
+
+
+    <fieldset>
+        <legend></legend>
+        <form action="@Url.Action("UpdateServices", "AppBudgets", new { id = Model.Data.Id })" method="post">
+            <button type="submit">Update Services/Agencies</button>
+        </form>
+    </fieldset>
+
+
+}
+
+
+
+
+
+@if (Model.CanBeDeleted)
+{
+    using (Html.BeginForm("Delete", "AppBudgets", FormMethod.Post))
+    {
+        @Html.HiddenFor(f => f.Data.Id);
+        <button type="submit">Delete</button>
+    }
+}
+<p>
+    @Html.ActionLink("Back to List", "Index")
+</p>
+@if (Model.CanBeRevised())
+{
+
+
+    <fieldset>
+        <legend>ser</legend>
+        <button type="button" class="submit" id="ReviseButton">Revise</button>
+        @using (Html.BeginForm("Revise", "AppBudgets", FormMethod.Post, new { id = "Revise", title = "Revise" }))
+        {
+            @Html.ValidationSummary()
+            @Html.Hidden("id", Model.Data.Id)
+            <div>
+                @if (Model.Data.App.InterlineTransfer)
+                {
+                    <p>
+                        You are starting the process of an interline transfer for this budget. <br />Once confirmed, the budget will be editable again, but no report submissions will be allowed until the budget is revised and resubmitted by you.
+                        <br />After re-submitting, the budget will become approved automatically as long conditions for an interline transfer are met.
+                    </p>
+                }
+                else
+                {
+                    <p>
+                        The App has already been approved for reporting.
+                    </p>
+
+                    <p>
+                        Would you like to revise the budget that was approved ?
+                    </p>
+                    <p>
+                        Please note: reporting on this revision cannot commence until the Revised Budget has been approved by the PO
+                    </p>
+                }
+            </div>
+
+            <div>
+
+
+                <p>
+                    Please confirm your password
+                </p>
+                <label>
+                    Password:
+                </label>
+                <input type="password" name="password" data-val="true" data-val-required="password is required" />
+            </div>
+        }
+
+    </fieldset>
+}
+@if (Model.CanBeSubmitted())
+{
+    <fieldset>
+        <legend>Budget Submission</legend>
+
+        @if (Model.Errors.Any())
+        {
+            <div>
+                The budget can not be submitted due to following errors:
+                <ul class="error">
+                    @foreach (var s in Model.Errors)
+                    {
+                        <li>@s.ErrorMessage</li>
+                    }
+                </ul>
+            </div>
+        }
+        else
+        {
+            if (Model.Data.IsRequiredMatchOk())
+            {
+                <button type="button" class="submit" id="SubmitButton">Submit Budget for Approval</button>
+                using (Html.BeginForm("Submit", "AppBudgets", FormMethod.Post, new { id = "Submit", title = "Submit" }))
+                {
+                    @Html.ValidationSummary()
+                    @Html.Hidden("id", Model.Data.Id)
+                    <ul>
+                        <li>
+                            <label>
+                                Password:
+                            </label>
+                            <input type="password" name="password" data-val="true" data-val-required="password is required" />
+                        </li>
+                    </ul>
+                }
+            }
+            else
+            {
+                <button type="button" class="submit" id="SubmitButton">Submit Budget for Approval</button>
+                using (Html.BeginForm("SubmitConditional", "AppBudgets", FormMethod.Post, new { id = "Submit", title = "Submit Conditional" }))
+                {
+                    @Html.ValidationSummary()
+                    @Html.Hidden("id", Model.Data.Id)
+                    <ul>
+                        <li>The sum of the Required Match is less than required. Would you like to submit for a conditional approval?</li>
+
+
+                        <li>
+                            <label>
+                                Conditional Valid Until:
+                            </label>
+                            <input type="text" class="date" name="date" value="@(Model.Data.ValidUntill.HasValue ? Model.Data.ValidUntill.Value.ToShortDateString() : null)" data-val="true" data-val-required="asdf" />
+                        </li>
+                        <li>
+                            <label>
+                                Remarks:
+                            </label>
+                            <textarea name="poremarks" cols="50" rows="10" data-val="true" data-val-required="remarks are required for rejection">@Model.Data.AgencyRemarks</textarea>
+                        </li>
+                        <li>
+                            <label>
+                                Password:
+                            </label>
+                            <input type="password" name="password" data-val="true" data-val-required="password is required" />
+                        </li>
+                    </ul>
+                }
+
+            }
+        }
+
+
+    </fieldset>
+}
+else if (Model.CanBeApprovedByRpo())
+{
+    <fieldset>
+        <legend>rpo</legend>
+        <button type="button" class="submit" id="ApproveByRpoButton">
+            Approve
+        </button>
+        @using (Html.BeginForm("ApproveByRpo", "AppBudgets", FormMethod.Post, new { id = "ApproveByRpo", title = "Approve" }))
+        {
+            @Html.ValidationSummary()
+            @Html.Hidden("id", Model.Data.Id)
+            <div>
+                <ul>
+                    @if (Model.FormARequired)
+                    {
+                        <li>
+                            <input type="checkbox" name="FormASubmitted" id="FormASubmitted" value="true" />
+                            <label for="FormASubmitted">Was a Form A submitted?</label>
+                        </li>
+                    }
+                    <li>
+                        <label>
+                            Remarks:
+                        </label>
+
+                        <textarea name="PoRemarks" cols="100" rows="10" data-val="true">@Model.Data.PoRemarks</textarea>
+                    </li>
+                </ul>
+                <p>
+                    Please confirm your password
+                </p>
+
+                <label>
+                    Password:
+                </label>
+                <input type="password" name="password" data-val="true" data-val-required="password is required" />
+            </div>
+        }
+        <button type="button" class="submit" id="RejectByRpoButton">
+            Reject
+        </button>
+        @using (Html.BeginForm("RejectByRpo", "AppBudgets", FormMethod.Post, new { id = "RejectByRpo", title = "Reject" }))
+        {
+            @Html.ValidationSummary()
+            @Html.Hidden("id", Model.Data.Id)
+
+            <div>
+                <p>
+                    <label>
+                        Reject reason:
+                    </label>
+                </p>
+                <textarea name="poremarks" cols="100" rows="10" data-val="true" data-val-required="remarks are required for rejection">@Model.Data.PoRemarks</textarea>
+            </div>
+            <div>
+                <label>
+                    Password:
+                </label>
+                <input type="password" name="password" data-val="true" data-val-required="password is required" />
+            </div>
+
+        }
+
+        <button type="button" class="submit" id="AwaitingAgencyResponseByRpoButton">
+            Awaiting Agency Response
+        </button>
+        @using (Html.BeginForm("AwaitingAgencyResponseByRpo", "AppBudgets", FormMethod.Post, new { id = "AwaitingAgencyResponseByRpo", title = "Awaiting Agency Response" }))
+        {
+            @Html.ValidationSummary()
+            @Html.Hidden("id", Model.Data.Id)
+            <div>
+                <label>
+                    Password:
+                </label>
+                <input type="password" name="password" data-val="true" data-val-required="password is required" />
+            </div>
+
+        }
+
+
+
+    </fieldset>
+}
+else if (Model.CanBeApprovedByGpo())
+{
+    <fieldset>
+        <legend>gpo</legend>
+        <button type="button" class="submit" id="ApproveByGpoButton">
+            Approve
+        </button>
+        @using (Html.BeginForm("ApproveByGpo", "AppBudgets", FormMethod.Post, new { id = "ApproveByGpo", title = "Approve" }))
+        {
+            @Html.ValidationSummary()
+            @Html.Hidden("id", Model.Data.Id)
+            <div>
+                <ul>
+                    <li>
+                        <label>
+                            Remarks:
+                        </label>
+                        <textarea name="poremarks" cols="100" rows="10" data-val="true">@Model.Data.PoRemarks</textarea>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <p>
+                    Please confirm your password
+                </p>
+                <label>
+                    Password:
+                </label>
+                <input type="password" name="password" data-val="true" data-val-required="password is required" />
+            </div>
+        }
+        <button type="button" class="submit" id="RejectByGpoButton">
+            Reject
+        </button>
+        @using (Html.BeginForm("RejectByGpo", "AppBudgets", FormMethod.Post, new { id = "RejectByGpo", title = "Reject" }))
+        {
+            @Html.ValidationSummary()
+            @Html.Hidden("id", Model.Data.Id)
+            <div>
+                <p>
+                    <label>
+                        Reject reason:
+                    </label>
+                </p>
+                <textarea name="poremarks" cols="100" rows="10" data-val="true" data-val-required="remarks are required for rejection">@Model.Data.PoRemarks</textarea>
+            </div>
+            <div>
+                <label>
+                    Password:
+                </label>
+                <input type="password" name="password" data-val="true" data-val-required="password is required" />
+            </div>
+        }
+        <button type="button" class="submit" id="AwaitingAgencyResponseByGpoButton">
+            Awaiting Agency Response
+        </button>
+        @using (Html.BeginForm("AwaitingAgencyResponseByGpo", "AppBudgets", FormMethod.Post, new { id = "AwaitingAgencyResponseByGpo", title = "Awaiting Agency Response" }))
+        {
+            @Html.ValidationSummary()
+            @Html.Hidden("id", Model.Data.Id)
+            <div>
+                <label>
+                    Password:
+                </label>
+                <input type="password" name="password" data-val="true" data-val-required="password is required" />
+            </div>
+
+
+        }
+    </fieldset>
+}
+else if (Model.AwaitAgencyResponseRPO())
+{
+    <fieldset>
+        <legend>rpo</legend>
+        <button type="button" class="submit" id="AwaitingRegionalPoApprovalButton">
+            Change Status To Awaiting Approval
+        </button>
+        @using (Html.BeginForm("AwaitingRegionalPoApproval", "AppBudgets", FormMethod.Post, new { id = "AwaitingRegionalPoApproval", title = "Awaiting Approval" }))
+        {
+            @Html.ValidationSummary()
+            @Html.Hidden("id", Model.Data.Id)
+            <div>
+                <label>
+                    Password:
+                </label>
+                <input type="password" name="password" data-val="true" data-val-required="password is required" />
+            </div>
+        }
+
+    </fieldset>
+}
+else if (Model.AwaitAgencyResponseGPO())
+{
+    <fieldset>
+        <legend>gpo</legend>
+        <button type="button" class="submit" id="AwaitingGlobalPoApprovalButton">
+            Change Status To Awaiting Approval
+        </button>
+        @using (Html.BeginForm("AwaitingGlobalPoApproval", "AppBudgets", FormMethod.Post, new { id = "AwaitingGlobalPoApproval", title = "Awaiting Approval" }))
+        {
+            @Html.ValidationSummary()
+            @Html.Hidden("id", Model.Data.Id)
+            <div>
+                <label>
+                    Password:
+                </label>
+                <input type="password" name="password" data-val="true" data-val-required="password is required" />
+            </div>
+        }
+
+    </fieldset>
+}

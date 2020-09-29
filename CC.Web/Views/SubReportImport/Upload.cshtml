@@ -1,0 +1,19 @@
+﻿@model CC.Web.Models.Import.ClientReports.UploadModel
+ @{
+    ViewBag.Title = "Upload";
+}
+
+<h2>Upload</h2>
+<ul>
+	@foreach (var s in Model.CsvColumns)
+ {
+	 <li>@s</li>
+ }
+</ul>
+<form enctype="multipart/form-data" method="post">
+	@Html.HiddenFor(f=>f.SubReportId)
+	@Html.HiddenFor(f => f.AppBudgetServiceId)
+	@Html.HiddenFor(f=>f.MainReportId)
+	@Html.EditorFor(f=>f.File)
+	<input type="submit" class="button" value="Upload" />
+</form> 

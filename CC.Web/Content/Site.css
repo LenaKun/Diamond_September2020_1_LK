@@ -1,0 +1,690 @@
+﻿/*----------------------------------------------------------
+The base color for this template is #5c87b2. If you'd like
+to use a different color start by replacing all instances of
+#5c87b2 with your new color.
+----------------------------------------------------------*/
+body
+{
+    background-color: #ccc;
+    font-size: .85em;
+    font-family: "Trebuchet MS" , Verdana, Helvetica, Sans-Serif;
+    margin: 0;
+    padding: 0;
+    color: #434343;
+}
+
+a:link
+{
+    color: #034af3;
+    text-decoration: underline;
+}
+
+a:visited
+{
+}
+
+a:hover
+{
+    color: #1d60ff;
+    text-decoration: none;
+}
+
+a:active
+{
+    color: #12eb87;
+}
+
+p, ul
+{
+    margin-bottom: 20px;
+    line-height: 1.6em;
+}
+
+header, footer, nav, section
+{
+    display: block;
+}
+
+/* HEADINGS   
+----------------------------------------------------------*/
+h1, h2, h3, h4, h5, h6
+{
+    font-size: 1.5em;
+    color: #434343;
+}
+
+h1
+{
+    font-size: 2em;
+    padding-bottom: 0;
+    margin-bottom: 0;
+}
+
+h2
+{
+    padding: 0 0 10px 0;
+}
+
+h3
+{
+    font-size: 1.2em;
+}
+
+h4
+{
+    font-size: 1.1em;
+}
+
+h5, h6
+{
+    font-size: 1em;
+}
+
+/* PRIMARY LAYOUT ELEMENTS   
+----------------------------------------------------------*/
+
+/* you can specify a greater or lesser percentage for the 
+page width. Or, you can specify an exact pixel width. */
+.page
+{
+    /*width: 90%;
+    margin-left: auto;
+    margin-right: auto;*/
+    margin:0 2em 2em 2em;
+    background: #fff;
+}
+
+header, #header
+{
+    position: relative;
+    margin-bottom: 0px;
+    color: #000;
+    padding: 0;
+}
+
+header h1, #header h1
+{
+    font-weight: bold;
+    padding: 5px 0;
+    margin: 0;
+    color: #fff;
+    border: none;
+    line-height: 2em;
+    font-size: 32px !important;
+    text-shadow: 1px 1px 2px #111;
+}
+
+#main
+{
+    padding: 1px 10px 15px 10px;
+    background-color: #fff;
+    border-radius: 4px 0 0 0;
+    -webkit-border-radius: 4px 0 0 0;
+    -moz-border-radius: 4px 0 0 0;
+}
+
+footer, #footer
+{
+    background-color: #fff;
+    color: #999;
+    padding: 10px 0 0 0;
+    text-align: center;
+    line-height: normal;
+    margin: 0 0 0;
+    font-size: .9em;
+    border-radius: 0 0 4px 4px;
+    -webkit-border-radius: 0 0 4px 4px;
+    -moz-border-radius: 0 0 4px 4px;
+}
+.layoutTable, .layoutTable td, .layoutTable th
+{
+    border: none;
+    background-color: #eee;
+    margin: 0;
+    border-collapse: collapse;
+}
+.layoutTable td.labelCell
+{
+    color: Black;
+}
+div.filter
+{
+    background-color: #ddf;
+    line-height:2.5em;
+}
+div.filter fieldset
+{
+    margin-left:2.2em;
+    background-color: #eee;
+}
+
+.dataTables_wrapper
+{
+    font-size: 0.85em;
+}
+/* TAB MENU   
+----------------------------------------------------------*/
+ul.menu
+{
+    /*padding: 0 0 2px;*/
+    position: relative;
+    margin: 0;
+    text-align: left;
+}
+
+ul.menu li
+{
+    display: inline;
+    list-style: none;
+}
+
+ul.menu li#greeting
+{
+    padding: 10px 20px;
+    font-weight: bold;
+    text-decoration: none;
+    line-height: 2.8em;
+    color: #fff;
+}
+
+ul.menu li a
+{
+    padding: 10px 20px;
+    font-weight: bold;
+    text-decoration: none;
+    line-height: 2.8em; /*background-color: #e8eef4;*/ /*border-radius: 4px 4px 0 0;     -webkit-border-radius: 4px 4px 0 0;     -moz-border-radius: 4px 4px 0 0;*/
+}
+
+ul.menu li a:hover
+{
+    text-decoration: none;
+    color: #ee362e;
+}
+
+ul.menu li a:active
+{
+    text-decoration: none;
+}
+
+ul.menu li.selected a
+{
+    /*background-color: #fff;*/
+}
+
+
+
+/*main menu-----------------------------------------------*/
+ul#mainMenu
+{
+    background-color: #454545;
+}
+ul#mainMenu li a
+{
+    color: #fff;
+}
+ul#mainMenu li a:hover
+{
+    color: #ee362e;
+}
+
+/*sub menu-----------------------------------------------*/
+ul#subMenu
+{
+    background-color: #666666;
+}
+ul#subMenu li a
+{
+    color: #fff;
+}
+ul#subMenu li a:hover
+{
+    color: #ee362e;
+}
+ul#subMenu li.selected a
+{
+    /*background-color: #fff;*/
+    font-weight: 700;
+    background-color: #454545;
+}
+
+/* FORM LAYOUT ELEMENTS   
+----------------------------------------------------------*/
+
+fieldset
+{
+    border: 1px solid #ddd;
+    margin: 0 0 .5em 0;
+}
+
+legend
+{
+    font-weight: bold;
+    color: #666;
+}
+
+textarea
+{
+    min-height: 75px;
+}
+input.decimal, input[data-type="decimal"]
+{
+	width:3em;
+}
+input.date, input[data-type="date"]
+{
+	width: 8em;
+}
+input[type="text"], select, textarea
+{
+    font-weight: bolder;
+}
+
+input[type="text"], input[type="password"]
+{
+    border: 1px solid #ccc;
+    padding: 2px;
+    font-size: 1em;
+    color: #444; /*width: 6em;*/
+}
+input[type="text"].longString
+{
+    width: 70%;
+}
+
+select
+{
+}
+
+.controlsContainer /*typicaly a div with save/cancel insid*/
+{
+    padding: .5em;
+}
+
+.editor-item-long
+{
+    width:85%;
+}
+
+.reportsForm 
+{
+    margin-bottom: 35px;
+}
+
+/* jQuery ui buttons save/cancel
+----------------------------------------------------------*/
+.ui-button.save, .ui-button.confirm, .ui-button.cancel, .ui-button.submit, .ui-button.bold
+{
+    font-weight: bold;
+    font-size:1em;
+    line-height:2em;
+}
+.ui-button.save, .ui-button.confirm, .ui-button.submit
+{
+    color: Green;
+}
+.ui-button.cancel
+{
+    color: Red;
+}
+.ui-button.addnew
+{
+    color: #000066;
+}
+
+
+/* TABLE
+----------------------------------------------------------*/
+
+table
+{
+    border: solid 1px #e8eef4;
+    border-collapse: collapse;
+	/*table-layout:fixed;*/
+    width:100%;
+}
+
+table td
+{
+    padding: 5px;
+    border: solid 1px #e8eef4;
+	word-wrap:break-word;
+}
+
+.dataTable td.dec
+{
+text-align:right;
+}
+table th
+{
+    padding: 6px 5px;
+    text-align: left;
+    background-color: #e8eef4;
+    border: solid 1px #e8eef4;
+	
+}
+
+	table.horizontal th
+	{
+		width: 11em;
+	}
+
+tr:hover td
+{
+    /*background-color: #e8eef4;*/
+}
+
+/* MISC  
+----------------------------------------------------------*/
+.clear
+{
+    clear: both;
+}
+
+.error
+{
+    color: Red;
+}
+.warning
+{
+color:#ff9400;
+}
+
+nav, #menucontainer
+{
+    margin-top: 10px;
+}
+
+div#title
+{
+    display: block;
+    float: left;
+    text-align: left;
+}
+header div#logo
+{
+    background-position: left center;
+    background-image: url('img/logo-larger.png');
+    background-repeat: no-repeat;
+    height: 100px;
+}
+
+#logindisplay
+{
+    font-size: 1.1em;
+    display: block;
+    text-align: right; /*margin: 10px;*/ /*color: White;*/
+}
+
+#logindisplay a:link
+{
+    /*color: White;*/
+    text-decoration: underline;
+}
+
+#logindisplay a:visited
+{
+    /*color: White;*/
+    text-decoration: underline;
+}
+
+#logindisplay a:hover
+{
+    /*color: White;*/
+    text-decoration: none;
+}
+
+/* Styles for validation helpers
+-----------------------------------------------------------*/
+.field-validation-error
+{
+    color: #ff0000;
+}
+
+.field-validation-valid
+{
+    display: none;
+}
+
+.input-validation-error
+{
+    border: 1px solid #ff0000;
+    background-color: #ffeeee;
+}
+
+.validation-summary-errors
+{
+    font-weight: bold;
+    color: #ff0000;
+}
+
+.validation-summary-valid
+{
+    display: none;
+}
+
+/* Styles for editor and display helpers
+----------------------------------------------------------*/
+
+.floatContainer /*a container that will grow with floating content inside*/
+{
+    border: 1px none #000000;
+    overflow: hidden;
+    width: 100%;
+}
+
+.column2
+{
+    width:50%;
+    float:left;
+}
+
+.nowrap{
+	white-space: nowrap;
+	}
+.row
+{
+    line-height: 2.5em;
+    vertical-align: middle;
+}
+.editor-item /*a typically a div with a label + span/input*/
+{
+    display: block;
+    float:left;
+    white-space: nowrap;
+    margin-right: 2em;
+    line-height: 2.5em;
+    margin-bottom: 0.2em;
+}
+.editor-item label
+{
+    font-weight: normal;
+    color: #666;
+}
+
+.editor-item-block
+{
+	display: block;
+    white-space: nowrap;
+    margin-right: 2em;
+    line-height: 2.5em;
+}
+.editor-item-block label
+{
+	font-weight: normal;
+    color: #666;
+	display:inline-block;
+	width:10em;
+}
+.editor-item-block label:after
+{
+	content:':';
+}
+
+
+.stringdisplaytemplate
+{
+    padding: 3px;
+    font-weight: bolder;
+}
+
+.display-label, .editor-label
+{
+    margin: 1em 0 0 0;
+}
+
+.display-field, .editor-field
+{
+    margin: 0.5em 0 0 0;
+    font-weight:bold;   
+}
+
+
+.display-item
+{
+	display:inline-block;
+	margin-right:2em;
+}
+.display-item label:after
+{
+	content: ':';
+}
+
+.display-item span
+{
+	font-weight: bold;
+}
+
+
+.text-box
+{
+    /*width: 30em;*/
+}
+
+
+
+
+.text-box.multi-line
+{
+    height: 6.5em;
+}
+
+
+
+
+
+
+
+#filter input[type='text']
+{
+    font-weight: normal;
+    font-size: .85em;
+}
+
+#filter select
+{
+    font-weight: normal;
+    font-size: .85em;
+}
+
+.col2
+{
+    width:50%;
+    float:left;
+    display:block;
+}
+.alignL
+{
+    text-align:left;
+}
+.alignR
+{
+    text-align:right;
+}
+
+a.fa {
+    text-decoration: none;
+}
+
+.fa {
+    font-size: 17px;
+    margin-right: .25em;
+    margin-left: .25em;
+}
+
+.circle-icon {
+    color: #595858;
+    width: 15px;
+    height: 15px;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 10px;
+    vertical-align: middle;
+    padding: 6px;
+}
+
+/*------------------------------------------------------------------------------------------------------------------------------------------------------*/
+@media print
+{
+    .ui-tabs-nav
+    {
+        display: none;
+    }
+    .ui-tabs .ui-tabs-hide
+    {
+        display: block !important;
+    }
+}
+.hidden
+{
+    display:none;
+}
+
+
+table.dataTable tbody tr td.number
+{
+	text-align:right
+}
+
+.validation-summary-success{
+	color:#3BAD2C;
+}
+
+dd {
+    font-weight: 700;
+}
+dd, dt {
+    line-height: 1.42857143;
+}
+.dl-horizontal dt {
+    float: left;
+    width: 160px;
+    overflow: hidden;
+    clear: left;
+    text-align: right;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+@media (min-width: 768px) {
+	.dl-horizontal dd {
+		margin-left: 180px;
+	}
+}
+dd {
+    margin-left: 0;
+}
+.hideCloseButton .ui-dialog-titlebar-close {
+	visibility: hidden;
+}
+.g-recaptcha {
+	transform:scale(0.68);
+	-webkit-transform:scale(0.68);
+	transform-origin:0 0;
+	-webkit-transform-origin:0 0;
+	margin-top:10px;
+}
+
+.landing_page_list {
+	list-style-type: none;
+}

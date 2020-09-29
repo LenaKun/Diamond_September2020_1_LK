@@ -1,0 +1,40 @@
+﻿@model AppBudgetService
+<tr>
+	<td>
+		@Html.DisplayFor(f=>f.AgencyId)
+	</td>
+    <td>
+        
+        @Html.DisplayFor(f=>f.Agency.Name)
+    </td>
+    <td>
+        @Html.DisplayFor(f => Model.Service.ServiceType.Name)
+    </td>
+    <td>
+        @Html.DisplayFor(f => Model.Service.Name)
+    </td>
+    <td>
+        @Html.DisplayFor(f => Model.CcGrant)
+    </td>
+    <td>
+        @Html.DisplayFor(f => Model.AppBudget.App.Fund.CurrencyCode)
+    </td>
+    <td>
+        @Html.DisplayFor(f => Model.RequiredMatch)
+    </td>
+    <td>
+        @Html.DisplayFor(f => Model.AppBudget.App.Fund.CurrencyCode)
+    </td>
+    <td>
+        @Html.DisplayFor(f => Model.AgencyContribution)
+    </td>
+    <td>
+        @Html.DisplayFor(f => Model.AppBudget.App.Fund.CurrencyCode)
+    </td>
+	<td>
+		@Html.DisplayFor(f=>Model.Remarks)
+	</td>
+    <td>
+        N/A<!-- Total spent to date -->
+    </td>
+</tr>

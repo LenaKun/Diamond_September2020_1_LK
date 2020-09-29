@@ -1,0 +1,51 @@
+﻿@model Guid
+@{
+	ViewBag.Title = "Preview";
+}
+
+<h2>Diagnostic Score Import Preview</h2>
+
+@Html.ValidationSummary()
+
+
+@if (ViewData.ModelState.IsValid)
+{
+	<form action="@Url.Action("Import", "FunctionalityScores", new { id = Model })" method="post">
+
+	<button type="submit">Submit</button>
+    
+	</form>
+}
+<p>
+<a href="@Url.Action("Upload", "FunctionalityScores")" class="button">Cancel</a>
+    </p>
+<table id="dataTable">
+</table>
+<script>
+	$(function () {
+		var oDataTable = $('table#dataTable').dataTable({
+			"bJQueryUI": true,
+			"bProccessing": true,
+			"sPaginationType": "full_numbers",
+			"aaSorting": [[0, "desc"], [1, "asc"], [2, "asc"]],
+			"bServerSide": true,
+			"sAjaxSource": '@Url.Action("PreviewData", new { id = Model })',
+			"fnServerParams": function (aoData) {
+				aoData.push({ name: "IE", value: Math.random() });
+			},
+			"aoColumns": [
+				{ "mData": "RowIndex", "sTitle": "Row" },
+				{ "mData": "ClientId", "sTitle": "CC ID" },
+				{ "mData": "ClientName", "sTitle": "Client Name" },
+				{ "mData": "StartDate", "sTitle": "Start Date" },
+				{ "mData": "DiagnosticScore", "sTitle": "Diagnostic Score" },
+				{ "mData": "FunctionalityLevelName", "sTitle": "Functionality Level" },
+				{ "mData": "Errors", "sTitle": "", "mRender": function (val) { if (val && val.length > 0) { return '<ul><li>' + val.split(',').join('</li><li>') + '</li><ul>'; } else { return val; } } }
+
+			],
+			"aoColumnDefs": [
+				{ "aTargets": [3], "mRender": function (val, type, full) { return renderDate(val); } }
+			]
+		});
+	});
+</script>

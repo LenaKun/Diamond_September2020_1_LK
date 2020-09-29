@@ -1,0 +1,13 @@
+﻿@model CC.Data.HomeCareEntitledPeriod
+<fieldset>
+    <legend>Add new home care entitled period</legend>
+    @Html.HiddenFor(f => f.ClientId)
+    <div class="editor-item">
+        @Html.LabelFor(f => f.StartDate):
+        @Html.EditorFor(f => f.StartDate)
+    </div>
+    <div class="editor-item">
+        @Html.LabelFor(f => f.EndDate):
+        @Html.EditorFor(f => f.EndDate)
+    </div>
+</fieldset>

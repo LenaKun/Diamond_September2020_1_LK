@@ -1,0 +1,120 @@
+﻿@model ImportPreviewModel
+@{
+	ViewBag.Title = "Preview";
+}
+
+<h2>Preview</h2>
+
+@Html.ValidationSummary()
+
+
+@if (ViewData.ModelState.IsValid)
+{
+	<form action="@Url.Action("Import" + Model.ImportAction, new { id = Model.Id })" method="post">
+	<button type="submit">Submit</button>
+	</form>
+}
+<p>
+    <a href="@Url.Action("Upload"+ Model.ImportAction, "Clients")" class="button">Cancel</a>
+</p>
+<table id="dataTable">
+</table>
+<script>
+	$(function () {
+		var oDataTable = $('table#dataTable').dataTable({
+			"bJQueryUI": true,
+			"bProccessing": true,
+			"sPaginationType": "full_numbers",
+			"aaSorting": [[1, "desc"]],
+			"bServerSide": true,
+			"sAjaxSource": '@Url.Action("Preview" + Model.ImportAction + "Data", new { id = Model.Id })',
+			"bAutoWidth": false,
+			"fnServerData": function (sSource, aoData, fnCallback) {
+				$.ajax({
+					"dataType": 'json',
+					"type": "POST",
+					"url": sSource,
+					"data": aoData,
+					"success": fnCallback
+				});
+			},
+			"fnServerParams": function (aoData) {
+				aoData.push({ name: "IE", value: Math.random() });
+			},
+			"aoColumns": [
+				{ "mData": "RowIndex", "sName": "RowIndex", "sTitle": "Row Index" },//0
+				{
+					"mData": "Errors", "sName": "Errors.Count", "sTitle": "Errors"
+				},
+				{ "mData": "ClientId", "sName": "ClientId", "sTitle": "Client Id" },
+				{ "mData": "InternalId", "sName": "InternalId", "sTitle": "Internal Id" },
+				{ "mData": "AgencyId", "sName": "AgencyId", "sTitle": "Agency Id" },
+				{ "mData": "FirstName", "sName": "FirstName", "sTitle": "First Name" },//3
+				{ "mData": "LastName", "sName": "LastName", "sTitle": "Last Name" },//4
+				{ "mData": "MiddleName", "sName": "MiddleName", "sTitle": "Middle Name" },//5
+                {
+                    "mData": "Gender", "sTitle": "Gender", "mRender": function (a) {
+                        if (a == true) {
+                            return "@(Client.Genders.Female.ToString())";
+                        }
+                        else if (a == false) {
+                            return "@(Client.Genders.Male.ToString())";
+                        } else {
+                            return null;
+                        }
+                    }
+                },
+				{ "mData": "PrevFirstName", "sName": "PrevFirstName", "sTitle": "Prev. First Name" },//6
+				{ "mData": "PrevLastName", "sName": "PrevLastName", "sTitle": "Prev. Last Name" },//7
+				{ "mData": "Address", "sName": "Address", "sTitle": "Address" },//8
+				{ "mData": "StateCode", "sName": "StateCode", "sTitle": "State Code" },//9
+				{
+					"mData": "BirthDate", "sName": "BirthDate", "sTitle": "Birt hDate", "sType": "date",
+					"mRender": function (val, type, full) { return renderDate(val); }
+				},//10
+				{ "mData": "PobCity", "sName": "PobCity", "sTitle": "POB City" },//11
+                { "mData": "CountryName", "sName": "CountryName", "sTitle": "Country of Residence" },//12
+				{ "mData": "BirthCountryName", "sName": "birthCountryName", "sTitle": "Birth Country" },//12
+				{ "mData": "NationalIdTypeName", "sName": "NationalIdTypeName", "sTitle": "National Id Type" },//13
+				{ "mData": "NationalId", "sName": "NationalId", "sTitle": "National Id" },//14
+				{
+					"mData": "LeaveDate", "sName": "LeaveDate", "sTitle": "Leave Date", "sType": "date",
+					"mRender": function (val, type, full) { return renderDate(val); }
+				},//15
+				{
+					"mData": "DeceasedDate", "sName": "DeceasedDate", "sTitle": "Deceased Date", "sType": "date",
+					"mRender": function (val, type, full) { return renderDate(val); }
+				},//16
+				{
+					"mData": "JoinDate", "sName": "JoinDate", "sTitle": "Join Date", "sType": "date"
+				, "mRender": function (val, type, full) { return renderDate(val); }
+				},
+				{
+					"mData": "HomecareWaitlist", "sName": "HomecareWaitlist", "sTitle": "Homecare Waitlist",
+					"mRender": function (val, type, full) { if (val) return 'Yes'; else return 'No'; }
+				},
+				{
+					"mData": "OtherServicesWaitlist", "sName": "OtherServicesWaitlist", "sTitle": "Other Services Waitlist",
+					"mRender": function (val, type, full) { if (val) return 'Yes'; else return 'No'; }
+				},
+				{ "mData": "CommPrefs", "sName": "CommPrefs", "sTitle": "Comm Prefs" },
+				{ "mData": "CareReceivedVia", "sName": "CareReceivedVia", "sTitle": "Care Received Via" },
+				{
+					"mData": "MAFDate", "sName": "MAFDate", "sTitle": "MAF Date", "sType": "date",
+					"mRender": function (val, type, full) { return renderDate(val); }
+				},
+				{
+					"mData": "MAF105Date", "sName": "MAF105Date", "sTitle": "MAF 105+ Date", "sType": "date",
+					"mRender": function (val, type, full) { return renderDate(val); }
+                },
+                {
+                    "mData": "HAS2Date", "sName": "HAS2Date", "sTitle": "HAS2 Date", "sType": "date",
+                    "mRender": function (val, type, full) { return renderDate(val); }
+                }
+			],
+			"aoColumnDefs": [
+
+			]
+		});
+	});
+</script>

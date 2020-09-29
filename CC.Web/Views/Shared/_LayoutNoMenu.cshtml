@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta content="" charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">    
+    <title>@ViewBag.Title</title>
+    <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
+    <link type="text/css" rel="Stylesheet" href="@Url.Content("~/Content/themes/base/jquery-ui.css")" />
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery-1.5.1.js")" ></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery-ui-1.8.11.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.validate.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.unobtrusive-ajax.min.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/modernizr-1.7.js")" ></script>
+	<script src='https://www.google.com/recaptcha/api.js?hl=en'></script>
+    <script type="text/javascript">
+        $(function () {
+            $("input:submit, input:button, a.button, button").button();
+            $('input[type="text"].date').datepicker({
+                dateFormat: 'd M yy',
+                showStatus: true,
+                showWeeks: true,
+                highlightWeek: true,
+                numberOfMonths: 1,
+                showAnim: "scale",
+                showOptions: {
+                    origin: ["top", "left"]
+                }
+            });
+        });
+    </script>
+    <link href="../../Content/DataTables-1.9.0/css/jquery.dataTables.css" rel="stylesheet"
+        type="text/css" />
+    @RenderSection("Header", false)
+</head>
+<body>
+    <div class="page">
+        <header>
+            <div id="logo">
+                <div id="logindisplay">
+                    @Html.Partial("_LogOnPartial")
+                </div>
+            </div>
+           
+        </header>
+        <section id="main">
+            @RenderBody()
+        </section>
+        <footer>
+        </footer>
+    </div>
+</body>
+</html>

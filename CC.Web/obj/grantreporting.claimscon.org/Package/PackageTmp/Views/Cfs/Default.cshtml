@@ -1,0 +1,427 @@
+﻿@model CfsRowDataTableModel
+@{
+	ViewBag.Title = "CFS";
+	int regionId = ViewBag.RegionId;
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div id="divTable">
+	<div id="filter">
+		<fieldset style="overflow: auto">
+			@if (!User.IsInRole("RegionReadOnly"))
+			{
+				<div class="editor-item">
+					<label>
+						Region:
+					</label>
+					@Html.EditorFor(f => f.FilterRegionId)
+				</div>
+			}
+			<div class="editor-item">
+				<label>
+					Country:
+				</label>
+				@Html.EditorFor(f => f.FilterCountryId)
+			</div>
+			<div class="editor-item">
+				<label>
+					State:
+				</label>
+				@Html.EditorFor(f => f.FilterStateId)
+			</div>
+			<div class="editor-item">
+				<label>
+					Ser:
+				</label>
+				@Html.EditorFor(f => f.FilterAgencyGroupId)
+			</div>
+			<div class="editor-item">
+				<label>
+					Agency:
+				</label>
+				@Html.EditorFor(f => f.FilterAgencyId)
+			</div>
+			<div class="editor-item">
+				<label>
+					CC ID:
+				</label>
+				@Html.EditorFor(f => f.FilterClientId)
+			</div>
+			<div class="editor-item">
+				<label>
+					CFS From:
+				</label>
+				@Html.EditorFor(f => f.FilterFrom)
+			</div>
+			<div class="editor-item">
+				<label>
+					CFS To:
+				</label>
+				@Html.EditorFor(f => f.FilterTo)
+			</div>
+			<script type="text/javascript">
+				var region = $('#@Html.FieldIdFor(model => model.FilterRegionId)').select2({
+					width: 300,
+					allowClear: true,
+					placeholder: "All Regions",
+					initSelection: function (element, callback) {
+						var id = $(element).val();
+						if (id !== "") {
+							$.ajax('@Url.Content("~/data/dataservice.svc/Regions")' + '(' + id + ')', {
+								dataType: "json",
+							}).done(function (data) {
+								var a = data.d;
+								callback({ id: a.Id, text: a.Name });
+							}).fail(function () {
+								callback(null);
+							});
+						}
+					},
+					ajax: {
+						url: '@Url.Content("~/data/dataservice.svc/Regions")',
+						dataType: "json",
+						data: function (term) {
+							var filters = [];
+							if (term) {
+								filters.push("substringof('" + escape(term) + "', Name) eq true");
+							}
+							return {
+								"$filter": filters.join(" and "),
+								"$select": "Id,Name",
+								"$orderby": "Name"
+							};
+						},
+						results: function (data) {
+							return {
+								results: $.map(data.d, function (a) { return { id: a.Id, text: a.Name } })
+							};
+						}
+					}
+				});
+				var country = $('#@Html.FieldIdFor(model => model.FilterCountryId)').select2({
+					width: 300,
+					allowClear: true,
+					placeholder: "All Countries",
+					initSelection: function (element, callback) {
+						var id = $(element).val();
+						if (id !== "") {
+							$.ajax('@Url.Content("~/data/dataservice.svc/Countries")' + '(' + id + ')', {
+								dataType: "json",
+							}).done(function (data) {
+								var a = data.d;
+								callback({ id: a.Id, text: a.Name });
+							}).fail(function () {
+								callback(null);
+							});
+						}
+					},
+					ajax: {
+						url: '@Url.Content("~/data/dataservice.svc/Countries")',
+						dataType: "json",
+						data: function (term) {
+							var filters = [];
+							if (region.val()) {
+								filters.push("RegionId eq " + region.val());
+							}
+							if (term) {
+								filters.push("substringof('" + escape(term) + "', Name) eq true");
+							}
+							return {
+								"$filter": filters.join(" and "),
+								"$select": "Id,Name",
+								"$orderby": "Name"
+							};
+						},
+						results: function (data) {
+							return {
+								results: $.map(data.d, function (a) { return { id: a.Id, text: a.Name } })
+							};
+						}
+					}
+				});
+				var state = $('#@Html.FieldIdFor(model => model.FilterStateId)').select2({
+					width: 300,
+					allowClear: true,
+					placeholder: "All States",
+					initSelection: function (element, callback) {
+						var id = $(element).val();
+						if (id !== "") {
+							$.ajax('@Url.Content("~/data/dataservice.svc/States")' + '(' + id + ')', {
+								dataType: "json",
+							}).done(function (data) {
+								var a = data.d;
+								callback({ id: a.Id, text: a.Name });
+							}).fail(function () {
+								callback(null);
+							});
+						}
+					},
+					ajax: {
+						url: '@Url.Content("~/data/dataservice.svc/States")',
+						dataType: "json",
+						data: function (term) {
+							var filters = [];
+							if (region.val()) {
+								filters.push("Country/RegionId eq " + region.val());
+							}
+							if (country.val()) {
+								filters.push("CountryId eq " + country.val());
+							}
+							if (term) {
+								filters.push("substringof('" + escape(term) + "', Name) eq true");
+							}
+							return {
+								"$filter": filters.join(" and "),
+								"$expand": "Country",
+								"$select": "Id,Name,Country",
+								"$orderby": "Name"
+							};
+						},
+						results: function (data) {
+							return {
+								results: $.map(data.d, function (a) { return { id: a.Id, text: a.Name, country: a.Country } })
+							};
+						}
+					}
+				});
+				var agencyGroup = $('#@Html.FieldIdFor(model => model.FilterAgencyGroupId)').select2({
+					width: 300,
+					allowClear: true,
+					placeholder: "All Agency Groups",
+					initSelection: function (element, callback) {
+						var id = $(element).val();
+						if (id !== "") {
+							$.ajax('@Url.Content("~/data/dataservice.svc/AgencyGroups")' + '(' + id + ')', {
+								dataType: "json",
+							}).done(function (data) {
+								var a = data.d;
+								callback({ id: a.Id, text: a.Name });
+							}).fail(function () {
+								callback(null);
+							});
+						}
+					},
+					ajax: {
+						url: '@Url.Content("~/data/dataservice.svc/AgencyGroups")',
+						dataType: "json",
+						data: function (term) {
+							var filters = [];
+							if (region.val()) {
+								filters.push("Country/RegionId eq " + region.val());
+							}
+							if (country.val()) {
+								filters.push("CountryId eq " + country.val());
+							}
+							if (state.val()) {
+								var stateData = state.select2('data');
+								var countryId = stateData.country.Id;
+								filters.push("CountryId eq " + countryId);
+							}
+							if (term) {
+								filters.push("substringof('" + escape(term) + "', Name) eq true");
+							}
+							filters.push("CfsDate ne null");
+							return {
+								"$filter": filters.join(" and "),
+								"$select": "Id,Name",
+								"$orderby": "Name"
+							};
+						},
+						results: function (data) {
+							return {
+								results: $.map(data.d, function (a) { return { id: a.Id, text: a.Name } })
+							};
+						}
+					}
+				});
+				var agency = $('#@Html.FieldIdFor(model => model.FilterAgencyId)').select2({
+					width: 300,
+					allowClear: true,
+					placeholder: "All Agencies",
+					initSelection: function (element, callback) {
+						var id = $(element).val();
+						if (id !== "") {
+							$.ajax('@Url.Content("~/data/dataservice.svc/Agencies")' + '(' + id + ')', {
+								dataType: "json",
+							}).done(function (data) {
+								var a = data.d;
+								callback({ id: a.Id, text: a.Name });
+							}).fail(function () {
+								callback(null);
+							});
+						}
+					},
+					ajax: {
+						url: '@Url.Content("~/data/dataservice.svc/Agencies")',
+						dataType: "json",
+						data: function (term) {
+							var filters = [];
+							if (region.val() && isAdmin) {
+								filters.push("AgencyGroup/Country/RegionId eq " + region.val());
+							}
+							if (country.val()) {
+								filters.push("AgencyGroup/CountryId eq " + country.val());
+							}
+							if (state.val()) {
+								var stateData = state.select2('data');
+								var countryId = stateData.country.Id;
+								filters.push("AgencyGroup/CountryId eq " + countryId);
+							}
+							filters.push("AgencyGroup/CfsDate ne null");
+							if (agencyGroup.val()) {
+								filters.push("GroupId eq " + agencyGroup.val());
+							}
+							if (term) {
+								filters.push("substringof('" + escape(term) + "', Name) eq true");
+							}
+							return {
+								"$select": "Id,Name",
+								"$filter": filters.join(" and "),
+								"$orderby": "Name"
+							};
+						},
+						results: function (data) {
+							return {
+								results: $.map(data.d, function (a) { return { id: a.Id, text: a.Name } })
+							};
+						}
+					}
+				});
+				region.change(function () {
+					country.select2('val', '');
+					state.select2('val', '');
+					agencyGroup.select2('val', '');
+					agency.select2('val', '');
+				});
+				country.change(function () {
+					state.select2('val', '');
+					agencyGroup.select2('val', '');
+					agency.select2('val', '');
+				});
+				state.change(function () {
+					agencyGroup.select2('val', '');
+					agency.select2('val', '');
+				});
+				agencyGroup.change(function () {
+					agency.select2('val', '');
+				});
+			</script>
+			<div class="editor-item">
+				<button type="button" id="go" class="button">
+					Go
+				</button>
+				<button type="button" id="reset" class="button">
+					Reset
+				</button>
+			</div>
+			<div class="editor-item">
+				<button type="button" id="exportBtn">
+					<i class="fa fa-folder-open-o"></i> Export
+				</button>
+				<script type="text/javascript">
+					$(function () {
+						$('#exportBtn').click(function () {
+							var location = '@Url.Action("Export", "Cfs")?';
+							var filterValues = [];
+							filterValues.push({ "name": "regionId", "value": $('#@Html.FieldIdFor(f => f.FilterRegionId)').val() });
+							filterValues.push({ "name": "countryId", "value": $('#@Html.FieldIdFor(f => f.FilterCountryId)').val() });
+							filterValues.push({ "name": "stateId", "value": $('#@Html.FieldIdFor(f => f.FilterStateId)').val() });
+							filterValues.push({ "name": "agencyGroupId", "value": $('#@Html.FieldIdFor(f => f.FilterAgencyGroupId)').val() });
+							filterValues.push({ "name": "agencyId", "value": $('#@Html.FieldIdFor(f => f.FilterAgencyId)').val() });
+							filterValues.push({ "name": "clientId", "value": $('#@Html.FieldIdFor(f => f.FilterClientId)').val() });
+							filterValues.push({ "name": "from", "value": $('#@Html.FieldIdFor(f => f.FilterFrom)').val() });
+							filterValues.push({ "name": "to", "value": $('#@Html.FieldIdFor(f => f.FilterTo)').val() });
+							location += $.param(filterValues);
+							window.location = location;
+						});
+					});
+				</script>
+			</div>
+		</fieldset>
+	</div>
+</div>
+
+<table id="cfsTable"></table>
+
+<script>
+	$(function () {
+		var oTable = $('#cfsTable').dataTable({
+			"aaSorting": [[0, "desc"]],
+			"bProcessing": true,
+			"bServerSide": true,
+			"bJQueryUI": true,
+			"sPaginationType": "full_numbers",
+			"sAjaxSource": '@Url.Action("DefaultData")',
+			"fnServerParams": function (aoData) {
+				aoData.push({ name: "regionId", value: $('#@Html.FieldIdFor(f => f.FilterRegionId)').val() });
+				aoData.push({ "name": "countryId", "value": $('#@Html.FieldIdFor(f => f.FilterCountryId)').val() });
+				aoData.push({ "name": "stateId", "value": $('#@Html.FieldIdFor(f => f.FilterStateId)').val() });
+				aoData.push({ "name": "agencyGroupId", "value": $('#@Html.FieldIdFor(f => f.FilterAgencyGroupId)').val() });
+				aoData.push({ "name": "agencyId", "value": $('#@Html.FieldIdFor(f => f.FilterAgencyId)').val() });
+				aoData.push({ "name": "clientId", "value": $('#@Html.FieldIdFor(f => f.FilterClientId)').val() });
+				aoData.push({ "name": "from", "value": $('#@Html.FieldIdFor(f => f.FilterFrom)').val() });
+				aoData.push({ "name": "to", "value": $('#@Html.FieldIdFor(f => f.FilterTo)').val() });
+			},
+			"fnRowCallback": function (nRow, aData, iDisplayIndex) {
+			},
+			"aoColumns": [{
+				"mData": "ClientId",
+				"sTitle": "CC ID",
+				"mRender": function (val) {
+					return '<a href="@Url.Action("Details", "Clients")/' + val + '">' + val + '</a>'
+				}
+			}, {
+				"mData": "LastName",
+				"sTitle": "Last Name"
+			}, {
+				"mData": "FirstName",
+				"sTitle": "First Name"
+			}, {
+				"mData": "CfsLevel",
+				"sTitle": "Cfs Level"
+			}, {
+				"mData": "CfsAmount",
+                "sTitle": "Cfs Amount",
+                "sClass": "money",
+                "mRender": function (val) {
+                    return renderDecimal(val);
+                }
+			}, {
+				"mData": "SerCurrency",
+				"sTitle": "Ser Currency"
+			}, {
+				"mData": "StartDate",
+				"sTitle": "CFS From",
+				"mRender": function (val) { return renderDate(val); },
+			}, {
+				"mData": "EndDate",
+				"sTitle": "CFS To",
+				"mRender": function (val) { return renderDate(val); },
+			}, {
+				"mData": "ClientResponseIsYes",
+				"sTitle": "Client Response"
+			}, {
+				"mData": "AgencyOverRide",
+				"sTitle": "Agency Over Ride"
+			}, {
+				"mData": "CommunicationsPreference",
+				"sTitle": "Communications Preference"
+			}, {
+				"mData": "CareReceivedVia",
+				"sTitle": "Care Received Via"
+			}, {
+				"mData": "AgencyGroupName",
+				"sTitle": "Ser Name"
+			}]
+		});
+		$('#go').click(function () {
+			oTable.fnDraw();
+		});
+		$('#reset').click(function () {
+			$('#filter :input').not(':button').not(':checkbox').val('');
+			$('#filter :input').not(':button').not(':checkbox').select2('val', '');
+			oTable.fnDraw();
+		});
+	});
+</script>

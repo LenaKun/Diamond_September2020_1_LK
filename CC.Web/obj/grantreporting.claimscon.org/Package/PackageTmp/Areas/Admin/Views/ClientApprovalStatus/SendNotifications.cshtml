@@ -1,0 +1,14 @@
+﻿@model Dictionary<int,int>
+@{
+	ViewBag.Title = "Client status change notifications";
+}
+
+<h2>Finished sending notifications</h2>
+<p>Emails were sent to following Agency IDs:</p>
+<ul>
+	@foreach (var item in Model)
+	{
+		<li>@item.Key (@item.Value clients)</li>
+	}
+</ul>
+<a href="@Url.Action("Index")">Back to Index</a>

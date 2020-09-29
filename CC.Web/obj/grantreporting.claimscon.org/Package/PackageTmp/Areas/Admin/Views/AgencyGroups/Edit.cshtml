@@ -1,0 +1,169 @@
+﻿@model CC.Data.AgencyGroup
+@{
+	ViewBag.Title = "Edit";
+}
+<h2>
+	Edit
+</h2>
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+@using (Html.BeginForm())
+{
+	@Html.ValidationSummary(true)
+	<fieldset>
+		<legend>SER</legend>
+		@Html.HiddenFor(model => model.Id)
+		<div class="editor-label">
+			@Html.LabelFor(model => model.DisplayName)
+		</div>
+		<div class="editor-field">
+			@Html.DisplayFor(model => model.DisplayName)
+		</div>
+		<div class="editor-label">
+			@Html.LabelFor(model => model.Name)
+		</div>
+		<div class="editor-field">
+			@Html.EditorFor(model => model.Name)
+			@Html.ValidationMessageFor(model => model.Name)
+		</div>
+		<div class="editor-label">
+			@Html.LabelFor(model => model.Addr1)
+		</div>
+		<div class="editor-field">
+			@Html.EditorFor(model => model.Addr1)
+			@Html.ValidationMessageFor(model => model.Addr1)
+		</div>
+		<div class="editor-label">
+			@Html.LabelFor(model => model.Addr2)
+		</div>
+		<div class="editor-field">
+			@Html.EditorFor(model => model.Addr2)
+			@Html.ValidationMessageFor(model => model.Addr2)
+		</div>
+		<div class="editor-label">
+			@Html.LabelFor(model => model.City)
+		</div>
+		<div class="editor-field">
+			@Html.EditorFor(model => model.City)
+			@Html.ValidationMessageFor(model => model.City)
+		</div>
+		<div class="editor-label">
+			@Html.LabelFor(model => model.StateId, "State")
+		</div>
+		<div class="editor-field">
+			@Html.DropDownList("StateId", String.Empty)
+			@Html.ValidationMessageFor(model => model.StateId)
+		</div>
+		<div class="editor-label">
+			@Html.LabelFor(model => model.CountryId, "Country")
+		</div>
+		<div class="editor-field">
+			@Html.DropDownList("CountryId", String.Empty)
+			@Html.ValidationMessageFor(model => model.CountryId)
+		</div>
+		<div class="editor-label">
+			@Html.LabelFor(model => model.Culture, "Language")
+		</div>
+		<div class="editor-field">
+			@Html.DropDownList("Culture", string.Empty)
+		</div>
+		<div class="display-label">
+			@Html.LabelFor(f => f.ReportingPeriodId)
+		</div>
+		<div class="display-field">
+			@Html.EditorFor(model => model.ReportingPeriodId)
+			@Html.ValidationMessageFor(model => model.ReportingPeriodId)
+		</div>
+		<div class="editor-label">
+			@Html.LabelFor(model => model.RequiredMatch)
+		</div>
+		<div class="editor-field">
+			@Html.EditorFor(model => model.RequiredMatch)
+			@Html.ValidationMessageFor(model => model.RequiredMatch)
+		</div>
+		<div class="editor-label">
+			@Html.LabelFor(model => model.ForceIsraelID)
+		</div>
+		<div class="editor-field">
+			@Html.EditorFor(model => model.ForceIsraelID)
+			@Html.ValidationMessageFor(model => model.ForceIsraelID)
+		</div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ExcludeFromReports)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.ExcludeFromReports)
+            @Html.ValidationMessageFor(model => model.ExcludeFromReports)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.SupportiveCommunities)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.SupportiveCommunities)
+        </div>
+        <div class="editor-label" id="scSubsidyLevel">
+            @Html.LabelFor(model => model.ScSubsidyLevelId)
+            <a href='@Url.Action("SubsidyLevels")' target="_blank" title="Subsidy Levels"><i class="help circle-icon fa fa-info"></i></a>
+        </div>
+		<div class="editor-field">
+			@Html.DropDownListFor(model => model.ScSubsidyLevelId, new SelectList(CC.Data.AgencyGroup.GetScSubsidyLevels(), "id", "text", null))
+		</div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.DayCenter)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.DayCenter)
+        </div>
+		<div class="editor-label">
+			@Html.LabelFor(model => model.DefaultCurrency)
+		</div>
+		<div class="editor-field">
+			@Html.DropDownList("DefaultCurrency", string.Empty)
+		</div>
+		<div class="editor-label">
+			@Html.LabelFor(model => model.CfsDate)
+		</div>
+		<div class="editor-field">
+			@Html.EditorFor(model => model.CfsDate)
+		</div>
+
+		<p>
+			<input type="submit" value="Save" />
+		</p>
+	</fieldset>
+}
+<div>
+	@Html.ActionLink("Back to List", "Index")
+</div>
+<script>
+    var $chk_support = $('#@Html.FieldIdFor(model => model.SupportiveCommunities)');
+    var $chk_subsidy = $('#@Html.FieldIdFor(model => model.ScSubsidyLevelId)');
+
+    var $lbl_subsidy = $("#scSubsidyLevel");
+
+    $chk_support.change(function () {
+        if ($(this).is(":checked")) {
+            $chk_subsidy.show();
+            $lbl_subsidy.show();
+
+        }
+        else {
+            $chk_subsidy.hide();
+            $lbl_subsidy.hide();
+        }
+    });
+
+    $chk_support.change();
+
+    var $country = $('#@Html.FieldIdFor(model => model.CountryId)');
+    var $israel_req = $('#@Html.FieldIdFor(model => model.ForceIsraelID)');
+
+	$country.change(function () {
+		if ($(this).find('option:selected').text() == 'IL') {
+			$israel_req.prop( "checked", true );
+    	}
+    });
+
+	$country.change();
+</script>

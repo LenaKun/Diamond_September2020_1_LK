@@ -1,0 +1,13 @@
+﻿@model IEnumerable<ProgramCostImportRow>
+
+ProgramCosts:
+@Html.Grid(Model).Columns(column=>
+	{
+		column.For(f=>f.Index);
+		column.For(f => f.Id);
+		column.For(f=>f.ProgramCostTypeId);
+		column.For(f=>f.ProgramCostTypeName);
+		column.For(f => f.Amount);
+		column.For(f => f.PercentFundedByCC);
+		column.For(f=>Html.UnsortedList(f.Errors));
+	})

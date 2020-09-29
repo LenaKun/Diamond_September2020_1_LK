@@ -1,0 +1,15 @@
+﻿@{
+    ViewBag.Title = "AdminPanel";
+}
+
+@section Header
+{
+
+}
+@section SubMenu{
+    <ul id="subMenu" class="menu">
+        <li>@Html.ActionLink("Import New Clients", "ImportNewClients", "Admin")</li>
+        <li>@Html.ActionLink("Approval status Exports", "ApprovalStatusExport", "Admin")</li>
+        <li>@Html.ActionLink("Approval status Import", "ApprovalStatusImport", "Admin")</li>
+    </ul>
+}

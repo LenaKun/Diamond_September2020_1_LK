@@ -1,0 +1,53 @@
+﻿@{
+	ViewBag.Title = "MasterId Import Preview";
+}
+
+<h2>PreviewMasterIds</h2>
+
+@if (ViewData.ModelState.IsValid)
+{
+	<form action="@Url.Action("ImportMasterIds", "ClientApprovalStatus", new { id = Model.Id })" method="post">
+		@Html.ValidationSummary()
+	
+		<button type="submit">Import</button>
+	</form>
+}
+<form action="@Url.Action("CancelImport", new { id = Model.Id })" method="post">
+	<button type="submit">Cancel</button>
+</form>
+
+
+<table id="MasterIdsImportPreviewTable">
+</table>
+
+<script>
+	$(function () {
+		var oTable = $('table#MasterIdsImportPreviewTable').dataTable({
+			"bJQueryUI": true,
+			"bProccessing": true,
+			"sPaginationType": "full_numbers",
+			"aaSorting": [[1, "desc"]],
+			"bServerSide": true,
+			"sAjaxSource": '@Url.Action("PreviewMasterIds", new { id = Model.Id })',
+			"bAutoWidth": false,
+			"fnServerData": function (sSource, aoData, fnCallback) {
+				$.ajax({
+					"dataType": 'json',
+					"type": "POST",
+					"url": sSource,
+					"data": aoData,
+					"success": fnCallback
+				});
+			},
+			"fnServerParams": function (aoData) {
+				aoData.push({ name: "IE", value: Math.random() });
+			},
+			"aoColumns": [
+				{ "mData": "ClientId", "sTitle": "ClientId" },
+				{ "mData": "FirstName", "sTitle": "FirstName" },
+				{ "mData": "LastName", "sTitle": "LastName" },
+				{ "mData": "MasterId", "sTitle": "MasterId" }
+			]
+		});
+	});
+</script>

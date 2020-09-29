@@ -1,0 +1,10 @@
+﻿@model AppBudget
+@{
+	Layout = "~/Views/Shared/LayoutForEmail.cshtml";
+}
+<p>
+	We regret to inform you, that your budget App Approval for <a href="@Url.AbsoluteAction("Details", "AppBudgets", new { id = Model.Id })">@Model.App.Name (id: @Model.Id)</a> 
+		has been rejected for the following reason/s:
+</p>
+<p>@Model.PoRemarks</p>
+<p>Please update the budget App Approval accordingly, and re-submit it when done.</p>

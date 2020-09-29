@@ -1,0 +1,85 @@
+﻿@{
+    ViewBag.Title = "CFS Waiting Approval";
+}
+
+<h2>@ViewBag.Title</h2>
+<div id="divTable">
+	<div id="filter">
+		<fieldset style="overflow: auto">
+			<div class="editor-item">
+				<label>
+					CC ID:
+				</label>
+				<input id="filterCcId" type="number" />
+			</div>
+			<div class="editor-item">
+				<button type="button" id="go" class="button">
+					Go
+				</button>
+				<button type="button" id="reset" class="button">
+					Reset
+				</button>
+			</div>
+		</fieldset>
+	</div>
+</div>
+<table id="cfsTable"></table>
+
+<script>
+	$(function () {
+		var oTable = $('#cfsTable').dataTable({
+			"aaSorting": [[0, "desc"]],
+			"bProcessing": true,
+			"bServerSide": true,
+			"bJQueryUI": true,
+			"sPaginationType": "full_numbers",
+			"sAjaxSource": '@Url.Action("CfsWaitingApprovalData")',
+			"fnServerParams": function (aoData) {
+				aoData.push({ name: "clientId", value: $('#filterCcId').val() });
+			},
+			"fnRowCallback": function (nRow, aData, iDisplayIndex) {
+			},
+			"aoColumns": [{
+				"mData": "ClientId",
+				"sTitle": "CC ID",
+				"mRender": function (val) {
+					return '<a href="@Url.Action("Details", "Clients")/' + val + '">' + val + '</a>'
+				}
+			}, {
+				"mData": "LastName",
+				"sTitle": "Last Name"
+			}, {
+				"mData": "FirstName",
+				"sTitle": "First Name"
+			}, {
+				"mData": "AgencyName",
+				"sTitle": "Agency"
+			}, {
+				"mData": "CreateDate",
+				"sTitle": "Create Date",
+				"mRender": function (val) { return renderDate(val); }
+			}, {
+				"mData": "ClientResponseIsYes",
+				"sTitle": "Client Response"
+			}, {
+				"mData": "CfsAdminRemarks",
+				"sTitle": "CFS Admin Remarks"
+			}, {
+				"mData": "CfsAdminInternalRemarks",
+				"sTitle": "CFS Admin Internal Remarks"
+			}, {
+				"mData": "CfsAdminLastUpdate",
+				"sTitle": "Last Updated by CFS Admin",
+				"mRender": function (val) { return renderDate(val); }
+			}]
+		});
+		$('#go').click(function () {
+			oTable.fnDraw();
+		});
+		$('#reset').click(function () {
+			$('#filter :input').not(':button').not(':checkbox').val('');
+			$('#filter :input').not(':button').not(':checkbox').select2('val', '');
+			oTable.fnDraw();
+		});
+	});
+</script>

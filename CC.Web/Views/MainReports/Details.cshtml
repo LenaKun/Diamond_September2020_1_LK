@@ -1,0 +1,690 @@
+﻿@model MainReportDetailsModel
+@{
+    ViewBag.Title = "Details";
+}
+@section Header{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            if ('@User.IsInRole("BMF")' == 'True')
+            {
+                $('table.mainreport-details span.display').hide();
+            }
+            else
+            {
+                $('table.mainreport-details span.display').show();
+            }
+            $('table.mainreport-details span.edit').hide();
+            $('table.mainreport-details button.edit').click(function () {
+                $('table.mainreport-details span.edit').show();
+                $('table.mainreport-details span.display').hide();
+                $('table.mainreport-details span.edit :input:first').focus();
+            });
+            $('table.mainreport-details button.cancel').click(function () {
+                $('table.mainreport-details span.edit').hide();
+                $('table.mainreport-details span.display').show();
+            });
+        });
+    </script>
+    <style media="screen">
+        .number {
+            text-align: right;
+        }
+
+        .comment {
+            cursor: pointer;
+        }
+
+        .compactRemark {
+            height: 6em;
+            overflow: hidden;
+        }
+
+        .hideOnScreen {
+            display: none;
+        }
+    </style>
+}
+<h2>Financial Report Details</h2>
+@using (Html.BeginForm("Update", "MainReports", FormMethod.Post, new { id = "updateStatusForm" }))
+{ 
+    @Html.ValidationSummary()
+    @Html.HiddenFor(f => f.Id)
+    @Html.HiddenFor(f => f.SendEmail)
+    <table class="mainreport-details">
+        <thead>
+            <tr>
+                <th>Fund
+                </th>
+                <th>Master Fund
+                </th>
+                <th>App #
+                </th>
+                <th>Month From
+                </th>
+                <th>Month To
+                </th>
+                <th>Ser
+                </th>
+                <th>Exc. Rate
+                </th>
+                <th>Report Status
+                </th>
+                <th></th>
+				<th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>@Html.DisplayFor(f => f.FundName)
+                </td>
+                <td>@Html.DisplayFor(f => f.MasterFundName)
+                </td>
+                <td><a href="@Url.Action("Details", "AppBudgets", new { id = Model.AppBudgetId })">@Html.DisplayFor(f => f.AppName)</a>
+                </td>
+                <td>@Html.DisplayFor(f => f.Start)
+                </td>
+                <td>@Html.DisplayFor(f => f.End)
+                </td>
+                <td>@Html.DisplayFor(f => f.AgencyGroupName)
+                </td>
+                <td>
+
+                    <span class="display">@Html.DisplayFor(f => f.ExcRate)</span>
+                    <span class="edit">@Html.EditorFor(f => f.ExcRate)</span>
+                    <span>Source:</span>
+                    <span class="display">@Html.DisplayFor(f => f.ExcRateSource)</span>
+                    <span class="edit">@Html.EditorFor(f => f.ExcRateSource)</span>
+
+                </td>
+                <td>
+                    @if (Model.User.RoleId == (int)FixedRoles.Admin)
+                    { 
+                        <span class="display">@Html.DisplayFor(f => f.Status)</span>
+                        <span class="edit">@Html.DropDownListFor(f => f.StatusId, Model.Statuses)</span>
+                    }
+                    else
+                    { 
+                        @Html.DisplayFor(f => f.Status)
+						
+                    }
+                    <span>@if (Model.Revised)
+                          {<span>*Revised</span>}</span>
+                </td>
+                <td>
+                    @if (Model.User.RoleId == (int)FixedRoles.Admin || ((Model.User.RoleId == (int)FixedRoles.Ser || Model.User.RoleId == (int)FixedRoles.AgencyUser || User.IsInRole(FixedRoles.SerAndReviewer) || User.IsInRole(FixedRoles.AgencyUserAndReviewer)) && (MainReport.Statuses.New | MainReport.Statuses.Rejected | MainReport.Statuses.ReturnedToAgency).HasFlag((MainReport.Statuses)Model.StatusId)))
+                    {
+                        if(Model.User.RoleId == (int)FixedRoles.Admin)
+                        {
+                            <span class="edit">
+                                <button onclick="UpdateAndEmail(true, event)" class="update">Update And Email</button>
+                                <button onclick="UpdateAndEmail(false, event)" class="update">Update without Email</button>
+                                <button type="button" class="cancel">Cancel</button>
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="edit">
+                                <button onclick="UpdateAndEmail(false, event)" class="update">Update</button>
+                            </span>
+                        }
+                        <span class="display">
+
+                            <button type="button" class="edit">
+                                Edit
+                            </button>
+                        </span>
+                        }
+				</td>
+				<td>
+					@if (Model.User.RoleId == (int)FixedRoles.Admin)
+					{
+						<button onclick="SendYTDHcExceeding(event)">Notify on Exceding YTD HC</button>
+					}
+				</td>
+            </tr>
+        </tbody>
+    </table>
+    <div id="ErrorsDialog"></div>
+    <script>
+		function UpdateAndEmail(sendEmail, e) {
+			var isAudit = '@Model.AgencyGroupIsAudit' == 'True';
+			if (!isAudit || confirm("The agency is currently being audited by Claims Conference grant auditors. Are you sure you wish to change the status of this Budget/Report?")) {
+				$("#@Html.FieldIdFor(f => f.SendEmail)").val(sendEmail);
+				$("#updateStatusForm").submit();
+			}
+			else {
+				e.preventDefault();
+			}
+		}
+		function SendYTDHcExceeding(e) {
+			e.preventDefault();
+			var d = {
+				id: '@Model.Id',
+				onSubmit: false
+			}
+			$.ajax({
+				url: '@Url.Action("SendYTDHcExceeding")',
+				type: 'POST',
+				dataType: 'json',
+				contentType: 'application/json; charset=utf-8',
+				data: JSON.stringify(d)
+            }).done(function (data) {
+                if (!data.success && data.errors) {
+                    $('#ErrorsDialog').html("<li>" + data.errors.join('</li><li>') + '</li>');
+                    $('#ErrorsDialog').dialog({
+                        modal: true,
+                        buttons: {
+                            Ok: function () {
+                                $(this).dialog("close");
+                                $('table.grid tbody').find('input, button').removeAttr('disabled');
+
+                            },
+                            Cancel: function () {
+                                $(this).dialog("close");
+                                $('table.grid').dataTable().fnDraw(false);
+                            }
+                        }
+                    });
+                }
+                else if (data.sucess && data.numOfMsgs && data.numOfMsgs > 0) {
+                    alert("Successfully sent emails. Num of sent emails: " + data.numOfMsgs);
+                }
+                else if (data.success && data.numOfMsgs == 0) {
+                    alert("There was nothing to be sent");
+                }
+			}).fail(function () {
+				alert('Failed to notify');
+			});
+		}
+    </script>
+}
+
+@if (Model.CanBeDeleted)
+{
+    using (Html.BeginForm("Delete", "MainReports", FormMethod.Post))
+    {
+    @Html.HiddenFor(f => f.Id)
+		
+    <button type="submit">Delete</button>
+    }
+}
+@if (Model.CanChangeAdjusted())
+{
+    if (Model.Adjusted)
+    {
+        using (Html.BeginForm("UnSetAdjusted", "MainReports", FormMethod.Post))
+        {
+    @Html.HiddenFor(f => f.Id)
+    <button type="submit">Unset as Adjusted</button>
+        }
+    }
+    else
+    {
+        using (Html.BeginForm("SetAdjusted", "MainReports", FormMethod.Post))
+        {
+    @Html.HiddenFor(f => f.Id)
+    <button type="submit">Set as Adjusted</button>
+        }
+    }
+}
+
+    <fieldset>
+        @if (!User.IsInRole("BMF"))
+        {
+            <button type="button" class="print">Print</button>
+        }
+        <script>
+            $('button.print').click(function () {
+                var oTable = $('table#subReports').dataTable();
+                var oSettings = oTable.fnSettings();
+                var totalRecords = oSettings.fnRecordsTotal();
+                if (totalRecords > oSettings._iDisplayLength) {
+                    oSettings._iDisplayLength = totalRecords;
+                    oTable.fnDraw();
+                }
+                window.print();
+            });
+        </script>
+        <a href="@Url.Action("ExportDetails", new { id = Model.Id })" class="button">Export to Excel</a>
+        @if (User.IsInRole(CC.Data.FixedRoles.Admin.ToString()) || User.IsInRole(CC.Data.FixedRoles.RegionAssistant.ToString()) || User.IsInRole(CC.Data.FixedRoles.RegionOfficer.ToString()) || User.IsInRole(CC.Data.FixedRoles.GlobalOfficer.ToString()) || User.IsInRole(CC.Data.FixedRoles.GlobalReadOnly.ToString()) || User.IsInRole(CC.Data.FixedRoles.RegionReadOnly.ToString()) || User.IsInRole(CC.Data.FixedRoles.AuditorReadOnly.ToString()))
+        {
+            <a href="@Url.Action("ExportToPdf", new { id = Model.Id })" class="button">Fluxx Export</a>
+        }
+        @if (User.IsInRole(CC.Data.FixedRoles.Admin.ToString()) || User.IsInRole(CC.Data.FixedRoles.RegionOfficer.ToString()) || User.IsInRole(CC.Data.FixedRoles.GlobalOfficer.ToString()))
+        {
+            <a href="@Url.Action("ExportToPdf", new { id = Model.Id, ifCtera = true })" class="button">Update PDF</a>
+        }
+        <a href="@Url.Action("StatusAudit", new { id = Model.Id })" class="button">Status History</a>
+        <a href="@Url.Action("HseapDetailed", new { id = Model.Id })" class="button">HSEAP - Detailed</a>
+        <a href="@Url.Action("HseapSummary", new { id = Model.Id })" class="button">HSEAP - Summary</a>
+    </fieldset>
+<script>
+    $(function () {
+    });
+</script>
+<table class="dataTable">
+    <thead>
+        <tr>
+            <th style="white-space: nowrap">Agency's remarks
+				<a href="@Url.Action("AgencyRemarks", new { id = Model.Id })" class="button">+ Add Remarks / View All</a>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var c in Model.AgencyComments.OrderByDescending(f => f.Date).Select((c, i) => new { c = c, i = i }))
+        {
+            if ((!c.c.Content.Contains("Minutes") && !c.c.Content.Contains("Program Overview")) || !User.IsInRole("BMF"))
+            {
+                <tr @(c.i == 0 ? string.Empty : "class=hideOnScreen")>
+                    <td>
+                        <div>
+                            @c.c.Date
+                            ,&nbsp;
+					    @c.c.Username
+                            :
+                        </div>
+						@if (c.c.IsFile)
+						{
+							if (c.c.Content.Contains("Program Overview"))
+							{
+								<a href="@Url.Action("ProgramOverviewFile", "MainReports", new { id = Model.Id })">@c.c.Content</a>
+							}
+							else if (c.c.Content.Contains("Minutes"))
+							{
+								<a href="@Url.Action("MhsaFile", "MainReports", new { id = Model.Id })">@c.c.Content</a>
+							}
+						}
+						else
+						{
+							<div class="comment compactRemark">@Html.Raw(c.c.Content)</div>
+						}                        
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+<table class="dataTable">
+    <thead>
+        <tr>
+            <th style="white-space: nowrap">PO's remarks
+				<a href="@Url.Action("PoRemarks", new { id = Model.Id })" class="button">+ Add Remarks / View All</a>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var c in Model.PoComments.OrderByDescending(f => f.Date).Select((c, i) => new { c = c, i = i }))
+        {
+            <tr @(c.i == 0 ? string.Empty : "class=hideOnScreen")>
+                <td>
+                    <div>
+                        @c.c.Username
+                        ,&nbsp;
+					@c.c.Date
+                        :
+                    </div>
+                    <div class="comment compactRemark">@Html.Raw(c.c.Content)</div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@if (Model.Permissions.CanAccessInternalRemarks)
+{	
+    <table class="dataTable">
+        <thead>
+            <tr>
+                <th style="white-space: nowrap">Internal remarks
+				<a href="@Url.Action("InternalRemarks", new { id = Model.Id })" class="button">+ Add Remarks / View All</a>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var c in Model.InternalComments.OrderByDescending(f => f.Date).Select((c, i) => new { c = c, i = i }))
+            {
+                <tr @(c.i == 0 ? string.Empty : "class=hideOnScreen")>
+                    <td>
+                        <div>
+                            @c.c.Username
+                            ,&nbsp;
+					@c.c.Date
+                            :
+                        </div>
+                        <div class="comment compactRemark">@Html.Raw(c.c.Content)</div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<table class="dataTable">
+    <thead>
+        <tr>
+            <th style="white-space: nowrap">Post Approval remarks
+				<a href="@Url.Action("PostApprovalRemarks", new { id = Model.Id })" class="button">+ Add Remarks / View All</a>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var c in Model.PostApprovalComments.OrderByDescending(f => f.Date).Select((c, i) => new { c = c, i = i }))
+        {
+            <tr @(c.i == 0 ? string.Empty : "class=hideOnScreen")>
+                <td>
+                    <div>
+                        @c.c.Username
+                        ,&nbsp;
+						@c.c.Date
+                        :
+                    </div>
+					<div class="comment compactRemark">
+						@if (c.c.IsFile)
+						{
+							<a href="@Url.Action("PostApprovalCommentFile", "MainReports", new { id = c.c.Id, mainReportId = Model.Id })">@c.c.Content</a>
+						}
+						else
+						{
+							@Html.Raw(c.c.Content)
+						}
+					</div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<script>
+    $(function () {
+        $('div.comment').click(function () {
+            $(this).toggleClass('compactRemark');
+        });
+    });
+</script>
+
+<table id="subReports">
+</table>
+<script>
+    $(function () {
+        var isNotBmf = '@User.IsInRole("BMF")' == 'False';
+        var oDataTable = $('table#subReports').dataTable({
+            "aaSorting": [[0, "asc"], [1, "asc"], [2, "asc"]],
+            "bServerSide": true,
+            "sAjaxSource": '@Url.Action("DetailsData", new { id = Model.Id })',
+            "fnServerParams": function (aoData) {
+                aoData.push({ name: "IE", value: Math.random() });
+            },
+            "aoColumns": [
+                { "mData": "AgencyName", "sTitle": '@Html.LabelFor(f => new CC.Web.Controllers.tmpclass().AgencyName)' },
+                {
+                    "mData": "ServiceTypeName",
+                    "sTitle": '@Html.LabelFor(f => new CC.Web.Controllers.tmpclass().ServiceTypeName)',
+                },
+                {
+                    "mData": "ServiceName",
+                    "sTitle": '@Html.LabelFor(f => new CC.Web.Controllers.tmpclass().ServiceName)',
+                },
+                {
+                    "mData": "AppBudgetServiceRemarks",
+                    "sTitle": '@Html.LabelFor(f => new CC.Web.Controllers.tmpclass().AppBudgetServiceRemarks)',
+                    "sClass": "ellipsis", "mRender": function (a) {
+                        if (a == null) {
+                            return null;
+                        }
+                        else {
+                            var c = a.replace(/<[^>]*>/g, '');
+                            return '<span title="' + c + '">' + c.substr(0, 20) + '</span>';
+                        }
+                    }
+                },
+                {
+                    "mData": "CcGrant",
+                    "sTitle": '@Html.LabelFor(f => new CC.Web.Controllers.tmpclass().CcGrant)',
+                    "sClass": "number", "mRender": function (val) { return renderDecimal(val); }
+                },
+                {
+                    "mData": "RequiredMatch", "bVisible": isNotBmf,
+                    "sTitle": '@Html.LabelFor(f => new CC.Web.Controllers.tmpclass().RequiredMatch)',
+                    "sClass": "number", "mRender": function (val) { return renderDecimal(val); }
+                },
+                {
+                    "mData": "RequiredAgencyContribution", "bVisible": isNotBmf,
+                    "sTitle": '@Html.LabelFor(f => new CC.Web.Controllers.tmpclass().RequiredAgencyContribution)',
+                    "sClass": "number", "mRender": function (val) { return renderDecimal(val); }
+                },
+                
+                {
+                    "mData": "CcExp",
+                    "sTitle": '@Html.LabelFor(f => new CC.Web.Controllers.tmpclass().CcExp)',
+                    "sClass": "number", "mRender": function (val) { return renderDecimal(val); }
+                },
+                {
+                    "mData": "MatchExp", "bVisible": isNotBmf,
+                    "sTitle": '@Html.LabelFor(f => new CC.Web.Controllers.tmpclass().MatchExp)',
+                    "sClass": "number", "mRender": function (val, a, obj) {
+                        var res = renderDecimal(val);
+                        if (obj.RequiredMatch < val) {
+                            res = '<i class="error" title="Amount reported exceeds budget match as specified on the budget!">' + res + ' !</i>';
+                        }
+                        return res;
+                    }
+                },
+                {
+                    "mData": "AgencyContribution", "bVisible": isNotBmf,
+                    "sTitle": '@Html.LabelFor(f => new CC.Web.Controllers.tmpclass().AgencyContribution)',
+                    "sClass": "number", "mRender": function (val) { return renderDecimal(val); }
+                },
+                {
+                    "mData": "YtdCcExp",
+                    "sTitle": '@Html.LabelFor(f => new CC.Web.Controllers.tmpclass().YtdCcExp)',
+                    "sClass": "number", "mRender": function (val, a, obj) {
+                        var res = renderDecimal(val);
+                        if (obj.CcGrant < val) {
+                            res = '<i class="error" title="Amount reported exceeds cc grant as specified on the budget!">' + res + ' !</i>';
+                        }
+                        return res;
+                    }
+                },
+                {
+                    "mData": "YtdMatchExp", "bVisible": isNotBmf,
+                    "sTitle": '@Html.LabelFor(f => new CC.Web.Controllers.tmpclass().YtdMatchExp)',
+                    "sClass": "number", "mRender": function (val, a, obj) {
+                        var res = renderDecimal(val);
+                        if(obj.RequiredMatch <val) {
+                            res = '<i class="error" title="Amount reported exceeds budget match as specified on the budget!">' + res + ' !</i>';
+                        }
+                        return res;
+                    }
+                },
+                {
+                    "mData": "YtdAgencyContribution", "bVisible": isNotBmf,
+                    "sTitle": '@Html.LabelFor(f => new CC.Web.Controllers.tmpclass().YtdAgencyContribution)',
+                    "sClass": "number", "mRender": function (val) { return renderDecimal(val); }
+                },
+				{
+                    "mData": "Cur",
+				    "sTitle": '@Html.LabelFor(f => new CC.Web.Controllers.tmpclass().Cur)',
+				},
+				{
+                    "mData": null, "sClass": "screen", "mRender": function (data, type, full) {
+                        var detailsUrl = '@Url.Action("Details", "SubReports")'
+
+                        var calendarUrl = '@Url.Action("Calendar", "SubReports")'
+
+                        var result="";
+                        if (full.Id) {
+                            if (full.ServiceTypeId == '@ViewBag.DayCentersId' /*DayCenters*/ || full.ServiceTypeId == '@ViewBag.SoupKitchensId') {
+                                result+= '<a href="' + detailsUrl + '/' + full.Id + '">Summary</a>'
+
+
+                                result += '<br><a href="' + calendarUrl + '/' + full.Id + '">Calendar</a>';
+                            }
+                            else
+                            {
+                                result += '<a href="' + detailsUrl + '/' + full.Id + '">Details</a>'
+
+                            }
+                            return result;
+                        }
+
+                        else if ('@Model.CanBeEdited' == 'True') {
+                            if (full.FirstHomecareWeekly) {
+                                return '<a href="@Url.Action("SelectWeekStartDay", "SubReports")/?mainReportId=@(Model.Id)&appBudgetServiceId=' + full.AppBudgetServiceId + '">Create</a>';
+                            }
+                            else {
+                                return '<a href="@Url.Action("Create", "SubReports")/?mainReportId=@(Model.Id)&appBudgetServiceId=' + full.AppBudgetServiceId + '">Create</a>';
+                            }
+                        }
+                        else {
+                            return '';
+                        }
+                    }
+                }
+            ]
+        });
+    });
+</script>
+
+<table>
+    <tr>
+        <th style="white-space: nowrap">App Totals:
+        </th>
+        <td style="width: 100%">
+            <div class="display-item">
+                @Html.LabelFor(f => f.Totals.AppAmount, "App Amount")
+                @Html.DisplayFor(f => f.Totals.AppAmount)
+                @Html.DisplayFor(f => f.Totals.CurrencyId)
+            </div>
+            <div class="display-item">
+                @Html.LabelFor(f => f.Totals.CcGrant, "Total grant as specified by Ser")
+                @Html.DisplayFor(f => f.Totals.CcGrant)
+                @Html.DisplayFor(f => f.Totals.CurrencyId)
+            </div>
+            
+            <div class="display-item">
+                @Html.LabelFor(f => f.Totals.CcExp, "Total Reported on this Report")
+               
+                @Html.DisplayFor(f => f.Totals.CcExp)
+                @Html.DisplayFor(f => f.Totals.CurrencyId)
+            </div>
+            <div class="display-item">
+               
+                @Html.LabelFor(f => f.Totals.YtdCcExp, "Total Reported on this App (including this report)")
+                @Html.DisplayFor(f => f.Totals.TotalReportedApp)
+                @Html.DisplayFor(f => f.Totals.CurrencyId)
+            </div>
+            <div class="display-item">
+                @Html.LabelFor(f => f.Totals.AppBalance, "App Balance")
+                @if (Model.Totals.AppBalance < 0)
+                {
+                    <i class="error" title="Amount reported exceeds cc grant as specified on the budget!">
+                        @Html.DisplayFor(f => f.Totals.AppBalance)
+                        !
+                    </i>
+                }
+                else
+                {
+                    @Html.DisplayFor(f => f.Totals.AppBalance)
+                }
+                @Html.DisplayFor(f => f.Totals.CurrencyId)
+            </div>
+            @if(!User.IsInRole("BMF"))
+            {
+            <div class="display-item">
+                @Html.LabelFor(f => f.Totals.AppBalance, "App Match Balance")
+                @Html.DisplayFor(f => f.Totals.AppMatchBalance)
+                @Html.DisplayFor(f => f.Totals.CurrencyId)
+            </div>
+            }
+         
+        <!--</td>-->
+    </tr>
+</table>
+<table>
+    <tr>
+        <th style="white-space: nowrap">Service Totals:
+        </th>
+        <td style="width: 100%">
+            <div class="display-item">
+                @Html.LabelFor(f => f.Totals.HcYtdPercentage)
+                @Html.DisplayFor(f => f.Totals.HcYtdPercentage)
+                @Html.DisplayFor(f => f.Totals.CurrencyId)
+            </div>
+            <div class="display-item">
+                @Html.LabelFor(f => f.Totals.AoYtdPercentage)
+                @Html.DisplayFor(f => f.Totals.AoYtdPercentage)
+                @Html.DisplayFor(f => f.Totals.CurrencyId)
+            </div>
+            <div class="display-item">
+                @Html.LabelFor(f => f.Totals.OtherYtdPercentage)
+                @Html.DisplayFor(f => f.Totals.OtherYtdPercentage)
+                @Html.DisplayFor(f => f.Totals.CurrencyId)
+            </div>
+        </td>
+    </tr>
+</table>
+@if(!User.IsInRole(FixedRoles.BMF))
+{
+	<table>
+		<tr>
+			<th style="white-space: nowrap">
+				Average Reimbursement Cost:
+			</th>
+			<td style="width: 100%">
+				<div class="display-item">
+					@Html.LabelFor(f => f.ReimbursementCosts.AvgReimbursementCost)
+					@Html.DisplayFor(f => f.ReimbursementCosts.AvgReimbursementCost)
+					@Html.DisplayFor(f => f.Totals.CurrencyId)
+				</div>
+				<div class="display-item">
+					@Html.LabelFor(f => f.ReimbursementCosts.AvgYtdReimbursementCost)
+					@Html.DisplayFor(f => f.ReimbursementCosts.AvgYtdReimbursementCost)
+					@Html.DisplayFor(f => f.Totals.CurrencyId)
+				</div>
+			</td>
+		</tr>
+	</table>
+}
+
+@if(User.IsInRole("Admin") || User.IsInRole("RegionOfficer"))
+{
+    using (Html.BeginForm("UpdateLastReport", "MainReports", FormMethod.Post))
+    {
+        <fieldset>
+            @Html.HiddenFor(f => f.Id)
+            <div class="display-item">
+                @Html.LabelFor(f => f.LastReport)
+                @Html.EditorFor(f => f.LastReport)
+            </div>
+            <button type="submit">Update</button>
+        </fieldset>
+        <script>
+            $(document).ready(function () {
+                $('label[for="@Html.FieldIdFor(f => f.LastReport)"] > span').remove();
+            });
+        </script>
+    }
+}
+
+@if (Model.CanSubmit)
+{ 
+    <fieldset>
+        <a href="@Url.Action("Submit", new { id = Model.Id })" class="button" id="proceedSubmit">Proceed - Submit Report Screen</a>
+    </fieldset>
+	<script>
+		$("#proceedSubmit").click(function (e) {
+			var isAudit = '@Model.AgencyGroupIsAudit' == 'True';
+			if (isAudit && !confirm("The agency is currently being audited by Claims Conference grant auditors. Are you sure you wish to change the status of this Budget/Report?")) {
+				e.preventDefault();
+			}
+		});
+	</script>
+}
+
+@if (Model.PoApprovalModel != null)
+{	
+    @Html.Partial("Approve", Model.PoApprovalModel)
+}
+else if (Model.PaApprovalModel != null && (Model.Status == MainReport.Statuses.AwaitingProgramAssistantApproval || Model.Status == MainReport.Statuses.AwaitingAgencyResponse && Model.PrevStatus == MainReport.Statuses.AwaitingProgramAssistantApproval))
+{
+    @Html.Partial("Approve", Model.PaApprovalModel)
+}

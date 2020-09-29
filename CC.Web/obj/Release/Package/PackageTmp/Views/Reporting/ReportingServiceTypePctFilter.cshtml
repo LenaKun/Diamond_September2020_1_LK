@@ -1,0 +1,173 @@
+﻿@model CC.Web.Models.Reporting.ReportingServiceTypePctFilterBase
+<div class="editor-item">
+	@Html.LabelFor(f => f.RegionId)
+	@Html.EditorFor(f => f.RegionId)
+</div>
+<div class="editor-item">
+	@Html.LabelFor(f => f.CountryId)
+	@Html.EditorFor(f => f.CountryId)
+</div>
+<div class="editor-item">
+	@Html.LabelFor(f => f.StateId)
+	@Html.EditorFor(f => f.StateId)
+</div>
+<div class="editor-item">
+	@Html.LabelFor(f => f.FundId)
+	@Html.EditorFor(f => f.FundId)
+</div>
+<div class="editor-item">
+	@Html.LabelFor(f => f.AgencyGroupId)
+	@Html.EditorFor(f => f.AgencyGroupId)
+</div>
+<div class="editor-item">
+	@Html.LabelFor(f => f.IgnoreUnsubmitted)
+	@Html.EditorFor(f => f.IgnoreUnsubmitted)
+</div>
+<div class="editor-item">
+	@Html.LabelFor(f => f.DisplayCurrency)
+	@Html.DropDownListFor(f => f.DisplayCurrency, Model.ConvertableCurrencies)
+</div>
+
+<script>
+	var region = $('#@Html.FieldIdFor(f => f.RegionId)').select2({
+		width: 300,
+		placeholder: "all",
+		allowClear: true,
+		ajax: {
+			url: '@Url.Content("~/data/dataservice.svc/Regions")',
+				dataType: "json",
+
+				data: function (term) {
+					var filters = [];
+					if (term) {
+						filters.push("substringof('" + escape(term) + "', Name) eq true");
+					}
+					return {
+						"$filter": filters.join(" and "),
+						"$orderby": "Name"
+					};
+				},
+				results: function (data) {
+					return {
+						results: $.map(data.d, function (a) { return { id: a.Id, text: a.Name } })
+					};
+				}
+			}
+		});
+
+		var country = $('#@Html.FieldIdFor(f => f.CountryId)').select2({
+		width: 300,
+		placeholder: "all",
+		allowClear: true,
+		ajax: {
+			url: '@Url.Content("~/data/dataservice.svc/Countries")',
+				dataType: "json",
+				data: function (term) {
+					var filters = [];
+					if (term) {
+						filters.push("substringof('" + escape(term) + "', Name) eq true");
+					}
+					if (region.val()) {
+						filters.push("RegionId eq " + region.val());
+					}
+					return {
+						"$filter": filters.join(" and "),
+						"$orderby": "Name"
+					};
+				},
+				results: function (data) {
+					return {
+						results: $.map(data.d, function (a) { return { id: a.Id, text: a.Name } })
+					};
+				}
+			}
+		});
+
+		var state = $('#@Html.FieldIdFor(f => f.StateId)').select2({
+		width: 300,
+		placeholder: "all",
+		allowClear: true,
+		ajax: {
+			url: '@Url.Content("~/data/dataservice.svc/States")',
+				dataType: "json",
+
+				data: function (term) {
+					var filters = [];
+					if (region.val()) {
+						filters.push("Country.RegionId eq " + region.val());
+					}
+					if (country.val()) {
+						filters.push("CountryId eq " + country.val());
+					}
+					if (term) {
+						filters.push("substringof('" + escape(term) + "', Name) eq true");
+					}
+					return {
+						"$filter": filters.join(" and "),
+						"$orderby": "Name"
+					};
+				},
+				results: function (data) {
+					return {
+						results: $.map(data.d, function (a) { return { id: a.Id, text: a.Name } })
+					};
+				}
+			}
+		});
+		var agencyGroup = $('#@Html.FieldIdFor(f => f.AgencyGroupId)').select2({
+		width: 300,
+		placeholder: "all",
+		allowClear: true,
+		ajax: {
+			url: '@Url.Content("~/data/dataservice.svc/AgencyGroups")',
+				dataType: "json",
+
+				data: function (term) {
+					var filters = [];
+					if (region.val()) {
+						filters.push("Country.RegionId eq " + region.val());
+					}
+					if (country.val()) {
+						filters.push("CountryId eq " + country.val());
+					}
+					if (term) {
+						filters.push("substringof('" + (term) + "', Name) eq true");
+					}
+					return {
+						"$filter": filters.join(" and "),
+						"$orderby": "Name"
+					};
+				},
+				results: function (data) {
+					return {
+					    results: $.map(data.d, function (a) { if (a.ExcludeFromReports) return; return { id: a.Id, text: a.Name } })
+					};
+				}
+			}
+		});
+		$('#@Html.FieldIdFor(f => f.FundId)').select2({
+		width: 300,
+		placeholder: "all",
+		allowClear: true,
+		ajax: {
+			url: '@Url.Content("~/data/dataservice.svc/Funds")',
+				dataType: "json",
+
+				data: function (term) {
+					var filters = [];
+					if (term) {
+						filters.push("substringof('" + escape(term) + "', Name) eq true");
+					}
+					return {
+						"$filter": filters.join(" and "),
+						"$orderby": "Name"
+					};
+				},
+				results: function (data) {
+					return {
+						results: $.map(data.d, function (a) { return { id: a.Id, text: a.Name } })
+					};
+				}
+			}
+		});
+</script>

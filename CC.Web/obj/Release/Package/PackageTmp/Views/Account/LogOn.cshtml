@@ -1,0 +1,54 @@
+﻿@model CC.Web.Models.LogOnModel
+
+@{
+    ViewBag.Title = "Log On";
+    Layout = "~/Views/Shared/_LayoutNoMenu.cshtml";
+	
+}
+<h2>Log On</h2>
+
+
+@Html.ValidationSummary(true, "Login was unsuccessful. Please correct the errors and try again.")
+
+@using (Html.BeginForm()) {
+    <div>
+        <fieldset>
+            <legend>Account Information</legend>
+
+            <div class="editor-label">
+                @Html.LabelFor(m => m.UserName)
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(m => m.UserName)
+                @Html.ValidationMessageFor(m => m.UserName)
+            </div>
+
+            <div class="editor-label">
+                @Html.LabelFor(m => m.Password)
+            </div>
+            <div class="editor-field">
+                @Html.PasswordFor(m => m.Password)
+                @Html.ValidationMessageFor(m => m.Password)
+            </div>
+
+            <div class="editor-label">
+                @Html.CheckBoxFor(m => m.RememberMe)
+                @Html.LabelFor(m => m.RememberMe)
+            </div>
+
+			@if (ViewBag.FailedLogonAttempts >= 2)
+			{ 
+				<div class="g-recaptcha" data-sitekey="6Lem5SUUAAAAAHcfFsn7XcntMiSTDYNUGHjw37l7"></div>
+			}
+
+            <p>
+                <input type="submit" value="Log On" />
+            </p>
+        </fieldset>
+    </div>
+}
+<script type="text/javascript">
+	$(document).ready(function () {
+		$('#@Html.FieldIdFor(m => m.UserName)').focus();
+	});
+</script>

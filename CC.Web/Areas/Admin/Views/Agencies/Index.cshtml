@@ -1,0 +1,49 @@
+﻿@model IEnumerable<CC.Data.Agency>
+@{
+    ViewBag.Title = "Agencies";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table id="data"></table>
+<script>
+    $(function () {
+        var oTable = $('table#data').dataTable({
+            "aaSorting": [[0, "asc"]],
+
+            "bServerSide": true,
+            "sAjaxSource": '@Url.Action("IndexData")',
+            "fnServerParams": function (aoData) {
+            },
+            "aoColumns": [
+				 { "mData": "Id", "sTitle": "Id" },
+				 { "mData": "Name", "sTitle": "Name" },
+				 { "mData": "Ser", "sTitle": "SER" },
+				 {
+				     "mData": "Id",
+				     "sTitle": "",
+				     "bSortable": false,
+				     "mRender": function (a) {
+				         return '<a href="@Url.Action("Edit")/' + a + '">Edit</a> | ' +
+							'<a href="@Url.Action("Details")/' + a + '">Details</a> | ' +
+							'<a href="@Url.Action("Delete")/' + a + '">Delete</a>';
+				     }
+				 }
+            ]
+        });
+    });
+</script>
+<fieldset>
+    <div class="editor-item">
+        <button type="button" id="exportBtn">Export to Excel</button>
+    </div>
+</fieldset>
+<script>
+    $('#exportBtn').click(function () {
+        window.location.href = '@Url.Action("Export")';
+    });
+</script>
+

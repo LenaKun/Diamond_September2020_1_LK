@@ -1,0 +1,19 @@
+﻿@model SubReportImportModelBase
+@{
+	ViewBag.Title = "Preview";
+}
+<h2>
+	Preview Import Data
+</h2>
+@Html.Partial("PreviewPartial", Model)
+
+@using (Html.BeginForm("Import", "SubReports", FormMethod.Post))
+{
+	@Html.HiddenFor(f => f.Id)
+	@Html.HiddenFor(f => f.PersonnelId)
+	@Html.HiddenFor(f => f.SubReport.Id)
+	@Html.HiddenFor(f => f.SubReport.MainReportId)
+	@Html.HiddenFor(f => f.SubReport.AppBudgetServiceId)
+	<hr />
+	<button type="submit">Import</button>
+}

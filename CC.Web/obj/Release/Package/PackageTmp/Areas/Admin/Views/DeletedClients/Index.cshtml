@@ -1,0 +1,49 @@
+﻿@{
+	ViewBag.Title = "Deleted Clients";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<table id="dt">
+	<thead>
+		<tr>
+			<th>CCID</th>
+			<th>Name</th>
+			<th>Address</th>
+			<th>Birth Date</th>
+			<th>Join Date</th>
+			<th>Leave Date</th>
+			<th>Delete Reason</th>
+			<th>Deleted Date</th>
+			<th>User</th>
+		</tr>
+	</thead>
+</table>
+<fieldset>
+    <div class="editor-item">
+        <button type="button" id="exportBtn">Export to Excel</button>
+    </div>
+</fieldset>
+<script>
+    $(function () {
+        $('table#dt').dataTable({
+            "bProcessing": true,
+            "bServerSide": true,
+            "bJQueryUI": true,
+            "sPaginationType": "full_numbers",
+            "sAjaxSource": "@Url.Action("IndexData", "DeletedClients", new { area = "admin" })",
+			"aoColumnDefs": [
+				{ "asSorting": ["desc"], "aTargets": [6] },
+				{
+					"aTargets": [3, 4, 5, 7],
+					"mRender": function (val) {
+						return renderDate(val);
+					}
+				}
+			]
+		});
+	})
+    $('#exportBtn').click(function () {
+        window.location.href = '@Url.Action("Export")';
+    });
+</script>

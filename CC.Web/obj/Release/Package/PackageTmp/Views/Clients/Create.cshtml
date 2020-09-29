@@ -1,0 +1,60 @@
+﻿@model CC.Web.Models.ClientCreateModel
+@{
+    ViewBag.Title = "Add A New Client";
+}
+@section Header
+{
+    <script type="text/javascript">
+        $(function () {
+            $('#tabs').tabs();
+        });
+    </script>
+
+}
+@section SubMenu{
+       
+}
+<h2>
+    Add A New Client</h2>
+@using (Html.BeginForm("Create", "Clients", FormMethod.Post, new { id = "cncf" }))
+{
+    
+    <div>
+        @Html.ValidationSummary(null, new { id = "validationSummary" })
+    </div>
+    @Html.HiddenFor(model => model.IsDuplicate)
+    @Html.HiddenFor(model => model.ForceInsertDuplicate)
+	@Html.HiddenFor(model => model.UserRegionId)
+	if (Model.IsDuplicate)
+	{
+    <div id="duplicateAlertContainer">
+        <h5 class="error">
+            Another client with similar details already exist in the system, Are you sure you
+            would like to Add this Client?</h5>
+        <input type="button" class="button save" id="forceInsertConfirm" value="Yes" />
+        <input type="button" class="button cancel" id="forceInsertCancel" value="No" />
+    </div>    
+    <script type="text/javascript">
+        $(function () {
+
+            $('#forceInsertConfirm').click(function () {
+                $('#@Html.FieldIdFor(model => model.ForceInsertDuplicate)').val(true);
+                $('form#cncf').submit();
+            });
+
+            $('#forceInsertCancel').click(function () {
+                $('#@Html.FieldIdFor(model => model.IsDuplicate)').val(false);
+                $('#@Html.FieldIdFor(model => model.ForceInsertDuplicate)').val(false);
+                $("#duplicateAlertContainer").dialog('close');
+                $('#validationSummary').hide();
+            });
+
+            $("#duplicateAlertContainer").dialog({ modal: true });
+        });
+                
+    </script>
+    }
+    @Html.Partial("~/Views/Clients/_ClientEditPartial.cshtml", Model)
+}
+<div id="trace">
+</div>

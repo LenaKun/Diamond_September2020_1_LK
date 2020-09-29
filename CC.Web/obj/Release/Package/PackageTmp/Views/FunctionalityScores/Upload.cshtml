@@ -1,0 +1,19 @@
+﻿
+@{
+	ViewBag.Title = "Update Clients - Diagnostic Score";
+}
+
+<h2>@ViewBag.Title</h2>
+<form action="@Url.Action("Upload", "FunctionalityScores")" method="post" enctype="multipart/form-data">
+@Html.ValidationSummary()
+<p>Columns:</p>
+
+<ul>
+@foreach (string s in Model)
+{
+	<li>@s</li>
+}
+</ul>
+<input type="file" name="File" />
+<button type="submit">Submit</button>
+</form>

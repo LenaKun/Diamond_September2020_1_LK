@@ -1,0 +1,73 @@
+﻿@model CC.Data.Service
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Service</legend>
+
+    <div class="display-label">Name</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Name)
+    </div>
+    @if (ViewBag.IsFluxxAdmin ?? false) {
+        <div class="display-label">Fluxx backend field name</div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.FluxxFieldName)
+        </div>
+    }
+    <div class="display-label">Reporting Method</div>
+    <div class="display-field">
+        @EnumHelper.EnumDisplayNameFor(Model.ReportingMethodEnum)
+    </div>
+
+    <div class="display-label">ServiceType</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.ServiceType.Name)
+    </div>
+    <div class="display-label">
+        @Html.LabelFor(model => model.ServiceLevel)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.ServiceLevel)
+    </div>
+    <div class="display-label">Enforce Service Type constraints</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.EnforceTypeConstraints)
+    </div>
+
+    @if (Model.TypeId == 8 && (Model.ReportingMethodId == 5 || Model.ReportingMethodId == 14))
+    {
+        <div class="editor-label">Exceptional Home Care Hours </div>
+        <div class="editor-field">
+            @Html.DisplayFor(model => model.ExceptionalHomeCareHours)
+        </div>
+        <div class="editor-label">Co-P Gov Hours Validation </div>
+        <div class="editor-field">
+            @Html.DisplayFor(model => model.CoPGovHoursValidation)
+        </div>
+    }
+    <div class="editor-label">@Html.LabelFor(f => f.SingleClientPerYearAgency)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.SingleClientPerYearAgency)
+    </div>
+    <div class="display-label">Personnel</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Personnel)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
+<div>
+	<form action="@Url.Action("AllowToAllSers",new {id = Model.Id})" method="post">
+		<button type="submit">Allow to all Sers</button>
+	</form>
+	<form action="@Url.Action("AllowToAllApps",new {id = Model.Id})" method="post">
+		<button type="submit">Add to all Apps</button>
+	</form>
+</div>

@@ -1,0 +1,14 @@
+﻿@model CC.Web.Models.ClientEditModel
+<div class="floatContainer">
+    @using (Html.BeginForm())
+    {
+        @Html.ValidationSummary()
+    
+        @Html.EditorFor(f => f.Data, "ClientPersonalDetails");
+
+        <div class="clear controlsContainer">
+            <input type="submit" value="Save" class="button confirm" />
+            <input type="button" value="Cancel" class="button cancel" />
+        </div>
+    }
+</div>

@@ -1,0 +1,62 @@
+﻿@model IEnumerable<CC.Data.AgencyGroup>
+@{
+    ViewBag.Title = "SERs";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+<table id="data"></table>
+<fieldset>
+    <div class="editor-item">
+        <button type="button" id="exportBtn">Export to Excel</button>
+    </div>
+</fieldset>
+<script>
+    $(function () {
+        var oTable = $('table#data').dataTable({
+            "aaSorting": [[0, "asc"]],
+            "bServerSide": true,
+            "sAjaxSource": '@Url.Action("IndexData")',
+            "aoColumns": [
+				 { "mData": "Id", "sTitle": "Id" },
+				 { "mData": "Name", "sTitle": "Name" },
+				 { "mData": "Addr1", "sTitle": "Addr1" },
+				 { "mData": "Addr2", "sTitle": "Addr2" },
+				 { "mData": "City", "sTitle": "City" },
+				 { "mData": "State", "sTitle": "State" },
+				 { "mData": "Country", "sTitle": "Country" },
+				 { "mData": "Region", "sTitle": "Region" },
+				 { "mData": "CanSubmitRevisionReports", "sTitle": "Can Submit Revision Reports" },
+				 { "mData": "ForceIsraelID", "sTitle": "Force Israel ID Validation" },
+				 { "mData": "ReportingPeriodId", "sTitle": "Reporting Period (months)" },
+				 { "mData": "RequiredMatch", "sTitle": "Required Match" },
+                 { "mData": "ExcludeFromReports", "sTitle": "Exclude From Reporting/Financial Summary" },
+				 { "mData": "DefaultCurrency", "sTitle": "Default Currency" },
+				 {
+				 	"mData": "CfsDate", "sTitle": "CFS Date",
+				 	fnRender: function (o, val) {
+				 		return renderDate(val);
+				 	}
+				 },
+				 {
+				     "mData": "Id",
+				     "sTitle": "",
+				     "bSortable": false,
+				     "mRender": function (a) {
+				         return '<a href="@Url.Action("Edit")/' + a + '">Edit</a> | ' +
+							'<a href="@Url.Action("Details")/' + a + '">Details</a> | ' +
+							'<a href="@Url.Action("Delete")/' + a + '">Delete</a>';
+				     }
+				 }
+            ]
+        });
+    });
+    $('#exportBtn').click(function () {
+        window.location.href = '@Url.Action("Export")';
+    });
+</script>
+

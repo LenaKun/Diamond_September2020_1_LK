@@ -1,0 +1,1 @@
+select cast('132.33' as money)

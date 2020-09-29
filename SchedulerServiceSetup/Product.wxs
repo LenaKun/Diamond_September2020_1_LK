@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Product Id="*" Name="SchedulerService" Language="1033" Version="1.0.0.0" Manufacturer="p4b" UpgradeCode="48dc066c-97cc-4512-8fa3-52bbe195e075">
+		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+
+		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+		<MediaTemplate />
+
+		<Feature Id="ProductFeature" Title="SchedulerService" Level="1">
+			<ComponentGroupRef Id="ProductComponents" />
+		</Feature>
+	</Product>
+
+	<Fragment>
+		<Directory Id="TARGETDIR" Name="SourceDir">
+			<Directory Id="ProgramFilesFolder">
+				<Directory Id="INSTALLFOLDER" Name="SchedulerService" />
+			</Directory>
+		</Directory>
+	</Fragment>
+
+	<Fragment>
+		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">			
+			<Component Id="ProductComponent" Guid="{374BCACD-FC1C-4F0F-882A-F6B725E572F6}">
+				<!--<File Id="Insert dll name" Name="Insert dll name again" Source="Insert path to dll" Vital="yes" KeyPath="no" DiskId="1"/>-->
+				<File Id="Scheduler.exe" Name="Scheduler.exe" Source="..\Scheduler\bin\Debug\Scheduler.exe" Vital="yes" KeyPath="yes" DiskId="1"/>
+				<File Id="Scheduler.exe.config" Name="Scheduler.exe.config" Source="..\Scheduler\bin\Debug\Scheduler.exe.config" Vital="yes" KeyPath="no" DiskId="1"/>
+				
+				<File Id="log4net.dll" Name="log4net.dll" Source="..\Scheduler\bin\Debug\log4net.dll" Vital="yes" KeyPath="no" DiskId="1"/>
+				<File Id="log4net.xml" Name="log4net.xml" Source="..\Scheduler\bin\Debug\log4net.xml" Vital="yes" KeyPath="no" DiskId="1"/>
+							
+				<File Id="Common.Logging.dll" Name="Common.Logging.dll" Source="..\Scheduler\bin\Debug\Common.Logging.dll" Vital="yes" KeyPath="no" DiskId="1"/>
+
+				<File Id="Quartz.dll" Name="Quartz.dll" Source="..\Scheduler\bin\Debug\Quartz.dll" Vital="yes" KeyPath="no" DiskId="1"/>
+				<File Id="Quartz.xml" Name="Quartz.xml" Source="..\Scheduler\bin\Debug\Quartz.xml" Vital="yes" KeyPath="no" DiskId="1"/>
+
+				<ServiceInstall
+					Id="ServiceInstaller"
+					Type="ownProcess"
+					Vital="yes"
+					Name="SchedulerService"
+					DisplayName="Scheduler Service"
+					Description="Scheduler"
+					Start="auto"
+					Account="LocalSystem"
+					ErrorControl="ignore"
+					Interactive="no"
+              >
+				</ServiceInstall>
+				<ServiceControl Id="StartService" Start="install" Stop="both" Remove="uninstall" Name="SchedulerService" Wait="yes" />
+			</Component>
+
+		</ComponentGroup>
+	</Fragment>
+</Wix>

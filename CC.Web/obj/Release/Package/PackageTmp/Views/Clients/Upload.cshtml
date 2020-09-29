@@ -1,0 +1,19 @@
+﻿@model NewClientsImportModel
+@{
+	ViewBag.Title = Model.Title;
+}
+
+<h2>@ViewBag.Title</h2>
+<form action="" method="post" enctype="multipart/form-data">
+@Html.ValidationSummary()
+<p>Columns:</p>
+
+<ul>
+	@foreach (var s in Model.GetCsvColumnNames())
+ {
+	 <li>@s</li>
+ }
+</ul>
+<input type="file" name="File" />
+<button type="submit">Submit</button>
+</form>

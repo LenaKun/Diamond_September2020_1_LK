@@ -1,0 +1,96 @@
+﻿@model CC.Data.EmergencyCap
+
+@{
+	ViewBag.Title += "Emergency Cap";
+}
+<h2>@ViewBag.Title</h2>
+
+@section Header{
+	<style>
+		.emergencyCapsFloat{
+		float: left; margin-right:2em;
+		}
+	</style>
+}
+@using (Html.BeginForm())
+{
+	<table>
+		<tr>
+			<th>
+				@Html.LabelFor(f => f.Id)
+			</th>
+			<td>
+				@Html.DisplayFor(f => f.Id)
+				@Html.HiddenFor(f => f.Id)
+			</td>
+		</tr>
+		<tr>
+			<th>
+				@Html.LabelFor(f => f.Name)
+			</th>
+			<td>
+				@Html.DisplayFor(f => f.Name)
+			</td>
+		</tr>
+		<tr>
+			<th>
+				@Html.LabelFor(f => f.StartDate)
+			</th>
+			<td>
+				@Html.DisplayFor(f => f.StartDate)
+			</td>
+		</tr>
+		<tr>
+			<th>
+				@Html.LabelFor(f => f.EndDateDisplay)
+			</th>
+			<td>
+				@Html.DisplayFor(f => f.EndDateDisplay)
+			</td>
+		</tr>
+		<tr>
+			<th>
+				@Html.LabelFor(f => f.Active)
+			</th>
+			<td>
+				@Html.DisplayFor(f => f.Active)
+			</td>
+		</tr>
+		<tr>
+			<th>
+				@Html.LabelFor(f => f.CapPerPerson)
+			</th>
+			<td>
+				@Html.DisplayFor(f => f.CapPerPerson)
+				@Html.DisplayFor(f => f.CurrencyId)
+			</td>
+		</tr>
+		<tr>
+			<th>
+				@Html.LabelFor(f => f.DiscretionaryPercentage)
+			</th>
+			<td>
+				@Html.DisplayFor(f => f.DiscretionaryPercentage)
+			</td>
+		</tr>
+		<tr><th>Countries</th>
+			<td>
+		@string.Join(", ", Model.Countries.Select(f=>f.Name))
+				</td></tr>
+		<tr><th>Funds</th>
+			<td>
+		@string.Join(", ", Model.Funds.Select(f=>f.Name))
+				</td></tr>
+	</table>
+	
+	<h3>History:</h3>
+	@Html.Grid((IEnumerable<CC.Data.History>)ViewBag.History).Columns(column=>{
+	column.For(f=>f.FieldName);
+	column.For(f=>f.OldValue);
+	column.For(f=>f.NewValue);
+	column.For(f=>f.UpdateDate);
+	column.For(f=>f.User.UserName);
+})
+
+	
+}

@@ -1,0 +1,46 @@
+﻿@model CC.Web.Areas.Admin.Controllers.IImportModel
+<h2>
+    Import Results:</h2>
+@if (Model.Exceptions.Any())
+{
+    <p>
+        The following unexpected errors occured:
+        <ul>
+            @foreach (var ex in Model.Exceptions)
+            {
+                <li>@ex.Message</li>
+            }
+        </ul>
+    </p>
+    <p>
+        Please fix the errors and upload the file again.</p>
+    <button onclick="javascript: window.history.go(-1)">
+        Cancel</button>
+}
+else
+{
+    <table class="layoutTable">
+        <tr>
+            <td>
+                Updated
+            </td>
+            <td>@Model.RowsUpdated
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Errors
+            </td>
+            <td>@Model.ErrorsCount
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Skipped
+            </td>
+            <td>@Model.SkippedCount
+            </td>
+        </tr>
+    </table>
+}
+<a href="@Url.Action("Index")" class="button" >Index</a>

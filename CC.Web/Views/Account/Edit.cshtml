@@ -1,0 +1,58 @@
+﻿@model CC.Data.User
+@{
+	ViewBag.Title = "Edit";
+	Layout = "~/Views/Shared/_layout.cshtml";
+}
+
+<h2>Edit</h2>
+
+@using (Html.BeginForm("Edit", "Account"))
+{
+	@Html.ValidationSummary(true)
+	<fieldset>
+		<legend>User Details</legend>
+
+		<div class="editor-label">
+			@Html.LabelFor(m => m.UserName)
+		</div>
+		<div class="editor-field">
+			@Html.DisplayFor(m => m.UserName)
+		</div>
+
+		<div class="editor-label">
+			@Html.LabelFor(m => m.FirstName)
+		</div>
+		<div class="editor-field">
+			@Html.TextBoxFor(m => m.FirstName)
+			@Html.ValidationMessageFor(m => m.FirstName)
+		</div>
+
+		<div class="editor-label">
+			@Html.LabelFor(m => m.LastName)
+		</div>
+		<div class="editor-field">
+			@Html.TextBoxFor(m => m.LastName)
+			@Html.ValidationMessageFor(m => m.LastName)
+		</div>
+
+		<div class="editor-label">
+			@Html.LabelFor(m => m.Email)
+		</div>
+		<div class="editor-field">
+			@Html.TextBoxFor(m => m.Email)
+			@Html.ValidationMessageFor(m => m.Email)
+		</div>
+
+		<div class="editor-label">
+			@Html.LabelFor(m => m.DecimalDisplayDigits)
+		</div>
+		<div class="editor-field">
+			@Html.TextBoxFor(m => m.DecimalDisplayDigits)
+			@Html.ValidationMessageFor(m => m.DecimalDisplayDigits)
+		</div>
+		<div class="editor-field">
+			<button type="submit">Submit</button>
+			<a class="button" href="@Url.Action("Details", "Account")">Cancel</a>
+		</div>
+	</fieldset>
+}

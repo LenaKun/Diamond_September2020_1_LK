@@ -1,0 +1,76 @@
+﻿@model ClientHomeCareTabJqModel
+@{
+    Layout = null;
+    var id = Guid.NewGuid();
+}
+
+<div id="hctFilter">
+	@Html.LabelFor(f=>f.StartDate)
+    @Html.EditorFor(f => f.StartDate, new { prefix = "hct", @class="hctStartDate" })
+	@Html.LabelFor(f=>f.EndDate)
+    @Html.EditorFor(f => f.EndDate, new { prefix = "hct", @class = "hctEndDate" })
+	@Html.LabelFor(f=>f.ServiceId)
+    @Html.DropDownListFor(f => f.ServiceId, Model.ServicesSelectList, string.Empty, new { @class = "hctServiceId" })
+	@if (!User.IsInRole("BMF"))
+	{
+		@Html.LabelFor(f=>f.ShowNonSubmitted)
+		@Html.EditorFor(f => f.ShowNonSubmitted, new { prefix = "hct", @class = "hctShowNonSubmitted" })
+		@Html.LabelFor(f=>f.GGOnly)
+		@Html.EditorFor(f => f.GGOnly, new { prefix = "hct", @class = "hctGGOnly" })
+	}
+    <button class="filter">Go</button>
+    <button class="reset">Reset</button>
+</div>
+
+<table id="hcTable"></table>
+<script>
+    $(function () {
+        var oTable = $('table#hcTable').dataTable({
+            "aaSorting": [[0, "asc"]],
+
+            "bServerSide": true,
+            "sAjaxSource": '@Url.Action("HomeCareTabData")',
+            "fnServerParams": function (aoData) {
+                aoData.push({ "name": "ClientId", "value": "@Model.ClientId" });
+                aoData.push({ "name": "StartDate", "value": $('#hctFilter .hctStartDate').val() });
+                aoData.push({ "name": "EndDate", "value": $('#hctFilter .hctEndDate').val() });
+                aoData.push({ "name": "ServiceId", "value": $('#hctFilter .hctServiceId').val() });
+                aoData.push({ "name": "ShowNonSubmitted", "value": $('#hctFilter [name="ShowNonSubmitted"]').is(':checked') });
+                aoData.push({ "name": "GGOnly", "value": $('#hctFilter [name="GGOnly"]').is(':checked') });
+			},
+			"aoColumns": [
+				 { "mData": "DateName", "sTitle": "Month" },
+				 { "mData": "WeekNumber", "sTitle": "W#", "mRender": function (val, b, c) { if (c.IsWeekly) return val; return ""; } },
+				 { "mData": "ServiceName", "sTitle": "Service" },
+				 { "mData": "Quantity", "sTitle": "Hours", "mRender": function (val) { return renderDecimal(val); } },
+				 { "mData": "Rate", "sTitle": "Rate", "mRender": function (val) { return renderDecimal(val); } },
+				 { "mData": "Cur", "sTitle": "CUR" },
+				 { "mData": "Amount", "sTitle": "Amount", "mRender": function (val) { return renderDecimal(val); } },
+				 { "mData": "Cur", "sTitle": "CUR" },
+				 { "mData": "FundName", "sTitle": "Fund" },
+                 { "mData": "MasterFundName", "sTitle": "Master Fund" },
+				 { "mData": "AppName", "sTitle": "App" }
+			]
+        });
+        $('#hctFilter button.filter').click(function () {
+            oTable.fnDraw();
+        });
+        $('#hctFilter button.reset').click(function () {
+            IsBmf();
+            oTable.fnDraw();
+        });
+    });
+
+    $(document).ready(IsBmf());
+
+    function IsBmf() {
+        if ('@User.IsInRole("BMF")' == 'True') {
+            $('#hctFilter [name="GGOnly"]').prop('checked', true);
+            $('#hctFilter [name="GGOnly"]').prop('disabled', true);
+        }
+        else {
+            $('#hctFilter [name="GGOnly"]').prop('checked', false);
+            $('#hctFilter [name="GGOnly"]').prop('disabled', false);
+        }
+    }
+</script>

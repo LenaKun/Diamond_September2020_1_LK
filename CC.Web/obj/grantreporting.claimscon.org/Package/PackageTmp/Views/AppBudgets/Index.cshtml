@@ -1,0 +1,177 @@
+﻿@model IEnumerable<AppBudget>
+@using MvcContrib.UI.Grid;
+	@{
+		ViewBag.Title = "Budgets List";
+		Layout = "~/Views/AppBudgets/_Layout.cshtml";
+	}
+	<h2>Budgets List </h2>
+	<fieldset>
+		<legend>Filter</legend>
+		@using (Html.BeginForm())
+        {
+            if (!User.IsInRole("RegionReadOnly"))
+            {
+                <div class="editor-item">
+                    <label>Region:</label>
+                    @Html.Editor("regionId")
+                </div>
+            }
+            <div class="editor-item">
+                <label>Ser:</label>
+                @Html.Editor("agencyGroupId")
+            </div>
+            if (!User.IsInRole("BMF"))
+            {
+                <div class="editor-item">
+                <label>Status:</label>
+                @Html.DropDownList("statusId", "")
+                </div>
+            }
+            <div class="editor-item">
+                <label>Year:</label>
+                @Html.DropDownList("year")
+            </div>
+            if (!User.IsInRole("BMF"))
+            {
+            <div class="editor-item">
+                <label>GG Only</label>
+                @Html.CheckBox("GGOnly", ((bool?)ViewBag.GGOnly) == true)
+            </div>
+            }
+            <div class="editor-item">
+                <button type="submit" class="submit" name="filter">Filter</button>
+                <button type="reset" class="reset">Reset</button>
+                <script type="text/javascript">
+					var region = $('#regionId').select2({
+						width: 300,
+						allowClear: true,
+						placeholder: "All Regions",
+						initSelection: function (element, callback) {
+							var id = $(element).val();
+							if (id !== "") {
+								$.ajax('@Url.Content("~/data/dataservice.svc/Regions")' + '(' + id + ')', {
+									dataType: "json",
+								}).done(function (data) {
+									var a = data.d;
+									callback({ id: a.Id, text: a.Name });
+								}).fail(function () {
+									callback(null);
+								});
+							}
+						},
+						ajax: {
+							url: '@Url.Content("~/data/dataservice.svc/Regions")',
+							dataType: "json",
+							data: function (term) {
+								var filters = [];
+								if (term) {
+									filters.push("substringof('" + escape(term) + "', Name) eq true");
+								}
+								return {
+									"$filter": filters.join(" and "),
+									"$orderby": "Name"
+								};
+							},
+							results: function (data) {
+								return {
+									results: $.map(data.d, function (a) { return { id: a.Id, text: a.Name } })
+								};
+							}
+						}
+					});
+					var agencyGroup = $('#agencyGroupId').select2({
+						width: 300,
+						allowClear: true,
+						placeholder: "All Agency Groups",
+						initSelection: function (element, callback) {
+							var id = $(element).val();
+							if (id !== "") {
+								$.ajax('@Url.Content("~/data/dataservice.svc/AgencyGroups")' + '(' + id + ')', {
+									dataType: "json",
+								}).done(function (data) {
+									var a = data.d;
+									callback({ id: a.Id, text: a.Name });
+								}).fail(function () {
+									callback(null);
+								});
+							}
+						},
+						ajax: {
+							url: '@Url.Content("~/data/dataservice.svc/AgencyGroups")',
+							dataType: "json",
+							data: function (term) {
+								var filters = [];
+								if (region.val()) {
+									filters.push("Country/RegionId eq " + region.val());
+								}
+								if (term) {
+									filters.push("substringof('" + escape(term) + "', Name) eq true");
+								}
+								return {
+									"$filter": filters.join(" and "),
+									"$orderby": "Name"
+								};
+							},
+							results: function (data) {
+								return {
+									results: $.map(data.d, function (a) { return { id: a.Id, text: a.Name } })
+								};
+							}
+						}
+					});
+					region.change(function () {
+						agencyGroup.select2('val', '');
+					});
+                    $(function () {
+                        $('button.reset').click(function () {
+                        	$(this).closest('form').find('select').val('');
+                        	$(this).closest('form').find('input').not(':button').not(':checkbox').select2('val', '');
+                        	$('#GGOnly').prop('checked', false);
+                            $(this).closest('form').find('button.submit').click();
+                        });
+                    });
+                </script>
+                <button type="button" id="exportBtn">Export to Excel</button>
+            </div>
+            }
+</fieldset>
+	@Html.Grid(Model).Columns(column =>
+{
+	column.For(f => f.Id);
+	column.For(f => f.App.AgencyGroup.Name).Named("SER");
+	column.For(f => f.App.Fund.Name).Named("Fund");
+	column.For(f => f.App.Name).Named("App");
+	column.For(f => f.App.CurrencyId).Named("CUR");
+	column.For(f => f.App.CcGrant.Format()).Named("Amount");
+	column.For(f => Html.DisplayFor(a => f.App.StartDate)).Named("Start Date");
+	column.For(f => f.StatusName).Named("Approval Status");
+	column.For(f => f.Revised ? "Yes" : string.Empty).Named("Revised");
+	column.For(f => f.ValidUntill).Named("Conditional Approval Valid Until");
+	column.For(f => Html.DisplayFor(a => f.ValidRemarks)).Named("Conditional Approval Agency Remarks");
+	column.For(f => Html.DisplayFor(a => f.PoRemarks)).Named("Regional PO Remarks");
+	column.For(f => Html.ActionLink("Details", "Details", new { id = f.Id }));
+})
+
+	<script type="text/javascript">
+
+		$(document).ready(function () {
+			try {
+				$('table.grid').dataTable({ "bJQueryUI": true, "sPaginationType": "full_numbers", "aaSorting": [[0, "desc"]] });
+			} catch (e) {
+
+			}
+		});
+
+		$('#exportBtn').click(function () {
+		    window.location.href = "@Url.Action("Export")?regionId=" + $('#regionId').val()
+		        + "&agencyGroupId=" + $('#agencyGroupId').val()
+				+ "&statusId=" + $('#statusId').val()
+				+ "&year=" + $('#year').val()
+				+ "&GGOnly=" + $('#GGOnly').prop('checked');
+		});
+
+	</script>
+	@if (User.IsInRole(FixedRoles.Admin.ToString()) || User.IsInRole(FixedRoles.Ser.ToString()) || User.IsInRole(FixedRoles.SerAndReviewer.ToString()))
+	{
+		<p>@Html.ActionLink("Create Budget", "Create", null, new { @class = "button" })</p>
+	}

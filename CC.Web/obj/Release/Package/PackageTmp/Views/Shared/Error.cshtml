@@ -1,0 +1,44 @@
+﻿@model System.Web.Mvc.HandleErrorInfo
+@{
+	ViewBag.Title = "Error";
+	Layout = "~/Views/Shared/_LayoutNoMenu.cshtml";
+}
+
+<h2>
+	Sorry, an error occurred while processing your request.
+</h2>
+
+
+@if (Model != null)
+{
+	<div>
+		<div class="error">
+			@Html.DisplayFor(f => f.Exception)
+		</div>
+		<hr />
+		<div style="margin-top: 10em;">
+			<button type="button" onclick="$('div#details').show();">technical details</button>
+			<div id="details" style="color: #ccc; display: none;">
+				<ol>
+					@foreach (var ex in Model.Exception.UnfoldInner())
+					{
+						<li>
+							<div>
+								<span>@ex.Message</span>
+								<ol>
+									@if (ex.StackTrace != null)
+									{
+										foreach (var item in ex.StackTrace.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries))
+										{
+											<li>@item</li>
+										}
+									}
+								</ol>
+							</div>
+						</li>
+					}
+				</ol>
+			</div>
+		</div>
+	</div>
+}

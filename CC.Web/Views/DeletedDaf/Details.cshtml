@@ -1,0 +1,144 @@
+﻿@model CC.Web.Models.DeletedDafDetailsModel
+
+@{
+	ViewBag.Title = Resources.Resource.DeletedDafDetails;
+}
+
+<div>
+	<h4>Deleted DAF details</h4>
+	<hr />
+	<dl class="dl-horizontal">
+		<dt>
+			@Html.DisplayNameFor(model => model.ClientId)
+		</dt>
+		<dd>
+			@Html.DisplayFor(model => model.ClientId)
+		</dd>
+
+		<dt>
+			@Html.DisplayNameFor(model => model.ClientFirstName)
+		</dt>
+		<dd>
+			@Html.DisplayFor(model => model.ClientFirstName)
+		</dd>
+
+		<dt>
+			@Html.DisplayNameFor(model => model.ClientLastName)
+		</dt>
+
+		<dd>
+			@Html.DisplayFor(model => model.ClientLastName)
+		</dd>
+	</dl>
+
+	<dl class="dl-horizontal">
+		<dt>
+			@Html.DisplayNameFor(model => model.AssessmentDate)
+		</dt>
+
+		<dd>
+			@Html.DisplayFor(model => model.AssessmentDate)
+		</dd>
+
+		<dt>
+			@Html.DisplayNameFor(model => model.EffectiveDate)
+		</dt>
+
+		<dd>
+			@Html.DisplayFor(model => model.EffectiveDate)
+		</dd>
+
+		<dt>
+			@Html.DisplayNameFor(model => model.CreatedAt)
+		</dt>
+
+		<dd>
+			@Html.DisplayFor(model => model.CreatedAt)
+		</dd>
+		@foreach (var item in Model.Questions)
+		{
+			<dt>
+				@item.Text
+			</dt>
+			<dd>
+				@(item.SelectedText ?? "N/A")
+			</dd>
+		}
+		<dt>
+			@Html.DisplayNameFor(model => model.TotalScore)
+		</dt>
+
+		<dd>
+			@Html.DisplayFor(model => model.TotalScore)
+		</dd>
+
+		@*<dt>
+			@Html.DisplayNameFor(model => model.GovernmentHours)
+		</dt>
+
+		<dd>
+			@Html.DisplayFor(model => model.GovernmentHours)
+		</dd>
+		<dt>
+			@Html.DisplayNameFor(model => model.ExceptionalHours)
+		</dt>
+
+		<dd>
+			@Html.DisplayFor(model => model.ExceptionalHours)
+		</dd>*@
+
+		<dt>
+			@Html.DisplayNameFor(model => model.Comments)
+		</dt>
+
+		<dd>
+			@Html.DisplayFor(model => model.Comments)
+		</dd>
+
+	</dl>
+	@Resources.Resource.DiagnostinAssessmentPerformedBySection
+	<dl class="dl-horizontal">
+		<dt>
+			@Html.DisplayNameFor(model => model.SignedByName)
+		</dt>
+
+		<dd>
+			@Html.DisplayFor(model => model.SignedByName)
+		</dd>
+
+		<dt>
+			@Html.DisplayNameFor(model => model.EvaluatorPosition)
+		</dt>
+
+		<dd>
+			@Html.DisplayFor(model => model.EvaluatorPosition)
+		</dd>
+		<dt>
+			@Html.DisplayNameFor(model => model.SignedAt)
+		</dt>
+
+		<dd>
+			@Html.DisplayFor(model => model.SignedAt)
+		</dd>
+		<dt>
+			@Html.DisplayNameFor(model => model.ReviewedByName)
+		</dt>
+
+		<dd>
+			@Html.DisplayFor(model => model.ReviewedByName)
+		</dd>
+		<dt>
+			@Html.DisplayNameFor(model => model.ReviewedAt)
+		</dt>
+
+		<dd>
+			@Html.DisplayFor(model => model.ReviewedAt)
+		</dd>
+
+	</dl>
+</div>
+@Html.Partial("~/Views/Shared/Audit.cshtml", Model.Id)
+
+<p>
+	@Html.ActionLink(Resources.Resource.BackToList, "Index")
+</p>

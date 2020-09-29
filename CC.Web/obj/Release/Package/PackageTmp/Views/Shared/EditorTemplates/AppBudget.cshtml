@@ -1,0 +1,55 @@
+﻿@model AppBudget
+	<div class="display-item">
+		@Html.LabelFor(f => Model.App.AgencyGroup.Name, "SER")
+		<div class="display-field">
+			@Html.DisplayFor(model => model.App.AgencyGroup.Name)
+		</div>
+	</div>
+	<div class="display-item">
+		@Html.LabelFor(model => model.App.Fund.Name, "Fund")
+		<div class="display-field">
+			@Html.DisplayFor(model => model.App.Fund.Name)
+		</div>
+	</div>
+	<div class="display-item">
+		@Html.LabelFor(model => model.App.Name, "App #")
+		<div class="display-field">
+			@Html.DisplayFor(model => model.App.Name)
+		</div>
+	</div>
+	<div class="display-item">
+		<label>
+			App's Period</label>
+		<div class="display-field">
+			@Html.DisplayFor(model => model.App.StartDate) - @Html.DisplayFor(model => model.App.EndDate)
+		</div>
+	</div>
+	<div class="display-item">
+		@Html.LabelFor(model => model.StatusId, "Status")
+		<div class="display-field">
+
+			@Html.DisplayFor(f=>f.ApprovalStatus)
+		@if (Model.AdditionalStatuses.Any())
+		{
+			<span>(@string.Join(", ", Model.AdditionalStatuses.ToArray()))</span>
+		}
+		</div>
+	</div>
+	<div class="display-item">
+		@Html.LabelFor(model => model.PoRemarks, "PO Remarks")
+		<div class="display-field">
+			@Html.DisplayFor(model => model.PoRemarks)
+		</div>
+	</div>
+	<div class="display-item">
+		@Html.LabelFor(model => model.ValidUntill, "Valid Until")
+		<div class="display-field">
+			@Html.DisplayFor(model => model.ValidUntill)
+		</div>
+	</div>
+	<div class="display-item">
+		@Html.LabelFor(model => model.ValidRemarks, "Valid Remarks")
+		<div class="display-field">
+			@Html.DisplayFor(model => model.ValidRemarks)
+		</div>
+	</div>

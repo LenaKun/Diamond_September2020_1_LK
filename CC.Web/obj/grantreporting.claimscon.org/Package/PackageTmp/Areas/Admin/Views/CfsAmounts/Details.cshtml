@@ -1,0 +1,67 @@
+﻿@model CC.Data.CfsAmount
+
+@{
+	ViewBag.Title += "CFS Amount";
+}
+<h2>@ViewBag.Title</h2>
+
+@section Header{
+	<style>
+		.emergencyCapsFloat {
+			float: left;
+			margin-right: 2em;
+		}
+	</style>
+}
+@using (Html.BeginForm())
+{
+    <table>
+        <tr>
+            <th>
+                @Html.LabelFor(f => f.Id)
+            </th>
+            <td>
+                @Html.DisplayFor(f => f.Id)
+                @Html.HiddenFor(f => f.Id)
+            </td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(f => f.Year)
+            </th>
+            <td>
+                @Html.DisplayFor(f => f.Year)
+            </td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(f => f.CurrencyId)
+            </th>
+            <td>
+                @Html.DisplayFor(f => f.CurrencyId)
+            </td>
+        </tr>
+        <tr>
+            <th>Countries</th>
+            <td>
+                @string.Join(", ", Model.Countries.Select(f => f.Name))
+            </td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(f => f.Level)
+            </th>
+            <td>
+                @Html.DisplayFor(f => f.Level)
+            </td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(f => f.Amount)
+            </th>
+            <td>
+                @Html.DisplayFor(f => f.Amount)
+            </td>
+        </tr>
+    </table>
+}

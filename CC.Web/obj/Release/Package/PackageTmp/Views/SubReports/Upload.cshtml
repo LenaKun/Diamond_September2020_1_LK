@@ -1,0 +1,15 @@
+﻿@model SubReportImportModelBase
+<form action="@Url.Action("Upload", "SubReports")" method="post" enctype="multipart/form-data">
+@Html.HiddenFor(f => f.Id)
+@Html.HiddenFor(f => f.SubReport.MainReportId)
+@Html.HiddenFor(f => f.SubReport.AppBudgetServiceId)
+<p>
+	File format example:
+</p>
+@Html.Partial(Model.ReportingMethod.ToString()+"Example")
+
+@Html.EditorFor(f=>f.File)
+
+<button type="submit">
+	Upload file</button>
+</form>

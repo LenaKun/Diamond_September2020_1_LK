@@ -1,0 +1,23 @@
+﻿@{
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Header{
+	@RenderSection("Header",false)
+}
+@section SubMenu{
+
+	<ul id="subMenu" class="menu">
+		<li>@Html.ActionLink("Overview", "Overview", "FinancialSummary")</li>
+		<li>@Html.ActionLink("Summary", "Index", "FinancialSummary")</li>
+		<li>@Html.ActionLink("Details", "Details", "FinancialSummary")</li>
+		@RenderSection("SubMenu", false)
+	</ul>
+}
+@RenderBody()
+<div>
+	@{
+		var d = CC.Web.Helpers.GlobalHelper.GetFinSumJobDate();
+		var s = d == null ? "N/A" : d.Value.ToString();
+	}
+	The data is correct for the date (approximately): <span>@s</span>
+</div>

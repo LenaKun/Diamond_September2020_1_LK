@@ -1,0 +1,11 @@
+﻿@model Nullable<decimal>
+@if (Model.HasValue)
+{
+	<span class="stringdisplaytemplate">
+	@Model.Value.Format()
+	</span>
+}
+else
+{
+	<span class="stringdisplaytemplate" style="color: #666">N/A</span>
+}

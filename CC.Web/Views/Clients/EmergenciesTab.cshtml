@@ -1,0 +1,82 @@
+﻿@model ClientEmergenciesTabModel
+@{
+    Layout = null;
+}
+
+<div id="EmergencyTabFilter">
+    @Html.LabelFor(f => f.StartDate)
+    @Html.EditorFor(f => f.StartDate, new { prefix = "et", @class = "etStartDate" })
+    @Html.LabelFor(f => f.EndDate)
+    @Html.EditorFor(f => f.EndDate, new { prefix = "et", @class = "etEndDate" })
+    @Html.LabelFor(f => f.ServiceId)
+    @Html.DropDownListFor(f => f.ServiceId, Model.ServicesSelectList, string.Empty, new { @class = "etServiceId" })
+    @Html.LabelFor(f => f.TypeId)
+    @Html.DropDownListFor(f => f.TypeId, Model.EmergencyTypesSelectList, string.Empty, new { @class = "etTypeId" })
+	@if (!User.IsInRole("BMF")) {
+		@Html.LabelFor(f => f.GGOnly)
+		@Html.EditorFor(f => f.GGOnly, new { prefix = "et", @class = "etGGOnly" })
+	}
+    <button class="filter">Go</button>
+    <button class="reset">Reset</button>
+</div>
+
+<table id="etable"></table>
+<script>
+    $(function () {
+        var oTable = $('table#etable').dataTable({
+            "aaSorting": [[0, "asc"]],
+
+            "bServerSide": true,
+            "sAjaxSource": '@Url.Action("EmergenciesTabData")',
+            "fnServerParams": function (aoData) {
+                aoData.push({ "name": "ClientId", "value": "@Model.ClientId" });
+                aoData.push({ "name": "StartDate", "value": $('#EmergencyTabFilter .etStartDate').val() });
+                aoData.push({ "name": "EndDate", "value": $('#EmergencyTabFilter .etEndDate').val() });
+                aoData.push({ "name": "ServiceId", "value": $('#EmergencyTabFilter .etServiceId').val() });
+                aoData.push({ "name": "TypeId", "value": $('#EmergencyTabFilter .etTypeId').val() });
+                aoData.push({ "name": "GGOnly", "value": $('#EmergencyTabFilter [name="GGOnly"]').is(':checked') });
+            },
+            "aoColumns": [
+				{ "mData": "Date", "sTitle": "Date", "mRender": function (val) { return renderDate(val); } },
+                {
+                    "mData": "ServiceName", "sTitle": "Service", "mRender": function (a, b, c) {
+                        if (c.SubReportId)
+                            return '<a href="@Url.Action("Details", "SubReports")/' + c.SubReportId + '">' + a + '</a>';
+                        else
+                            return a;
+                    }
+                },
+                { "mData": "TypeName", "sTitle": "Type" },
+                { "mData": "PurposeOfGrant", "sTitle": "Purpose of Grant" },
+				{ "mData": "Amount", "sTitle": "Amount", "mRender": function (val) { return renderDecimal(val); } },
+				{ "mData": "Discretionary", "sTitle": "Discretionary", "mRender": function (val) { return renderDecimal(val); } },
+				{ "mData": "Total", "sTitle": "Total", "mRender": function (val) { return renderDecimal(val); } },
+				{ "mData": "FundName", "sTitle": "Fund" },
+                { "mData": "MasterFundName", "sTitle": "Master Fund" },
+				{ "mData": "AppName", "sTitle": "App" }
+
+            ]
+        });
+        $('#EmergencyTabFilter button.filter').click(function () {
+            oTable.fnDraw();
+        });
+        $('#EmergencyTabFilter button.reset').click(function () {
+            $('#EmergencyTabFilter :input').val(null);
+            IsBmf();
+            oTable.fnDraw();
+        });
+    });
+
+    $(document).ready(IsBmf());
+
+    function IsBmf() {
+        if ('@User.IsInRole("BMF")' == 'True') {
+            $('#EmergencyTabFilter [name="GGOnly"]').prop('checked', true);
+            $('#EmergencyTabFilter [name="GGOnly"]').prop('disabled', true);
+        }
+        else {
+            $('#EmergencyTabFilter [name="GGOnly"]').prop('checked', false);
+            $('#EmergencyTabFilter [name="GGOnly"]').prop('disabled', false);
+        }
+    }
+</script>

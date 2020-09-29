@@ -1,0 +1,101 @@
+﻿@model MainReportStatusHistoryModel
+@{
+	ViewBag.Title = "Status History";
+}
+@section Header{
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$('table.mainreport-details span.edit').hide();
+			$('table.mainreport-details button.edit').click(function () {
+				$('table.mainreport-details span.edit').show();
+				$('table.mainreport-details span.display').hide();
+				$('table.mainreport-details span.edit :input:first').focus();
+			});
+			$('table.mainreport-details button.cancel').click(function () {
+				$('table.mainreport-details span.edit').hide();
+				$('table.mainreport-details span.display').show();
+			});
+		});
+	</script>
+}
+<h2>
+	Financial Report Details:
+</h2>
+@Html.ValidationSummary()
+@Html.HiddenFor(f => f.Id)
+<table class="mainreport-details">
+	<thead>
+		<tr>
+			<th>
+				Fund
+			</th>
+			<th>
+				App #
+			</th>
+			<th>
+				Month From
+			</th>
+			<th>
+				Month To
+			</th>
+			<th>
+				Ser
+			</th>
+			<th>
+				Exc. Rate
+			</th>
+			<th>
+				Report Status
+			</th>
+			<th>
+			</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>@Html.DisplayFor(f => f.FundName)
+			</td>
+			<td>
+				<a href="@Url.Action("Details", "AppBudgets", new { id = Model.AppBudgetId })">@Html.DisplayFor(f => f.AppName)</a>
+			</td>
+			<td>@Html.DisplayFor(f => f.Start)
+			</td>
+			<td>@Html.DisplayFor(f => f.End)
+			</td>
+			<td>@Html.DisplayFor(f => f.AgencyGroupName)
+			</td>
+			<td>
+
+				@Html.DisplayFor(f => f.ExcRate)
+
+			</td>
+			<td>
+				@Html.DisplayFor(f => f.Status)
+			</td>
+			<td>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<fieldset>
+	<button type="button" onclick="window.print()">
+		Print</button>
+
+</fieldset>
+
+@Html.Grid(Model.Rows).AutoGenerateColumns()
+
+<a href="javascript:history.go(-1)">Go Back</a>
+
+<script id="dt" type="text/javascript">
+	//simple datatable init
+	$(document).ready(function () {
+		$('table.grid').dataTable({
+			"bJQueryUI": true,
+			"sPaginationType": "full_numbers",
+			"aaSorting": [[1, "asc"], [2, "asc"], [3, "asc"], ]
+		});
+	});
+</script>
+

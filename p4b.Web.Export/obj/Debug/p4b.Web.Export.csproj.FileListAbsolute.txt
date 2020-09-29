@@ -1,0 +1,76 @@
+D:\Diamond_01282020\cc\Code\p4b.Web.Export\bin\Debug\p4b.Web.Export.dll.config
+D:\Diamond_01282020\cc\Code\p4b.Web.Export\bin\Debug\p4b.Web.Export.dll
+D:\Diamond_01282020\cc\Code\p4b.Web.Export\bin\Debug\p4b.Web.Export.pdb
+D:\Diamond_01282020\cc\Code\p4b.Web.Export\bin\Debug\CsvHelper.dll
+D:\Diamond_01282020\cc\Code\p4b.Web.Export\bin\Debug\DocumentFormat.OpenXml.dll
+D:\Diamond_01282020\cc\Code\p4b.Web.Export\bin\Debug\Microsoft.Web.Infrastructure.dll
+D:\Diamond_01282020\cc\Code\p4b.Web.Export\bin\Debug\System.Web.Helpers.dll
+D:\Diamond_01282020\cc\Code\p4b.Web.Export\bin\Debug\System.Web.Mvc.dll
+D:\Diamond_01282020\cc\Code\p4b.Web.Export\bin\Debug\System.Web.Razor.dll
+D:\Diamond_01282020\cc\Code\p4b.Web.Export\bin\Debug\System.Web.WebPages.Deployment.dll
+D:\Diamond_01282020\cc\Code\p4b.Web.Export\bin\Debug\System.Web.WebPages.dll
+D:\Diamond_01282020\cc\Code\p4b.Web.Export\bin\Debug\System.Web.WebPages.Razor.dll
+D:\Diamond_01282020\cc\Code\p4b.Web.Export\bin\Debug\CsvHelper.xml
+D:\Diamond_01282020\cc\Code\p4b.Web.Export\bin\Debug\DocumentFormat.OpenXml.xml
+D:\Diamond_01282020\cc\Code\p4b.Web.Export\obj\Debug\p4b.Web.Export.csprojAssemblyReference.cache
+D:\Diamond_01282020\cc\Code\p4b.Web.Export\obj\Debug\p4b.Web.Export.csproj.CoreCompileInputs.cache
+D:\Diamond_01282020\cc\Code\p4b.Web.Export\obj\Debug\p4b.Web.Export.csproj.CopyComplete
+D:\Diamond_01282020\cc\Code\p4b.Web.Export\obj\Debug\p4b.Web.Export.dll
+D:\Diamond_01282020\cc\Code\p4b.Web.Export\obj\Debug\p4b.Web.Export.pdb
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\p4b.Web.Export\bin\Debug\p4b.Web.Export.dll.config
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\p4b.Web.Export\bin\Debug\p4b.Web.Export.dll
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\p4b.Web.Export\bin\Debug\p4b.Web.Export.pdb
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\p4b.Web.Export\bin\Debug\CsvHelper.dll
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\p4b.Web.Export\bin\Debug\DocumentFormat.OpenXml.dll
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\p4b.Web.Export\bin\Debug\Microsoft.Web.Infrastructure.dll
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\p4b.Web.Export\bin\Debug\System.Web.Helpers.dll
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\p4b.Web.Export\bin\Debug\System.Web.Mvc.dll
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\p4b.Web.Export\bin\Debug\System.Web.Razor.dll
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\p4b.Web.Export\bin\Debug\System.Web.WebPages.Deployment.dll
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\p4b.Web.Export\bin\Debug\System.Web.WebPages.dll
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\p4b.Web.Export\bin\Debug\System.Web.WebPages.Razor.dll
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\p4b.Web.Export\bin\Debug\CsvHelper.xml
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\p4b.Web.Export\bin\Debug\DocumentFormat.OpenXml.xml
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\p4b.Web.Export\obj\Debug\p4b.Web.Export.csprojAssemblyReference.cache
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\p4b.Web.Export\obj\Debug\p4b.Web.Export.csproj.CoreCompileInputs.cache
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\p4b.Web.Export\obj\Debug\p4b.Web.Export.csproj.CopyComplete
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\p4b.Web.Export\obj\Debug\p4b.Web.Export.dll
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\p4b.Web.Export\obj\Debug\p4b.Web.Export.pdb
+D:\Current\Latest_Development\Diamond\cc\Code\p4b.Web.Export\bin\Debug\p4b.Web.Export.dll.config
+D:\Current\Latest_Development\Diamond\cc\Code\p4b.Web.Export\bin\Debug\p4b.Web.Export.dll
+D:\Current\Latest_Development\Diamond\cc\Code\p4b.Web.Export\bin\Debug\p4b.Web.Export.pdb
+D:\Current\Latest_Development\Diamond\cc\Code\p4b.Web.Export\bin\Debug\CsvHelper.dll
+D:\Current\Latest_Development\Diamond\cc\Code\p4b.Web.Export\bin\Debug\DocumentFormat.OpenXml.dll
+D:\Current\Latest_Development\Diamond\cc\Code\p4b.Web.Export\bin\Debug\Microsoft.Web.Infrastructure.dll
+D:\Current\Latest_Development\Diamond\cc\Code\p4b.Web.Export\bin\Debug\System.Web.Helpers.dll
+D:\Current\Latest_Development\Diamond\cc\Code\p4b.Web.Export\bin\Debug\System.Web.Mvc.dll
+D:\Current\Latest_Development\Diamond\cc\Code\p4b.Web.Export\bin\Debug\System.Web.Razor.dll
+D:\Current\Latest_Development\Diamond\cc\Code\p4b.Web.Export\bin\Debug\System.Web.WebPages.Deployment.dll
+D:\Current\Latest_Development\Diamond\cc\Code\p4b.Web.Export\bin\Debug\System.Web.WebPages.dll
+D:\Current\Latest_Development\Diamond\cc\Code\p4b.Web.Export\bin\Debug\System.Web.WebPages.Razor.dll
+D:\Current\Latest_Development\Diamond\cc\Code\p4b.Web.Export\bin\Debug\CsvHelper.xml
+D:\Current\Latest_Development\Diamond\cc\Code\p4b.Web.Export\bin\Debug\DocumentFormat.OpenXml.xml
+D:\Current\Latest_Development\Diamond\cc\Code\p4b.Web.Export\obj\Debug\p4b.Web.Export.csprojAssemblyReference.cache
+D:\Current\Latest_Development\Diamond\cc\Code\p4b.Web.Export\obj\Debug\p4b.Web.Export.csproj.CoreCompileInputs.cache
+D:\Current\Latest_Development\Diamond\cc\Code\p4b.Web.Export\obj\Debug\p4b.Web.Export.csproj.CopyComplete
+D:\Current\Latest_Development\Diamond\cc\Code\p4b.Web.Export\obj\Debug\p4b.Web.Export.dll
+D:\Current\Latest_Development\Diamond\cc\Code\p4b.Web.Export\obj\Debug\p4b.Web.Export.pdb
+D:\Current\Latest_Development\Diamond_Latest\Code\p4b.Web.Export\bin\Debug\p4b.Web.Export.dll.config
+D:\Current\Latest_Development\Diamond_Latest\Code\p4b.Web.Export\bin\Debug\p4b.Web.Export.dll
+D:\Current\Latest_Development\Diamond_Latest\Code\p4b.Web.Export\bin\Debug\p4b.Web.Export.pdb
+D:\Current\Latest_Development\Diamond_Latest\Code\p4b.Web.Export\bin\Debug\CsvHelper.dll
+D:\Current\Latest_Development\Diamond_Latest\Code\p4b.Web.Export\bin\Debug\DocumentFormat.OpenXml.dll
+D:\Current\Latest_Development\Diamond_Latest\Code\p4b.Web.Export\bin\Debug\Microsoft.Web.Infrastructure.dll
+D:\Current\Latest_Development\Diamond_Latest\Code\p4b.Web.Export\bin\Debug\System.Web.Helpers.dll
+D:\Current\Latest_Development\Diamond_Latest\Code\p4b.Web.Export\bin\Debug\System.Web.Mvc.dll
+D:\Current\Latest_Development\Diamond_Latest\Code\p4b.Web.Export\bin\Debug\System.Web.Razor.dll
+D:\Current\Latest_Development\Diamond_Latest\Code\p4b.Web.Export\bin\Debug\System.Web.WebPages.Deployment.dll
+D:\Current\Latest_Development\Diamond_Latest\Code\p4b.Web.Export\bin\Debug\System.Web.WebPages.dll
+D:\Current\Latest_Development\Diamond_Latest\Code\p4b.Web.Export\bin\Debug\System.Web.WebPages.Razor.dll
+D:\Current\Latest_Development\Diamond_Latest\Code\p4b.Web.Export\bin\Debug\CsvHelper.xml
+D:\Current\Latest_Development\Diamond_Latest\Code\p4b.Web.Export\bin\Debug\DocumentFormat.OpenXml.xml
+D:\Current\Latest_Development\Diamond_Latest\Code\p4b.Web.Export\obj\Debug\p4b.Web.Export.csproj.CoreCompileInputs.cache
+D:\Current\Latest_Development\Diamond_Latest\Code\p4b.Web.Export\obj\Debug\p4b.Web.Export.csproj.CopyComplete
+D:\Current\Latest_Development\Diamond_Latest\Code\p4b.Web.Export\obj\Debug\p4b.Web.Export.dll
+D:\Current\Latest_Development\Diamond_Latest\Code\p4b.Web.Export\obj\Debug\p4b.Web.Export.pdb
+D:\Current\Latest_Development\Diamond_Latest\Code\p4b.Web.Export\obj\Debug\p4b.Web.Export.csprojAssemblyReference.cache

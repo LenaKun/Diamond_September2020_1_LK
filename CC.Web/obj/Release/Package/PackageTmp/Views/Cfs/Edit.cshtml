@@ -1,0 +1,436 @@
+﻿@model CC.Data.CfsRow
+@{
+    ViewBag.Title = "Edit CFS";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm())
+{
+	@Html.ValidationSummary(true)
+	@Html.HiddenFor(f => f.Id)
+	@Html.HiddenFor(f => f.ClientId)
+	@Html.HiddenFor(f => f.CreatedById)
+	<fieldset>
+		<div class="editor-label">
+			@Html.LabelFor(model => model.CreatedAt)
+		</div>
+		<div class="editor-field">
+			@Html.DisplayFor(model => model.CreatedAt)
+			@Html.HiddenFor(model => model.CreatedAt)
+		</div>
+		<div class="editor-label">
+			@Html.LabelFor(model => model.ClientResponseIsYes)
+		</div>
+		<div class="editor-field">
+			@if (!Model.CfsApproved.HasValue && (!ViewBag.IsPrivatePay || !Model.ClientResponseIsYes || User.IsInRole(FixedRoles.Admin) || User.IsInRole(FixedRoles.CfsAdmin)))
+			{
+				@Html.EditorFor(model => model.ClientResponseIsYes)
+				@Html.ValidationMessageFor(model => model.ClientResponseIsYes)
+			}
+			else
+			{
+				@Html.DisplayFor(model => model.ClientResponseIsYes)
+				@Html.HiddenFor(model => model.ClientResponseIsYes)
+			}
+			@Html.DescriptionFor(model => model.ClientResponseIsYes)
+		</div>
+		<div class="editor-label">
+			@Html.LabelFor(model => model.AgencyOverRide)
+		</div>
+		<div class="editor-field">
+			@if(!Model.CfsApproved.HasValue && !Model.AgencyOverRide || User.IsInRole(FixedRoles.Admin) || User.IsInRole(FixedRoles.CfsAdmin))
+			{
+				@Html.EditorFor(model => model.AgencyOverRide)
+				@Html.ValidationMessageFor(model => model.AgencyOverRide)
+			}
+			else
+			{
+				@Html.DisplayFor(model => model.AgencyOverRide)
+				@Html.HiddenFor(model => model.AgencyOverRide)
+			}
+		</div>
+		<div id="overridefields">
+			<div class="editor-label">
+				@Html.LabelFor(model => model.OverRideReasonIds)
+			</div>
+			<div class="editor-field">
+			@if(!Model.AgencyOverRide || User.IsInRole(FixedRoles.Admin) || User.IsInRole(FixedRoles.CfsAdmin))
+			{
+				@Html.EditorFor(model => model.OverRideReasonIds)
+				@Html.ValidationMessageFor(model => model.OverRideReasonIds)
+				<script type="text/javascript">
+					$('#@Html.FieldIdFor(model => model.OverRideReasonIds)').select2({
+						width: 300,
+						allowClear: true,
+						placeholder: "Please select reason/s",
+						multiple:true,
+						initSelection: function (element, callback) {
+							var url = '@Url.Content("~/data/dataservice.svc/AgencyOverRideReasons?$filter=")';
+							var splitted = $(element).val().split(",");
+							var count = splitted.length;
+							$.each(splitted, function (i, v) {
+								url += "Id eq " + v;
+								if (i < count - 1) {
+									url += " or ";
+								}
+							});
+							console.log("url", url);
+							$.ajax(url, {
+								dataType: "json",
+							}).done(function (data) {
+								var results = $.map(data.d, function (a) { return { id: a.Id, text: a.Name } });
+								callback(results);
+							}).fail(function () {
+								callback(null);
+							});
+						},
+						ajax: {
+							url: '@Url.Content("~/data/dataservice.svc/AgencyOverRideReasons")',
+							dataType: "json",
+							data: function (term) {
+								var filters = [];
+								if (term) {
+									filters.push("substringof('" + escape(term) + "', Name) eq true");
+								}
+								return {
+									"$filter": filters.join(" and "),
+									"$select": "Id,Name"
+								};
+							},
+							results: function (data) {
+								return {
+									results: $.map(data.d, function (a) { return { id: a.Id, text: a.Name } })
+								};
+							}
+						}
+					});
+				</script>
+			}
+			else
+			{
+				<span>@(string.Join(", ", Model.AgencyOverRideReasons.Select(f => f.Name)))</span>
+				@Html.HiddenFor(model => model.OverRideReasonIds)
+			}
+			</div>
+			<div class="editor-label">
+				@Html.LabelFor(model => model.OverRideDetails)
+			</div>
+			<div class="editor-field">
+			@if (!Model.AgencyOverRide || User.IsInRole(FixedRoles.Admin) || User.IsInRole(FixedRoles.CfsAdmin))
+			{
+				@Html.EditorFor(model => model.OverRideDetails)
+				@Html.ValidationMessageFor(model => model.OverRideDetails)
+			}
+			else
+			{
+				@Html.DisplayFor(model => model.OverRideDetails)
+				@Html.HiddenFor(model => model.OverRideDetails)
+			}
+			</div>
+			<div class="editor-label">
+				@Html.LabelFor(model => model.OverrideAgencyFirstName)
+			</div>
+			<div class="editor-field">
+			@if (!Model.AgencyOverRide || User.IsInRole(FixedRoles.Admin) || User.IsInRole(FixedRoles.CfsAdmin))
+			{
+				@Html.EditorFor(model => model.OverrideAgencyFirstName)
+				@Html.ValidationMessageFor(model => model.OverrideAgencyFirstName)
+			}
+			else
+			{
+				@Html.DisplayFor(model => model.OverrideAgencyFirstName)
+				@Html.HiddenFor(model => model.OverrideAgencyFirstName)
+			}
+			</div>
+			<div class="editor-label">
+				@Html.LabelFor(model => model.OverrideAgencyLastName)
+			</div>
+			<div class="editor-field">
+			@if (!Model.AgencyOverRide || User.IsInRole(FixedRoles.Admin) || User.IsInRole(FixedRoles.CfsAdmin))
+			{
+				@Html.EditorFor(model => model.OverrideAgencyLastName)
+				@Html.ValidationMessageFor(model => model.OverrideAgencyLastName)
+			}
+			else
+			{
+				@Html.DisplayFor(model => model.OverrideAgencyLastName)
+				@Html.HiddenFor(model => model.OverrideAgencyLastName)
+			}
+			</div>
+			<div class="editor-label">
+				@Html.LabelFor(model => model.OverrideAgencyTitle)
+			</div>
+			<div class="editor-field">
+			@if (!Model.AgencyOverRide || User.IsInRole(FixedRoles.Admin) || User.IsInRole(FixedRoles.CfsAdmin))
+			{
+				@Html.EditorFor(model => model.OverrideAgencyTitle)
+				@Html.ValidationMessageFor(model => model.OverrideAgencyTitle)
+			}
+			else
+			{
+				@Html.DisplayFor(model => model.OverrideAgencyTitle)
+				@Html.HiddenFor(model => model.OverrideAgencyTitle)
+			}
+			</div>
+		</div>
+		<h4>CC decision:</h4>
+		<div class="editor-label">
+			@Html.LabelFor(model => model.CfsApproved)
+		</div>
+		<div class="editor-field">
+			@if (User.IsInRole(FixedRoles.Admin) || User.IsInRole(FixedRoles.CfsAdmin))
+			{
+				@Html.EditorFor(model => model.CfsApproved)
+				@Html.ValidationMessageFor(model => model.CfsApproved)
+			}
+			else
+			{
+				@Html.DisplayFor(model => model.CfsApproved)
+				@Html.HiddenFor(model => model.CfsApproved)
+			}
+		</div>
+		<div class="editor-label">
+			@Html.LabelFor(model => model.StartDate)
+		</div>
+		<div class="editor-field">
+			@if (User.IsInRole(FixedRoles.Admin) || User.IsInRole(FixedRoles.CfsAdmin))
+			{
+				@Html.EditorFor(model => model.StartDate)
+				@Html.ValidationMessageFor(model => model.StartDate)
+			}
+			else
+			{
+				@Html.DisplayFor(model => model.StartDate)
+				@Html.HiddenFor(model => model.StartDate)
+			}
+		</div>
+		<div class="editor-label">
+			@Html.LabelFor(model => model.EndDate)
+		</div>
+		<div class="editor-field">
+			@if (User.IsInRole(FixedRoles.Admin) || User.IsInRole(FixedRoles.CfsAdmin))
+			{
+				@Html.EditorFor(model => model.EndDate)
+				@Html.ValidationMessageFor(model => model.EndDate)
+			}
+			else
+			{
+				@Html.DisplayFor(model => model.EndDate)
+				@Html.HiddenFor(model => model.EndDate)
+			}
+		</div>
+		<div id="endDateFields">
+			<div class="editor-label">
+				@Html.LabelFor(model => model.EndDateReasonId)
+			</div>
+			<div class="editor-field">
+			@if (User.IsInRole(FixedRoles.Admin) || User.IsInRole(FixedRoles.CfsAdmin))
+			{
+				@Html.EditorFor(model => model.EndDateReasonId)
+				@Html.ValidationMessageFor(model => model.EndDate)
+				<script type="text/javascript">
+					$('#@Html.FieldIdFor(model => model.EndDateReasonId)').select2({
+						width: 300,
+						initSelection: function (element, callback) {
+							var id = $(element).val();
+							if (id !== "") {
+								$.ajax('@Url.Content("~/data/dataservice.svc/CfsEndDateReasons")' + '(' + id + ')', {
+									dataType: "json",
+								}).done(function (data) {
+									var a = data.d;
+									callback({ id: a.Id, text: a.Name });
+								}).fail(function () {
+									callback(null);
+								});
+							}
+						},
+						ajax: {
+							url: '@Url.Content("~/data/dataservice.svc/CfsEndDateReasons")',
+							dataType: "json",
+							data: function (term) {
+								var filters = [];
+								if (term) {
+									filters.push("substringof('" + escape(term) + "', Name) eq true");
+								}
+								if ('@Model.EndDateReasonId' != "4") {
+									filters.push("Show eq true");
+								}
+								return {
+									"$filter": filters.join(" and "),
+									"$select": "Id,Name"
+								};
+							},
+							results: function (data) {
+								return {
+									results: $.map(data.d, function (a) { return { id: a.Id, text: a.Name } })
+								};
+							}
+						}
+					});
+				</script>
+			}
+			else
+			{
+				@Html.DisplayFor(model => model.EndDateReasonId)
+				@Html.HiddenFor(model => model.EndDateReasonId)
+			}
+			</div>
+			<div class="editor-label">
+				@Html.LabelFor(model => model.AgencyRequestorFirstName)
+			</div>
+			<div class="editor-field">
+			@if (User.IsInRole(FixedRoles.Admin) || User.IsInRole(FixedRoles.CfsAdmin))
+			{
+				@Html.EditorFor(model => model.AgencyRequestorFirstName)
+				@Html.ValidationMessageFor(model => model.AgencyRequestorFirstName)
+			}
+			else
+			{
+				@Html.DisplayFor(model => model.AgencyRequestorFirstName)
+				@Html.HiddenFor(model => model.AgencyRequestorFirstName)
+			}
+			</div>
+			<div class="editor-label">
+				@Html.LabelFor(model => model.AgencyRequestorLastName)
+			</div>
+			<div class="editor-field">
+			@if (User.IsInRole(FixedRoles.Admin) || User.IsInRole(FixedRoles.CfsAdmin))
+			{
+				@Html.EditorFor(model => model.AgencyRequestorLastName)
+				@Html.ValidationMessageFor(model => model.AgencyRequestorLastName)
+			}
+			else
+			{
+				@Html.DisplayFor(model => model.AgencyRequestorLastName)
+				@Html.HiddenFor(model => model.AgencyRequestorLastName)
+			}
+			</div>
+			<div class="editor-label">
+				@Html.LabelFor(model => model.AgencyRequestorTitle)
+			</div>
+			<div class="editor-field">
+			@if (User.IsInRole(FixedRoles.Admin) || User.IsInRole(FixedRoles.CfsAdmin))
+			{
+				@Html.EditorFor(model => model.AgencyRequestorTitle)
+				@Html.ValidationMessageFor(model => model.AgencyRequestorTitle)
+			}
+			else
+			{
+				@Html.DisplayFor(model => model.AgencyRequestorTitle)
+				@Html.HiddenFor(model => model.AgencyRequestorTitle)
+			}
+			</div>
+			<div class="editor-label">
+				@Html.LabelFor(model => model.EndRequestDate)
+			</div>
+			<div class="editor-field">
+			@if (User.IsInRole(FixedRoles.Admin) || User.IsInRole(FixedRoles.CfsAdmin))
+			{
+				@Html.EditorFor(model => model.EndRequestDate)
+				@Html.ValidationMessageFor(model => model.EndRequestDate)
+			}
+			else
+			{
+				@Html.DisplayFor(model => model.EndRequestDate)
+				@Html.HiddenFor(model => model.EndRequestDate)
+			}
+			</div>
+		</div>
+		<div class="editor-label">
+			@Html.LabelFor(model => model.CfsAdminRemarks)
+		</div>
+		<div class="editor-field">
+		@if(User.IsInRole(FixedRoles.CfsAdmin))
+		{
+			@Html.EditorFor(model => model.CfsAdminRemarks)
+			@Html.ValidationMessageFor(model => model.CfsAdminRemarks)
+		}
+		else
+		{
+			@Html.DisplayFor(model => model.CfsAdminRemarks)
+			@Html.HiddenFor(model => model.CfsAdminRemarks)
+		}
+		</div>
+		@if(User.IsInRole(FixedRoles.CfsAdmin) || User.IsInRole(FixedRoles.Admin))
+		{
+			<div class="editor-label">
+				@Html.LabelFor(model => model.CfsAdminRejected)
+			</div>
+			<div class="editor-field">
+			@if(User.IsInRole(FixedRoles.CfsAdmin))
+			{
+				@Html.EditorFor(model => model.CfsAdminRejected)
+				@Html.ValidationMessageFor(model => model.CfsAdminRejected)
+			}
+			else
+			{
+				@Html.DisplayFor(model => model.CfsAdminRejected)
+				@Html.HiddenFor(model => model.CfsAdminRejected)
+			}
+			</div>
+			<div class="editor-label">
+				@Html.LabelFor(model => model.CfsAdminInternalRemarks)
+			</div>
+			<div class="editor-field">
+			@if(User.IsInRole(FixedRoles.CfsAdmin))
+			{
+				@Html.EditorFor(model => model.CfsAdminInternalRemarks)
+				@Html.ValidationMessageFor(model => model.CfsAdminInternalRemarks)
+			}
+			else
+			{
+				@Html.DisplayFor(model => model.CfsAdminInternalRemarks)
+				@Html.HiddenFor(model => model.CfsAdminInternalRemarks)
+			}
+			</div>
+		}
+		<p>
+			@if (!Model.CfsApproved.HasValue || User.IsInRole(FixedRoles.Admin) || User.IsInRole(FixedRoles.CfsAdmin))
+			{
+				<input type="submit" value="Update" />
+			}
+		</p>
+
+		<script type="text/javascript">
+			$(function () {
+				var $endDate = $('#@Html.FieldIdFor(f => f.EndDate)');
+				var override = $('#@Html.FieldIdFor(f => f.AgencyOverRide)');
+
+				$endDate.datepicker({
+					onSelect: function () {
+						$(this).valid();
+						$("#endDateFields").show();
+					}
+				});
+
+				$endDate.change(function () {
+					if ($endDate.val() != "") {
+						$("#endDateFields").show();
+					}
+					else {
+						$("#endDateFields").hide();
+						$("#@Html.FieldIdFor(f => f.EndDateReasonId)").select2('val', '');
+						$("#@Html.FieldIdFor(f => f.AgencyRequestorFirstName)").val('');
+						$("#@Html.FieldIdFor(f => f.AgencyRequestorLastName)").val('');
+						$("#@Html.FieldIdFor(f => f.AgencyRequestorTitle)").val('');
+						$("#@Html.FieldIdFor(f => f.EndRequestDate)").val('');
+					}
+				}).change();
+
+				override.change(function () {
+					if ($(this).is(":checked") || '@(Model.AgencyOverRide && !User.IsInRole(FixedRoles.Admin) && !User.IsInRole(FixedRoles.CfsAdmin))' == "True") {
+						$("#overridefields").show();
+					}
+					else {
+						$("#overridefields").hide();
+						$("#@Html.FieldIdFor(f => f.OverRideReasonIds)").select2('val', '');
+						$("#@Html.FieldIdFor(f => f.OverRideDetails)").val('');
+					}
+				}).change();
+			});
+		</script>
+	</fieldset>
+}
+
+@Html.ActionLink("Back to client details", "Details", "Clients", new { id = Model.ClientId }, new { })

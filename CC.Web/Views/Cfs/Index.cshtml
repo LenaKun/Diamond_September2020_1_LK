@@ -1,0 +1,64 @@
+﻿@model int
+@{
+	Layout = null;
+	var dtId = Guid.NewGuid();
+}
+
+<table id="@dtId"></table>
+
+@if ((User.IsInRole(FixedRoles.Admin) || User.IsInRole(FixedRoles.CfsAdmin) || User.IsInRole(FixedRoles.Ser) || User.IsInRole(FixedRoles.AgencyUser) || User.IsInRole(FixedRoles.SerAndReviewer) || User.IsInRole(FixedRoles.AgencyUserAndReviewer)) && ViewBag.CanAddNew)
+{ 
+	<div>
+		@Html.ActionLink("Add New", "Create", new { clientId = Model })
+	</div>
+}
+<script>
+	$(function () {
+		var oTable = $('table#@dtId').dataTable({
+			"aaSorting": [[0, "desc"]],
+			"bProcessing": true,
+			"bFilter": false,
+			"bServerSide": true,
+			"bJQueryUI": true,
+			"cache": false,
+			"bLengthChange": false,
+			"sPaginationType": "full_numbers",
+			"sAjaxSource": '@Url.Action("Data")',
+			"fnServerParams": function (aoData) {
+				aoData.push({ name: "ClientId", value: '@Model' });
+			},
+			"fnRowCallback": function (nRow, aData, iDisplayIndex) {
+				/* set tr id. assume the id is in the first column of data */
+				if (aData["Id"]) {
+					$(nRow).attr("id", aData["Id"]);
+				}
+				return nRow;
+			},
+			"aoColumns": [{
+				"mData": "CreatedAt",
+				"sTitle": "Created At",
+				"mRender": function (val) { return renderDate(val); },
+			},
+			{
+				"mData": "ClientResponseIsYes",
+				"sTitle": "Client Response",
+				"mRender": function (val) { return val ? "Yes" : "No"; }
+			}, {
+				"mData": "StartDate",
+				"sTitle": "Start Date",
+				"mRender": function (val) { return renderDate(val); }
+			}, {
+				"mData": "EndDate",
+				"sTitle": "End Date",
+				"mRender": function (val) { return renderDate(val); }
+			}, {
+				"mData": "Id",
+				"sTitle": "",
+				"bVisible": '@(User.IsInRole(FixedRoles.Admin) || User.IsInRole(FixedRoles.CfsAdmin) || User.IsInRole(FixedRoles.Ser) || User.IsInRole(FixedRoles.AgencyUser) || User.IsInRole(FixedRoles.SerAndReviewer) || User.IsInRole(FixedRoles.AgencyUserAndReviewer))' == "True",
+				"mRender": function (val) {
+					return '<a href="@Url.Content("/Cfs/Details/")' + val + '">Details</a>';
+				}
+			}]
+		});
+	});
+</script>

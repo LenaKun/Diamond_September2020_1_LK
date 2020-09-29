@@ -1,0 +1,6 @@
+﻿CREATE TABLE [dbo].[Global]
+(
+	[Id] INT NOT NULL PRIMARY KEY IDENTITY, 
+    [Date] DATETIME NULL, 
+    [Message] NVARCHAR(50) NULL
+)

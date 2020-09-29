@@ -1,0 +1,68 @@
+﻿@model CC.Data.ClientContact
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+
+<form action="@Url.Action("Delete", new { id = Model.Id })" method="post" enctype="multipart/form-data">
+@Html.ValidationSummary(true)
+<fieldset>
+	<legend>Record will be deleted.</legend>
+
+	<div class="editor-label">
+		@Html.LabelFor(model => model.ContactDate)
+	</div>
+	<div class="editor-field">
+		@Html.DisplayFor(model => model.ContactDate)
+	</div>
+
+	<div class="editor-label">
+		@Html.LabelFor(model => model.ContactedUsing)
+	</div>
+	<div class="editor-field">
+		@Html.DisplayFor(model => model.ContactedUsing)
+	</div>
+
+	<div class="editor-label">
+		@Html.LabelFor(model => model.Contacted)
+	</div>
+	<div class="editor-field">
+		@Html.DisplayFor(model => model.Contacted)
+	</div>
+
+	<div class="editor-label">
+		@Html.LabelFor(model => model.CcStaffContact)
+	</div>
+	<div class="editor-field">
+		@Html.DisplayFor(model => model.CcStaffContact)
+	</div>
+
+	<div class="editor-label">
+		@Html.LabelFor(model => model.ReasonForContact)
+	</div>
+	<div class="editor-field">
+		@Html.DisplayFor(model => model.ReasonForContact)
+	</div>
+
+	<div class="editor-label">
+		@Html.LabelFor(model => model.ResponseRecievedDate)
+	</div>
+	<div class="editor-field">
+		@Html.DisplayFor(model => model.ResponseRecievedDate)
+	</div>
+
+	<div class="editor-label">
+		@Html.LabelFor(model => model.Filename)
+	</div>
+	<div class="editor-field">
+		@Html.DisplayFor(f => f.Filename)
+	</div>
+
+	<p>
+		<input type="submit" value="Delete" />
+	</p>
+</fieldset>
+</form>
+
+<div>
+	@Html.ActionLink("Back to Client Details", "Details", "Clients", new { id = Model.ClientId }, null)
+</div>

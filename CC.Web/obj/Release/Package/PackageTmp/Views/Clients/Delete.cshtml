@@ -1,0 +1,88 @@
+﻿@model Client
+@{
+	ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+@Html.ValidationSummary()
+
+@Html.DisplayFor(model => model)
+
+@if(ViewData.ModelState.IsValid)
+{
+	<form id="DeleteForm" action="@Url.Action("Delete")" method="post">
+	@Html.HiddenFor(model => model.Id)
+	<input type="hidden" name="DeleteReasonId" />
+	<button type="button" class="delete">Delete</button>
+	<script>
+		$('.delete').click(function () {
+			$('#deleteDialog').dialog({
+				modal: true,
+				close: function (event, ui) {
+					$(this).find(':radio').removeAttr('checked');
+					$(this).find('ul.error').html('');
+				},
+				buttons: [
+					{
+						text: 'OK', click: function () {
+							var $form = $('form#DeleteForm');
+							var $dialogForm = $('form#DialogForm');
+						
+							if ($dialogForm.valid()) {
+								var rid = $dialogForm.find('input[name="deleteReason"]:checked').val();
+								$form.find('input[name="DeleteReasonId"]').val(rid);
+								$form.submit();
+							}
+						}
+					},
+					{
+						text: 'Cancel', click: function () {
+							$(this).dialog('close');
+						}
+					},
+				]
+			});
+
+		});
+	</script>
+	</form>
+}
+<div id="deleteDialog" style="display:none">
+	<form id="DialogForm">
+		@if (ViewBag.HasDaf)
+		{
+			<p>The selected client has a DAF associated. Deleting the client will make the DAF deleted as well. The deleted DAF would be viewable (without the client details) in the Deleted DAF list.</p>
+		}
+	<ul class="error"></ul>
+	<ul>
+		<li>
+			<input type="radio" name="deleteReason" value="@((int)Client.DeleteReasons.Duplicate)" id="@(Client.DeleteReasons.Duplicate)" />
+			<label for="@(Client.DeleteReasons.Duplicate)">Duplicate client</label>
+		</li>
+
+		<li>
+			<input type="radio" name="deleteReason" value="@((int)Client.DeleteReasons.Ineligible)" id="@(Client.DeleteReasons.Ineligible)"  />
+			<label for="@(Client.DeleteReasons.Ineligible)">Ineligible client</label>
+		</li>
+	</ul>
+	</form>
+	<script>
+		$('#DialogForm').validate({
+			rules: {
+				deleteReason: { required: true }
+			},
+			messages: {
+				deleteReason: "Please specify a reason"
+			},
+			showErrors: function (errorMap, errorList) {
+				var summary = $('form#DialogForm').find('ul.error');
+				summary.html('');
+				$.each(errorList, function () {
+					summary.append('<li>' + this.message + '</li>');
+				});
+				this.defaultShowErrors();
+			},
+		})
+	</script>
+</div>

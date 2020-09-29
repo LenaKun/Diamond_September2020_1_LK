@@ -1,0 +1,228 @@
+﻿@model SubmissionDetails
+<p>
+    You may now submit the report to the Program Assistant for approval.
+</p>
+<p>
+    NOTICE! You will not be able to report any other services for this period on this
+			App after Submission.
+</p>
+
+<button type="button" class="Submit Report" id="submit-button">
+    Submit Report</button>
+<div id="dialog-submit" title="Submit main report">
+    @using (Html.BeginForm("Submit", "MainReports", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+	{ 
+        <p>
+            NOTICE! You will not be able to report any other services for this period on this
+			App after Submission.
+        </p>
+     
+        @Html.HiddenFor(f => f.Id)
+        @Html.ValidationSummary()
+        <ul>
+            @if (Model.RemarksRequired)
+            {
+                <li>
+                    @Html.LabelFor(f => f.Remarks)
+                <div>
+                    @Html.EditorFor(f => f.Remarks)
+                </div>
+            </li>
+        }
+
+            @if (Model.AdministrativeOverheadOverflow)
+            {
+                <li>
+                    @Html.HiddenFor(f => f.AdministrativeOverheadOverflow)
+                    @Html.LabelFor(f => f.AdministrativeOverheadOverflowReason)
+                    <div>
+                        @Html.EditorFor(f => f.AdministrativeOverheadOverflowReason)
+                    </div>
+                </li>
+
+            }
+            @if (Model.ProgramOverviewRequired)
+            {
+                <li>
+                    @Html.LabelFor(f => f.ProgramOverview)
+                <p>
+                    Program Overview should include:<br />
+                </p>
+                <ol>
+                    <li>Economic and/or social changes your community experienced since the last reporting period (ex. changes in Government benefits, public policy, etc.)</li>
+                    <li>Challenges that arose during the previous reporting period and agency responded to them</li>
+                    <li>Recent developments in the program that took place since the last reporting period</li>
+                    <li>Changes in project management since your last report</li>
+                    <li>
+                        <p>If this is the final report for this grant, please address the following:</p>
+
+                        <ul>
+                            <li>How the success and/or impact of this project are measured.</li>
+                            <li>Attach a client profile that includes client’s feedback and his/her overall experience in the program.</li>
+                        </ul>
+
+                    </li>
+                    <li>If this report is RETURNED TO AGENCY, and no changes to Program Overview then just specify &quot;No Changes&quot;</li>
+                </ol>
+                @Html.HiddenFor(f => f.ProgramOverviewRequired)
+                <div>
+                    @Html.EditorFor(f => f.ProgramOverview)
+                </div>
+                <div class="editor-label">
+                    @Html.LabelFor(f => f.ProgramOverviewFileName)
+                    @Html.HiddenFor(f => f.ProgramOverviewUploadedFile)
+                </div>
+                <div class="editor-field">
+                    <input type="file" name="programOverviewFile" id="pof" />
+                    <script>
+                        $("#pof").change(function () {
+                            if ($(this).val() !== "") {
+                                var file = $('#pof')[0].files[0];
+                                var totalSize = file.size;
+                                if ($('#mhsaf').val() !== "") {
+                                    var mf = $('#mhsaf')[0].files[0];
+                                    totalSize += mf.size;
+                                }
+                                if (totalSize > 20000000) {
+                                    alert("Uploading size limit is 20MB in total");
+                                    $('#pof').val('');
+                                }
+                            }
+                        });
+                    </script>
+                </div>
+                @if (string.IsNullOrEmpty(Model.ProgramOverviewUploadedFile))
+                {
+                    <span>N/A</span>
+                }
+                else
+                {
+                    <a href="@Url.Action("ProgramOverviewFile", "MainReports", new { id = Model.Id })">@Model.ProgramOverviewUploadedFile</a>
+                }
+            </li>
+        }
+
+
+            <li>
+                <p>
+                    <input type="checkbox" id="DuplicateClientsAknowledgement" data-val="true" data-val-required="*" name="asdf" />
+                    <label for="DuplicateClientsAknowledgement">
+                        Successful submission of reports on homecare hours does not confirm universal validation of those hours.   For audit purposes, each client’s file must contain complete records indicating that homecare hours provided do not exceed weekly homecare hours to which that client is entitled.
+                    </label>
+
+                </p>
+            </li>
+
+            <li>
+                @Html.HiddenFor(f => f.DisclaimerRequired1)
+                @Html.EditorFor(f => f.Disclaimer1)
+                @Html.LabelFor(f => f.Disclaimer1)
+            </li>
+
+            <li>
+                <p>
+                    @Html.EditorFor(f => f.AcMeetingHeld)
+                    @Html.LabelFor(f => f.AcMeetingHeld)
+                </p>
+                <div class="mhsa" style="display: none">
+                    <p>
+                        @Html.LabelFor(f => f.Mhsa)
+                    </p>
+                    @Html.EditorFor(f => f.Mhsa)
+                    <div class="editor-label">
+                        @Html.LabelFor(f => f.MhsaFileName)
+                        @Html.HiddenFor(f => f.MhsaUploadedFile)
+                    </div>
+                    <div class="editor-field">
+                        <input type="file" name="mhsaFile" id="mhsaf" />
+                        <script>
+                            $("#mhsaf").change(function () {
+                                if ($(this).val() !== "") {
+                                    var file = $('#mhsaf')[0].files[0];
+                                    var totalSize = file.size;
+                                    if ($('#pof').val() !== "") {
+                                        var mf = $('#pof')[0].files[0];
+                                        totalSize += mf.size;
+                                    }
+                                    if (totalSize > 20000000) {
+                                        alert("Uploading size limit is 20MB in total");
+                                        $('#mhsaf').val('');
+                                    }
+                                }
+                            });
+                        </script>
+                    </div>
+                    @if (string.IsNullOrEmpty(Model.MhsaUploadedFile))
+                    {
+                        <span>N/A</span>
+                    }
+                    else
+                    {
+                        <a href="@Url.Action("MhsaFile", "MainReports", new { id = Model.Id })">@Model.MhsaUploadedFile</a>
+                    }
+                </div>
+            </li>
+            <li>
+                @Html.HiddenFor(f => f.DisclaimerRequired)
+                @Html.EditorFor(f => f.Disclaimer)
+                @Html.LabelFor(f => f.Disclaimer)
+            </li>
+            <li>
+                <p>
+                    Please confirm your password to proceed:
+                </p>
+                <div>
+                    <div class="display-item">
+                        @Html.LabelFor(f => f.UserName)
+                    @Html.DisplayFor(f => f.UserName)
+                </div>
+            </div>
+            <div>
+                <div class="display-item">
+                    @Html.LabelFor(f => f.Password)
+                @Html.EditorFor(f => f.Password)
+            </div>
+        </div>
+        </li>
+        </ul>
+	}
+</div>
+<script type="text/javascript">
+    $(function () {
+        $('#dialog-submit').dialog({
+            autoOpen: false,
+            resizable: false,
+            height: 'auto',
+            width: 'auto',
+            modal: true,
+            buttons: {
+                "Submit": function () {
+                    if (typeof tinyMCE !== "undefined") {
+                        tinyMCE.triggerSave();
+                    }
+                    $(this).find('form:first-child').submit();
+                },
+                "Cancel": function () {
+                    $(this).find(':input').val('');
+                    $(this).dialog("close");
+                }
+            }
+        });
+        $('#submit-button').click(function () {
+            $('#dialog-submit').dialog('open');
+        });
+        $('#@Html.FieldIdFor(f => f.AcMeetingHeld)').change(function () {
+            if ($(this).attr('checked')) {
+                $('div.mhsa').show();
+                $('#@Html.FieldIdFor(f => f.Mhsa)').attr('data-val', "true");
+                $('#@Html.FieldIdFor(f => f.Mhsa)').attr('data-val-required', "The Holocaust Survivor Advisory Committee Minutes field is required.");
+            }
+            else {
+                $('div.mhsa').hide();
+                $('#@Html.FieldIdFor(f => f.Mhsa)').removeAttr('data-val', "true");
+                $('#@Html.FieldIdFor(f => f.Mhsa)').removeAttr('data-val-required');
+            }
+        }).change();
+
+    });
+</script>

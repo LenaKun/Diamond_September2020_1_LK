@@ -1,0 +1,44 @@
+﻿@model SubReportSelectWeekStartDayModel
+@{
+	ViewBag.Title = "Create - Select Week Start Day";
+}
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm())
+{
+	@Html.ValidationSummary()
+	@Html.HiddenFor(f => f.AgencyId)
+	@Html.HiddenFor(f => f.AppId)
+	@Html.HiddenFor(f => f.MainReportId)
+	@Html.HiddenFor(f => f.AppBudgetServiceId)
+	<p>
+		Please select a week start day:
+	</p>
+	<table>
+		<tr>
+			<th rowspan="2">
+				Report Details:
+			</th>
+			<th>
+				Week Start Day
+			</th>
+		</tr>
+		<tr>
+			<td>
+				@Html.DropDownListFor(f => f.WeekStartDayId, Model.WeekStartDay, "")
+			</td>
+		</tr>
+	</table>
+	<fieldset>
+		<button type="submit" class="submit">
+			Continue
+		</button>
+	</fieldset>
+	<script>
+		$(".submit").on("click", function (e) {
+			if (!confirm("Once confirmed, the start day for the week cannot be changed for the remainder of the year. Are you sure you have selected the correct day?")) {
+				e.preventDefault();
+			}
+		});
+	</script>
+}

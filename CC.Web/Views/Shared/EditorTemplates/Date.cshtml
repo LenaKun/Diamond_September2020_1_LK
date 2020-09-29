@@ -1,0 +1,12 @@
+﻿@model Nullable<System.DateTime>
+@{
+    string value = Model.HasValue ? Model.Value.ToShortDateString() : "";
+    string name = ViewData.TemplateInfo.HtmlFieldPrefix;
+    string id = ViewData["prefix"] == null ? string.Empty : ViewData["prefix"].ToString();
+        id+= name.Replace(".", "_");
+}
+@Html.TextBox("", value, new { @class = "date " + (string)ViewData["class"], id=id })
+@{
+    
+}
+

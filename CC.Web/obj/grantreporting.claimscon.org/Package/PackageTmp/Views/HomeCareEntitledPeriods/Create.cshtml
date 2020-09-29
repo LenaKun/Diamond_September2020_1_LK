@@ -1,0 +1,31 @@
+﻿@model HomeCareEntitledPeriodInsertModel
+@{
+    Layout = null;
+}
+@if (ViewBag.Success == true)
+{
+    <script type="text/javascript">
+        window.location.reload(true);
+    </script>
+}
+@using (Html.BeginForm("Create", "HomeCareEntitledPeriods", FormMethod.Post))
+{
+    <div class="floatContainer">
+        @Html.ValidationSummary()
+        <fieldset>
+            <legend>Add new service entitled period</legend>
+            @Html.HiddenFor(f => f.ClientId)
+			<table>
+				<tr>
+					<td>@Html.LabelFor(f => f.StartDate):</td>
+					<td>@Html.EditorFor(f => f.StartDate, "Date", new { prefix = "HomeCareEntitledPeriods" })</td>
+				</tr>
+				<tr>
+					<td>@Html.LabelFor(f => f.EndDateDisplay):</td>
+					<td>@Html.EditorFor(f => f.EndDateDisplay, new { prefix = "HomeCareEntitledPeriods" })</td>
+				</tr>
+			</table>
+        </fieldset>
+        <input type="submit" id="createHcep" class="confirm" value="Save Changes" />
+    </div>
+}

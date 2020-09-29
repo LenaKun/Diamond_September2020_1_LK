@@ -1,0 +1,11 @@
+﻿@model IEnumerable<SubReportHcImportRow>
+@Html.Grid(Model).Columns(column =>
+{
+	column.For(f => f.Index);
+	column.For(f => f.ClientId).Named("CCID");
+	column.For(f => f.ClientName).Named("Client Name");
+	column.For(f => f.Rate);
+	column.For(f => f.Date);
+	column.For(f => f.Quantity);
+	column.For(f => Html.UnsortedList(f.Errors)).Named("Errors");
+})

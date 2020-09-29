@@ -1,0 +1,17 @@
+﻿@model Nullable<DateTime>
+
+@{
+	var fieldName = ViewData.TemplateInfo.HtmlFieldPrefix;
+	var stringVal = Model.HasValue ? Model.Value.ToShortDateString() : string.Empty;
+}
+<span>
+	@Html.TextBox("", stringVal)
+	<script>
+		$(function () {
+			$('input[name="@fieldName"]').datepicker({
+				minDate: "01 Jan 1753",
+				maxDate: "08 Feb 1946"
+			});
+		});
+	</script>
+</span>

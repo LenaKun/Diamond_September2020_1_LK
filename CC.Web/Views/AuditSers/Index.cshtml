@@ -1,0 +1,25 @@
+﻿@{
+	ViewBag.Title = "Audit Sers";
+}
+
+<h2>Audit</h2>
+
+@using (Html.BeginForm())
+{
+	@Html.ValidationSummary(true)
+	<fieldset>
+		<div>
+			@foreach (SelectListItem item in ViewBag.Sers)
+			{
+				<div>
+					Active Audit
+					@Html.CheckBox("sids", item.Selected, new { value = item.Value, id = "s_" + item.Value })
+					<label for="@("s_" + item.Value)">@item.Text</label>
+				</div>
+			}
+			<p>
+				<input type="submit" value="Save" />
+			</p>
+		</div>
+	</fieldset>
+}

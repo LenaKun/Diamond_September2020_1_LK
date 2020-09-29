@@ -1,0 +1,113 @@
+﻿@model CC.Data.HCWeeklyCap
+
+@{
+	ViewBag.Title = "Homecare Cap";
+}
+<h2>@ViewBag.Title</h2>
+
+@section Header{
+	<style>
+		.homecareCapsFloat {
+			float: left;
+			margin-right: 2em;
+		}
+	</style>
+}
+@using (Html.BeginForm())
+{
+	@Html.ValidationSummary();
+	<table>
+		<tr>
+			<th>
+				@Html.LabelFor(f => f.Id)
+			</th>
+			<td>
+				@Html.DisplayFor(f => f.Id)
+				@Html.HiddenFor(f => f.Id)
+			</td>
+		</tr>
+		<tr>
+			<th>
+				@Html.LabelFor(f => f.Name)
+			</th>
+			<td>
+				@Html.EditorFor(f => f.Name)
+			</td>
+		</tr>
+		<tr>
+			<th>
+				@Html.LabelFor(f => f.StartDateDisplay)
+			</th>
+			<td>
+				@Html.EditorFor(f => f.StartDateDisplay)
+			</td>
+		</tr>
+		<tr>
+			<th>
+				@Html.LabelFor(f => f.EndDateDisplay)
+			</th>
+			<td>
+				@Html.EditorFor(f => f.EndDateDisplay)
+			</td>
+		</tr>
+		<tr>
+			<th>
+				@Html.LabelFor(f => f.Active)
+			</th>
+			<td>
+				@Html.EditorFor(f => f.Active)
+			</td>
+		</tr>
+		<tr>
+			<th>
+				@Html.LabelFor(f => f.CapPerPerson)
+			</th>
+			<td>
+				@Html.EditorFor(f => f.CapPerPerson)
+				@Html.DropDownListFor(f => f.CurrencyId, null)
+			</td>
+		</tr>
+	</table>
+	<button type="submit">Submit</button>
+
+	<div class="floatContainer">
+		<h3>Funds</h3>
+
+		@foreach (IEnumerable<SelectListItem> partition in ((IEnumerable<SelectListItem>)ViewBag.Funds).ToList().Partition(3))
+		{
+			<div style="float:left; width: 30%">
+				@foreach (SelectListItem item in partition)
+				{
+					<div>
+						<input type="checkbox" name="fIds" value="@item.Value" id="@string.Format("f{0}",item.Value)"
+							   @if (item.Selected) { @("checked='checked'") ; } />
+						<label for="@string.Format("f{0}",item.Value)">@item.Text</label>
+					</div>
+				}
+			</div>
+		}
+	</div>
+	<div class="floatContainer">
+		<h3>Countries</h3>
+
+		@foreach (IEnumerable<SelectListItem> partition in ((IEnumerable<SelectListItem>)ViewBag.Countries).ToList().Partition(3))
+		{
+			<div style="float:left; width: 30%">
+				@foreach (SelectListItem item in partition)
+				{
+					<div>
+						<input type="checkbox" name="cIds" value="@item.Value" id="@string.Format("c{0}",item.Value)"
+							   @if (item.Selected) { @("checked='checked'") ; } />
+						<label for="@string.Format("c{0}",item.Value)">@item.Text</label>
+					</div>
+				}
+			</div>
+		}
+	</div>
+
+	<p>
+		<button type="submit">Submit</button>
+	</p>
+
+
+}

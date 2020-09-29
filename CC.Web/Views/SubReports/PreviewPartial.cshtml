@@ -1,0 +1,62 @@
+﻿@model ISubReportImportModel
+<table>
+	<tr>
+		<th style="white-space: nowrap">
+			Report Details:
+		</th>
+		<td style="width: 100%">
+			<div class="display-item">
+				@Html.LabelFor(f => f.SubReport.AppBudgetService.Agency.Name, "Agency")
+				@Html.DisplayFor(f => f.SubReport.AppBudgetService.Agency.Name)
+			</div>
+			<div class="display-item">
+				@Html.LabelFor(f => f.SubReport.AppBudgetService.Agency.AgencyGroup.Name, "Ser")
+				@Html.DisplayFor(f => f.SubReport.AppBudgetService.Agency.AgencyGroup.Name)
+			</div>
+			<div class="display-item">
+				@Html.LabelFor(f => f.SubReport.AppBudgetService.Service.Name, "Service")
+				@Html.DisplayFor(f => f.SubReport.AppBudgetService.Service.ServiceType.Name)-
+				@Html.DisplayFor(f => f.SubReport.AppBudgetService.Service.Name)
+			</div>
+			<div class="display-item">
+				@Html.LabelFor(f => f.SubReport.Id, "Detailed Report Id")
+				@Html.DisplayFor(f => f.SubReport.Id)
+			</div>
+			<div class="display-item">
+				@Html.LabelFor(f => f.SubReport.MainReport.Status, "Financial Report Status")
+				@Html.DisplayFor(f => f.SubReport.MainReport.Status)
+			</div>
+			<div class="display-item">
+				@Html.LabelFor(f => f.SubReport.MainReport.Period, "Financial Report Period")
+				@Html.DisplayFor(f => f.SubReport.MainReport.Period, "MonthsRange")
+			</div>
+		</td>
+	</tr>
+</table>
+@Html.ValidationSummary("Errors were found:")
+
+
+@Html.Partial(Model.ReportingMethod.ToString() + "PreviewTable", Model.GData)
+
+@if (Model.PData != null)
+{
+	<h3>Personnel:</h3>
+	@Html.Grid(Model.PData as IEnumerable<PersonnelImportRow>).Columns(column=>{
+		column.For(f=>f.Index);
+		column.For(f=>f.Title);
+		column.For(f=>f.Name);
+		column.For(f=>f.PositionTypeId);
+		column.For(f=>f.Services);
+		column.For(f=>Html.UnsortedList(f.Errors));
+	})
+}
+<script id="dt" type="text/javascript">
+	//simple datatable init
+	$(document).ready(function () {
+		$('table.grid').dataTable({
+			"bJQueryUI": true,
+			"sPaginationType": "full_numbers",
+			"aaSorting": [[0, "asc"]]
+		});
+	});		
+</script>

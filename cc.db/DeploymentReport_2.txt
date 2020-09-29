@@ -1,0 +1,23 @@
+﻿** Highlights
+     Tables that will be rebuilt
+       None
+     Clustered indexes that will be dropped
+       None
+     Clustered indexes that will be created
+       None
+     Possible data issues
+       None
+
+** User actions
+     Drop
+       on [dbo].[Services] (Check Constraint)
+       on [dbo].[Services] (Check Constraint)
+     Create
+       [dbo].[ImportClientReports].[IX_ImportClientReports_XX] (Index)
+       Check Constraint on [dbo].[Services].[MinExpPercentage] (Check Constraint)
+       Check Constraint on [dbo].[Services].[MaxExpPercentage] (Check Constraint)
+     Alter
+       [dbo].[ImportCri] (Procedure)
+       [dbo].[ImportCriEmergency] (Procedure)
+
+** Supporting actions

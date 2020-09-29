@@ -1,0 +1,10 @@
+﻿@model SubReportImportModelBase
+@{
+    ViewBag.Title = "PreviewInvalid";
+}
+
+<h2>Invalid Data</h2>
+
+<a href="@Url.Action("Create","SubReports", new {Id=Model.SubReport.Id, AppBudgetServiceId = Model.SubReport.AppBudgetServiceId, MainReportId = Model.SubReport.MainReportId})" class="button">Back to create options</a>
+
+@Html.Partial("PreviewPartial",Model)

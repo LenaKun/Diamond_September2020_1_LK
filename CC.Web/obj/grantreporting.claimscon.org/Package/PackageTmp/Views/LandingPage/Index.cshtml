@@ -1,0 +1,19 @@
+﻿@model LandingPageModel
+@{
+    ViewBag.Title = "Landing Page";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<p>@Html.DisplayFor(f => f.TopMessageContent)</p>
+
+@if(Model.FilesList.Count > 0)
+{
+	<h3>Files</h3>
+	<ul class="landing_page_list">
+		@foreach(var f in Model.FilesList)
+		{
+			<li><a href="@Url.Action("DownloadFile", "LandingPage", new { id = f.Id })">@f.Description</a></li>
+		}
+	</ul>
+}

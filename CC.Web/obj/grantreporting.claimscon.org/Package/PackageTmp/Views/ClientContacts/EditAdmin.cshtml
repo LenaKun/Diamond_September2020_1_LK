@@ -1,0 +1,86 @@
+﻿@model CC.Data.ClientContact
+<form action="@Url.Action("Edit", new { id = Model.Id })" method="post" enctype="multipart/form-data">
+@Html.ValidationSummary(true)
+<fieldset>
+	<legend>ClientContact</legend>
+
+	<div class="editor-label">
+		@Html.LabelFor(model => model.ContactDate)
+	</div>
+	<div class="editor-field">
+		@Html.EditorFor(model => model.ContactDate)
+		@Html.ValidationMessageFor(model => model.ContactDate)
+	</div>
+
+	<div class="editor-label">
+		@Html.LabelFor(model => model.ContactedUsing)
+	</div>
+	<div class="editor-field">
+		@Html.EditorFor(model => model.ContactedUsing)
+		@Html.ValidationMessageFor(model => model.ContactedUsing)
+	</div>
+
+	<div class="editor-label">
+		@Html.LabelFor(model => model.Contacted)
+	</div>
+	<div class="editor-field">
+		@Html.DropDownListFor(model => model.Contacted, new SelectList(Model.ContactedOptions, "Value", "Text"), string.Empty)
+		@Html.ValidationMessageFor(model => model.Contacted)
+	</div>
+
+	<div class="editor-label">
+		@Html.LabelFor(model => model.CcStaffContact)
+	</div>
+	<div class="editor-field">
+		@Html.EditorFor(model => model.CcStaffContact)
+		@Html.ValidationMessageFor(model => model.CcStaffContact)
+	</div>
+
+	<div class="editor-label">
+		@Html.LabelFor(model => model.ReasonForContact)
+	</div>
+	<div class="editor-field">
+		@Html.EditorFor(model => model.ReasonForContact)
+		@Html.ValidationMessageFor(model => model.ReasonForContact)
+	</div>
+
+	<div class="editor-label">
+		@Html.LabelFor(model => model.ResponseRecievedDate)
+	</div>
+	<div class="editor-field">
+		@Html.EditorFor(model => model.ResponseRecievedDate)
+		@Html.ValidationMessageFor(model => model.ResponseRecievedDate)
+	</div>
+
+
+	<div class="editor-label">
+		@Html.LabelFor(model => model.Filename)
+	</div>
+	<div class="editor-field">
+		<div id="ExistingFile">
+		@Html.HiddenFor(f => f.Filename)
+		<a id="FileLink" href="@Url.Action("Download","ClientContacts",new {id=Model.Id})">@Html.DisplayFor(f=>f.Filename)</a>
+
+		</div>
+		<input id="file" type="file" name="file" style="display:none" />
+		<button type="button" id="RemoveFile">Delete File</button>
+		<script>
+			$('#RemoveFile').click(function () {
+				$('[name="@Html.FieldNameFor(f=>f.Filename)"]').val('');
+				$('#ExistingFile').hide();
+				$('#file').show();
+				$(this).hide();
+			});
+		</script>
+		
+	</div>
+
+	<p>
+		<input type="submit" value="Update" />
+	</p>
+</fieldset>
+</form>
+
+<div>
+	@Html.ActionLink("Back to Client Details", "Details", "Clients", new { id = Model.ClientId }, null)
+</div>

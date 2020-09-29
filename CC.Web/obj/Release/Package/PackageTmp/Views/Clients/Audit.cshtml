@@ -1,0 +1,88 @@
+﻿@model int
+@{
+    ViewBag.Title = null;
+}
+<!--~/Views/Clients/Audit.cshtml start @Model-->
+<div class="dataTablesContainer">
+    <table class="layoutTable">
+        <tr>
+            <td class="labelCell">
+                <label>
+                    Filter By:</label>
+            </td>
+            <td id="historyFilter">
+                Date From:&nbsp;
+                <input type="text" class="date" id="fromDate" />
+                Date To:&nbsp;&nbsp;
+                <input type="text" class="date" id="toDate" />
+                Field Name:&nbsp;
+                <input type="text" id="fieldName" />
+                &nbsp;
+                <button type="button" id="go" class="button">
+                    Go</button>
+                &nbsp;
+                <button type="button" id="reset" class="button">
+                    Reset</button>
+            </td>
+        </tr>
+    </table>
+    <table id="historyDataTable">
+        <thead>
+            <tr>
+                <th>
+                    Date
+                </th>
+                <th>
+                    Field Name
+                </th>
+                <th>
+                    Old Value
+                </th>
+                <th>
+                    New Value
+                </th>
+                <th>
+                    Updated By
+                </th>
+            </tr>
+        </thead>
+    </table>
+</div>
+<script type="text/javascript">
+    $(function () {
+        var historyGridContainer = $('div#dataTablesContainer')
+        var historyDataTable = $('table#historyDataTable').dataTable({
+            "bProcessing": true,
+            "bLengthChange": false,
+            "bFilter": false,
+            "bServerSide": true,
+            "bJQueryUI": true,
+            "aaSorting": [[0, 'desc']],
+            "sPaginationType": "full_numbers",
+            "sAjaxSource": '@Url.Action("HistoryDataTables")',
+            "fnServerData": function (sSource, aoData, fnCallback) {
+
+                var ff = $('#historyFilter :input').each(function () {
+                    aoData.push({ "name": $(this).attr('id'), "value": $(this).val() })
+                });
+                aoData.push(ff);
+                var clientId = '@Model';
+                aoData.push({ "name": "clientId", 'value': clientId });
+
+                // etc
+                $.getJSON(sSource, aoData, function (json) { fnCallback(json) });
+            }
+
+        });
+
+        $('#historyFilter #go').click(function () {
+            historyDataTable.fnDraw();
+        });
+
+        $('#historyFilter #reset').click(function () {
+            $(this).closest('td').find('input').val('');
+            historyDataTable.fnDraw();
+        });
+    });
+</script>
+<!--~/Views/Clients/Audit.cshtml end-->

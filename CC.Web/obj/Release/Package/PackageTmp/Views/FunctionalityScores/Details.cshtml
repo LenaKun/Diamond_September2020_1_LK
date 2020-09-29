@@ -1,0 +1,35 @@
+﻿@model CC.Data.FunctionalityScore
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>FunctionalityScore</legend>
+
+    <div class="display-label">Client</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Client.NationalId)
+    </div>
+
+    <div class="display-label">DiagnosticScore</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.DiagnosticScore)
+    </div>
+
+    <div class="display-label">StartDate</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.StartDate)
+    </div>
+
+    <div class="display-label">FunctionalityLevel</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.FunctionalityLevel.Name)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

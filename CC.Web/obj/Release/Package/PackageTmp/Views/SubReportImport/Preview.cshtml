@@ -1,0 +1,132 @@
+﻿@model  CC.Web.Models.Import.ClientReports.PreviewModel
+@{
+	ViewBag.Title = "Preview";
+}
+@section Header{
+	<script>
+		$(document).ready(function () {
+		
+		
+
+			var dataUrl = '@Url.Action("PreviewData", new { Id = Model.Id })';
+			window.pDataTableReady = false;
+			window.pDataTable = $('table#preview').dataTable({
+				"aaSorting": [[1, "asc"], [2, "asc"], [3, "asc"]],
+				"bServerSide": true,
+				"sAjaxSource": dataUrl,
+				"fnDrawCallBack":function(){
+					window.pDataTableReady = true;
+				},
+				"fnServerParams": function (aoData) {
+					
+					aoData.push({ name: "IE", value: Math.random() });
+				},
+				"fnRowCallback": function (nRow, aData, iDisplayIndex) { $(nRow).attr("data-id", aData[5]); return nRow; },
+				"aoColumns": @Html.Raw(Json.Encode(Model.Columns))
+				});
+		});
+
+	</script>
+	<script>
+
+		$(document).ready(function(){
+			var model = JSON.parse('@Html.Raw(Json.Encode(Model))');
+			var showStatus = function(data){
+				if(data.Finished)
+				{
+					$('div.processing').hide();
+					$('div.finished').show();
+					if(data.IsValid){
+						//show the preview button
+						$('div#import').show();
+						$('div.validation-summary-errors ul').html('');
+					}
+					else{
+						//show error message
+						var ul=$('div.validation-summary-errors ul');
+						if(ul.length==0)
+						{
+							ul=$('<ul>');
+							$('div.validation-summary-wrapper').append($('<div/>').addClass('validation-summary-errors').append(ul));
+						}
+
+						ul.html('<li>One or more rows contains data that can not be imported.</li>');
+						$('div#import').hide();
+					}
+				}
+				else
+				{
+					$('div.processing').show();
+					$('div.finished').hide();
+					$('div#import').hide();
+				}
+
+				
+			};
+
+			if(!model.Finished)
+			{
+			
+				var statusUpdate = function(){
+					var statusUrl ='@(Url.Action("Status", new { Id = Model.Id }))'; 
+					$.getJSON(statusUrl+ '?IE='+ Math.random(), function(data)
+					{
+						if(window.pDataTableReady){
+							window.pDataTableReady = false;
+							window.pDataTable.fnDraw();
+						}
+						showStatus(data);
+						if(!data.Finished)
+						{
+							var handle = setTimeout(statusUpdate, 3000);
+						}
+					});
+				};
+				var handle = setTimeout(statusUpdate, 3000);
+			}
+
+			showStatus(model);
+
+		
+	
+		
+		});
+	</script>
+
+}
+<h2>Preview</h2>
+
+<div class="validation-summary-wrapper">
+@Html.ValidationSummary()
+</div>
+
+<table id="preview">
+	<thead>
+		<tr>
+		</tr>
+	</thead>
+</table>
+
+
+
+<div id="status">
+	<div class="processing">
+		Status: processing file...
+		<img src="@Url.Content("~/Content/img/ajax-loader.gif")" alt="processing..." />
+	</div>
+	<div class="finished">
+		Status: file processing finished.
+		<form action="@Url.Action("CancelImport","SubReportImport", new { id=Model.Id})" method="post">
+			<p><input type="submit" class="button" value="Cancel" /></p>
+		</form>
+	</div>
+
+</div>
+
+<div id="import" style="display: none">
+	<form action="@Url.Action("Import", new { id = Model.Id })" method="post">
+	<p>
+		<input type="submit" class="button" value="Import" />
+	</p>
+	</form>
+</div>

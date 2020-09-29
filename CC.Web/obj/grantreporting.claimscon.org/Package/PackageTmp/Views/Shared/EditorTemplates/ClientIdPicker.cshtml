@@ -1,0 +1,56 @@
+﻿@model Nullable<int>
+@{
+    Layout = null;
+	var id = Guid.NewGuid();
+}
+@Html.TextBox("", Model)
+<script>
+	(function () {
+		var pageSize = 30;
+		var clientMap = function (a) {
+			return { id: a.Id, text: a.FirstName + ' ' + a.LastName };
+		}
+		$('#@Html.FieldIdFor(f=>f)').select2({
+			width: 300,
+			quietMillis: 250,
+			placeholder: "Select an option",
+			allowClear: true,
+			initSelection: function (element, callback) {
+				var id = $(element).val();
+				if (id !== "") {
+					$.getJSON('@Url.Content("~/data/dataservice.svc/Clients")' + '(' + id + ')', {
+						$select: "Id,FirstName,LastName"
+					}).done(function (data) {
+						var a = data.d;
+						callback({ id: a.Id, text: a.FirstName + " " + a.LastName });
+					});
+				}
+			},
+			ajax: {
+				url: '@Url.Content("~/data/dataservice.svc/Clients")',
+				dataType: "json",
+				data: function (term, page) {
+
+					var result = {
+						"$select": "Id,FirstName,LastName,AgencyId",
+						"$top": pageSize + 1,
+						"$skip": (page - 1) * pageSize,
+						"$orderby": "FirstName,LastName"
+					};
+					if (term) {
+						result.$filter = "substringof('" + escape(term) + "', FirstName) eq true or substringof('" + escape(term) + "', LastName) eq true";
+					}
+					return result;
+				},
+				results: function (data) {
+					var more = data.d.length > pageSize;
+					var items = data.d.splice(0, pageSize);
+					return {
+						more: more,
+						results: $.map(items, clientMap)
+					};
+				}
+			}
+		});
+	})();
+</script>

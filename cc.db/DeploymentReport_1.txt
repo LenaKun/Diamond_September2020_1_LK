@@ -1,0 +1,22 @@
+﻿** Highlights
+     Tables that will be rebuilt
+       None
+     Clustered indexes that will be dropped
+       None
+     Clustered indexes that will be created
+       None
+     Possible data issues
+       None
+
+** User actions
+     Drop
+       on [dbo].[Services] (Check Constraint)
+       on [dbo].[Services] (Check Constraint)
+     Alter
+       [cc.db] (Assembly)
+       [dbo].[ImportHcepProc] (Procedure)
+     Create
+       Check Constraint on [dbo].[Services].[MinExpPercentage] (Check Constraint)
+       Check Constraint on [dbo].[Services].[MaxExpPercentage] (Check Constraint)
+
+** Supporting actions

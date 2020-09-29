@@ -1,0 +1,61 @@
+﻿@model CC.Data.Client
+<div class="column2">
+    @Html.HiddenFor(model => model.Id)
+    <div class="editor-item">
+        @Html.LabelFor(model => model.PobCity):
+        @Html.DisplayFor(model => model.PobCity)
+    </div>
+    <div class="editor-item">
+        @Html.LabelFor(model => model.BirthCountryId):
+        @Html.DisplayFor(model => model.BirthCountry.Name)
+    </div>
+    <div class="editor-item">
+        @Html.LabelFor(model => model.PrevFirstName):
+        @Html.DisplayFor(model => model.PrevFirstName)
+    </div>
+    <div class="editor-item">
+        @Html.LabelFor(model => model.PrevLastName):
+        @Html.DisplayFor(model => model.PrevLastName)
+    </div>
+    <div class="editor-item">
+        @Html.LabelFor(model => model.OtherFirstName):
+        @Html.DisplayFor(model => model.OtherFirstName)
+    </div>
+    @if (!(FixedRoles.BMF).HasFlag((FixedRoles)(ViewBag.Permissions as CC.Data.Services.IPermissionsBase).User.RoleId))
+    {
+        <div class="editor-item">
+            @Html.LabelFor(model => model.CompensationProgramName):
+            @Html.DisplayFor(model => model.CompensationProgramName)
+        </div>
+    }
+</div>
+<div class="column2">
+    <div class="editor-item">
+        @Html.LabelFor(model => model.OtherLastName):
+        @Html.DisplayFor(model => model.OtherLastName)
+    </div>
+    <div class="editor-item">
+        @Html.LabelFor(model => model.OtherDob):
+        @Html.DisplayFor(model => model.OtherDob)
+    </div>
+    <div class="editor-item">
+        @Html.LabelFor(model => model.OtherIdTypeId):
+        @Html.DisplayFor(model => model.OtherNationalIdType.Name)
+    </div>
+    <div class="editor-item">
+        @Html.LabelFor(model => model.OtherId):
+        @Html.DisplayFor(model => model.OtherId)
+    </div>
+    <div class="editor-item">
+        @Html.LabelFor(model => model.OtherAddress):
+        @Html.DisplayFor(model => model.OtherAddress)
+    </div>
+    <div class="editor-item">
+        @Html.LabelFor(model => model.PreviousAddressInIsrael):
+        @Html.DisplayFor(model => model.PreviousAddressInIsrael)
+    </div>
+    <div class="editor-item">
+        @Html.LabelFor(model => model.Phone):
+        @Html.DisplayFor(model => model.Phone)
+    </div>
+</div>

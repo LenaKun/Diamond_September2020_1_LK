@@ -1,0 +1,540 @@
+D:\Diamond_01282020\cc\Code\CC.Web\bin\CC.Web.dll.config
+D:\Diamond_01282020\cc\Code\CC.Web\bin\CC.Web.dll
+D:\Diamond_01282020\cc\Code\CC.Web\bin\CC.Web.pdb
+D:\Diamond_01282020\cc\Code\CC.Web\bin\CC.Data.dll
+D:\Diamond_01282020\cc\Code\CC.Web\bin\CC.Extensions.dll
+D:\Diamond_01282020\cc\Code\CC.Web\bin\Common.Logging.dll
+D:\Diamond_01282020\cc\Code\CC.Web\bin\CsvHelper.dll
+D:\Diamond_01282020\cc\Code\CC.Web\bin\DocumentFormat.OpenXml.dll
+D:\Diamond_01282020\cc\Code\CC.Web\bin\EntityFramework.dll
+D:\Diamond_01282020\cc\Code\CC.Web\bin\itextsharp.dll
+D:\Diamond_01282020\cc\Code\CC.Web\bin\log4net.dll
+D:\Diamond_01282020\cc\Code\CC.Web\bin\Microsoft.Web.Infrastructure.dll
+D:\Diamond_01282020\cc\Code\CC.Web\bin\Microsoft.Web.Mvc.dll
+D:\Diamond_01282020\cc\Code\CC.Web\bin\MvcContrib.dll
+D:\Diamond_01282020\cc\Code\CC.Web\bin\Newtonsoft.Json.dll
+D:\Diamond_01282020\cc\Code\CC.Web\bin\p4b.Web.Export.dll
+D:\Diamond_01282020\cc\Code\CC.Web\bin\protobuf-net.dll
+D:\Diamond_01282020\cc\Code\CC.Web\bin\Quartz.dll
+D:\Diamond_01282020\cc\Code\CC.Web\bin\System.Linq.Dynamic.dll
+D:\Diamond_01282020\cc\Code\CC.Web\bin\System.Web.Helpers.dll
+D:\Diamond_01282020\cc\Code\CC.Web\bin\System.Web.Mvc.dll
+D:\Diamond_01282020\cc\Code\CC.Web\bin\System.Web.Razor.dll
+D:\Diamond_01282020\cc\Code\CC.Web\bin\System.Web.Routing.dll
+D:\Diamond_01282020\cc\Code\CC.Web\bin\System.Web.WebPages.Deployment.dll
+D:\Diamond_01282020\cc\Code\CC.Web\bin\System.Web.WebPages.dll
+D:\Diamond_01282020\cc\Code\CC.Web\bin\System.Web.WebPages.Razor.dll
+D:\Diamond_01282020\cc\Code\CC.Web\bin\WebActivator.dll
+D:\Diamond_01282020\cc\Code\CC.Web\bin\CC.Extensions.pdb
+D:\Diamond_01282020\cc\Code\CC.Web\bin\CC.Data.pdb
+D:\Diamond_01282020\cc\Code\CC.Web\bin\CC.Data.dll.config
+D:\Diamond_01282020\cc\Code\CC.Web\bin\p4b.Web.Export.pdb
+D:\Diamond_01282020\cc\Code\CC.Web\bin\p4b.Web.Export.dll.config
+D:\Diamond_01282020\cc\Code\CC.Web\bin\Common.Logging.xml
+D:\Diamond_01282020\cc\Code\CC.Web\bin\CsvHelper.xml
+D:\Diamond_01282020\cc\Code\CC.Web\bin\DocumentFormat.OpenXml.xml
+D:\Diamond_01282020\cc\Code\CC.Web\bin\EntityFramework.xml
+D:\Diamond_01282020\cc\Code\CC.Web\bin\itextsharp.xml
+D:\Diamond_01282020\cc\Code\CC.Web\bin\log4net.xml
+D:\Diamond_01282020\cc\Code\CC.Web\bin\MvcContrib.xml
+D:\Diamond_01282020\cc\Code\CC.Web\bin\Newtonsoft.Json.xml
+D:\Diamond_01282020\cc\Code\CC.Web\bin\protobuf-net.pdb
+D:\Diamond_01282020\cc\Code\CC.Web\bin\protobuf-net.xml
+D:\Diamond_01282020\cc\Code\CC.Web\bin\Quartz.xml
+D:\Diamond_01282020\cc\Code\CC.Web\bin\System.Web.Helpers.xml
+D:\Diamond_01282020\cc\Code\CC.Web\bin\System.Web.Mvc.xml
+D:\Diamond_01282020\cc\Code\CC.Web\bin\System.Web.Razor.xml
+D:\Diamond_01282020\cc\Code\CC.Web\bin\System.Web.WebPages.xml
+D:\Diamond_01282020\cc\Code\CC.Web\bin\System.Web.WebPages.Deployment.xml
+D:\Diamond_01282020\cc\Code\CC.Web\bin\System.Web.WebPages.Razor.xml
+D:\Diamond_01282020\cc\Code\CC.Web\obj\Debug\CC.Web.csprojAssemblyReference.cache
+D:\Diamond_01282020\cc\Code\CC.Web\obj\Debug\CC.Web.csproj.CoreCompileInputs.cache
+D:\Diamond_01282020\cc\Code\CC.Web\obj\Debug\CC.Web.csproj.CopyComplete
+D:\Diamond_01282020\cc\Code\CC.Web\obj\Debug\CC.Web.dll
+D:\Diamond_01282020\cc\Code\CC.Web\obj\Debug\CC.Web.pdb
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\CC.Web.dll.config
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\CC.Web.dll
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\CC.Web.pdb
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\CC.Data.dll
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\CC.Extensions.dll
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\Common.Logging.dll
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\CsvHelper.dll
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\DocumentFormat.OpenXml.dll
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\EntityFramework.dll
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\itextsharp.dll
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\log4net.dll
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\Microsoft.Web.Infrastructure.dll
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\Microsoft.Web.Mvc.dll
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\MvcContrib.dll
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\Newtonsoft.Json.dll
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\p4b.Web.Export.dll
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\protobuf-net.dll
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\Quartz.dll
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\System.Linq.Dynamic.dll
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\System.Web.Helpers.dll
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\System.Web.Mvc.dll
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\System.Web.Razor.dll
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\System.Web.Routing.dll
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\System.Web.WebPages.Deployment.dll
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\System.Web.WebPages.dll
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\System.Web.WebPages.Razor.dll
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\WebActivator.dll
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\CC.Extensions.pdb
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\CC.Data.pdb
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\CC.Data.dll.config
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\p4b.Web.Export.pdb
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\p4b.Web.Export.dll.config
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\Common.Logging.xml
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\CsvHelper.xml
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\DocumentFormat.OpenXml.xml
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\EntityFramework.xml
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\itextsharp.xml
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\log4net.xml
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\MvcContrib.xml
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\Newtonsoft.Json.xml
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\protobuf-net.pdb
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\protobuf-net.xml
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\Quartz.xml
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\System.Web.Helpers.xml
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\System.Web.Mvc.xml
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\System.Web.Razor.xml
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\System.Web.WebPages.xml
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\System.Web.WebPages.Deployment.xml
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\System.Web.WebPages.Razor.xml
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Web\obj\Debug\CC.Web.csprojAssemblyReference.cache
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Web\obj\Debug\CC.Web.csproj.CoreCompileInputs.cache
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Web\obj\Debug\CC.Web.csproj.CopyComplete
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Web\obj\Debug\CC.Web.dll
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Web\obj\Debug\CC.Web.pdb
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\CC.Web.dll.config
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\CC.Web.dll
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\CC.Web.pdb
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\CC.Data.dll
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\CC.Extensions.dll
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\Common.Logging.dll
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\CsvHelper.dll
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\DocumentFormat.OpenXml.dll
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\EntityFramework.dll
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\itextsharp.dll
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\log4net.dll
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\Microsoft.Web.Infrastructure.dll
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\Microsoft.Web.Mvc.dll
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\MvcContrib.dll
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\Newtonsoft.Json.dll
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\p4b.Web.Export.dll
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\protobuf-net.dll
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\Quartz.dll
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\System.Linq.Dynamic.dll
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\System.Web.Helpers.dll
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\System.Web.Mvc.dll
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\System.Web.Razor.dll
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\System.Web.Routing.dll
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\System.Web.WebPages.Deployment.dll
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\System.Web.WebPages.dll
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\System.Web.WebPages.Razor.dll
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\WebActivator.dll
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\CC.Extensions.pdb
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\CC.Data.pdb
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\CC.Data.dll.config
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\p4b.Web.Export.pdb
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\p4b.Web.Export.dll.config
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\Common.Logging.xml
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\CsvHelper.xml
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\DocumentFormat.OpenXml.xml
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\EntityFramework.xml
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\itextsharp.xml
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\log4net.xml
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\MvcContrib.xml
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\Newtonsoft.Json.xml
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\protobuf-net.pdb
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\protobuf-net.xml
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\Quartz.xml
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\System.Web.Helpers.xml
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\System.Web.Mvc.xml
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\System.Web.Razor.xml
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\System.Web.WebPages.xml
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\System.Web.WebPages.Deployment.xml
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Web\bin\System.Web.WebPages.Razor.xml
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Web\obj\Debug\CC.Web.csprojAssemblyReference.cache
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Web\obj\Debug\CC.Web.csproj.CoreCompileInputs.cache
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Web\obj\Debug\CC.Web.csproj.CopyComplete
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Web\obj\Debug\CC.Web.dll
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Web\obj\Debug\CC.Web.pdb
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Web\bin\CC.Web.dll.config
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Web\bin\CC.Web.dll
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Web\bin\CC.Web.pdb
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Web\bin\CC.Data.dll
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Web\bin\CC.Extensions.dll
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Web\bin\Common.Logging.dll
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Web\bin\CsvHelper.dll
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Web\bin\DocumentFormat.OpenXml.dll
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Web\bin\EntityFramework.dll
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Web\bin\itextsharp.dll
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Web\bin\log4net.dll
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Web\bin\Microsoft.Web.Infrastructure.dll
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Web\bin\Microsoft.Web.Mvc.dll
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Web\bin\MvcContrib.dll
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Web\bin\Newtonsoft.Json.dll
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Web\bin\p4b.Web.Export.dll
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Web\bin\protobuf-net.dll
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Web\bin\Quartz.dll
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Web\bin\System.Linq.Dynamic.dll
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Web\bin\System.Web.Helpers.dll
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Web\bin\System.Web.Mvc.dll
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Web\bin\System.Web.Razor.dll
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Web\bin\System.Web.Routing.dll
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Web\bin\System.Web.WebPages.Deployment.dll
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Web\bin\System.Web.WebPages.dll
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Web\bin\System.Web.WebPages.Razor.dll
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Web\bin\WebActivator.dll
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Web\bin\CC.Extensions.pdb
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Web\bin\CC.Data.pdb
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Web\bin\CC.Data.dll.config
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Web\bin\p4b.Web.Export.pdb
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Web\bin\p4b.Web.Export.dll.config
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Web\bin\Common.Logging.xml
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Web\bin\CsvHelper.xml
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Web\bin\DocumentFormat.OpenXml.xml
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Web\bin\EntityFramework.xml
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Web\bin\itextsharp.xml
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Web\bin\log4net.xml
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Web\bin\MvcContrib.xml
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Web\bin\Newtonsoft.Json.xml
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Web\bin\protobuf-net.pdb
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Web\bin\protobuf-net.xml
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Web\bin\Quartz.xml
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Web\bin\System.Web.Helpers.xml
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Web\bin\System.Web.Mvc.xml
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Web\bin\System.Web.Razor.xml
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Web\bin\System.Web.WebPages.xml
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Web\bin\System.Web.WebPages.Deployment.xml
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Web\bin\System.Web.WebPages.Razor.xml
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Web\obj\Debug\CC.Web.csprojAssemblyReference.cache
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Web\obj\Debug\CC.Web.csproj.CoreCompileInputs.cache
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Web\obj\Debug\CC.Web.csproj.CopyComplete
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Web\obj\Debug\CC.Web.dll
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Web\obj\Debug\CC.Web.pdb
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\obj\Debug\CC.Web.csprojAssemblyReference.cache
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\obj\Debug\CC.Web.csproj.CoreCompileInputs.cache
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\obj\Debug\CC.Web.dll
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\obj\Debug\CC.Web.pdb
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\CC.Web.dll.config
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\CC.Web.dll
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\CC.Web.pdb
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\CC.Data.dll
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\CC.Extensions.dll
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\Common.Logging.dll
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\CsvHelper.dll
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\DocumentFormat.OpenXml.dll
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\EntityFramework.dll
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\itextsharp.dll
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\log4net.dll
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\Microsoft.Web.Infrastructure.dll
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\Microsoft.Web.Mvc.dll
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\MvcContrib.dll
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\Newtonsoft.Json.dll
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\p4b.Web.Export.dll
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\protobuf-net.dll
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\Quartz.dll
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\System.Linq.Dynamic.dll
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\System.Web.Helpers.dll
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\System.Web.Mvc.dll
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\System.Web.Razor.dll
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\System.Web.Routing.dll
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\System.Web.WebPages.Deployment.dll
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\System.Web.WebPages.dll
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\System.Web.WebPages.Razor.dll
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\WebActivator.dll
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\CC.Extensions.pdb
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\CC.Data.pdb
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\CC.Data.dll.config
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\p4b.Web.Export.pdb
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\p4b.Web.Export.dll.config
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\Common.Logging.xml
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\CsvHelper.xml
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\DocumentFormat.OpenXml.xml
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\EntityFramework.xml
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\itextsharp.xml
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\log4net.xml
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\MvcContrib.xml
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\Newtonsoft.Json.xml
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\protobuf-net.pdb
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\protobuf-net.xml
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\Quartz.xml
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\System.Web.Helpers.xml
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\System.Web.Mvc.xml
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\System.Web.Razor.xml
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\System.Web.WebPages.xml
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\System.Web.WebPages.Deployment.xml
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\System.Web.WebPages.Razor.xml
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\obj\Debug\CC.Web.csproj.CopyComplete
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\CC.Web.dll.config
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\CC.Web.dll
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\CC.Web.pdb
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\CC.Data.dll
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\CC.Extensions.dll
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\Common.Logging.dll
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\CsvHelper.dll
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\DocumentFormat.OpenXml.dll
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\EntityFramework.dll
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\itextsharp.dll
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\log4net.dll
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\Microsoft.Web.Infrastructure.dll
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\Microsoft.Web.Mvc.dll
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\MvcContrib.dll
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\Newtonsoft.Json.dll
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\p4b.Web.Export.dll
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\protobuf-net.dll
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\Quartz.dll
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\System.Linq.Dynamic.dll
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\System.Web.Helpers.dll
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\System.Web.Mvc.dll
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\System.Web.Razor.dll
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\System.Web.Routing.dll
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\System.Web.WebPages.Deployment.dll
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\System.Web.WebPages.dll
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\System.Web.WebPages.Razor.dll
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\WebActivator.dll
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\CC.Extensions.pdb
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\CC.Data.pdb
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\CC.Data.dll.config
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\p4b.Web.Export.pdb
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\p4b.Web.Export.dll.config
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\Common.Logging.xml
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\CsvHelper.xml
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\DocumentFormat.OpenXml.xml
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\EntityFramework.xml
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\itextsharp.xml
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\log4net.xml
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\MvcContrib.xml
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\Newtonsoft.Json.xml
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\protobuf-net.pdb
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\protobuf-net.xml
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\Quartz.xml
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\System.Web.Helpers.xml
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\System.Web.Mvc.xml
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\System.Web.Razor.xml
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\System.Web.WebPages.xml
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\System.Web.WebPages.Deployment.xml
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\System.Web.WebPages.Razor.xml
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\obj\Debug\CC.Web.csprojAssemblyReference.cache
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\obj\Debug\CC.Web.csproj.CoreCompileInputs.cache
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\obj\Debug\CC.Web.csproj.CopyComplete
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\obj\Debug\CC.Web.dll
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\obj\Debug\CC.Web.pdb
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\obj\Debug\CC.Web.csprojAssemblyReference.cache
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\obj\Debug\CC.Web.csproj.CoreCompileInputs.cache
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\obj\Debug\CC.Web.dll
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\obj\Debug\CC.Web.pdb
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\CC.Web.dll.config
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\CC.Web.dll
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\CC.Web.pdb
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\CC.Data.dll
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\CC.Extensions.dll
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\Common.Logging.dll
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\CsvHelper.dll
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\DocumentFormat.OpenXml.dll
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\EntityFramework.dll
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\itextsharp.dll
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\log4net.dll
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\Microsoft.Web.Infrastructure.dll
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\Microsoft.Web.Mvc.dll
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\MvcContrib.dll
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\Newtonsoft.Json.dll
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\p4b.Web.Export.dll
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\protobuf-net.dll
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\Quartz.dll
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\System.Linq.Dynamic.dll
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\System.Web.Helpers.dll
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\System.Web.Mvc.dll
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\System.Web.Razor.dll
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\System.Web.Routing.dll
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\System.Web.WebPages.Deployment.dll
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\System.Web.WebPages.dll
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\System.Web.WebPages.Razor.dll
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\WebActivator.dll
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\CC.Extensions.pdb
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\CC.Data.pdb
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\CC.Data.dll.config
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\p4b.Web.Export.pdb
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\p4b.Web.Export.dll.config
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\Common.Logging.xml
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\CsvHelper.xml
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\DocumentFormat.OpenXml.xml
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\EntityFramework.xml
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\itextsharp.xml
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\log4net.xml
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\MvcContrib.xml
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\Newtonsoft.Json.xml
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\protobuf-net.pdb
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\protobuf-net.xml
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\Quartz.xml
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\System.Web.Helpers.xml
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\System.Web.Mvc.xml
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\System.Web.Razor.xml
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\System.Web.WebPages.xml
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\System.Web.WebPages.Deployment.xml
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\bin\System.Web.WebPages.Razor.xml
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Web\obj\Debug\CC.Web.csproj.CopyComplete
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Web\bin\CC.Web.dll.config
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Web\bin\CC.Web.dll
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Web\bin\CC.Web.pdb
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Web\bin\CC.Data.dll
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Web\bin\CC.Extensions.dll
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Web\bin\Common.Logging.dll
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Web\bin\CsvHelper.dll
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Web\bin\DocumentFormat.OpenXml.dll
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Web\bin\EntityFramework.dll
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Web\bin\itextsharp.dll
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Web\bin\log4net.dll
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Web\bin\Microsoft.Web.Infrastructure.dll
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Web\bin\Microsoft.Web.Mvc.dll
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Web\bin\MvcContrib.dll
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Web\bin\Newtonsoft.Json.dll
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Web\bin\p4b.Web.Export.dll
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Web\bin\protobuf-net.dll
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Web\bin\Quartz.dll
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Web\bin\System.Linq.Dynamic.dll
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Web\bin\System.Web.Helpers.dll
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Web\bin\System.Web.Mvc.dll
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Web\bin\System.Web.Razor.dll
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Web\bin\System.Web.Routing.dll
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Web\bin\System.Web.WebPages.Deployment.dll
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Web\bin\System.Web.WebPages.dll
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Web\bin\System.Web.WebPages.Razor.dll
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Web\bin\WebActivator.dll
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Web\bin\CC.Extensions.pdb
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Web\bin\CC.Data.pdb
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Web\bin\CC.Data.dll.config
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Web\bin\p4b.Web.Export.pdb
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Web\bin\p4b.Web.Export.dll.config
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Web\bin\Common.Logging.xml
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Web\bin\CsvHelper.xml
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Web\bin\DocumentFormat.OpenXml.xml
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Web\bin\EntityFramework.xml
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Web\bin\itextsharp.xml
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Web\bin\log4net.xml
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Web\bin\MvcContrib.xml
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Web\bin\Newtonsoft.Json.xml
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Web\bin\protobuf-net.pdb
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Web\bin\protobuf-net.xml
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Web\bin\Quartz.xml
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Web\bin\System.Web.Helpers.xml
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Web\bin\System.Web.Mvc.xml
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Web\bin\System.Web.Razor.xml
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Web\bin\System.Web.WebPages.xml
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Web\bin\System.Web.WebPages.Deployment.xml
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Web\bin\System.Web.WebPages.Razor.xml
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Web\obj\Debug\CC.Web.csprojAssemblyReference.cache
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Web\obj\Debug\CC.Web.csproj.CoreCompileInputs.cache
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Web\obj\Debug\CC.Web.csproj.CopyComplete
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Web\obj\Debug\CC.Web.dll
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Web\obj\Debug\CC.Web.pdb
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Web\bin\CC.Web.dll.config
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Web\bin\CC.Web.dll
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Web\bin\CC.Web.pdb
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Web\bin\CC.Data.dll
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Web\bin\CC.Extensions.dll
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Web\bin\Common.Logging.dll
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Web\bin\CsvHelper.dll
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Web\bin\DocumentFormat.OpenXml.dll
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Web\bin\EntityFramework.dll
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Web\bin\itextsharp.dll
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Web\bin\log4net.dll
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Web\bin\Microsoft.Web.Infrastructure.dll
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Web\bin\Microsoft.Web.Mvc.dll
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Web\bin\MvcContrib.dll
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Web\bin\Newtonsoft.Json.dll
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Web\bin\p4b.Web.Export.dll
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Web\bin\protobuf-net.dll
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Web\bin\Quartz.dll
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Web\bin\System.Linq.Dynamic.dll
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Web\bin\System.Web.Helpers.dll
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Web\bin\System.Web.Mvc.dll
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Web\bin\System.Web.Razor.dll
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Web\bin\System.Web.Routing.dll
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Web\bin\System.Web.WebPages.Deployment.dll
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Web\bin\System.Web.WebPages.dll
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Web\bin\System.Web.WebPages.Razor.dll
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Web\bin\WebActivator.dll
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Web\bin\CC.Extensions.pdb
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Web\bin\CC.Data.pdb
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Web\bin\CC.Data.dll.config
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Web\bin\p4b.Web.Export.pdb
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Web\bin\p4b.Web.Export.dll.config
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Web\bin\Common.Logging.xml
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Web\bin\CsvHelper.xml
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Web\bin\DocumentFormat.OpenXml.xml
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Web\bin\EntityFramework.xml
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Web\bin\itextsharp.xml
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Web\bin\log4net.xml
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Web\bin\MvcContrib.xml
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Web\bin\Newtonsoft.Json.xml
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Web\bin\protobuf-net.pdb
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Web\bin\protobuf-net.xml
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Web\bin\Quartz.xml
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Web\bin\System.Web.Helpers.xml
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Web\bin\System.Web.Mvc.xml
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Web\bin\System.Web.Razor.xml
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Web\bin\System.Web.WebPages.xml
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Web\bin\System.Web.WebPages.Deployment.xml
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Web\bin\System.Web.WebPages.Razor.xml
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Web\obj\Debug\CC.Web.csprojAssemblyReference.cache
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Web\obj\Debug\CC.Web.csproj.CoreCompileInputs.cache
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Web\obj\Debug\CC.Web.csproj.CopyComplete
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Web\obj\Debug\CC.Web.dll
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Web\obj\Debug\CC.Web.pdb
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Web\bin\CC.Web.dll.config
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Web\bin\CC.Web.dll
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Web\bin\CC.Web.pdb
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Web\bin\CC.Data.dll
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Web\bin\CC.Extensions.dll
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Web\bin\Common.Logging.dll
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Web\bin\CsvHelper.dll
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Web\bin\DocumentFormat.OpenXml.dll
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Web\bin\EntityFramework.dll
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Web\bin\itextsharp.dll
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Web\bin\log4net.dll
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Web\bin\Microsoft.Web.Infrastructure.dll
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Web\bin\Microsoft.Web.Mvc.dll
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Web\bin\MvcContrib.dll
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Web\bin\Newtonsoft.Json.dll
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Web\bin\p4b.Web.Export.dll
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Web\bin\protobuf-net.dll
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Web\bin\Quartz.dll
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Web\bin\System.Linq.Dynamic.dll
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Web\bin\System.Web.Helpers.dll
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Web\bin\System.Web.Mvc.dll
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Web\bin\System.Web.Razor.dll
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Web\bin\System.Web.Routing.dll
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Web\bin\System.Web.WebPages.Deployment.dll
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Web\bin\System.Web.WebPages.dll
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Web\bin\System.Web.WebPages.Razor.dll
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Web\bin\WebActivator.dll
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Web\bin\CC.Extensions.pdb
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Web\bin\CC.Data.pdb
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Web\bin\CC.Data.dll.config
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Web\bin\p4b.Web.Export.pdb
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Web\bin\p4b.Web.Export.dll.config
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Web\bin\Common.Logging.xml
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Web\bin\CsvHelper.xml
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Web\bin\DocumentFormat.OpenXml.xml
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Web\bin\EntityFramework.xml
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Web\bin\itextsharp.xml
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Web\bin\log4net.xml
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Web\bin\MvcContrib.xml
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Web\bin\Newtonsoft.Json.xml
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Web\bin\protobuf-net.pdb
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Web\bin\protobuf-net.xml
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Web\bin\Quartz.xml
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Web\bin\System.Web.Helpers.xml
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Web\bin\System.Web.Mvc.xml
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Web\bin\System.Web.Razor.xml
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Web\bin\System.Web.WebPages.xml
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Web\bin\System.Web.WebPages.Deployment.xml
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Web\bin\System.Web.WebPages.Razor.xml
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Web\obj\Debug\CC.Web.csprojAssemblyReference.cache
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Web\obj\Debug\CC.Web.csproj.CoreCompileInputs.cache
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Web\obj\Debug\CC.Web.csproj.CopyComplete
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Web\obj\Debug\CC.Web.dll
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Web\obj\Debug\CC.Web.pdb

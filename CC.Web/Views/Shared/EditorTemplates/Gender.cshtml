@@ -1,0 +1,13 @@
+﻿@model Nullable<int>
+@{
+
+    var sl = new List<SelectListItem>
+    {
+        new SelectListItem{Value="", Text="N/A", Selected = Model==null},
+        new SelectListItem{Value=((int)Client.Genders.Female).ToString(), Text=Client.Genders.Female.ToString(), Selected = Model==(int)Client.Genders.Female},
+        new SelectListItem{Value=((int)Client.Genders.Male).ToString(), Text=Client.Genders.Male.ToString(), Selected = Model==(int)Client.Genders.Male},
+    };
+}
+@Html.DropDownList("", sl)
+
+

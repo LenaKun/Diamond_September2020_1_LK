@@ -1,0 +1,253 @@
+﻿@model LandingPageSettingsModel
+@{
+	ViewBag.Title = "Landing Page";
+	string successMsg = ViewBag.SuccessMsg;
+}
+
+<h2>@ViewBag.Title</h2>
+
+@Html.ValidationSummary()
+@if (!string.IsNullOrEmpty(successMsg))
+{
+	<div><label class="validation-summary-success">@successMsg</label></div>
+}
+
+<form action="@Url.Action("UpdateMessageContent")" method="post">
+	<fieldset>
+		<legend>Message Content</legend>
+		<div class="editor-item">
+			@Html.EditorFor(f => f.LandingPageMessageContent)
+		</div>
+		<div class="clear editor-item">
+			<button type="submit">Save</button>
+		</div>
+	</fieldset>
+</form>
+
+<fieldset>
+	<legend>Files List</legend>
+	<table id="filesTable" class="grid"></table>
+	<script>
+		$(function () {
+
+			var editLink = '<button type="button" class="edit">Edit</button>';
+			var deleteLink = '<button type="button" class="delete">Delete</button>';
+
+			var oTable = $('#filesTable').dataTable({
+				"aaSorting": [[1, "desc"]],
+				"bProcessing": true,
+				"bServerSide": true,
+				"bJQueryUI": true,
+				"sPaginationType": "full_numbers",
+				"sAjaxSource": '@Url.Action("IndexData")',
+				"fnServerParams": function (aoData) {
+				},
+				"fnRowCallback": function (nRow, aData, iDisplayIndex) {
+				},
+				"aoColumns": [{
+					"mData": "Id",
+					"sTitle": "Id",
+					"bVisible": false
+				}, {
+					"mData": "Order",
+					"sTitle": "Order",
+					"sClass": "edit"
+				}, {
+					"mData": "Description",
+					"sTitle": "Description",
+					"sClass": "edit"
+				}, {
+					"mData": "UploadDate",
+					"sTitle": "Uploaded At",
+					"mRender": function (val) { return renderDate(val); },
+				}, {
+					"mData": "Id",
+					"sTitle": "",
+					"bSortable": false,
+					"sClass": 'control',
+					"mRender": function (val, type, full) { return editLink; }
+				}, {
+					"mData": "Id",
+					"sTitle": "",
+					"bSortable": false,
+					"mRender": function (val, type, full) { return deleteLink; }
+				}]
+			});
+		});
+
+		$(document).ready(function () {
+			$('table.grid input').live('keypress', function (event) {
+				switch (event.keyCode) {
+					case 13:
+						$(this).closest('tr').find('button.update').click();
+						break;
+					case 27:
+						$(this).closest('tr').find('button.cancel').click();
+						break;
+				}
+			});
+			$('table.grid button.delete').live('click', function () {
+				if (confirm("This file will be deleted. Are you sure?")) {
+					var $tr = $(this).closest('tr');
+					var tr = $tr.get(0);
+					var dataTable = $('table.grid').dataTable();
+					var data = dataTable.fnGetData(tr);
+					$.ajax({
+						url: '@Url.Action("DeleteFile")',
+						type: 'POST',
+						dataType: 'json',
+						data: { Id: data.Id },
+					}).done(function (data) {
+						if (data.success) {
+							$('table.grid').dataTable().fnDraw(false);
+						}
+						else {
+							var errstr = '<ul class="error"><li>' + data.errors.join('</li><li>') + '</li></ul>';
+							alert(errstr);
+						}
+					}).fail(function () {
+						alert('The current file Row not contains data to delete');
+					});
+				}
+			});
+			$('table.grid button.edit').live('click', function () {
+				$('table.grid button.cancel').click();
+				var $tr = $(this).closest('tr');
+				var tr = $tr.get(0);
+				var dataTable = $('table.grid').dataTable();
+				var data = dataTable.fnGetData(tr);
+				var settings = dataTable.fnSettings();
+				var columns = settings.aoColumns;
+
+				$tr.find('td.edit').each(function () {
+					var $td = $(this);
+					var td = $td.get(0);
+					var aPos = dataTable.fnGetPosition(td); //array of [row index, column index (visible), column index (all)]
+					var iRow = aPos[0];
+					var iCol = aPos[2];
+
+					var column = columns[iCol];
+					var editor = null;
+					switch (iCol) {
+						case 1:
+							editor = $('<input type="number" id="order" style="width:90%;" value="' + data.Order + '"/>');
+							break;
+						case 2:
+							editor = $('<input type="text" id="desc" style="width:90%;" value="' + data.Description + '"/>');
+							break;
+						default:
+							var x = data[iCol];
+							editor = x;
+							break;
+					}
+					if (column.sName != "") editor.attr('name', column.sName);
+					if (column.sClass != "") editor.addClass(column.sClass);
+
+					$td.html('').append(editor);
+
+				});
+				$tr.addClass('selected');
+				$tr.find('td.control').html('<button type="button" class="update">Save</button>' + '<button type="button" class="cancel">Cancel</button>');
+				//first focus creates datepicker, second shows it
+				$tr.find('input:first').focus().focus();
+			});
+			$('table.grid button.cancel').live('click', function () {
+
+				var $tr = $(this).closest('tr');
+				var tr = $tr.get(0);
+				var dataTable = $('table.grid').dataTable();
+				var data = dataTable.fnGetData(tr);
+
+				dataTable.fnUpdate(data, tr, undefined, false, false);
+			});
+			$('table.grid button.update').live('click', function () {
+
+				var $tr = $(this).closest('tr');
+				var idEmptyFlag = false; // requiere for refresh
+				var id = $tr.attr('id');
+				if (id == "")
+					idEmptyFlag = true;
+
+				var tr = $tr.get(0);
+				var dataTable = $('table.grid').dataTable();
+				var data = dataTable.fnGetData(tr);
+
+				$('table.grid tbody tr').find(':input, button').attr('disabled', 'disabled');
+				var request = $.ajax({
+					url: '@Url.Action("UpdateDescription")',
+					type: 'POST',
+					dataType: "json",
+					data: { Id: data.Id, order: $("#order").val(), Description: $("#desc").val() }
+				})
+				request.success(function (data, textStatus, jqXHR) {
+					if (data.success) {
+						dataTable.fnUpdate(data.data, tr, undefined, false, false);
+						$('table.grid tbody tr').find(':input, button').removeAttr('disabled');
+						$tr.attr('id', data.data.Id);
+						if (idEmptyFlag)
+							$('table.grid').dataTable().fnDraw(false);
+					}
+					else {
+						showSuccess(data.errors);
+					}
+
+				});
+				request.done(function (msg) {
+
+				});
+				request.fail(function (jqXHR, textStatus) {
+				});
+			});
+		});
+
+		function showSuccess(errors) {
+			console.log("errors", errors);
+			if (errors) {
+				errors.join('</li><li>');
+			}
+			else {
+				errors = "";
+			}
+
+			var errstr = '<ul class="error"><li>' + errors + '</li></ul>';
+			$(errstr).dialog({
+				modal: true,
+				dialogClass: "hideCloseButton",
+				buttons: {
+					Ok: function () {
+						$(this).dialog("close");
+						$(this).dialog("destroy");
+						$('table.grid tbody').find(':input, button').removeAttr('disabled');
+					},
+					Cancel: function () {
+						$(this).dialog("close");
+						$(this).dialog("destroy");
+						$('table.grid').dataTable().fnDraw(false);
+					}
+				}
+			});
+
+
+		}
+	</script>
+</fieldset>
+
+<form action="@Url.Action("UploadNewFile")" method="post" enctype="multipart/form-data">
+	<fieldset>
+		<legend>Upload File</legend>
+		<div class="editor-item">
+			<input type="file" name="newFile" id="newFileUpload" />
+		</div>
+		<div class="editor-item">
+			<label>Description</label>
+			<input type="text" name="Description" id="desc" required />
+		</div>
+		<div class="editor-item">
+			<label>Order</label>
+			<input type="number" name="Order" id="order" required />
+		</div>
+		<div class="editor-item">
+			<button type="submit">Upload</button>
+		</div>
+	</fieldset>
+</form>

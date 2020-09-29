@@ -1,0 +1,37 @@
+﻿@model CC.Data.FunctionalityScore
+@{
+    Layout = null;
+}
+@if (ViewBag.Success==true)
+{
+    <script type="text/javascript">
+        window.location.reload(true);
+    </script>
+}
+
+
+@using (Html.BeginForm("Create", "FunctionalityScores", FormMethod.Post, new { id = "fsCreateForm" }))
+{
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>FunctionalityScore</legend>
+        @Html.HiddenFor(f => f.ClientId)
+        <div class="editor-label">
+            @Html.LabelFor(model => model.DiagnosticScore)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.DiagnosticScore)
+            @Html.ValidationMessageFor(model => model.DiagnosticScore)
+        </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.StartDate)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.StartDate)
+            @Html.ValidationMessageFor(model => model.StartDate)
+        </div>
+        <p>
+            <input type="submit" value="Create" />
+        </p>
+    </fieldset>
+}

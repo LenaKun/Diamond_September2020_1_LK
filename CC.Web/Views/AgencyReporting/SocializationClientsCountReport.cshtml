@@ -1,0 +1,367 @@
+﻿@model AgencyReportingSocializationClientsCount
+@{
+    ViewBag.Title = "SocializationClientsCountReport";
+    Layout = "~/Views/AgencyReporting/_Layout.cshtml";
+}
+
+<h2>Socialization Clients Count Report</h2>
+
+<fieldset>
+    <legend>Filter</legend>
+    <form action="@Url.Action("ExportSocializationClientsCount")" method="get">
+        @if (!User.IsInRole("RegionReadOnly"))
+        {
+            <div class="editor-item">
+                @Html.LabelFor(model => model.SelectedRegionId)
+                @Html.EditorFor(model => model.SelectedRegionId)
+            </div>
+        }
+        <div class="editor-item">
+            @Html.LabelFor(model => model.SelectedCountryId)
+            @Html.EditorFor(model => model.SelectedCountryId)
+        </div>
+        <div class="editor-item">
+            @Html.LabelFor(model => model.SelectedStateId)
+            @Html.EditorFor(model => model.SelectedStateId)
+        </div>
+        <div class="editor-item">
+            @Html.LabelFor(model => model.SelectedMasterFundId)
+            @Html.EditorFor(model => model.SelectedMasterFundId)
+        </div>
+        <div class="editor-item">
+            @Html.LabelFor(model => model.SelectedFundId)
+            @Html.EditorFor(model => model.SelectedFundId)
+        </div>
+        <div class="editor-item">
+            @Html.LabelFor(model => model.SelectedAgencyGroupId)
+            @Html.EditorFor(model => model.SelectedAgencyGroupId)
+        </div>
+        <div class="editor-item">
+            @Html.LabelFor(model => model.SelectedYear)
+            @Html.EditorFor(model => model.SelectedYear)
+        </div>
+        <div class="editor-item">
+            <button type="button" class="filter">Go</button>
+            <a href="@Request.Url.GetLeftPart(UriPartial.Path)" class="button">Reset</a>
+            <button type="submit">Export</button>
+        </div>
+    </form>
+    <table id="agencyReportingTable">
+        <tbody>
+            <tr>
+                <td>
+                    <h3>
+                        Please select desired filter values and click the Go button
+                    </h3>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <script>
+        $(function () {
+            function initDataTable() {
+                var getFitlerParams = function () {
+                    var result = [];
+                    result.push({ "name": "SelectedRegionId", "value": $("#@Html.FieldIdFor(model => model.SelectedRegionId)").val() });
+                    result.push({ "name": "SelectedAgencyGroupId", "value": $("#@Html.FieldIdFor(model => model.SelectedAgencyGroupId)").val() });
+                    result.push({ "name": "SelectedYear", "value": $("#@Html.FieldIdFor(model => model.SelectedYear)").val() });
+                    result.push({ "name": "SelectedFundId", "value": $("#@Html.FieldIdFor(model => model.SelectedFundId)").val() });
+                    result.push({ "name": "SelectedCountryId", "value": $("#@Html.FieldIdFor(model => model.SelectedCountryId)").val() });
+                    result.push({ "name": "SelectedStateId", "value": $("#@Html.FieldIdFor(model => model.SelectedStateId)").val() });
+                    result.push({ "name": "SelectedMasterFundId", "value": $("#@Html.FieldIdFor(model => model.SelectedMasterFundId)").val() });
+                    return result;
+                };
+                var oTable = $('#agencyReportingTable').dataTable({
+                    "aaSorting": [[0, "asc"]],
+                    "bServerSide": true,
+                    "sAjaxSource": '@Url.Action("SocializationClientCountDataTable")',
+                    "fnServerParams": function (aoData) {
+                        var filter = getFitlerParams();
+                        for (var i = 0; i < filter.length; i++) {
+                            aoData.push(filter[i]);
+                        }
+                    },
+                    "aoColumns": [{
+                        "mData": "AgencyGroupName",
+                        "sTitle": "SER"
+                    }, {
+                        "mData": "AgencyName",
+                        "sTitle": "Agency"
+                    }, {
+                        "mData": "Year",
+                        "sTitle": "Year"
+                    }, {
+                        "mData": "EventDate",
+                        "sTitle": "Date of Event",
+                        "mRender": function (val) { return renderDate(val); }
+                    }, {
+                        "mData": "JNVCount",
+                        "sTitle": "Count of JNV attending"
+                    }, {
+                        "mData": "TotalCount",
+                        "sTitle": "Count of Total Attendees"
+                    }, {
+                        "mData": "Remarks",
+                        "sTitle": "Remarks"
+                    }]
+                });
+                $('.filter,.reset').click(function () {
+                    oTable.fnDraw();
+                });
+            }
+            $('.filter').one('click', function () {
+                initDataTable();
+            })
+        });
+    </script>
+    <script>
+        var region = $('#@Html.FieldIdFor(model => model.SelectedRegionId)').select2({
+            width: 300,
+            allowClear: true,
+            placeholder: "All REGIONs",
+            initSelection: function (element, callback) {
+                var id = $(element).val();
+                if (id !== "") {
+                    $.ajax('@Url.Content("~/data/dataservice.svc/Regions")' + '(' + id + ')', {
+                        dataType: "json",
+                    }).done(function (data) {
+                        var a = data.d;
+                        callback({ id: a.Id, text: a.Name });
+                    }).fail(function () {
+                        callback(null);
+                    });
+                }
+            },
+            ajax: {
+                url: '@Url.Content("~/data/dataservice.svc/Regions")',
+                dataType: "json",
+                data: function (term) {
+                    var filters = [];
+                    if (term) {
+                        filters.push("substringof('" + escape(term) + "', Name) eq true");
+                    }
+                    return {
+                        "$filter": filters.join(" and "),
+                        "$orderby": "Name"
+                    };
+                },
+                results: function (data) {
+                    return {
+                        results: $.map(data.d, function (a) { return { id: a.Id, text: a.Name } })
+                    };
+                }
+            }
+
+        }).change(function () {
+        	country.select2('val', '');
+        	ser.select2('val', '');
+        	state.select2('val', '');
+        });
+        var country = $('#@Html.FieldIdFor(model => model.SelectedCountryId)').select2({
+            width: 300,
+            allowClear: true,
+            placeholder: "All Countries",
+            initSelection: function (element, callback) {
+                var id = $(element).val();
+                if (id !== "") {
+                    $.ajax('@Url.Content("~/data/dataservice.svc/Countries")' + '(' + id + ')', {
+                        dataType: "json",
+                    }).done(function (data) {
+                        var a = data.d;
+                        callback({ id: a.Id, text: a.Name });
+                    }).fail(function () {
+                        callback(null);
+                    });
+                }
+            },
+            ajax: {
+                url: '@Url.Content("~/data/dataservice.svc/Countries")',
+                dataType: "json",
+                data: function (term) {
+                    var filters = [];
+                    if (region.val()) {
+                        filters.push("RegionId eq " + region.val());
+                    }
+                    if (term) {
+                        filters.push("substringof('" + escape(term) + "', Name) eq true");
+                    }
+                    return {
+                        "$filter": filters.join(" and "),
+                        "$orderby": "Name"
+                    };
+                },
+                results: function (data) {
+                    return {
+                        results: $.map(data.d, function (a) { return { id: a.Id, text: a.Name } })
+                    };
+                }
+            }
+        }).change(function () {
+        	ser.select2('val', '');
+        	state.select2('val', '');
+        });
+        var state = $('#@Html.FieldIdFor(model => model.SelectedStateId)').select2({
+            width: 300,
+            allowClear: true,
+            placeholder: "All States",
+            initSelection: function (element, callback) {
+                var id = $(element).val();
+                if (id !== "") {
+                    $.ajax('@Url.Content("~/data/dataservice.svc/States")' + '(' + id + ')', {
+                        dataType: "json",
+                    }).done(function (data) {
+                        var a = data.d;
+                        callback({ id: a.Id, text: a.Name });
+                    }).fail(function () {
+                        callback(null);
+                    });
+                }
+            },
+            ajax: {
+                url: '@Url.Content("~/data/dataservice.svc/States")',
+                dataType: "json",
+                data: function (term) {
+                    var filters = [];
+                    if (region.val()) {
+                        filters.push("Country/RegionId eq " + region.val());
+                    }
+                    if (country.val()) {
+                        filters.push("CountryId eq " + country.val());
+                    }
+                    if (term) {
+                        filters.push("substringof('" + escape(term) + "', Name) eq true");
+                    }
+                    return {
+                        "$filter": filters.join(" and "),
+                        "$orderby": "Name"
+                    };
+                },
+                results: function (data) {
+                    return {
+                        results: $.map(data.d, function (a) { return { id: a.Id, text: a.Name } })
+                    };
+                }
+            }
+        }).change(function () {
+        	ser.select2('val', '');
+        });
+        var ser = $('#@Html.FieldIdFor(model => model.SelectedAgencyGroupId)').select2({
+            width: 300,
+            allowClear: true,
+            placeholder: "All SERs",
+            initSelection: function (element, callback) {
+                var id = $(element).val();
+                if (id !== "") {
+                    $.ajax('@Url.Content("~/data/dataservice.svc/AgencyGroups")' + '(' + id + ')', {
+                        dataType: "json",
+                    }).done(function (data) {
+                        var a = data.d;
+                        callback({ id: a.Id, text: a.Name });
+                    }).fail(function () {
+                        callback(null);
+                    });
+                }
+            },
+            ajax: {
+                url: '@Url.Content("~/data/dataservice.svc/AgencyGroups")',
+                dataType: "json",
+                data: function (term) {
+                    var filters = [];
+                    if (term) {
+                        filters.push("substringof('" + escape(term) + "', Name) eq true");
+                    }
+                    return {
+                        "$filter": filters.join(" and "),
+                        "$orderby": "Name"
+                    };
+                },
+                results: function (data) {
+                    return {
+                        results: $.map(data.d, function (a) { return { id: a.Id, text: a.Name } })
+                    };
+                }
+            }
+
+        });
+        var mfund = $('#@Html.FieldIdFor(model => model.SelectedMasterFundId)').select2({
+            width: 300,
+            allowClear: true,
+            placeholder: "All MasterFunds",
+            initSelection: function (element, callback) {
+                var id = $(element).val();
+                if (id !== "") {
+                    $.ajax('@Url.Content("~/data/dataservice.svc/MasterFunds")' + '(' + id + ')', {
+                        dataType: "json",
+                    }).done(function (data) {
+                        var a = data.d;
+                        callback({ id: a.Id, text: a.Name });
+                    }).fail(function () {
+                        callback(null);
+                    });
+                }
+            },
+            ajax: {
+                url: '@Url.Content("~/data/dataservice.svc/MasterFunds")',
+                dataType: "json",
+                data: function (term) {
+                    var filters = [];
+                    if (term) {
+                        filters.push("substringof('" + escape(term) + "', Name) eq true");
+                    }
+                    return {
+                        "$filter": filters.join(" and "),
+                        "$orderby": "Name"
+                    };
+                },
+                results: function (data) {
+                    return {
+                        results: $.map(data.d, function (a) { return { id: a.Id, text: a.Name } })
+                    };
+                }
+            }
+        }).change(function () {
+        	fund.select2('val', '');
+        });
+        var fund = $('#@Html.FieldIdFor(model => model.SelectedFundId)').select2({
+            width: 300,
+            allowClear: true,
+            placeholder: "All Funds",
+            initSelection: function (element, callback) {
+                var id = $(element).val();
+                if (id !== "") {
+                    $.ajax('@Url.Content("~/data/dataservice.svc/Funds")' + '(' + id + ')', {
+                        dataType: "json",
+                    }).done(function (data) {
+                        var a = data.d;
+                        callback({ id: a.Id, text: a.Name });
+                    }).fail(function () {
+                        callback(null);
+                    });
+                }
+            },
+            ajax: {
+                url: '@Url.Content("~/data/dataservice.svc/Funds")',
+                dataType: "json",
+                data: function (term) {
+                    var filters = [];
+                    if (mfund.val()) {
+                        filters.push("MasterFundId eq " + mfund.val());
+                    }
+                    if (term) {
+                        filters.push("substringof('" + escape(term) + "', Name) eq true");
+                    }
+                    return {
+                        "$filter": filters.join(" and "),
+                        "$orderby": "Name"
+                    };
+                },
+                results: function (data) {
+                    return {
+                        results: $.map(data.d, function (a) { return { id: a.Id, text: a.Name } })
+                    };
+                }
+            }
+        });
+    </script>
+
+</fieldset>

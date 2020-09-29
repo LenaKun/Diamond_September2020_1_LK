@@ -1,0 +1,1254 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using System.Globalization;
+using CC.Data;
+using CC.Web.Models;
+using CC.Web.Attributes;
+using MvcContrib.ActionResults;
+using MvcContrib;
+using System.Net.Mail;
+using System.Configuration;
+using System.Linq.Dynamic;
+using OpenXmlPowerTools.SpreadsheetWriter;
+using CC.Web.Models.Reporting;
+
+namespace CC.Web.Controllers
+{
+
+	[CcAuthorize(FixedRoles.Admin, FixedRoles.GlobalOfficer)]
+	public class ReportingController : PrivateCcControllerBase
+	{
+		public ReportingController()
+			: base()
+		{
+			db.CommandTimeout = 300;
+		}
+
+		public ActionResult Index()
+		{
+			var model = new ReportingHomeModel();
+			return View(model);
+		}
+
+		#region FundStatus Report
+
+		public ActionResult ExportFundStatusReportToExcel(ReportingHomeModel.FundStatusReportFilter model)
+		{
+			TryUpdateModel(model, "FundStatusRepfilter");
+			var data = ReportingHomeModel.LoadData(db, this.Permissions, this.Permissions.User, model);
+			return this.Excel("FundStatusReport", "FundStatusReport", data);
+		}
+
+		#endregion
+
+		#region GG Quarterly Report of In-Home Services Clients
+
+		public ActionResult GgFunctionalityLevels(ReportingHomeModel model)
+		{
+			var year = model.GgRepFilter.Year;
+			var funds = model.GgRepFilter.Funds.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToList();
+			if (!ModelState.IsValid)
+			{
+				return View("Index", model);
+			}
+
+
+			var sers = db.AgencyGroups.Where(f => f.Apps.Any(a => funds.Contains(a.FundId))).Select(r => new
+			{
+				RegionName = r.Country.Region.Name,
+				CountryName = r.Country.Name,
+				StateName = r.State.Name,
+				Name = r.Name,
+				Id = r.Id
+			}).ToList();
+
+			var source = from sr in db.viewGgQuarterlyHcFls
+						 where sr.RepYear == year
+						 select sr;
+
+			if (funds.Any())
+			{
+				source = source.Where(sr => funds.Contains(sr.FundId));
+			}
+
+			var rawData = (from sr in source
+						   group sr by new
+						   {
+							   AgencyGroupId = sr.AgencyGroupId,
+							   Quarter = sr.RepQuarter,
+							   Year = sr.RepYear,
+							   RflId = sr.RelatedLevelId
+						   } into srg
+						   select new
+						   {
+							   AgencyGroupId = srg.Key.AgencyGroupId,
+							   Quarter = srg.Key.Quarter,
+							   Year = srg.Key.Year,
+							   RflId = srg.Key.RflId,
+							   Cc = srg.Count()
+						   }).ToList();
+
+			var rfls = db.RelatedFunctionalityLevels.ToList();
+
+
+
+			var d1 = from ser in sers
+					 join row in rawData.GroupBy(f => f.AgencyGroupId) on ser.Id equals row.Key into agDataGroup
+					 from agData in agDataGroup.DefaultIfEmpty()
+					 orderby ser.Name
+					 select new
+					 {
+						 s = ser,
+						 d = agData
+					 };
+
+			var exceldata = new List<Row>();
+
+			exceldata.Add(new Row
+			{
+				Cells = new[] { 
+					new Cell(),
+					new Cell(),
+					new Cell(),
+					new Cell(),
+					new Cell{Value="1", CellDataType = CellDataType.String},
+					new Cell(),
+					new Cell(),
+					new Cell(),
+					new Cell(),
+					new Cell{Value="2", CellDataType = CellDataType.String},
+					new Cell(),
+					new Cell(),
+					new Cell(),
+					new Cell(),
+					new Cell{Value="3", CellDataType = CellDataType.String},
+					new Cell(),
+					new Cell(),
+					new Cell(),
+					new Cell(),
+					new Cell{Value="4", CellDataType = CellDataType.String},
+				}
+			});
+			var headerCells = new string[] { "Region", "Country", "State", "SER", }.Select(f => new Cell
+			{
+				Value = f,
+				CellDataType = CellDataType.String
+			}).ToList();
+			foreach (var i in Enumerable.Range(1, 4))
+			{
+				headerCells.AddRange(rfls.Select(f => new Cell { Value = f.Name, CellDataType = CellDataType.String }));
+				headerCells.Add(new Cell { Value = string.Format("Q{0} Total", i), CellDataType = CellDataType.String });
+			}
+			headerCells.Add(new Cell { Value = "Total", CellDataType = CellDataType.String });
+			exceldata.Add(new Row { Cells = headerCells });
+
+			foreach (var cell in headerCells) { cell.Bold = true; }
+
+
+
+			foreach (var s in d1)
+			{
+				var r = new Row() { };
+				var cells = new List<Cell>();
+				cells.Add(new Cell { Value = s.s.RegionName, CellDataType = CellDataType.String });
+				cells.Add(new Cell { Value = s.s.CountryName, CellDataType = CellDataType.String });
+				cells.Add(new Cell { Value = s.s.StateName, CellDataType = CellDataType.String });
+				cells.Add(new Cell { Value = s.s.Name, CellDataType = CellDataType.String });
+
+				var totalCount = 0;
+				foreach (var i in Enumerable.Range(1, 4))
+				{
+					var quarterCount = 0;
+					foreach (var rfl in rfls)
+					{
+						var count = 0;
+						if (s.d != null) count = s.d.Where(f => f.RflId == rfl.Id && f.Quarter == i).Sum(f => f.Cc);
+						quarterCount += count;
+
+
+						cells.Add(new Cell
+						{
+							Value = count,
+							CellDataType = CellDataType.Number
+						});
+					}
+					cells.Add(new Cell
+					{
+						Value = quarterCount,
+						CellDataType = CellDataType.Number
+					});
+					totalCount += quarterCount;
+				}
+				cells.Add(new Cell
+				{
+					Value = totalCount,
+					CellDataType = CellDataType.Number
+				});
+				r.Cells = cells;
+
+				exceldata.Add(r);
+			}
+
+			return this.Excel("asdf", "asdf", exceldata);
+
+
+
+		}
+
+		#endregion
+
+		#region Clients With Leave Date Removed
+
+		public ActionResult ExportLeaveDateRemovedToExcel(ReportingHomeModel.LeaveDateRemovedFilter model)
+		{
+			TryUpdateModel(model, "LeaveDateFilter");
+			var data = ReportingHomeModel.LoadLeaveDateData(db, this.Permissions, this.Permissions.User, model);
+			return this.Excel("LeaveDateRemovedReport", "LeaveDateRemovedReport", data);
+		}
+
+		#endregion
+
+		#region YTD Reporting Service Type Pct
+
+		public ActionResult YtdReportingServiceTypePct(ReportingHomeModel model)
+		{
+			var filter = model.ReportingServiceTypePctFilter;
+
+			var data = ReportingServiceTypePctHelper.getData(db, Permissions, filter);
+
+			return this.Excel("data", "data", data);
+
+		}
+
+		#endregion
+
+		#region Qtr Reporting Service Type Pct
+
+		public ActionResult QtrReportingServiceTypePct(ReportingHomeModel model)
+		{
+			var filter = model.QtrReportingServiceTypePctFilter;
+
+			var data = ReportingServiceTypePctHelper.getQtrData(db, Permissions, filter);
+
+			return this.Excel("data", "data", data);
+
+		}
+
+		#endregion
+
+		#region Unique Clients Quarterly Report
+
+		public ActionResult ExportUniqueClientsToExcel(ReportingHomeModel model)
+		{
+			List<int> yearList = new List<int>();
+			for (var i = 2013; i <= DateTime.Now.Year; i++)
+			{
+				yearList.Add(i);
+			}
+
+			var regions = model.UniqueClientsReport.Regions != null ? model.UniqueClientsReport.Regions.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToList() : (from reg in (db.Regions.ToList()).AsParallel() select (int)reg.Id).ToList();
+			var countries = model.UniqueClientsReport.Countries != null ? model.UniqueClientsReport.Countries.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToList() : (from country in (db.Countries.ToList()).AsParallel() select (int)country.Id).ToList();
+			var states = model.UniqueClientsReport.States != null ? model.UniqueClientsReport.States.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToList() : null;
+			var sers = model.UniqueClientsReport.Sers != null ? model.UniqueClientsReport.Sers.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToList() : (from ser in (db.AgencyGroups.ToList()).AsParallel() select (int)ser.Id).ToList();
+			var serviceTypes = model.UniqueClientsReport.ServiceTypes != null ? model.UniqueClientsReport.ServiceTypes.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToList() : (from st in (db.ServiceTypes.ToList()).AsParallel() select (int)st.Id).ToList();
+			var services = model.UniqueClientsReport.Services != null ? model.UniqueClientsReport.Services.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToList() : (from sr in (db.Services.ToList()).AsParallel() select (int)sr.Id).ToList();
+			var years = model.UniqueClientsReport.Years != null ? model.UniqueClientsReport.Years.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToList() : yearList;
+			var qrts = model.UniqueClientsReport.Quarters != null ? model.UniqueClientsReport.Quarters.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToList() : null;
+
+			List<int> quarterList = new List<int>();
+
+			if (qrts != null)
+			{
+				foreach (var q in qrts)
+				{
+					switch (q)
+					{
+						case 1: quarterList.Add(1);
+							quarterList.Add(2);
+							quarterList.Add(3);
+							break;
+						case 2: quarterList.Add(4);
+							quarterList.Add(5);
+							quarterList.Add(6);
+							break;
+						case 3: quarterList.Add(7);
+							quarterList.Add(8);
+							quarterList.Add(9);
+							break;
+						case 4: quarterList.Add(10);
+							quarterList.Add(11);
+							quarterList.Add(12);
+							break;
+					}
+				}
+			}
+			else
+			{
+				for (var i = 1; i < 13; i++)
+				{
+					quarterList.Add(i);
+				}
+			}
+
+			var subReports = db.SubReports.Where(sr => years.Contains(sr.MainReport.Start.Year) && quarterList.Contains(sr.MainReport.Start.Month) && sr.MainReport.StatusId == 2 && services.Contains(sr.AppBudgetService.ServiceId) && serviceTypes.Contains(sr.AppBudgetService.Service.TypeId));
+			var agencies = db.Agencies.Where(a => sers.Contains(a.GroupId) && countries.Contains(a.AgencyGroup.CountryId) && regions.Contains(a.AgencyGroup.Country.RegionId));
+
+			var results = (from ag in agencies
+						   join cl in db.Clients on ag.Id equals cl.AgencyId
+						   join vcr in db.ViewClientReports on cl.Id equals vcr.ClientId
+						   join subrep in subReports on vcr.SubReportId equals subrep.Id
+						   select new UniqueClientsDataRaw
+						   {
+							   RegionName = ag.AgencyGroup.Country.Region.Name,
+							   CountryName = ag.AgencyGroup.Country.Name,
+							   SerName = ag.Name,
+							   StateName = cl.State.Name,
+							   ServiceTypeName = subrep.AppBudgetService.Service.ServiceType.Name,
+							   ServiceName = subrep.AppBudgetService.Service.Name,
+							   Year = subrep.MainReport.Start.Year,
+							   Quarter = subrep.MainReport.Start.Month <= 3 ? 1 : (subrep.MainReport.Start.Month <= 6 ? 2 : (subrep.MainReport.Start.Month <= 9 ? 3 : 4)),
+							   ClientId = cl.Id,
+							   MasterId = cl.MasterId,
+							   StateId = cl.StateId != null ? (int)cl.StateId : 0
+						   }).Distinct().ToList();
+
+			if (states != null)
+			{
+				results = results.Where(r => states.Contains(r.StateId)).ToList();
+			}
+
+			var orderedRes = results.OrderBy(r => r.RegionName).ThenBy(c => c.CountryName).ThenBy(s => s.StateName).ThenBy(s => s.SerName).ThenBy(s => s.ServiceTypeName).ThenBy(s => s.ServiceName).ThenBy(y => y.Year).ThenBy(q => q.Quarter).ToList();
+
+			var grpres = orderedRes.GroupBy(cid => new { cid.RegionName, cid.CountryName, cid.StateName, cid.SerName, cid.ServiceTypeName, cid.ServiceName, cid.Year, cid.Quarter }).ToList();
+
+			var exceldata = new List<Row>();
+			var headerCells = new string[] { "Region", "Country", "State/Province", "SER", "Service Type", "Service", "Year", "Quarter", "Number of unique clients served" }.Select(f => new Cell
+			{
+				Value = f,
+				CellDataType = CellDataType.String
+			}).ToList();
+			exceldata.Add(new Row { Cells = headerCells });
+			foreach (var cell in headerCells) { cell.Bold = true; }
+
+			foreach (var gr in grpres)
+			{
+				var row = new Row() { };
+				var cells = new List<Cell>();
+
+				cells.Add(new Cell { Value = gr.FirstOrDefault().RegionName, CellDataType = CellDataType.String });
+				cells.Add(new Cell { Value = gr.FirstOrDefault().CountryName, CellDataType = CellDataType.String });
+				cells.Add(new Cell { Value = gr.FirstOrDefault().StateName, CellDataType = CellDataType.String });
+				cells.Add(new Cell { Value = gr.FirstOrDefault().SerName, CellDataType = CellDataType.String });
+				cells.Add(new Cell { Value = gr.FirstOrDefault().ServiceTypeName, CellDataType = CellDataType.String });
+				cells.Add(new Cell { Value = gr.FirstOrDefault().ServiceName, CellDataType = CellDataType.String });
+				cells.Add(new Cell { Value = gr.FirstOrDefault().Year.ToString(), CellDataType = CellDataType.String });
+				cells.Add(new Cell { Value = gr.FirstOrDefault().Quarter.ToString(), CellDataType = CellDataType.String });
+				var count = gr.Select(r => r.MasterId ?? r.ClientId).Distinct().Count();
+				cells.Add(new Cell { Value = count.ToString(), CellDataType = CellDataType.String });
+
+				row.Cells = cells;
+				exceldata.Add(row);
+			}
+
+			return this.Excel("Unique Clients Report", "Unique Clients Report", exceldata);
+		}
+
+		public class UniqueClientsDataRaw
+		{
+			public string RegionName { get; set; }
+			public string CountryName { get; set; }
+			public string StateName { get; set; }
+			public string SerName { get; set; }
+			public string ServiceTypeName { get; set; }
+			public string ServiceName { get; set; }
+			public int Year { get; set; }
+			public int Quarter { get; set; }
+			public int ClientId { get; set; }
+			public int? MasterId { get; set; }
+			public int StateId { get; set; }
+		}
+
+		#endregion
+
+		#region Unique Clients Annualy Report
+
+		public ActionResult ExportUniqueClientsAnnualyToExcel(ReportingHomeModel model)
+		{
+			List<int> yearList = new List<int>();
+			for (var i = 2013; i <= DateTime.Now.Year; i++)
+			{
+				yearList.Add(i);
+			}
+
+			var regions = model.UniqueClientsAnnualyReport.Regions != null ? model.UniqueClientsAnnualyReport.Regions.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToList() : (from reg in (db.Regions.ToList()).AsParallel() select (int)reg.Id).ToList();
+			var countries = model.UniqueClientsAnnualyReport.Countries != null ? model.UniqueClientsAnnualyReport.Countries.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToList() : (from country in (db.Countries.ToList()).AsParallel() select (int)country.Id).ToList();
+			var states = model.UniqueClientsAnnualyReport.States != null ? model.UniqueClientsAnnualyReport.States.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToList() : null;
+			var sers = model.UniqueClientsAnnualyReport.Sers != null ? model.UniqueClientsAnnualyReport.Sers.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToList() : (from ser in (db.AgencyGroups.ToList()).AsParallel() select (int)ser.Id).ToList();
+			var serviceTypes = model.UniqueClientsAnnualyReport.ServiceTypes != null ? model.UniqueClientsAnnualyReport.ServiceTypes.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToList() : (from st in (db.ServiceTypes.ToList()).AsParallel() select (int)st.Id).ToList();
+			var services = model.UniqueClientsAnnualyReport.Services != null ? model.UniqueClientsAnnualyReport.Services.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToList() : (from sr in (db.Services.ToList()).AsParallel() select (int)sr.Id).ToList();
+			var years = model.UniqueClientsAnnualyReport.Years != null ? model.UniqueClientsAnnualyReport.Years.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToList() : yearList;
+
+			var subReports = db.SubReports.Where(sr => years.Contains(sr.MainReport.Start.Year) && sr.MainReport.StatusId == 2 && services.Contains(sr.AppBudgetService.ServiceId) && serviceTypes.Contains(sr.AppBudgetService.Service.TypeId));
+			var agencies = db.Agencies.Where(a => sers.Contains(a.GroupId) && countries.Contains(a.AgencyGroup.CountryId) && regions.Contains(a.AgencyGroup.Country.RegionId));
+
+			var results = (from ag in agencies
+						   join cl in db.Clients on ag.Id equals cl.AgencyId
+						   join vcr in db.ViewClientReports on cl.Id equals vcr.ClientId
+						   join subrep in subReports on vcr.SubReportId equals subrep.Id
+						   select new UniqueClientsAnnualyDataRaw
+						   {
+							   RegionName = ag.AgencyGroup.Country.Region.Name,
+							   CountryName = ag.AgencyGroup.Country.Name,
+							   SerName = ag.Name,
+							   StateName = cl.State.Name,
+							   ServiceTypeName = subrep.AppBudgetService.Service.ServiceType.Name,
+							   ServiceName = subrep.AppBudgetService.Service.Name,
+							   Year = subrep.MainReport.Start.Year,
+							   ClientId = cl.Id,
+							   MasterId = cl.MasterId,
+							   StateId = cl.StateId != null ? (int)cl.StateId : 0
+						   }).Distinct().ToList();
+
+			if (states != null)
+			{
+				results = results.Where(r => states.Contains(r.StateId)).ToList();
+			}
+
+			var orderedRes = results.OrderBy(r => r.RegionName).ThenBy(c => c.CountryName).ThenBy(s => s.StateName).ThenBy(s => s.SerName).ThenBy(s => s.ServiceTypeName).ThenBy(s => s.ServiceName).ThenBy(y => y.Year).ToList();
+
+			var grpres = orderedRes.GroupBy(cid => new { cid.RegionName, cid.CountryName, cid.StateName, cid.SerName, cid.ServiceTypeName, cid.ServiceName, cid.Year }).ToList();
+
+			var exceldata = new List<Row>();
+			var headerCells = new string[] { "Region", "Country", "State/Province", "SER", "Service Type", "Service", "Year", "Number of unique clients served" }.Select(f => new Cell
+			{
+				Value = f,
+				CellDataType = CellDataType.String
+			}).ToList();
+			exceldata.Add(new Row { Cells = headerCells });
+			foreach (var cell in headerCells) { cell.Bold = true; }
+
+			foreach (var gr in grpres)
+			{
+				var row = new Row() { };
+				var cells = new List<Cell>();
+
+				cells.Add(new Cell { Value = gr.FirstOrDefault().RegionName, CellDataType = CellDataType.String });
+				cells.Add(new Cell { Value = gr.FirstOrDefault().CountryName, CellDataType = CellDataType.String });
+				cells.Add(new Cell { Value = gr.FirstOrDefault().StateName, CellDataType = CellDataType.String });
+				cells.Add(new Cell { Value = gr.FirstOrDefault().SerName, CellDataType = CellDataType.String });
+				cells.Add(new Cell { Value = gr.FirstOrDefault().ServiceTypeName, CellDataType = CellDataType.String });
+				cells.Add(new Cell { Value = gr.FirstOrDefault().ServiceName, CellDataType = CellDataType.String });
+				cells.Add(new Cell { Value = gr.FirstOrDefault().Year.ToString(), CellDataType = CellDataType.String });
+				var count = gr.Select(r => r.MasterId ?? r.ClientId).Distinct().Count();
+				cells.Add(new Cell { Value = count.ToString(), CellDataType = CellDataType.String });
+
+				row.Cells = cells;
+				exceldata.Add(row);
+			}
+
+			return this.Excel("Unique Clients Report", "Unique Clients Report", exceldata);
+		}
+
+		public class UniqueClientsAnnualyDataRaw
+		{
+			public string RegionName { get; set; }
+			public string CountryName { get; set; }
+			public string StateName { get; set; }
+			public string SerName { get; set; }
+			public string ServiceTypeName { get; set; }
+			public string ServiceName { get; set; }
+			public int Year { get; set; }
+			public int ClientId { get; set; }
+			public int? MasterId { get; set; }
+			public int StateId { get; set; }
+		}
+
+		#endregion
+
+		#region Homecare Costs Report
+
+		public ActionResult HcCostsToExcel(ReportingHomeModel model)
+		{
+			var subtotals = model.HcCostsFilter.subtotals;
+
+			int? regionId = model.HcCostsFilter.RegionId;
+
+			var regions = (from reg in (db.Regions.ToList()).AsParallel() select (int)reg.Id).ToList();
+
+			var viewClientReports = db.ViewClientReports;
+			var appBudgetServices = db.AppBudgetServices.Where(a => a.ServiceId == 348 || a.ServiceId == 349);
+			var preJoinSubReports = db.SubReports.Where(s => s.MainReport.StatusId == 2);
+			var agencyGroups = db.AgencyGroups.Where(ag => regionId != null ? ag.Country.RegionId == regionId : regions.Contains(ag.Country.RegionId));
+
+			var subReports = from sr in preJoinSubReports
+							 join abs in appBudgetServices on sr.AppBudgetServiceId equals abs.Id
+
+							 select new
+							 {
+								 Id = sr.Id,
+								 Year = sr.MainReport.Start.Year,
+								 ServiceId = sr.AppBudgetService.ServiceId,
+								 AgencyGroupId = abs.Agency.AgencyGroup.Id,
+								 ExcRateUsd = db.viewAppExchangeRates.Where(f => f.AppId == sr.AppBudgetService.AppBudget.AppId && f.ToCur == "USD").Select(f => (decimal?)f.Value).FirstOrDefault(),
+								 ExcRateEuro = db.viewAppExchangeRates.Where(f => f.AppId == sr.AppBudgetService.AppBudget.AppId && f.ToCur == "EUR").Select(f => (decimal?)f.Value).FirstOrDefault(),
+							 };
+
+			var results = (from b in
+							   (from a in
+									(from sr in subReports
+									 join vcr in viewClientReports on sr.Id equals vcr.SubReportId
+									 select new
+									 {
+										 TotalAmount = vcr.Amount,
+										 Year = sr.Year,
+										 Hours = vcr.Quantity,
+										 ServiceId = sr.ServiceId,
+										 AgencyGroupId = sr.AgencyGroupId,
+										 ExcRateUsd = sr.ExcRateUsd,
+										 ExcRateEuro = sr.ExcRateEuro,
+									 })
+								group a by new { ServiceId = a.ServiceId, AgencyGroupId = a.AgencyGroupId, Year = a.Year } into ag
+								select new
+								{
+									Year = ag.Key.Year,
+									ServiceId = ag.Key.ServiceId,
+									AgencyGroupId = ag.Key.AgencyGroupId,
+									TotalHours = ag.Sum(f => f.Hours),
+									ReportAmountUsd = ag.Sum(f => f.TotalAmount * f.ExcRateUsd),
+									ReportAmountEuro = ag.Sum(f => f.TotalAmount * f.ExcRateEuro)
+								})
+						   join ag in agencyGroups on b.AgencyGroupId equals ag.Id
+						   select new
+						   {
+							   RegionName = ag.Country.Region.Name,
+							   CountryName = ag.Country.Name,
+							   StateName = ag.State.Name != null ? ag.State.Name : string.Empty,
+							   SER = ag.Name,
+							   Year = b.Year,
+							   ServiceId = b.ServiceId,
+							   TotalHours = b.TotalHours,
+							   ReportAmountUsd = b.ReportAmountUsd != null ? b.ReportAmountUsd : 0,
+							   ReportAmountEuro = b.ReportAmountEuro != null ? b.ReportAmountEuro : 0
+						   }).ToList();
+
+			var grp = results.OrderBy(r => r.RegionName).ThenBy(c => c.CountryName).ThenBy(s => s.StateName).ThenBy(ser => ser.SER).GroupBy(x => new { x.RegionName, x.CountryName, x.StateName, x.SER }).ToList();
+
+			List<decimal?> subtotalAmountNursingUsd = new List<decimal?>();
+			List<decimal?> subtotalAmountNursingEuro = new List<decimal?>();
+			List<decimal?> subtotalAmountHouskeepingUsd = new List<decimal?>();
+			List<decimal?> subtotalAmountHouskeepingEuro = new List<decimal?>();
+			List<int> yearList = new List<int>();
+			List<int> countSubTotalRowsNU = new List<int>();
+			List<int> countSubTotalRowsNE = new List<int>();
+			List<int> countSubTotalRowsHKU = new List<int>();
+			List<int> countSubTotalRowsHKE = new List<int>();
+			for (var i = 2013; i <= DateTime.Now.Year; i++)
+			{
+				yearList.Add(i);
+				subtotalAmountNursingUsd.Add(0);
+				subtotalAmountNursingEuro.Add(0);
+				subtotalAmountHouskeepingUsd.Add(0);
+				subtotalAmountHouskeepingEuro.Add(0);
+				countSubTotalRowsNU.Add(0);
+				countSubTotalRowsNE.Add(0);
+				countSubTotalRowsHKU.Add(0);
+				countSubTotalRowsHKE.Add(0);
+			}
+
+			var exceldata = new List<Row>();
+			var firstRowCells = new string[] { "", "", "", "" }.Select(f => new Cell
+			{
+				Value = f,
+				CellDataType = CellDataType.String
+			}).ToList();
+			for (int i = 0; i < 4; i++)
+			{
+				switch (i)
+				{
+					case 0: firstRowCells.Add(new Cell { Value = "* Weighted Average Personal/Nursing Care Cost USD", CellDataType = CellDataType.String });
+						break;
+					case 1: firstRowCells.Add(new Cell { Value = "* Weighted Average Personal/Nursing Care Cost EURO", CellDataType = CellDataType.String });
+						break;
+					case 2: firstRowCells.Add(new Cell { Value = "* Weighted Average Chore/Housekeeping Cost USD", CellDataType = CellDataType.String });
+						break;
+					case 3: firstRowCells.Add(new Cell { Value = "* Weighted Average Chore/Housekeeping Cost EURO", CellDataType = CellDataType.String });
+						break;
+				}
+				for (int j = 0; j < yearList.Count - 1; j++)
+				{
+					firstRowCells.Add(new Cell());
+				}
+			}
+			exceldata.Add(new Row { Cells = firstRowCells });
+			foreach (var cell in firstRowCells) { cell.Bold = true; }
+			var headerCells = new string[] { "Region", "Country", "State", "SER" }.Select(f => new Cell
+			{
+				Value = f,
+				CellDataType = CellDataType.String
+			}).ToList();
+			for (int i = 0; i < 4; i++)
+			{
+				for (int j = 0; j < yearList.Count; j++)
+				{
+					headerCells.Add(new Cell { Value = yearList[j].ToString(), CellDataType = CellDataType.String });
+				}
+			}
+			exceldata.Add(new Row { Cells = headerCells });
+			foreach (var cell in headerCells) { cell.Bold = true; }
+
+			string lastRegion = grp.Count() > 0 ? grp.FirstOrDefault().Key.RegionName : string.Empty;
+			int countTotalRows = 1;
+
+			var us = new RegionInfo("en-US");
+			var euro = new RegionInfo("fr-FR");
+
+			foreach (var gr in grp)
+			{
+				var row = new Row() { };
+				var cells = new List<Cell>();
+
+				if (lastRegion != gr.Key.RegionName && subtotals)
+				{
+					var subRow = new Row() { };
+					var subCells = new List<Cell>();
+
+					subCells.Add(new Cell { Value = lastRegion, CellDataType = CellDataType.String });
+					subCells.Add(new Cell { Value = "sub total", CellDataType = CellDataType.String });
+					subCells.Add(new Cell { Value = "", CellDataType = CellDataType.String });
+					subCells.Add(new Cell { Value = "", CellDataType = CellDataType.String });
+
+					for (int i = 0; i < 4; i++)
+					{
+						for (int j = 0; j < yearList.Count; j++)
+						{
+							switch (i)
+							{
+								case 0:
+									subtotalAmountNursingUsd[j] = countSubTotalRowsNU[j] > 0 ? subtotalAmountNursingUsd[j] / countSubTotalRowsNU[j] : subtotalAmountNursingUsd[j];
+									string valueANU = subtotalAmountNursingUsd[j] > 0 ? us.CurrencySymbol + Math.Round((decimal)subtotalAmountNursingUsd[j], 2).ToString() : "N/A";
+									subCells.Add(new Cell { Value = valueANU, CellDataType = CellDataType.String });
+									subtotalAmountNursingUsd[j] = 0;
+									countSubTotalRowsNU[j] = 0;
+									break;
+								case 1:
+									subtotalAmountNursingEuro[j] = countSubTotalRowsNE[j] > 0 ? subtotalAmountNursingEuro[j] / countSubTotalRowsNE[j] : subtotalAmountNursingEuro[j];
+									string valueANE = subtotalAmountNursingEuro[j] > 0 ? euro.CurrencySymbol + Math.Round((decimal)subtotalAmountNursingEuro[j], 2).ToString() : "N/A";
+									subCells.Add(new Cell { Value = valueANE, CellDataType = CellDataType.String });
+									subtotalAmountNursingEuro[j] = 0;
+									countSubTotalRowsNE[j] = 0;
+									break;
+								case 2:
+									subtotalAmountHouskeepingUsd[j] = countSubTotalRowsHKU[j] > 0 ? subtotalAmountHouskeepingUsd[j] / countSubTotalRowsHKU[j] : subtotalAmountHouskeepingUsd[j];
+									string valueAHU = subtotalAmountHouskeepingUsd[j] > 0 ? us.CurrencySymbol + Math.Round((decimal)subtotalAmountHouskeepingUsd[j], 2).ToString() : "N/A";
+									subCells.Add(new Cell { Value = valueAHU, CellDataType = CellDataType.String });
+									subtotalAmountHouskeepingUsd[j] = 0;
+									countSubTotalRowsHKU[j] = 0;
+									break;
+								case 3:
+									subtotalAmountHouskeepingEuro[j] = countSubTotalRowsHKE[j] > 0 ? subtotalAmountHouskeepingEuro[j] / countSubTotalRowsHKE[j] : subtotalAmountHouskeepingEuro[j];
+									string valueAHE = subtotalAmountHouskeepingEuro[j] > 0 ? euro.CurrencySymbol + Math.Round((decimal)subtotalAmountHouskeepingEuro[j], 2).ToString() : "N/A";
+									subCells.Add(new Cell { Value = valueAHE, CellDataType = CellDataType.String });
+									subtotalAmountHouskeepingEuro[j] = 0;
+									countSubTotalRowsHKE[j] = 0;
+									break;
+							}
+						}
+					}
+
+					lastRegion = gr.Key.RegionName;
+
+					subRow.Cells = subCells;
+					exceldata.Add(subRow);
+				}
+
+				cells.Add(new Cell { Value = gr.Key.RegionName, CellDataType = CellDataType.String });
+				cells.Add(new Cell { Value = gr.Key.CountryName, CellDataType = CellDataType.String });
+				cells.Add(new Cell { Value = gr.Key.StateName, CellDataType = CellDataType.String });
+				cells.Add(new Cell { Value = gr.Key.SER, CellDataType = CellDataType.String });
+
+				decimal? totalAmountHKUsd = 0;
+				decimal? totalAmountHKEuro = 0;
+				decimal? totalAmountNursingUsd = 0;
+				decimal? totalAmountNursingEuro = 0;
+
+				for (int i = 0; i < 4; i++)
+				{
+					for (int j = 0; j < yearList.Count; j++)
+					{
+						var thn = gr.Where(f => f.ServiceId == 349 && f.Year == yearList[j]).Sum(s => s.TotalHours);
+						var thhk = gr.Where(f => f.ServiceId == 348 && f.Year == yearList[j]).Sum(s => s.TotalHours);
+						switch (i)
+						{
+							case 0:
+								totalAmountNursingUsd = gr.Where(f => f.ServiceId == 349 && f.Year == yearList[j]).Sum(s => s.ReportAmountUsd);
+								totalAmountNursingUsd = thn > 0 ? totalAmountNursingUsd / thn : 0;
+								string valueANU = totalAmountNursingUsd > 0 ? us.CurrencySymbol + Math.Round((decimal)totalAmountNursingUsd, 2).ToString() : "N/A";
+								countSubTotalRowsNU[j] += valueANU != "N/A" ? 1 : 0;
+								cells.Add(new Cell { Value = valueANU, CellDataType = CellDataType.String });
+								subtotalAmountNursingUsd[j] += totalAmountNursingUsd;
+								break;
+							case 1:
+								totalAmountNursingEuro = gr.Where(f => f.ServiceId == 349 && f.Year == yearList[j]).Sum(s => s.ReportAmountEuro);
+								totalAmountNursingEuro = thn > 0 ? totalAmountNursingEuro / thn : 0;
+								string valueANE = totalAmountNursingEuro > 0 ? euro.CurrencySymbol + Math.Round((decimal)totalAmountNursingEuro, 2).ToString() : "N/A";
+								countSubTotalRowsNE[j] += valueANE != "N/A" ? 1 : 0;
+								cells.Add(new Cell { Value = valueANE, CellDataType = CellDataType.String });
+								subtotalAmountNursingEuro[j] += totalAmountNursingEuro;
+								break;
+							case 2:
+								totalAmountHKUsd = gr.Where(f => f.ServiceId == 348 && f.Year == yearList[j]).Sum(s => s.ReportAmountUsd);
+								totalAmountHKUsd = thhk > 0 ? totalAmountHKUsd / thhk : 0;
+								string valueAHU = totalAmountHKUsd > 0 ? us.CurrencySymbol + Math.Round((decimal)totalAmountHKUsd, 2).ToString() : "N/A";
+								countSubTotalRowsHKU[j] += valueAHU != "N/A" ? 1 : 0;
+								cells.Add(new Cell { Value = valueAHU, CellDataType = CellDataType.String });
+								subtotalAmountHouskeepingUsd[j] += totalAmountHKUsd;
+								break;
+							case 3:
+								totalAmountHKEuro = gr.Where(f => f.ServiceId == 348 && f.Year == yearList[j]).Sum(s => s.ReportAmountEuro);
+								totalAmountHKEuro = thhk > 0 ? totalAmountHKEuro / thhk : 0;
+								string valueAHE = totalAmountHKEuro > 0 ? euro.CurrencySymbol + Math.Round((decimal)totalAmountHKEuro, 2).ToString() : "N/A";
+								countSubTotalRowsHKE[j] += valueAHE != "N/A" ? 1 : 0;
+								cells.Add(new Cell { Value = valueAHE, CellDataType = CellDataType.String });
+								subtotalAmountHouskeepingEuro[j] += totalAmountHKEuro;
+								break;
+						}
+					}
+				}
+
+				row.Cells = cells;
+				exceldata.Add(row);
+
+				if (countTotalRows == grp.Count() && subtotals)
+				{
+					var subRow = new Row() { };
+					var subCells = new List<Cell>();
+
+					subCells.Add(new Cell { Value = lastRegion, CellDataType = CellDataType.String });
+					subCells.Add(new Cell { Value = "sub total", CellDataType = CellDataType.String });
+					subCells.Add(new Cell { Value = "", CellDataType = CellDataType.String });
+					subCells.Add(new Cell { Value = "", CellDataType = CellDataType.String });
+
+					for (int i = 0; i < 4; i++)
+					{
+						for (int j = 0; j < yearList.Count; j++)
+						{
+							switch (i)
+							{
+								case 0:
+									subtotalAmountNursingUsd[j] = countSubTotalRowsNU[j] > 0 ? subtotalAmountNursingUsd[j] / countSubTotalRowsNU[j] : subtotalAmountNursingUsd[j];
+									string valueANU = subtotalAmountNursingUsd[j] > 0 ? us.CurrencySymbol + Math.Round((decimal)subtotalAmountNursingUsd[j], 2).ToString() : "N/A";
+									subCells.Add(new Cell { Value = valueANU, CellDataType = CellDataType.String });
+									subtotalAmountNursingUsd[j] = 0;
+									break;
+								case 1:
+									subtotalAmountNursingEuro[j] = countSubTotalRowsNE[j] > 0 ? subtotalAmountNursingEuro[j] / countSubTotalRowsNE[j] : subtotalAmountNursingEuro[j];
+									string valueANE = subtotalAmountNursingEuro[j] > 0 ? euro.CurrencySymbol + Math.Round((decimal)subtotalAmountNursingEuro[j], 2).ToString() : "N/A";
+									subCells.Add(new Cell { Value = valueANE, CellDataType = CellDataType.String });
+									subtotalAmountNursingEuro[j] = 0;
+									break;
+								case 2:
+									subtotalAmountHouskeepingUsd[j] = countSubTotalRowsHKU[j] > 0 ? subtotalAmountHouskeepingUsd[j] / countSubTotalRowsHKU[j] : subtotalAmountHouskeepingUsd[j];
+									string valueAHU = subtotalAmountHouskeepingUsd[j] > 0 ? us.CurrencySymbol + Math.Round((decimal)subtotalAmountHouskeepingUsd[j], 2).ToString() : "N/A";
+									subCells.Add(new Cell { Value = valueAHU, CellDataType = CellDataType.String });
+									subtotalAmountHouskeepingUsd[j] = 0;
+									break;
+								case 3:
+									subtotalAmountHouskeepingEuro[j] = countSubTotalRowsHKE[j] > 0 ? subtotalAmountHouskeepingEuro[j] / countSubTotalRowsHKE[j] : subtotalAmountHouskeepingEuro[j];
+									string valueAHE = subtotalAmountHouskeepingEuro[j] > 0 ? euro.CurrencySymbol + Math.Round((decimal)subtotalAmountHouskeepingEuro[j], 2).ToString() : "N/A";
+									subCells.Add(new Cell { Value = valueAHE, CellDataType = CellDataType.String });
+									subtotalAmountHouskeepingEuro[j] = 0;
+									break;
+							}
+						}
+					}
+
+					subRow.Cells = subCells;
+					exceldata.Add(subRow);
+				}
+
+				countTotalRows++;
+
+			}
+
+			return this.Excel("Homecare Costs Report", "Homecare Costs Report", exceldata);
+		}
+
+		#endregion
+
+		#region Annual German Government Report (GG Report)
+		public ActionResult AnnualGGReport(ReportingHomeModel homeModel)
+		{
+			var model = homeModel.AnnualGGReportFilter;
+			var fundIds = model.FundIds.ToList();
+			ModelState.Clear();
+			TryValidateModel(model);
+
+			var apps = from a in db.Apps
+					   where System.Data.Objects.SqlClient.SqlFunctions.DatePart("year", a.StartDate) == model.Year
+					   where fundIds.Contains(a.FundId)
+					   select a;
+
+
+
+
+			var uniquClientsCount = (from a in
+										 (from cr in db.ViewClientReports
+										  join sr in db.SubReports on cr.SubReportId equals sr.Id
+										  join c in db.Clients on cr.ClientId equals c.Id
+										  join a in apps on sr.AppBudgetService.AppBudget.AppId equals a.Id
+										  select new
+										  {
+											  MasterId = c.MasterId ?? c.Id,
+											  AgencyGroupId = sr.AppBudgetService.AppBudget.App.AgencyGroupId,
+											  CurId = sr.AppBudgetService.AppBudget.App.CurrencyId,
+											  ServiceId = sr.AppBudgetService.ServiceId
+										  })
+									 group a by new
+									 {
+										 AgencyGroupId = a.AgencyGroupId,
+										 ServiceId = a.ServiceId,
+										 CurId = a.CurId,
+									 } into ag
+									 select new
+									 {
+										 Key = ag.Key,
+										 Count = ag.Select(f => f.MasterId).Distinct().Count()
+									 }).ToList();
+
+			var source = (from sra in db.viewSubreportAmounts
+						  join appbs in db.AppBudgetServices on sra.AppBudgetServiceId equals appbs.Id
+						  join app in apps on appbs.AppBudget.AppId equals app.Id
+						  select new
+						  {
+							  AgencyGroupId = appbs.AppBudget.App.AgencyGroupId,
+							  CurId = appbs.AppBudget.App.CurrencyId,
+							  ServiceId = appbs.ServiceId,
+							  Amount = sra.Amount,
+							  CCGrant = appbs.CcGrant,
+							  BudgetRemarks = appbs.Remarks,
+							  AppId = app.Id
+						  }).ToList();
+
+			var agencygroups = (from ag in db.AgencyGroups
+								join a in apps on ag.Id equals a.AgencyGroupId
+								select new
+								{
+									Id = ag.Id,
+									AgencyGroupName = ag.Name,
+									CountryName = ag.Country.Name,
+									StateName = ag.State.Name,
+									City = ag.City,
+								}).ToList();
+
+			var services = db.Services.ToList();
+
+
+			var result = from a in source
+						 group a by new
+						 {
+							 AgencyGroupId = a.AgencyGroupId,
+							 ServiceId = a.ServiceId,
+							 CurId = a.CurId,
+						 } into agroup
+						 join ag in agencygroups on agroup.Key.AgencyGroupId equals ag.Id
+						 join s in services on agroup.Key.ServiceId equals s.Id
+						 join uc in uniquClientsCount on agroup.Key equals uc.Key
+						 select new AnnualGGReportRow
+						 {
+							 AgencyGroupName = ag.AgencyGroupName,
+							 City = ag.City,
+							 CountryName = ag.CountryName,
+							 ServiceName = s.Name,
+							 StateName = ag.StateName,
+							 TotalAmount = agroup.Sum(f => f.Amount),
+							 TotalCcGrant = agroup.Sum(f => f.CCGrant),
+							 AppIds = string.Join(",", agroup.Select(f => f.AppId).Distinct()),
+<<<<<<< Updated upstream
+							 Remarks = string.Join(",", agroup.Where(f=>!string.IsNullOrEmpty(f.BudgetRemarks)).Select(f=>f.BudgetRemarks)),
+							 UniquClientsCount = uc.Count,
+							 CurId = agroup.Key.CurId
+=======
+							 Remarks = string.Join(",", agroup.Where(f => !string.IsNullOrEmpty(f.BudgetRemarks)).Select(f => f.BudgetRemarks)),
+							 UniquClientsCount = uc.Count
+>>>>>>> Stashed changes
+						 };
+
+
+
+			return this.Excel("AnnualGGReport", "Data", result.ToList());
+		}
+		#endregion
+
+		#region Client Hours Report
+
+		public ActionResult ClientHoursToExcel(ReportingHomeModel model)
+		{
+			if (!ModelState.IsValid)
+			{
+				return View("Index", model);
+			}
+
+			DateTime from = new DateTime((int)model.ClientHrsFilter.FromYear, (int)model.ClientHrsFilter.FromMonth, 1);
+			DateTime to = new DateTime((int)model.ClientHrsFilter.ToYear, (int)model.ClientHrsFilter.ToMonth, 1).AddMonths(1);
+			int daysCount = to.Date.Subtract(from.Date).Duration().Days + 1;
+			var subtotals = model.ClientHrsFilter.subtotals;
+
+			int? regionId = model.ClientHrsFilter.RegionId;
+
+			var viewClientReports = db.ViewClientReports;
+			var appBudgetServices = db.AppBudgetServices.Where(a => a.Service.TypeId == 8);
+			var preJoinSubReports = db.SubReports.Where(s => s.MainReport.StatusId == 2 && s.MainReport.Start.Month >= from.Month && s.MainReport.Start.Month <= to.Month);
+			var agencyGrpoups = db.AgencyGroups.Where(ag => model.ClientHrsFilter.RegionId == null || ag.Country.RegionId == model.ClientHrsFilter.RegionId);
+			var HcCapList = db.HcCapsTableRaws.Where(f => (f.EndDate >= DateTime.Today || f.EndDate == null) && f.LeaveDate == null);
+
+			var subReports = from sr in preJoinSubReports
+							 join abs in appBudgetServices on sr.AppBudgetServiceId equals abs.Id
+							 select new
+							 {
+								 Id = sr.Id,
+								 Year = sr.MainReport.Start.Year,
+								 Month = sr.MainReport.Start.Month,
+								 ServiceId = sr.AppBudgetService.ServiceId,
+								 AgencyGroupId = abs.Agency.AgencyGroup.Id,
+								 ExcRateUsd = db.viewAppExchangeRates.Where(f => f.AppId == abs.AppBudget.AppId && f.ToCur == "USD").Select(f => (decimal?)f.Value).FirstOrDefault(),
+								 ExcRateEuro = db.viewAppExchangeRates.Where(f => f.AppId == abs.AppBudget.AppId && f.ToCur == "EUR").Select(f => (decimal?)f.Value).FirstOrDefault(),
+							 };
+
+			var results = (from a in
+							   (from sr in subReports
+								join vcr in viewClientReports on sr.Id equals vcr.SubReportId
+								join hcl in HcCapList on vcr.ClientId equals hcl.ClientId
+								select new
+								{
+									TotalAmount = vcr.Amount,
+									Year = sr.Year,
+									Hours = vcr.Quantity,
+									HcCap = hcl.HcCap,
+									ServiceId = sr.ServiceId,
+									AgencyGroupId = sr.AgencyGroupId,
+									ExcRateUsd = sr.ExcRateUsd,
+									ExcRateEuro = sr.ExcRateEuro,
+								})
+						   group a by new { ServiceId = a.ServiceId, AgencyGroupId = a.AgencyGroupId } into agg
+						   join ag in agencyGrpoups on agg.Key.AgencyGroupId equals ag.Id
+						   select new
+						   {
+							   SER = ag.Name,
+							   RegionName = ag.Country.Region.Name,
+							   CountryName = ag.Country.Name,
+							   StateName = ag.State.Name,
+							   ServiceId = agg.Key.ServiceId,
+							   AgencyGroupId = agg.Key.AgencyGroupId,
+							   TotalHours = agg.Sum(f => f.Hours),
+							   ReportAmountUsd = agg.Sum(f => f.TotalAmount * f.ExcRateUsd),
+							   ReportAmountEuro = agg.Sum(f => f.TotalAmount * f.ExcRateEuro),
+							   TotalHcCap = agg.Sum(f => f.HcCap)
+						   });
+
+			var exceldata = new List<Row>();
+			var headerCells = new string[] { "Region", "Country", "State", "SER", "HC Hours Capacity", "HC Hours Received", "Addl Hours to Max", "*Weighted Average HC Cost USD", "Addl Need", "*Weighted Average HC Cost EU", "Addl Need" }.Select(f => new Cell
+			{
+				Value = f,
+				CellDataType = CellDataType.String
+			}).ToList();
+			exceldata.Add(new Row { Cells = headerCells });
+			foreach (var cell in headerCells) { cell.Bold = true; }
+
+			int countTotalRows = 1;
+
+			var us = new RegionInfo("en-US");
+			var euro = new RegionInfo("fr-FR");
+			decimal? HcHoursCapST = 0;
+			decimal? HcHoursRecST = 0;
+			decimal? AddlHoursST = 0;
+			decimal? AddlNeedUSDST = 0;
+			decimal? AddlNeedEUST = 0;
+
+			foreach (var region in results.GroupBy(f => f.RegionName))
+			{
+				foreach (var gr in region)
+				{
+					var row = new Row() { };
+					var cells = new List<Cell>();
+					decimal? totalAmountUsd = 0;
+					decimal? totalAmountEu = 0;
+
+					cells.Add(new Cell { Value = gr.RegionName, CellDataType = CellDataType.String });
+					cells.Add(new Cell { Value = gr.CountryName, CellDataType = CellDataType.String });
+					cells.Add(new Cell { Value = gr.StateName, CellDataType = CellDataType.String });
+					cells.Add(new Cell { Value = gr.SER, CellDataType = CellDataType.String });
+					var totalHcCap = gr.TotalHcCap;
+					HcHoursCapST += totalHcCap;
+					cells.Add(new Cell { Value = totalHcCap.ToString(), CellDataType = CellDataType.String });
+					var totalHours = Math.Round((decimal)(gr.TotalHours??0), 3);
+					HcHoursRecST += totalHours;
+					cells.Add(new Cell { Value = totalHours.ToString(), CellDataType = CellDataType.String });
+					var addlHours = totalHcCap - totalHours;
+					AddlHoursST += addlHours;
+					cells.Add(new Cell { Value = addlHours.ToString(), CellDataType = CellDataType.String });
+					totalAmountUsd = gr.ReportAmountUsd;
+					var avgUsd = totalHours > 0 ? totalAmountUsd / totalHours : 0;
+					string valAvgUsd = avgUsd > 0 ? us.CurrencySymbol + Math.Round((decimal)avgUsd, 3).ToString() : "N/A";
+					cells.Add(new Cell { Value = valAvgUsd, CellDataType = CellDataType.String });
+					var addlNeedUsd = Math.Round((decimal)(addlHours * avgUsd), 3);
+					AddlNeedUSDST += addlNeedUsd;
+					var valAddlNeedUsd = addlNeedUsd > 0 ? us.CurrencySymbol + addlNeedUsd.ToString() : "N/A";
+					cells.Add(new Cell { Value = valAddlNeedUsd, CellDataType = CellDataType.String });
+					totalAmountEu = gr.ReportAmountEuro;
+					var avgEu = totalHours > 0 ? totalAmountEu / totalHours : 0;
+					string valAvgEu = avgEu > 0 ? euro.CurrencySymbol + Math.Round((decimal)avgEu, 3).ToString() : "N/A";
+					cells.Add(new Cell { Value = valAvgEu, CellDataType = CellDataType.String });
+					var addlNeedEu = Math.Round((decimal)(addlHours * avgEu), 3);
+					AddlNeedEUST += addlNeedEu;
+					var valAddlNeedEu = addlNeedEu > 0 ? euro.CurrencySymbol + addlNeedEu.ToString() : "N/A";
+					cells.Add(new Cell { Value = valAddlNeedEu, CellDataType = CellDataType.String });
+
+					row.Cells = cells;
+					exceldata.Add(row);
+				}
+
+
+				//if (lastRegion != gr.Key.RegionName && subtotals)
+				//{
+				//	var subRow = new Row() { };
+				//	var subCells = new List<Cell>();
+
+				//	subCells.Add(new Cell { Value = lastRegion, CellDataType = CellDataType.String });
+				//	subCells.Add(new Cell { Value = "sub total", CellDataType = CellDataType.String });
+				//	subCells.Add(new Cell { Value = "", CellDataType = CellDataType.String });
+				//	subCells.Add(new Cell { Value = "", CellDataType = CellDataType.String });
+				//	subCells.Add(new Cell { Value = HcHoursCapST.ToString(), CellDataType = CellDataType.String });
+				//	subCells.Add(new Cell { Value = HcHoursRecST.ToString(), CellDataType = CellDataType.String });
+				//	subCells.Add(new Cell { Value = AddlHoursST.ToString(), CellDataType = CellDataType.String });
+				//	var avgUSD = AddlHoursST > 0 ? AddlNeedUSDST / AddlHoursST : 0;
+				//	string valueAvgUsd = avgUSD > 0 ? us.CurrencySymbol + Math.Round((decimal)avgUSD, 3).ToString() : "N/A";
+				//	subCells.Add(new Cell { Value = valueAvgUsd, CellDataType = CellDataType.String });
+				//	string valueAddlNeedUsd = AddlNeedUSDST > 0 ? us.CurrencySymbol + AddlNeedUSDST.ToString() : "N/A";
+				//	subCells.Add(new Cell { Value = valueAddlNeedUsd, CellDataType = CellDataType.String });
+				//	var avgEU = AddlHoursST > 0 ? AddlNeedEUST / AddlHoursST : 0;
+				//	string valueAvgEU = avgEU > 0 ? euro.CurrencySymbol + Math.Round((decimal)avgEU, 3).ToString() : "N/A";
+				//	subCells.Add(new Cell { Value = valueAvgEU, CellDataType = CellDataType.String });
+				//	string valueAddlNeedEU = AddlNeedEUST > 0 ? euro.CurrencySymbol + AddlNeedEUST.ToString() : "N/A";
+				//	subCells.Add(new Cell { Value = valueAddlNeedEU, CellDataType = CellDataType.String });
+
+				//	lastRegion = gr.Key.RegionName;
+
+				//	subRow.Cells = subCells;
+				//	exceldata.Add(subRow);
+				//}
+
+
+
+				if (subtotals)
+				{
+					var subRow = new Row() { };
+					var subCells = new List<Cell>();
+
+					subCells.Add(new Cell { Value = region.Key , CellDataType = CellDataType.String });
+
+					subCells.Add(new Cell { Value = "sub total", CellDataType = CellDataType.String });
+					subCells.Add(new Cell { Value = "", CellDataType = CellDataType.String });
+					subCells.Add(new Cell { Value = "", CellDataType = CellDataType.String });
+					subCells.Add(new Cell { Value = HcHoursCapST.ToString(), CellDataType = CellDataType.String });
+					subCells.Add(new Cell { Value = HcHoursRecST.ToString(), CellDataType = CellDataType.String });
+					subCells.Add(new Cell { Value = AddlHoursST.ToString(), CellDataType = CellDataType.String });
+					var avgUSD = AddlHoursST > 0 ? AddlNeedUSDST / AddlHoursST : 0;
+					string valueAvgUsd = avgUSD > 0 ? us.CurrencySymbol + Math.Round((decimal)avgUSD, 3).ToString() : "N/A";
+					subCells.Add(new Cell { Value = valueAvgUsd, CellDataType = CellDataType.String });
+					string valueAddlNeedUsd = AddlNeedUSDST > 0 ? us.CurrencySymbol + AddlNeedUSDST.ToString() : "N/A";
+					subCells.Add(new Cell { Value = valueAddlNeedUsd, CellDataType = CellDataType.String });
+					var avgEU = AddlHoursST > 0 ? AddlNeedEUST / AddlHoursST : 0;
+					string valueAvgEU = avgEU > 0 ? euro.CurrencySymbol + Math.Round((decimal)avgEU, 3).ToString() : "N/A";
+					subCells.Add(new Cell { Value = valueAvgEU, CellDataType = CellDataType.String });
+					string valueAddlNeedEU = AddlNeedEUST > 0 ? euro.CurrencySymbol + AddlNeedEUST.ToString() : "N/A";
+					subCells.Add(new Cell { Value = valueAddlNeedEU, CellDataType = CellDataType.String });
+
+					subRow.Cells = subCells;
+					exceldata.Add(subRow);
+				}
+
+				countTotalRows++;
+
+			}
+
+			return this.Excel("Client Hours Report", "Client Hours Report", exceldata);
+		}
+
+		#endregion
+
+		#region Budget Service Type Percents Report
+
+		public ActionResult BSTPToExcel(ReportingHomeModel model)
+		{
+			var currId = model.BSTPFilter.DisplayCurrency;
+			var ignoreUnsubmitted = model.BSTPFilter.IgnoreUnsubmitted;
+
+			var apps = (from app in db.Apps
+						where model.BSTPFilter.Year == null || app.StartDate.Year == model.BSTPFilter.Year
+						where model.BSTPFilter.RegionId == null || app.AgencyGroup.Country.RegionId == model.BSTPFilter.RegionId
+						where model.BSTPFilter.CountryId == null || app.AgencyGroup.CountryId == model.BSTPFilter.CountryId
+						where model.BSTPFilter.StateId == null || app.AgencyGroup.StateId == model.BSTPFilter.StateId
+						where model.BSTPFilter.FundId == null || app.FundId == model.BSTPFilter.FundId
+						where model.BSTPFilter.AgencyGroupId == null || app.AgencyGroupId == model.BSTPFilter.AgencyGroupId
+						select new
+						{
+							Id = app.Id,
+							Name = app.Name,
+							CurrencyId = app.CurrencyId,
+							CcGrant = app.CcGrant,
+							AgencyGroup = app.AgencyGroup,
+							Fund = app.Fund,
+							Currency = app.Currency
+						}).ToList();
+
+			var appBudgetServices = !ignoreUnsubmitted ? db.AppBudgetServices : db.AppBudgetServices.Where(ab => ab.AppBudget.StatusId != (int)AppBudgetApprovalStatuses.New && ab.AppBudget.StatusId != (int)AppBudgetApprovalStatuses.ReturnedToAgency);
+
+			var HcCcGrant = from a in
+								(from app in apps
+								 join abs in appBudgetServices.Where(ab => ab.Service.TypeId == 8) on app.Id equals abs.AppBudget.AppId
+								 select new
+								 {
+									 AppId = app.Id,
+									 HcGrant = abs.CcGrant
+								 })
+							group a by new { AppId = a.AppId } into ag
+							select new
+							{
+								AppId = ag.Key.AppId,
+								Amount = ag.Sum(f => f.HcGrant)
+							};
+
+			var AdminCcGrant = from a in
+								   (from app in apps
+									join abs in appBudgetServices.Where(ab => ab.Service.TypeId == 1) on app.Id equals abs.AppBudget.AppId
+									select new
+									{
+										AppId = app.Id,
+										AdminGrant = abs.CcGrant
+									})
+							   group a by new { AppId = a.AppId } into ag
+							   select new
+							   {
+								   AppId = ag.Key.AppId,
+								   Amount = ag.Sum(f => f.AdminGrant)
+							   };
+
+			var OtherCcGrant = from a in
+								   (from app in apps
+									join abs in appBudgetServices.Where(ab => ab.Service.TypeId != 8 && ab.Service.TypeId != 1) on app.Id equals abs.AppBudget.AppId
+									select new
+									{
+										AppId = app.Id,
+										OtherGrant = abs.CcGrant
+									})
+							   group a by new { AppId = a.AppId } into ag
+							   select new
+							   {
+								   AppId = ag.Key.AppId,
+								   Amount = ag.Sum(f => f.OtherGrant)
+							   };
+
+			var results = (from app in apps
+						   join hcg in HcCcGrant on app.Id equals hcg.AppId
+						   join acg in AdminCcGrant on hcg.AppId equals acg.AppId
+						   join ocg in OtherCcGrant on acg.AppId equals ocg.AppId
+						   join abs in appBudgetServices on ocg.AppId equals abs.AppBudget.AppId
+						   join aex in db.viewAppExchangeRates on new { AppId = app.Id, CurId = currId } equals new { AppId = aex.AppId, CurId = aex.ToCur } into aexg
+						   from aex in aexg.DefaultIfEmpty()
+						   select new BudgetServiceTypePercentsRow
+						   {
+							   RegionName = app.AgencyGroup.Country.Region.Name,
+							   CountryName = app.AgencyGroup.Country.Name,
+							   StateName = app.AgencyGroup.State != null ? app.AgencyGroup.State.Name : string.Empty,
+							   SerName = app.AgencyGroup.Name,
+							   FundName = app.Fund.Name,
+							   AppName = app.Name,
+							   AppAmountDC = app.CcGrant * ((decimal?)aex.Value ?? 1),
+							   CurrSelected = currId,
+							   AppAmount = Math.Round(app.CcGrant, 2),
+							   Curr = app.CurrencyId,
+							   Homecare = Math.Round(hcg.Amount, 2),
+							   Admin = Math.Round(acg.Amount, 2),
+							   Other = Math.Round(ocg.Amount, 2),
+							   HomecarePer = app.CcGrant > 0 ? Math.Round((hcg.Amount / (ocg.Amount + hcg.Amount + acg.Amount) * 100), 2).ToString() + "%" : "N/A",
+							   OtherPer = app.CcGrant > 0 ? Math.Round((ocg.Amount / (ocg.Amount + hcg.Amount + acg.Amount) * 100), 2).ToString() + "%" : "N/A",
+							   AdminPer = app.CcGrant > 0 ? Math.Round((acg.Amount / (ocg.Amount + hcg.Amount + acg.Amount) * 100), 2).ToString() + "%" : "N/A",
+							   Status = abs.AppBudget.StatusName
+						   }).ToList();
+
+			var grpres = results.OrderBy(f => f.RegionName).ThenBy(f => f.CountryName).ThenBy(f => f.StateName).ThenBy(f => f.SerName).ThenBy(f => f.FundName).ThenBy(f => f.AppName).GroupBy(a => new { a.RegionName, a.CountryName, a.StateName, a.SerName, a.FundName, a.AppName }).ToList();
+
+			var exceldata = new List<Row>();
+			var headerCells = new string[] { "Region", "Country", "State", "Ser Name", "Fund", "App", "App Amount (display currency)", "Curr", "App Amount", "Curr", "Homecare", "Other", "Admin", "Homecare %", "Other %", "Admin %", "Status" }.Select(f => new Cell
+			{
+				Value = f,
+				CellDataType = CellDataType.String
+			}).ToList();
+			exceldata.Add(new Row { Cells = headerCells });
+			foreach (var cell in headerCells) { cell.Bold = true; }
+
+			foreach (var gr in grpres)
+			{
+				var row = new Row() { };
+				var cells = new List<Cell>();
+
+				cells.Add(new Cell { Value = gr.FirstOrDefault().RegionName, CellDataType = CellDataType.String });
+				cells.Add(new Cell { Value = gr.FirstOrDefault().CountryName, CellDataType = CellDataType.String });
+				cells.Add(new Cell { Value = gr.FirstOrDefault().StateName, CellDataType = CellDataType.String });
+				cells.Add(new Cell { Value = gr.FirstOrDefault().SerName, CellDataType = CellDataType.String });
+				cells.Add(new Cell { Value = gr.FirstOrDefault().FundName, CellDataType = CellDataType.String });
+				cells.Add(new Cell { Value = gr.FirstOrDefault().AppName, CellDataType = CellDataType.String });
+				var appAmountDC = gr.FirstOrDefault().AppAmountDC > 0 ? Math.Round(gr.FirstOrDefault().AppAmountDC, 2).ToString() : "N/A";
+				cells.Add(new Cell { Value = appAmountDC, CellDataType = CellDataType.String });
+				cells.Add(new Cell { Value = gr.FirstOrDefault().CurrSelected, CellDataType = CellDataType.String });
+				cells.Add(new Cell { Value = gr.FirstOrDefault().AppAmount.ToString(), CellDataType = CellDataType.String });
+				cells.Add(new Cell { Value = gr.FirstOrDefault().Curr, CellDataType = CellDataType.String });
+				cells.Add(new Cell { Value = gr.FirstOrDefault().Homecare.ToString(), CellDataType = CellDataType.String });
+				cells.Add(new Cell { Value = gr.FirstOrDefault().Other.ToString(), CellDataType = CellDataType.String });
+				cells.Add(new Cell { Value = gr.FirstOrDefault().Admin.ToString(), CellDataType = CellDataType.String });
+				cells.Add(new Cell { Value = gr.FirstOrDefault().HomecarePer, CellDataType = CellDataType.String });
+				cells.Add(new Cell { Value = gr.FirstOrDefault().OtherPer, CellDataType = CellDataType.String });
+				cells.Add(new Cell { Value = gr.FirstOrDefault().AdminPer, CellDataType = CellDataType.String });
+				cells.Add(new Cell { Value = gr.FirstOrDefault().Status, CellDataType = CellDataType.String });
+
+				row.Cells = cells;
+				exceldata.Add(row);
+			}
+
+			return this.Excel("Budget Service Type Percents", "Budget Service Type Percents", exceldata);
+
+		}
+
+		public class BudgetServiceTypePercentsRow
+		{
+			public string RegionName { get; set; }
+			public string CountryName { get; set; }
+			public string StateName { get; set; }
+			public string SerName { get; set; }
+			public string FundName { get; set; }
+			public string AppName { get; set; }
+			public decimal AppAmountDC { get; set; }
+			public string CurrSelected { get; set; }
+			public decimal AppAmount { get; set; }
+			public string Curr { get; set; }
+			public decimal Homecare { get; set; }
+			public decimal Other { get; set; }
+			public decimal Admin { get; set; }
+			public string HomecarePer { get; set; }
+			public string OtherPer { get; set; }
+			public string AdminPer { get; set; }
+			public string Status { get; set; }
+		}
+
+		#endregion
+
+	}
+
+}
+
+
+

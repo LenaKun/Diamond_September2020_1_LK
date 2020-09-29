@@ -1,0 +1,17 @@
+﻿@model InvalidModelException
+@Html.DisplayFor(f => f.Message)
+
+@if (!Model.ModelState.IsValid)
+{
+	<ul>
+		@foreach (var v in Model.ModelState.Values)
+  {
+	  foreach (var e in v.Errors)
+	  {
+			<li>@e.ErrorMessage</li>
+	  }
+  }
+	</ul>
+}
+
+InvalidModelException.cshtml

@@ -1,0 +1,410 @@
+D:\Diamond_01282020\cc\Code\CC.Data\bin\Debug\CC.Data.dll.config
+D:\Diamond_01282020\cc\Code\CC.Data\bin\Debug\CC.Data.dll
+D:\Diamond_01282020\cc\Code\CC.Data\bin\Debug\CC.Data.pdb
+D:\Diamond_01282020\cc\Code\CC.Data\bin\Debug\CC.Extensions.dll
+D:\Diamond_01282020\cc\Code\CC.Data\bin\Debug\CsvHelper.dll
+D:\Diamond_01282020\cc\Code\CC.Data\bin\Debug\EntityFramework.dll
+D:\Diamond_01282020\cc\Code\CC.Data\bin\Debug\FluentValidation.dll
+D:\Diamond_01282020\cc\Code\CC.Data\bin\Debug\itextsharp.dll
+D:\Diamond_01282020\cc\Code\CC.Data\bin\Debug\Microsoft.Web.Infrastructure.dll
+D:\Diamond_01282020\cc\Code\CC.Data\bin\Debug\System.Web.Helpers.dll
+D:\Diamond_01282020\cc\Code\CC.Data\bin\Debug\System.Web.Mvc.dll
+D:\Diamond_01282020\cc\Code\CC.Data\bin\Debug\System.Web.Razor.dll
+D:\Diamond_01282020\cc\Code\CC.Data\bin\Debug\System.Web.WebPages.Deployment.dll
+D:\Diamond_01282020\cc\Code\CC.Data\bin\Debug\System.Web.WebPages.dll
+D:\Diamond_01282020\cc\Code\CC.Data\bin\Debug\System.Web.WebPages.Razor.dll
+D:\Diamond_01282020\cc\Code\CC.Data\bin\Debug\CC.Extensions.pdb
+D:\Diamond_01282020\cc\Code\CC.Data\bin\Debug\CsvHelper.xml
+D:\Diamond_01282020\cc\Code\CC.Data\bin\Debug\EntityFramework.xml
+D:\Diamond_01282020\cc\Code\CC.Data\bin\Debug\FluentValidation.xml
+D:\Diamond_01282020\cc\Code\CC.Data\bin\Debug\itextsharp.xml
+D:\Diamond_01282020\cc\Code\CC.Data\bin\Debug\System.Web.Helpers.xml
+D:\Diamond_01282020\cc\Code\CC.Data\bin\Debug\System.Web.Mvc.xml
+D:\Diamond_01282020\cc\Code\CC.Data\bin\Debug\System.Web.Razor.xml
+D:\Diamond_01282020\cc\Code\CC.Data\bin\Debug\System.Web.WebPages.xml
+D:\Diamond_01282020\cc\Code\CC.Data\bin\Debug\System.Web.WebPages.Deployment.xml
+D:\Diamond_01282020\cc\Code\CC.Data\bin\Debug\System.Web.WebPages.Razor.xml
+D:\Diamond_01282020\cc\Code\CC.Data\bin\Debug\de\FluentValidation.resources.dll
+D:\Diamond_01282020\cc\Code\CC.Data\bin\Debug\es\FluentValidation.resources.dll
+D:\Diamond_01282020\cc\Code\CC.Data\bin\Debug\fr\FluentValidation.resources.dll
+D:\Diamond_01282020\cc\Code\CC.Data\bin\Debug\it\FluentValidation.resources.dll
+D:\Diamond_01282020\cc\Code\CC.Data\bin\Debug\nl\FluentValidation.resources.dll
+D:\Diamond_01282020\cc\Code\CC.Data\bin\Debug\pl\FluentValidation.resources.dll
+D:\Diamond_01282020\cc\Code\CC.Data\bin\Debug\pt\FluentValidation.resources.dll
+D:\Diamond_01282020\cc\Code\CC.Data\bin\Debug\ru\FluentValidation.resources.dll
+D:\Diamond_01282020\cc\Code\CC.Data\bin\Debug\sv\FluentValidation.resources.dll
+D:\Diamond_01282020\cc\Code\CC.Data\bin\Debug\tr\FluentValidation.resources.dll
+D:\Diamond_01282020\cc\Code\CC.Data\obj\Debug\CC.Data.csprojAssemblyReference.cache
+D:\Diamond_01282020\cc\Code\CC.Data\obj\Debug\CC.Data.csproj.CoreCompileInputs.cache
+D:\Diamond_01282020\cc\Code\CC.Data\obj\Debug\CC.Data.csproj.CopyComplete
+D:\Diamond_01282020\cc\Code\CC.Data\obj\Debug\CC.Data.dll
+D:\Diamond_01282020\cc\Code\CC.Data\obj\Debug\CC.Data.pdb
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Data\bin\Debug\CC.Data.dll.config
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Data\bin\Debug\CC.Data.dll
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Data\bin\Debug\CC.Data.pdb
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Data\bin\Debug\CC.Extensions.dll
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Data\bin\Debug\CsvHelper.dll
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Data\bin\Debug\EntityFramework.dll
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Data\bin\Debug\FluentValidation.dll
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Data\bin\Debug\itextsharp.dll
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Data\bin\Debug\Microsoft.Web.Infrastructure.dll
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Data\bin\Debug\System.Web.Helpers.dll
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Data\bin\Debug\System.Web.Mvc.dll
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Data\bin\Debug\System.Web.Razor.dll
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Data\bin\Debug\System.Web.WebPages.Deployment.dll
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Data\bin\Debug\System.Web.WebPages.dll
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Data\bin\Debug\System.Web.WebPages.Razor.dll
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Data\bin\Debug\CC.Extensions.pdb
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Data\bin\Debug\CsvHelper.xml
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Data\bin\Debug\EntityFramework.xml
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Data\bin\Debug\FluentValidation.xml
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Data\bin\Debug\itextsharp.xml
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Data\bin\Debug\System.Web.Helpers.xml
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Data\bin\Debug\System.Web.Mvc.xml
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Data\bin\Debug\System.Web.Razor.xml
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Data\bin\Debug\System.Web.WebPages.xml
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Data\bin\Debug\System.Web.WebPages.Deployment.xml
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Data\bin\Debug\System.Web.WebPages.Razor.xml
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Data\bin\Debug\de\FluentValidation.resources.dll
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Data\bin\Debug\es\FluentValidation.resources.dll
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Data\bin\Debug\fr\FluentValidation.resources.dll
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Data\bin\Debug\it\FluentValidation.resources.dll
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Data\bin\Debug\nl\FluentValidation.resources.dll
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Data\bin\Debug\pl\FluentValidation.resources.dll
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Data\bin\Debug\pt\FluentValidation.resources.dll
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Data\bin\Debug\ru\FluentValidation.resources.dll
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Data\bin\Debug\sv\FluentValidation.resources.dll
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Data\bin\Debug\tr\FluentValidation.resources.dll
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Data\obj\Debug\CC.Data.csprojAssemblyReference.cache
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Data\obj\Debug\CC.Data.csproj.CoreCompileInputs.cache
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Data\obj\Debug\CC.Data.csproj.CopyComplete
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Data\obj\Debug\CC.Data.dll
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Data\obj\Debug\CC.Data.pdb
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Data\bin\Debug\CC.Data.dll.config
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Data\bin\Debug\CC.Data.dll
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Data\bin\Debug\CC.Data.pdb
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Data\bin\Debug\CC.Extensions.dll
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Data\bin\Debug\CsvHelper.dll
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Data\bin\Debug\EntityFramework.dll
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Data\bin\Debug\FluentValidation.dll
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Data\bin\Debug\itextsharp.dll
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Data\bin\Debug\Microsoft.Web.Infrastructure.dll
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Data\bin\Debug\System.Web.Helpers.dll
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Data\bin\Debug\System.Web.Mvc.dll
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Data\bin\Debug\System.Web.Razor.dll
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Data\bin\Debug\System.Web.WebPages.Deployment.dll
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Data\bin\Debug\System.Web.WebPages.dll
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Data\bin\Debug\System.Web.WebPages.Razor.dll
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Data\bin\Debug\CC.Extensions.pdb
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Data\bin\Debug\CsvHelper.xml
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Data\bin\Debug\EntityFramework.xml
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Data\bin\Debug\FluentValidation.xml
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Data\bin\Debug\itextsharp.xml
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Data\bin\Debug\System.Web.Helpers.xml
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Data\bin\Debug\System.Web.Mvc.xml
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Data\bin\Debug\System.Web.Razor.xml
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Data\bin\Debug\System.Web.WebPages.xml
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Data\bin\Debug\System.Web.WebPages.Deployment.xml
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Data\bin\Debug\System.Web.WebPages.Razor.xml
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Data\bin\Debug\de\FluentValidation.resources.dll
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Data\bin\Debug\es\FluentValidation.resources.dll
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Data\bin\Debug\fr\FluentValidation.resources.dll
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Data\bin\Debug\it\FluentValidation.resources.dll
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Data\bin\Debug\nl\FluentValidation.resources.dll
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Data\bin\Debug\pl\FluentValidation.resources.dll
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Data\bin\Debug\pt\FluentValidation.resources.dll
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Data\bin\Debug\ru\FluentValidation.resources.dll
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Data\bin\Debug\sv\FluentValidation.resources.dll
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Data\bin\Debug\tr\FluentValidation.resources.dll
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Data\obj\Debug\CC.Data.csprojAssemblyReference.cache
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Data\obj\Debug\CC.Data.csproj.CoreCompileInputs.cache
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Data\obj\Debug\CC.Data.csproj.CopyComplete
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Data\obj\Debug\CC.Data.dll
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Data\obj\Debug\CC.Data.pdb
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Data\bin\Debug\CC.Data.dll.config
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Data\bin\Debug\CC.Data.dll
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Data\bin\Debug\CC.Data.pdb
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Data\bin\Debug\CC.Extensions.dll
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Data\bin\Debug\CsvHelper.dll
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Data\bin\Debug\EntityFramework.dll
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Data\bin\Debug\FluentValidation.dll
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Data\bin\Debug\itextsharp.dll
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Data\bin\Debug\Microsoft.Web.Infrastructure.dll
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Data\bin\Debug\System.Web.Helpers.dll
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Data\bin\Debug\System.Web.Mvc.dll
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Data\bin\Debug\System.Web.Razor.dll
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Data\bin\Debug\System.Web.WebPages.Deployment.dll
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Data\bin\Debug\System.Web.WebPages.dll
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Data\bin\Debug\System.Web.WebPages.Razor.dll
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Data\bin\Debug\CC.Extensions.pdb
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Data\bin\Debug\CsvHelper.xml
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Data\bin\Debug\EntityFramework.xml
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Data\bin\Debug\FluentValidation.xml
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Data\bin\Debug\itextsharp.xml
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Data\bin\Debug\System.Web.Helpers.xml
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Data\bin\Debug\System.Web.Mvc.xml
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Data\bin\Debug\System.Web.Razor.xml
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Data\bin\Debug\System.Web.WebPages.xml
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Data\bin\Debug\System.Web.WebPages.Deployment.xml
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Data\bin\Debug\System.Web.WebPages.Razor.xml
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Data\bin\Debug\de\FluentValidation.resources.dll
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Data\bin\Debug\es\FluentValidation.resources.dll
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Data\bin\Debug\fr\FluentValidation.resources.dll
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Data\bin\Debug\it\FluentValidation.resources.dll
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Data\bin\Debug\nl\FluentValidation.resources.dll
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Data\bin\Debug\pl\FluentValidation.resources.dll
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Data\bin\Debug\pt\FluentValidation.resources.dll
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Data\bin\Debug\ru\FluentValidation.resources.dll
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Data\bin\Debug\sv\FluentValidation.resources.dll
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Data\bin\Debug\tr\FluentValidation.resources.dll
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Data\obj\Debug\CC.Data.csprojAssemblyReference.cache
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Data\obj\Debug\CC.Data.csproj.CoreCompileInputs.cache
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Data\obj\Debug\CC.Data.csproj.CopyComplete
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Data\obj\Debug\CC.Data.dll
+D:\Current\Diamond_Tasks_January_2020 - Copy\cc\Code\CC.Data\obj\Debug\CC.Data.pdb
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\CC.Data.dll.config
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\CC.Data.dll
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\CC.Data.pdb
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\CC.Extensions.dll
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\CsvHelper.dll
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\EntityFramework.dll
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\FluentValidation.dll
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\itextsharp.dll
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\Microsoft.Web.Infrastructure.dll
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\System.Web.Helpers.dll
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\System.Web.Mvc.dll
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\System.Web.Razor.dll
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\System.Web.WebPages.Deployment.dll
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\System.Web.WebPages.dll
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\System.Web.WebPages.Razor.dll
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\CC.Extensions.pdb
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\CsvHelper.xml
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\EntityFramework.xml
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\FluentValidation.xml
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\itextsharp.xml
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\System.Web.Helpers.xml
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\System.Web.Mvc.xml
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\System.Web.Razor.xml
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\System.Web.WebPages.xml
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\System.Web.WebPages.Deployment.xml
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\System.Web.WebPages.Razor.xml
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\de\FluentValidation.resources.dll
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\es\FluentValidation.resources.dll
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\fr\FluentValidation.resources.dll
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\it\FluentValidation.resources.dll
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\nl\FluentValidation.resources.dll
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\pl\FluentValidation.resources.dll
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\pt\FluentValidation.resources.dll
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\ru\FluentValidation.resources.dll
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\sv\FluentValidation.resources.dll
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\tr\FluentValidation.resources.dll
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\obj\Debug\CC.Data.csprojAssemblyReference.cache
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\obj\Debug\CC.Data.csproj.CoreCompileInputs.cache
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\obj\Debug\CC.Data.csproj.CopyComplete
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\obj\Debug\CC.Data.dll
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\obj\Debug\CC.Data.pdb
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\obj\Debug\CC.Data.csprojAssemblyReference.cache
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\obj\Debug\CC.Data.csproj.CoreCompileInputs.cache
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\obj\Debug\CC.Data.dll
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\obj\Debug\CC.Data.pdb
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\CC.Data.dll.config
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\CC.Data.dll
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\CC.Data.pdb
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\CC.Extensions.dll
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\CsvHelper.dll
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\EntityFramework.dll
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\FluentValidation.dll
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\itextsharp.dll
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\Microsoft.Web.Infrastructure.dll
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\System.Web.Helpers.dll
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\System.Web.Mvc.dll
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\System.Web.Razor.dll
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\System.Web.WebPages.Deployment.dll
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\System.Web.WebPages.dll
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\System.Web.WebPages.Razor.dll
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\CC.Extensions.pdb
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\CsvHelper.xml
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\EntityFramework.xml
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\FluentValidation.xml
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\itextsharp.xml
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\System.Web.Helpers.xml
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\System.Web.Mvc.xml
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\System.Web.Razor.xml
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\System.Web.WebPages.xml
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\System.Web.WebPages.Deployment.xml
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\System.Web.WebPages.Razor.xml
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\de\FluentValidation.resources.dll
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\es\FluentValidation.resources.dll
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\fr\FluentValidation.resources.dll
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\it\FluentValidation.resources.dll
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\nl\FluentValidation.resources.dll
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\pl\FluentValidation.resources.dll
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\pt\FluentValidation.resources.dll
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\ru\FluentValidation.resources.dll
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\sv\FluentValidation.resources.dll
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\tr\FluentValidation.resources.dll
+D:\Current\BackUp\04232020\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\obj\Debug\CC.Data.csproj.CopyComplete
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\CC.Data.dll.config
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\CC.Data.dll
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\CC.Data.pdb
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\CC.Extensions.dll
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\CsvHelper.dll
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\EntityFramework.dll
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\FluentValidation.dll
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\itextsharp.dll
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\Microsoft.Web.Infrastructure.dll
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\System.Web.Helpers.dll
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\System.Web.Mvc.dll
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\System.Web.Razor.dll
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\System.Web.WebPages.Deployment.dll
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\System.Web.WebPages.dll
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\System.Web.WebPages.Razor.dll
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\CC.Extensions.pdb
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\CsvHelper.xml
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\EntityFramework.xml
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\FluentValidation.xml
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\itextsharp.xml
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\System.Web.Helpers.xml
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\System.Web.Mvc.xml
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\System.Web.Razor.xml
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\System.Web.WebPages.xml
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\System.Web.WebPages.Deployment.xml
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\System.Web.WebPages.Razor.xml
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\de\FluentValidation.resources.dll
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\es\FluentValidation.resources.dll
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\fr\FluentValidation.resources.dll
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\it\FluentValidation.resources.dll
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\nl\FluentValidation.resources.dll
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\pl\FluentValidation.resources.dll
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\pt\FluentValidation.resources.dll
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\ru\FluentValidation.resources.dll
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\sv\FluentValidation.resources.dll
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\bin\Debug\tr\FluentValidation.resources.dll
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\obj\Debug\CC.Data.csprojAssemblyReference.cache
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\obj\Debug\CC.Data.csproj.CoreCompileInputs.cache
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\obj\Debug\CC.Data.csproj.CopyComplete
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\obj\Debug\CC.Data.dll
+D:\Current\BackUp\04232020\1\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Data\obj\Debug\CC.Data.pdb
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Data\bin\Debug\CC.Data.dll.config
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Data\bin\Debug\CC.Data.dll
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Data\bin\Debug\CC.Data.pdb
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Data\bin\Debug\CC.Extensions.dll
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Data\bin\Debug\CsvHelper.dll
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Data\bin\Debug\EntityFramework.dll
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Data\bin\Debug\FluentValidation.dll
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Data\bin\Debug\itextsharp.dll
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Data\bin\Debug\Microsoft.Web.Infrastructure.dll
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Data\bin\Debug\System.Web.Helpers.dll
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Data\bin\Debug\System.Web.Mvc.dll
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Data\bin\Debug\System.Web.Razor.dll
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Data\bin\Debug\System.Web.WebPages.Deployment.dll
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Data\bin\Debug\System.Web.WebPages.dll
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Data\bin\Debug\System.Web.WebPages.Razor.dll
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Data\bin\Debug\CC.Extensions.pdb
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Data\bin\Debug\CsvHelper.xml
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Data\bin\Debug\EntityFramework.xml
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Data\bin\Debug\FluentValidation.xml
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Data\bin\Debug\itextsharp.xml
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Data\bin\Debug\System.Web.Helpers.xml
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Data\bin\Debug\System.Web.Mvc.xml
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Data\bin\Debug\System.Web.Razor.xml
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Data\bin\Debug\System.Web.WebPages.xml
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Data\bin\Debug\System.Web.WebPages.Deployment.xml
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Data\bin\Debug\System.Web.WebPages.Razor.xml
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Data\bin\Debug\de\FluentValidation.resources.dll
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Data\bin\Debug\es\FluentValidation.resources.dll
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Data\bin\Debug\fr\FluentValidation.resources.dll
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Data\bin\Debug\it\FluentValidation.resources.dll
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Data\bin\Debug\nl\FluentValidation.resources.dll
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Data\bin\Debug\pl\FluentValidation.resources.dll
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Data\bin\Debug\pt\FluentValidation.resources.dll
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Data\bin\Debug\ru\FluentValidation.resources.dll
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Data\bin\Debug\sv\FluentValidation.resources.dll
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Data\bin\Debug\tr\FluentValidation.resources.dll
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Data\obj\Debug\CC.Data.csprojAssemblyReference.cache
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Data\obj\Debug\CC.Data.csproj.CoreCompileInputs.cache
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Data\obj\Debug\CC.Data.csproj.CopyComplete
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Data\obj\Debug\CC.Data.dll
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Data\obj\Debug\CC.Data.pdb
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Data\bin\Debug\CC.Data.dll.config
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Data\bin\Debug\CC.Data.dll
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Data\bin\Debug\CC.Data.pdb
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Data\bin\Debug\CC.Extensions.dll
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Data\bin\Debug\CsvHelper.dll
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Data\bin\Debug\EntityFramework.dll
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Data\bin\Debug\FluentValidation.dll
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Data\bin\Debug\itextsharp.dll
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Data\bin\Debug\Microsoft.Web.Infrastructure.dll
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Data\bin\Debug\System.Web.Helpers.dll
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Data\bin\Debug\System.Web.Mvc.dll
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Data\bin\Debug\System.Web.Razor.dll
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Data\bin\Debug\System.Web.WebPages.Deployment.dll
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Data\bin\Debug\System.Web.WebPages.dll
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Data\bin\Debug\System.Web.WebPages.Razor.dll
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Data\bin\Debug\CC.Extensions.pdb
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Data\bin\Debug\CsvHelper.xml
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Data\bin\Debug\EntityFramework.xml
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Data\bin\Debug\FluentValidation.xml
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Data\bin\Debug\itextsharp.xml
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Data\bin\Debug\System.Web.Helpers.xml
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Data\bin\Debug\System.Web.Mvc.xml
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Data\bin\Debug\System.Web.Razor.xml
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Data\bin\Debug\System.Web.WebPages.xml
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Data\bin\Debug\System.Web.WebPages.Deployment.xml
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Data\bin\Debug\System.Web.WebPages.Razor.xml
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Data\bin\Debug\de\FluentValidation.resources.dll
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Data\bin\Debug\es\FluentValidation.resources.dll
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Data\bin\Debug\fr\FluentValidation.resources.dll
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Data\bin\Debug\it\FluentValidation.resources.dll
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Data\bin\Debug\nl\FluentValidation.resources.dll
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Data\bin\Debug\pl\FluentValidation.resources.dll
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Data\bin\Debug\pt\FluentValidation.resources.dll
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Data\bin\Debug\ru\FluentValidation.resources.dll
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Data\bin\Debug\sv\FluentValidation.resources.dll
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Data\bin\Debug\tr\FluentValidation.resources.dll
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Data\obj\Debug\CC.Data.csprojAssemblyReference.cache
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Data\obj\Debug\CC.Data.csproj.CoreCompileInputs.cache
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Data\obj\Debug\CC.Data.csproj.CopyComplete
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Data\obj\Debug\CC.Data.dll
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Data\obj\Debug\CC.Data.pdb
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Data\bin\Debug\CC.Data.dll.config
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Data\bin\Debug\CC.Data.dll
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Data\bin\Debug\CC.Data.pdb
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Data\bin\Debug\CC.Extensions.dll
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Data\bin\Debug\CsvHelper.dll
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Data\bin\Debug\EntityFramework.dll
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Data\bin\Debug\FluentValidation.dll
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Data\bin\Debug\itextsharp.dll
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Data\bin\Debug\Microsoft.Web.Infrastructure.dll
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Data\bin\Debug\System.Web.Helpers.dll
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Data\bin\Debug\System.Web.Mvc.dll
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Data\bin\Debug\System.Web.Razor.dll
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Data\bin\Debug\System.Web.WebPages.Deployment.dll
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Data\bin\Debug\System.Web.WebPages.dll
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Data\bin\Debug\System.Web.WebPages.Razor.dll
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Data\bin\Debug\CC.Extensions.pdb
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Data\bin\Debug\CsvHelper.xml
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Data\bin\Debug\EntityFramework.xml
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Data\bin\Debug\FluentValidation.xml
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Data\bin\Debug\itextsharp.xml
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Data\bin\Debug\System.Web.Helpers.xml
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Data\bin\Debug\System.Web.Mvc.xml
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Data\bin\Debug\System.Web.Razor.xml
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Data\bin\Debug\System.Web.WebPages.xml
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Data\bin\Debug\System.Web.WebPages.Deployment.xml
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Data\bin\Debug\System.Web.WebPages.Razor.xml
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Data\bin\Debug\de\FluentValidation.resources.dll
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Data\bin\Debug\es\FluentValidation.resources.dll
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Data\bin\Debug\fr\FluentValidation.resources.dll
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Data\bin\Debug\it\FluentValidation.resources.dll
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Data\bin\Debug\nl\FluentValidation.resources.dll
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Data\bin\Debug\pl\FluentValidation.resources.dll
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Data\bin\Debug\pt\FluentValidation.resources.dll
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Data\bin\Debug\ru\FluentValidation.resources.dll
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Data\bin\Debug\sv\FluentValidation.resources.dll
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Data\bin\Debug\tr\FluentValidation.resources.dll
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Data\obj\Debug\CC.Data.csprojAssemblyReference.cache
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Data\obj\Debug\CC.Data.csproj.CoreCompileInputs.cache
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Data\obj\Debug\CC.Data.csproj.CopyComplete
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Data\obj\Debug\CC.Data.dll
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Data\obj\Debug\CC.Data.pdb

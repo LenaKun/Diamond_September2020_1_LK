@@ -1,0 +1,53 @@
+﻿@model SubReportDetailsModel
+@{
+	ViewBag.Title = "Detailed Report";
+}
+@section Header
+{
+}
+<h2>Detailed Report</h2>
+
+@Html.ValidationSummary()
+
+<p>
+	
+	<a href="@Url.Action("Details", "MainReports", new { id = Model.MainReportId })" class="button">Go to Financial Report</a>
+</p>
+
+@Html.Partial("Header", Model.DetailsHeader)
+
+@if(!User.IsInRole("BMF"))
+{
+    <table>
+	    <tr>
+		    <th>
+			    Matching Sum Totals:
+		    </th>
+		    <td>
+			    <div class="display-item">
+				    @Html.LabelFor(f => f.Totals.AppMatchingSum)
+				    @Html.DisplayFor(f => f.Totals.AppMatchingSum)
+			    </div>
+			    <div class="display-item">
+				    @Html.LabelFor(f => f.Totals.YtdMatchExp)
+				    @Html.DisplayFor(f => f.Totals.YtdMatchExp)
+			    </div>
+			    <div class="display-item">
+				    @Html.LabelFor(f => f.Totals.EstimatedMatchingSum)
+				    @Html.DisplayFor(f => f.Totals.EstimatedMatchingSum)
+			    </div>
+			    <div class="display-item">
+				    @Html.LabelFor(f => f.Totals.MatchingSumStatus)
+				    @Html.DisplayFor(f => f.Totals.MatchingSumStatus)
+			    </div>
+		    </td>
+	    </tr>
+    </table>
+}
+
+<p>
+	<a href="@Url.Action("Details", "MainReports", new { id = Model.MainReportId })" class="button">
+		Go to Financial Report
+	</a>
+	
+</p>

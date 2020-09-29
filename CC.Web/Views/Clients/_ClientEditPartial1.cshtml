@@ -1,0 +1,378 @@
+﻿@model CC.Web.Models.ClientCreateModel
+@{
+
+	var deceasedId = (int)CC.Data.LeaveReasonEnum.Deceased;
+}
+
+<script>
+
+	$(function () {
+		var $deceased = $('span.deceased span.stringdisplaytemplate');
+		var $deceasedDate = $('#@Html.FieldIdFor(model => model.Data.DeceasedDate)');
+		var $leaveReason = $('#@Html.FieldIdFor(model => model.Data.LeaveReasonId)');
+		var $leaveDate = $('#@Html.FieldIdFor(model => model.Data.LeaveDate)');
+		var $joinDate = $('#@Html.FieldIdFor(model => model.Data.JoinDate)');
+
+		$joinDate.datepicker({
+			minDate: new Date(1946, 1, 9)
+		});
+
+
+		$deceasedDate.change(function () {
+			$deceased.html(isDeceased() ? "Yes" : "No");
+			if ($deceasedDate.val() && $leaveReason.val() != '@deceasedId') {
+				dalert(function () {
+					if (!$leaveDate.val()) {
+						$leaveDate.val($leaveReason.val());
+					}
+					$leaveReason.val('@deceasedId');
+					if ($leaveDate.val() == '') {
+						$leaveDate.val($deceasedDate.val());
+					}
+				});
+			}
+			else if (!isDeceased()) {
+				$deceasedDate.val('');
+			} else {
+				$leaveDate.val($deceasedDate.val());
+			}
+
+		});
+
+
+		$leaveReason.change(function () {
+			$deceased.html(isDeceased() ? "Yes" : "No");
+
+			if ($leaveReason.val() == '@deceasedId' && $deceasedDate.val() == '') {
+				dalert(function () {
+					if ($leaveDate.val() != '') {
+						$deceasedDate.val($leaveDate.val());
+						$deceasedDate.focus();
+					}
+				});
+			}
+			else if (!isDeceased()) {
+				$deceasedDate.val('');
+			}
+		});
+		function isDeceased() {
+			return $leaveReason.val() == '@deceasedId' || $deceasedDate.val() != '';
+		}
+		console.log('asdfasdf');
+		$deceasedDate.on('custom-datepicker-change' , function (e) {
+			// do something
+			console.debug('asdfadsf')
+		});
+
+		function dalert(yesCallback) {
+			$('<div></div>').html('Are you sure that this client is deceased? Once updated, you will not be able to undo this. (Yes/ No)').dialog({
+				modal: true,
+				buttons: {
+					"Yes": function () {
+						$(this).dialog("close");
+						$(this).dialog("destroy");
+						yesCallback();
+					},
+					"No": function () {
+						$(this).dialog("close");
+						$(this).dialog("destroy");
+						$deceased.html("No");
+						$deceasedDate.val('');
+						$leaveReason.val('');
+					}
+				}
+
+			});
+		}
+	});
+
+
+</script>
+<fieldset>
+	<legend>General Details</legend>
+	<div class="row floatContainer">
+		<div class="editor-item">
+			@Html.LabelFor(model => model.Data.FirstName):
+			@Html.EditorFor(model => model.Data.FirstName)
+		</div>
+		<div class="editor-item">
+			@Html.LabelFor(model => model.Data.LastName):
+			@Html.EditorFor(model => model.Data.LastName)
+		</div>
+		<div class="editor-item">
+			@Html.LabelFor(model => model.Data.MiddleName):
+			@Html.EditorFor(model => model.Data.MiddleName)
+		</div>
+		<div class="editor-item">
+			@Html.LabelFor(model => model.Data.AgencyId):
+			@Html.EditorFor(model => model.Data.AgencyId)
+		</div>
+		<div class="editor-item">
+			@Html.LabelFor(model => model.Data.Gender)<span class="error" title="This field is required">*</span>:
+			@Html.EditorFor(model => model.Data.Gender)
+		</div>
+	</div>
+	@*second row*@
+	<div class="row floatContainer">
+		<div class="editor-item">
+			@Html.LabelFor(model => model.Data.NationalId):
+			@Html.EditorFor(model => model.Data.NationalId)
+		</div>
+		<div class="editor-item">
+			@Html.LabelFor(model => model.Data.NationalIdType):
+			@Html.DropDownListFor(model => model.Data.NationalIdTypeId, Model.NationalIdTypes)
+		</div>
+	</div>
+	@*row 3*@
+	<div class="row floatContainer">
+		<div class="editor-item">
+			@Html.LabelFor(model => model.Data.BirthDate):
+			@Html.EditorFor(model => model.Data.BirthDate)
+		</div>
+		<div class="editor-item">
+			@Html.LabelFor(model => model.Data.Address):
+			@Html.EditorFor(model => model.Data.Address)
+		</div>
+		<div class="editor-item">
+			@Html.LabelFor(model => model.Data.City):
+			@Html.EditorFor(model => model.Data.City)
+		</div>
+	</div>
+	@*row 4*@
+	<div class="row floatContainer">
+		<div class="editor-item">
+			@Html.LabelFor(model => model.Data.CountryId):
+			<span class="countryName">
+				@Html.DropDownListFor(model => model.Data.CountryId, Model.Countries)
+			</span>
+		</div>
+		<div class="editor-item">
+			@Html.LabelFor(model => model.Data.BirthCountryId):
+			<span class="birthCountryName">
+				@Html.EditorFor(model => model.Data.BirthCountryId)
+			</span>
+		</div>
+		<div class="editor-item">
+			@Html.LabelFor(model => model.Data.State):
+			@Html.DropDownListFor(model => model.Data.StateId, Model.States)
+		</div>
+		<div class="editor-item">
+			@Html.LabelFor(model => model.Data.ZIP):
+			@Html.EditorFor(model => model.Data.ZIP)
+		</div>
+	</div>
+</fieldset>
+<fieldset>
+	<legend>Join / Leave Details</legend>
+	<div class="row floatContainer">
+		<div class="editor-item">
+			@Html.LabelFor(model => model.Data.JoinDate):
+			@Html.DescriptionFor(model => model.Data.JoinDate)
+			@Html.EditorFor(model => model.Data.JoinDate)
+		</div>
+		<div class="editor-item">
+			@Html.LabelFor(model => model.Data.LeaveDate):
+			@Html.DescriptionFor(model => model.Data.LeaveDate)
+			@Html.EditorFor(model => model.Data.LeaveDate)
+		</div>
+		<div class="editor-item">
+			@Html.LabelFor(model => model.Data.LeaveReason):
+			@Html.DropDownListFor(model => model.Data.LeaveReasonId, Model.LeaveReasons)
+		</div>
+		@if (User.IsInRole(FixedRoles.Admin) || User.IsInRole(FixedRoles.GlobalOfficer))
+		{
+			<div class="editor-item">
+				@Html.LabelFor(model => model.Data.AutoLeaveOverride):
+				@Html.EditorFor(model => model.Data.AutoLeaveOverride)
+			</div>
+		}
+	</div>
+	<div class="row floatContainer">
+		<div class="editor-item">
+			@Html.LabelFor(model => model.Data.LeaveRemarks):
+			@Html.EditorFor(model => model.Data.LeaveRemarks)
+		</div>
+		<div class="editor-item">
+			@Html.LabelFor(model => model.Data.Deceased):
+			<span class="deceased">@Html.DisplayFor(model => model.Data.Deceased)</span>
+		</div>
+		<div class="editor-item">
+			@Html.LabelFor(model => model.Data.DeceasedDate):
+			@Html.EditorFor(model => model.Data.DeceasedDate)
+		</div>
+	</div>
+</fieldset>
+<fieldset>
+	<legend>Other</legend>
+	<div class="row floatContainer">
+		<div>
+
+			@Html.LabelFor(model => model.Data.NaziPersecutionDetails):
+			@Html.EditorFor(model => model.Data.NaziPersecutionDetails)
+		</div>
+	</div>
+	<div class="row floatContainer">
+		<div class="editor-item">
+			@Html.LabelFor(model => model.Data.Remarks):
+			@Html.EditorFor(model => model.Data.Remarks)
+		</div>
+	</div>
+	<div class="row floatContainer dcc">
+		<div>
+
+			@Html.LabelFor(model => model.Data.DCC_Client):
+			@Html.CheckBoxFor(m => m.Data.DCC_Client)
+
+		</div>
+		<div>
+
+			@Html.LabelFor(model => model.Data.DCC_Subside):
+			@Html.DropDownListFor(model => model.Data.DCC_Subside, Model.DccSubsides)
+
+		</div>
+		<div>
+			@Html.LabelFor(model => model.Data.DCC_VisitCost):
+			@Html.EditorFor(model => model.Data.DCC_VisitCost)
+
+		</div>
+	</div>
+	<div class="row floatContainer sc">
+		<div>
+
+			@Html.LabelFor(model => model.Data.SC_Client):
+			@Html.CheckBoxFor(m => m.Data.SC_Client)
+
+		</div>
+		<div>
+			@Html.LabelFor(model => model.Data.SC_MonthlyCost):
+			@Html.EditorFor(model => model.Data.SC_MonthlyCost)
+
+		</div>
+	</div>
+</fieldset>
+
+
+<div class="clear controlsContainer">
+	<input type="submit" value="Submit" class="button save" />
+	@Html.ActionLink("Cancel", "Index", null, new { @class = "button cancel" })
+</div>
+<script type="text/javascript">
+	var agency = $('#@Html.FieldIdFor(model => model.Data.AgencyId)').select2({
+		width: 300,
+		initSelection: function (element, callback) {
+			var id = $(element).val();
+			if (id !== "") {
+				$.ajax('@Url.Content("~/data/dataservice.svc/Agencies")' + '(' + id + ')', {
+					dataType: "json",
+				}).done(function (data) {
+					var a = data.d;
+					callback({ id: a.Id, text: a.Name });
+				}).fail(function () {
+					callback(null);
+				});
+			}
+		},
+		ajax: {
+			url: '@Url.Content("~/data/dataservice.svc/Agencies")',
+			dataType: "json",
+			data: function (term) {
+				var filters = [];
+				if (term) {
+					filters.push("substringof('" + escape(term) + "', Name) eq true");
+				}
+				return {
+					"$filter": filters.join(" and "),
+					"$orderby": "Name"
+				};
+			},
+			results: function (data) {
+				return {
+					results: $.map(data.d, function (a) { return { id: a.Id, text: a.Name } })
+				};
+			}
+		}
+	});
+
+	var birthcountry = $('#@Html.FieldIdFor(model => model.Data.BirthCountryId)').select2({
+		width: 300,
+		initSelection: function (element, callback) {
+			var id = $(element).val();
+			if (id !== "") {
+				$.ajax('@Url.Content("~/data/dataservice.svc/BirthCountries")' + '(' + id + ')', {
+					dataType: "json",
+				}).done(function (data) {
+					var a = data.d;
+					callback({ id: a.Id, text: a.Name });
+				}).fail(function () {
+					callback(null);
+				});
+			}
+		},
+		ajax: {
+			url: '@Url.Content("~/data/dataservice.svc/BirthCountries")',
+			dataType: "json",
+			data: function (term) {
+				var filters = [];
+				if (term) {
+					filters.push("substringof('" + escape(term) + "', Name) eq true");
+				}
+				return {
+					"$filter": filters.join(" and "),
+					"$orderby": "Name"
+				};
+			},
+			results: function (data) {
+				return {
+					results: $.map(data.d, function (a) { return { id: a.Id, text: a.Name } })
+				};
+			}
+		}
+	});
+
+	$(function () {
+		$('select[name$=".CountryId"]').change(function () {
+			var stateId = $(this).val();
+			var emptyItemText = "Please select a State"
+			var $states = $('select[name$="Data.StateId"]');
+			var url = '@Url.Content("~/data/dataservice.svc/")';
+			UpdateCountryAndStates(url, $states, $(this).val(), emptyItemText);
+		}).change();
+	});
+
+
+	$(function () {
+		var url = '@Url.Content("~/data/dataservice.svc")';
+
+		var $div_dc = $('.dcc');
+		var $dcc = $('#@Html.FieldIdFor(model => model.Data.DCC_Subside)');
+		var $div_sc = $('.sc');
+		var $sc = $('#@Html.FieldIdFor(model => model.Data.SC_MonthlyCost)');
+		var agencyPicker = $('#@Html.FieldIdFor(model => model.Data.AgencyId)').change(function () {
+			var agencyId = $(this).val();
+			ShowForSupportiveCommunity(url, $div_sc, $sc, agencyId);
+			ShowForDaysCenter(url, $div_dc, $dcc, agencyId);
+		});
+		ShowForSupportiveCommunity(url, $div_sc, null, agencyPicker.val());
+		ShowForDaysCenter(url, $div_dc, null, agencyPicker.val());
+	});
+
+
+	$('#Data_NationalIdTypeId').change(function () {
+		var NatTypeid = $('#Data_NationalIdTypeId').val();
+		if (NatTypeid == 1) {
+			$('label[for=Data_NationalId]').append('<span class="error" title="This field is required">*</span>');
+		}
+		else {
+			$('label[for=Data_NationalId]').find('span').remove();
+		}
+	});
+
+	$(document).ready(function () {
+		if ('@(ViewBag.NoGender)' == "True") {
+			$('#Data_Gender').addClass("input-validation-error");
+			$('#Data_Gender').attr("data-val", "true");
+			$('#Data_Gender').attr("data-val-required", "The Gender field is required");
+		}
+	});
+
+</script>

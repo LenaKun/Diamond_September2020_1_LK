@@ -1,0 +1,386 @@
+﻿@model CC.Data.Client
+@{
+	ViewBag.Title = "Client Details";
+}
+@section Header{
+
+}
+@section SubMenu{
+}
+@if (Model.Duplicates.Any())
+{
+
+	<div class="error" style="border: solid Red; padding: 1em; float: right; margin: 1em;">
+		@if (((CC.Data.Services.IPermissionsBase)ViewBag.Permissions).ShowDuplicatesNavigation)
+		{
+			<div>@Model.Duplicates.Count() Duplicate/s Found - Open Duplicate Client's Details</div>
+			<select id="duplicates">
+				<option></option>
+				@foreach (var d in Model.Duplicates)
+				{
+					<option value="@d.Id">CC ID: @d.Id</option>
+				}
+			</select>
+			<script>
+				$(function () {
+					$('#duplicates').change(function () {
+						var ccid = $(this).val();
+						if (!isNaN(ccid) && ccid) {
+							window.location.href = '@Url.Action("Details", new { id = string.Empty })/' + ccid;
+						}
+					});
+				});
+			</script>
+		}
+		else
+		{
+			<p>This client may be receiving services from another agency, please consult with the client.</p>
+		}
+	</div>
+}
+<div id="messageDiv">
+	<h3>
+		@ViewBag.Message
+	</h3>
+	@Html.ValidationSummary()
+</div>
+<div class="controlsContainer">
+	@if ((ViewBag.Permissions as CC.Data.Services.IPermissionsBase).CanUpdateExistingClient)
+	{
+		<a href='@Url.Action("Edit", new { id = Model.Id })' class="button">Edit</a> <a href="#" #eligibility
+																					  class="button" onclick="window.print();">Print</a>
+	}
+</div>
+<div>
+	@Html.DisplayFor(model => model)
+</div>
+<div id="tabs">
+    <ul>
+        <li><a href="#personalDetails">Personal Details</a></li>
+        <li><a href="#eligibility">Eligibility</a></li>
+        <li><a href="#disability">Functionality</a></li>
+        @if (ViewBag.IsCfsActive)
+        {
+            <li><a href="#cfs">CFS</a></li>
+        }
+        <li><a href="#govHcHours">Gov HC Hours</a></li>
+        <li><a href="#gfHours">Grandfather Hours</a></li>
+        @if (User.IsInRole(FixedRoles.Admin) || User.IsInRole(FixedRoles.GlobalOfficer) || User.IsInRole(FixedRoles.AuditorReadOnly))
+        {
+            <li><a href="#hcStatuses">HC Approval Statuses</a></li>
+        }
+        <li><a href="#UnmetNeeds">Unmet Needs</a></li>
+        @if (!(FixedRoles.BMF).HasFlag((FixedRoles)(ViewBag.Permissions as CC.Data.Services.IPermissionsBase).User.RoleId))
+        {
+            <li><a href="#UnmetNeedsOther">Unmet Needs - Other</a></li>
+        }
+        <li><a href="#homeCare">Homecare</a></li>
+        <li><a href="#emergencies">EAP</a></li>
+        <li><a href="#otherServices">Non HC/EAP</a></li>
+        @if ((FixedRoles.Admin | FixedRoles.GlobalOfficer | FixedRoles.RegionOfficer | FixedRoles.AgencyUser | FixedRoles.AgencyUserAndReviewer | FixedRoles.RegionAssistant | FixedRoles.Ser | FixedRoles.SerAndReviewer | FixedRoles.RegionReadOnly | FixedRoles.CfsAdmin).HasFlag((FixedRoles)(ViewBag.Permissions as CC.Data.Services.IPermissionsBase).User.RoleId))
+        {
+            <li><a href="#history">Modifications History</a></li>
+        }
+        @if ((FixedRoles.Admin | FixedRoles.GlobalOfficer | FixedRoles.RegionOfficer).HasFlag((FixedRoles)(ViewBag.Permissions as CC.Data.Services.IPermissionsBase).User.RoleId))
+        {
+            <li><a href="@Url.Action("Index","ClientContacts", new{ClientId = Model.Id})">Contacts</a></li>
+        }
+    </ul>
+    <div id="personalDetails">
+        <div class="floatContainer">
+            @Html.DisplayFor(f => f, "ClientPersonalDetails")
+            <div class="clear">
+            </div>
+            @if (!(FixedRoles.BMF).HasFlag((FixedRoles)(ViewBag.Permissions as CC.Data.Services.IPermissionsBase).User.RoleId))
+            {
+                <div class="editor-item">
+                    @Html.LabelFor(model => model.IsCeefRecipient)
+                    @Html.DisplayFor(model => model.IsCeefRecipient)
+                </div>
+                <div class="editor-item">
+                    @Html.LabelFor(model => model.CeefId)
+                    @Html.DisplayFor(model => model.CeefId)
+                </div>
+                <div class="editor-item">
+                    @Html.LabelFor(model => model.AddCompName)
+                    @Html.DisplayFor(model => model.AddCompName)
+                </div>
+                <div class="editor-item">
+                    @Html.LabelFor(modle => modle.AddCompId)
+                    @Html.DisplayFor(modle => modle.AddCompId)
+                </div>
+                <div class="clear">
+                    <div class="editor-item">
+                        @Html.LabelFor(modle => modle.HomecareWaitlist)
+                        @Html.DisplayFor(modle => modle.HomecareWaitlist)
+                    </div>
+
+                    <div class="editor-item">
+                        @Html.LabelFor(modle => modle.OtherServicesWaitlist)
+                        @Html.DisplayFor(modle => modle.OtherServicesWaitlist)
+                    </div>
+                    <div class="editor-item">
+                        @Html.LabelFor(modle => modle.CommPrefsId)
+                        @Html.DisplayFor(modle => modle.CommunicationsPreference.Name)
+                    </div>
+                    <div class="editor-item">
+                        @Html.LabelFor(modle => modle.CareReceivedId)
+                        @Html.DisplayFor(modle => modle.CareReceivingOption.Name)
+                    </div>
+                    <div class="editor-item">
+                        @Html.LabelFor(modle => modle.UnableToSign)
+                        @Html.DisplayFor(modle => modle.UnableToSign)
+                    </div>
+
+                </div>
+               
+            }
+        </div>
+    </div>
+    <div id="eligibility">
+        <div class="floatContainer">
+
+            @if (User.IsInRole(FixedRoles.Admin) || User.IsInRole(FixedRoles.GlobalOfficer) || User.IsInRole(FixedRoles.AuditorReadOnly))
+            //if (((CC.Data.Services.IPermissionsBase)ViewBag.//(!(FixedRoles.Admin).HasFlag((FixedRoles)(ViewBag.Permissions as CC.Data.Services.IPermissionsBase).User.RoleId))
+
+            {
+                <div class="editor-item">
+                    @Html.LabelFor(model => model.FundStatus):
+                    @Html.DisplayFor(model => model.FundStatus.Name)
+                </div>
+            }
+
+
+            <div class="editor-item">
+
+                @Html.LabelFor(model => model.IncomeCriteriaComplied):
+                @Html.DisplayFor(model => model.IncomeCriteriaComplied)
+            </div>
+
+            <div class="editor-item">
+                @Html.LabelFor(model => model.ApprovalStatus):
+                @Html.DisplayFor(model => model.ApprovalStatus.Name)
+            </div>
+
+            <div class="editor-item">
+                @Html.LabelFor(model => model.AustrianEligible):
+                @Html.DisplayFor(model => model.AustrianEligible)
+            </div>
+
+            <div class="editor-item">
+                @Html.LabelFor(model => model.RomanianEligible):
+                @Html.DisplayFor(model => model.RomanianEligible)
+            </div>
+
+            <div id="hcepContainer" class="clear">
+                @Html.Action("Index", "HomeCareEntitledPeriods", new { ClientId = Model.Id })
+            </div>
+            @if ((ViewBag.Permissions as CC.Data.Services.IPermissionsBase).CanUpdateExistingClient && ViewBag.CanAddEligibility)
+            {
+                <div id="newHomeCarePeriod" style="display: none">
+                    <script type="text/javascript">
+                        $(function () { $("#newHomeCarePeriod form").ajaxify($('#newHomeCarePeriod')); });
+                    </script>
+                    @Html.Partial("~/Views/HomeCareEntitledPeriods/Create.cshtml", new HomeCareEntitledPeriodInsertModel() { ClientId = Model.Id })
+                </div>
+                <a id="addNewHcPeriodDialog" href="#newHomeCarePeriod" onclick="javascript: $('#newHomeCarePeriod').dialog({modal:true, width:'80%'});" class="button">Add New</a>
+            }
+        </div>
+    </div>
+    <div id="disability">
+        @if (User.IsInRole(FixedRoles.Admin) || User.IsInRole(FixedRoles.AgencyUser) || User.IsInRole(FixedRoles.Ser) || User.IsInRole(FixedRoles.DafEvaluator) || User.IsInRole(FixedRoles.DafReviewer) || User.IsInRole(FixedRoles.AgencyUserAndReviewer) || User.IsInRole(FixedRoles.SerAndReviewer))
+        {
+            <div>
+                <a href="@Url.Action("Index", "Daf", new { id = Model.Id})" target="_blank">Full DAF List</a>
+            </div>
+        }
+        <div class="editor-item">
+            @Html.LabelFor(model => model.CurrentHomeCareApprovalStatus):
+            @Html.DisplayFor(model => model.CurrentHomeCareApprovalStatus)
+        </div>
+        <div class="editor-item">
+            @Html.LabelFor(model => model.HomeCareEntitled):
+            @Html.DisplayFor(model => model.HomeCareEntitled)
+        </div>
+        <div class="editor-item">
+            @Html.LabelFor(model => model.CurrentFunctionalityLevel):
+            @Html.DisplayFor(model => model.CurrentFunctionalityLevel.Name)
+        </div>
+        <div class="editor-item">
+            @Html.LabelFor(model => model.HomeCareAllowedHours):
+            @Html.DisplayFor(model => model.HomeCareAllowedHours)
+            @if (Model.HasOpenCfsRecord)
+            {
+                @Html.DescriptionFor(model => model.HomeCareAllowedHours)
+            }
+        </div>
+        <div class="editor-item">
+            @Html.LabelFor(model => model.MAFDate):
+            @Html.DisplayFor(model => model.MAFDate)
+        </div>
+        <div class="editor-item">
+            @Html.LabelFor(model => model.MAF105Date):
+            @Html.DisplayFor(model => model.MAF105Date)
+        </div>
+
+        <div class="editor-item">
+            @Html.LabelFor(model => model.HAS2Date):
+            @Html.DisplayFor(model => model.HAS2Date)
+        </div>
+
+        @Html.Action("Index", "FunctionalityScores", new { ClientId = Model.Id })
+    </div>
+    @if (ViewBag.IsCfsActive)
+    {
+        <div id="cfs">
+            @Html.Action("Index", "Cfs", new { clientId = Model.Id })
+        </div>
+    }
+    <div id="govHcHours">
+        @Html.Action("GovHcHours", new { clientId = Model.Id })
+    </div>
+    <div id="gfHours">
+        @Html.Action("GFHours", new { clientId = Model.Id })
+    </div>
+    @if ((FixedRoles.Admin | FixedRoles.GlobalOfficer | FixedRoles.AuditorReadOnly).HasFlag((FixedRoles)(ViewBag.Permissions as CC.Data.Services.IPermissionsBase).User.RoleId))
+    {
+        <div id="hcStatuses">
+            @Html.Action("Index", "ClientHcApprovalStatuses", new { clientId = Model.Id })
+        </div>
+    }
+        <div id="UnmetNeeds">
+            @Html.Action("UnmetNeeds", new { clientId = Model.Id })
+        </div>
+        @if (!(FixedRoles.BMF).HasFlag((FixedRoles)(ViewBag.Permissions as CC.Data.Services.IPermissionsBase).User.RoleId))
+        {
+            <div id="UnmetNeedsOther">
+                @Html.Action("UnmetNeedsOther", new { clientId = Model.Id })
+            </div>
+        }
+
+        <div id="homeCare">
+            @Html.Action("HomeCareTab", new { id = Model.Id })
+        </div>
+
+        <div id="emergencies">
+            @Html.Action("EmergenciesTab", new { id = Model.Id })
+        </div>
+        <div id="otherServices">
+            @Html.Action("OtherServicesTab", new { id = Model.Id })
+        </div>
+        @if ((FixedRoles.Admin | FixedRoles.GlobalOfficer | FixedRoles.RegionOfficer | FixedRoles.AgencyUser | FixedRoles.AgencyUserAndReviewer | FixedRoles.RegionAssistant | FixedRoles.Ser | FixedRoles.SerAndReviewer | FixedRoles.RegionReadOnly | FixedRoles.CfsAdmin).HasFlag((FixedRoles)(ViewBag.Permissions as CC.Data.Services.IPermissionsBase).User.RoleId))
+        {
+            <div id="history">
+                @Html.Partial("~/Views/Clients/Audit.cshtml", Model.Id)
+            </div>
+        }
+    </div>
+<script type="text/javascript">
+	$(function () {
+		$('#tabs').tabs({
+			cookie: {
+				expires: 30,
+				name: "tabset1"
+			},
+			beforeLoad: function (event, ui) {
+			},
+			beforeActivate: function (event, ui) {
+			}
+		});
+	});
+</script>
+<div class="controlsContainer">
+	@if ((ViewBag.Permissions as CC.Data.Services.IPermissionsBase).CanUpdateExistingClient)
+	{
+		<a href='@Url.Action("Edit", new { id = Model.Id })' class="button">Edit</a> <a href="#"
+																					  class="button" onclick="window.print();">Print</a>
+	}
+</div>
+
+<div class="controlsContainer">
+	@if ((ViewBag.Permissions as CC.Data.Services.IPermissionsBase).CanUpdateExistingClient)
+	{
+		<a href="@Url.Action("Delete", "Clients", new { area = string.Empty, id = Model.Id })" class="button">Delete</a>
+	}
+</div>
+
+@if ((ViewBag.Permissions as CC.Data.Services.IPermissionsBase).CanUpdateExistingClient)
+{
+	<script type="text/javascript">
+
+		/*
+		 * Datepicker for Jeditable
+		 *
+		 * Copyright (c) 2011 Piotr 'Qertoip' Włodarek
+		 *
+		 * Licensed under the MIT license:
+		 *   http://www.opensource.org/licenses/mit-license.php
+		 *
+		 * Depends on jQuery UI Datepicker
+		 *
+		 * Project home:
+		 *   http://github.com/qertoip/jeditable-datepicker
+		 *
+		 */
+
+		// add :focus selector
+		jQuery.expr[':'].focus = function (elem) {
+			return elem === document.activeElement && (elem.type || elem.href);
+		};
+
+		$.editable.addInputType('datepicker', {
+
+			/* create input element */
+			element: function (settings, original) {
+				var form = $(this),
+					input = $('<input />');
+				input.attr('autocomplete', 'off');
+				form.append(input);
+				return input;
+			},
+
+			/* attach jquery.ui.datepicker to the input element */
+			plugin: function (settings, original) {
+				var form = this,
+					input = form.find("input");
+
+				// Don't cancel inline editing onblur to allow clicking datepicker
+				settings.onblur = 'nothing';
+
+				input.datepicker({
+					onSelect: function () {
+						// clicking specific day in the calendar should
+						// submit the form and close the input field
+						form.submit();
+					},
+
+					onClose: function () {
+						setTimeout(function () {
+							if (!input.is(':focus')) {
+								// input has NO focus after 150ms which means
+								// calendar was closed due to click outside of it
+								// so let's close the input field without saving
+								if ($(input).val()) {
+									form.submit();
+								}
+								else {
+									original.reset(form);
+								}
+							} else {
+								// input still HAS focus after 150ms which means
+								// calendar was closed due to Enter in the input field
+								// so lets submit the form and close the input field
+								form.submit();
+							}
+
+							// the delay is necessary; calendar must be already
+							// closed for the above :focus checking to work properly;
+							// without a delay the form is submitted in all scenarios, which is wrong
+						}, 150);
+					}
+				});
+			}
+		});
+
+	</script>
+}

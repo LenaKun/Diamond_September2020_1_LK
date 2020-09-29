@@ -1,0 +1,233 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
+
+namespace CC.Data
+{
+	public partial class SubReport : IValidatableObject
+	{
+		/// <summary>
+		/// Validate Primitive Properties
+		/// </summary>
+		/// <param name="validationContext"></param>
+		/// <returns></returns>
+		public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+		{
+
+
+			//check if clientreports have been loaded
+
+			//Validate each clientreport
+			foreach (var clientReport in this.ClientReports.AsParallel())
+			{
+				foreach (var vr in clientReport.Validate(validationContext))
+				{
+					yield return vr;
+				}
+			}
+
+			yield break;
+		}
+
+
+		/// <summary>
+		/// Enforce Business rules
+		/// </summary>
+		/// <returns></returns>
+		public IEnumerable<ValidationResult> Validate()
+		{
+
+			//clients in client reports must belong to the subreport's agency
+
+			using (var db = new ccEntities())
+			{
+
+
+			}
+
+			//case of homecare: monthly
+			using (var db = new ccEntities())
+			{
+
+			}
+
+
+
+			yield break;
+		}
+
+		#region Validations
+
+		//"1.4.15.3.3.        Join Date- Clients that joined the agency could not be reported for hours in months before the month of their join date.  "
+		public bool ValidateJoinDate()
+		{
+			using (var db = new ccEntities())
+			{
+				return true;
+			}
+		}
+		/// <summary>
+		/// "1.4.15.3.4.        Leave Date- Clients that left the agency could not be reported for hours in months after the month of their leave date."
+		/// </summary>
+		/// <returns></returns>
+		public bool ValidateLeaveDate()
+		{
+			return true;
+		}
+
+
+		#endregion
+
+
+	}
+
+	public class SubServiceRowModes
+	{
+		[ScaffoldColumn(false)]
+		SubReport SubReport{get;set;}
+		[ScaffoldColumn(false)]
+		public int? Id { get; set; }
+		[ScaffoldColumn(false)]
+		public int AgencyId { get; set; }
+		[ScaffoldColumn(false)]
+		public int SerId { get; set; }
+		[ScaffoldColumn(false)]
+		public string SerName { get; set; }
+		[ScaffoldColumn(false)]
+		public int ServiceId { get; set; }
+		[ScaffoldColumn(false)]
+		public int? MainReportId { get; set; }
+		[ScaffoldColumn(false)]
+		public decimal? ExcRate { get; set; }
+		[ScaffoldColumn(false)]
+		public int AppBudgetServiceId { get; set; }
+		[ScaffoldColumn(false)]
+		public string SerCur { get; set; }
+		[ScaffoldColumn(false)]
+		public string AppCur { get; set; }
+		[ScaffoldColumn(false)]
+		public decimal? AgencyContribution { get; set; }
+		[ScaffoldColumn(false)]
+		public decimal? MatchingSumBalance { get; set; }
+
+		[Display(Name = "Agency")]
+		public string AgencyName { get; set; }
+		[Display(Name = "Service Type")]
+		public string ServiceTypeName { get; set; }
+		[Display(Name = "Service Name")]
+		public string ServiceName { get; set; }
+
+
+		#region mainreport list
+
+		[Display(Name = "CC Exp.")]
+		[Description("Amount of current subreport in Ser currency")]
+		public int? CcExp { get; set; }
+
+		[Display(Name = "Match Exp.")]
+		[Description("Matching Sum of current subreport")]
+		public int? MatchExp { get; set; }
+
+		[Display(Name = "YTD CC Exp.")]
+		[Description("Total CC Exp. reported on this app budget including current report")]
+		public int? YtdCcExp { get; set; }
+
+		[Display(Name = "YTD Matching Exp")]
+		[Description("Total Matching sum reported on this app including current report")]
+		public int? YtdMatchExp { get; set; }
+
+		[Display(Name = "CC Exp. App CUR")]
+		[Description("Current subreport CC Exp. in App currency")]
+		public int? CcExpAppCur { get; set; }
+
+		[Display(Name = "Matching Sum Status")]
+		public string MatchingSummStatusName { get { return MatchingSumBalance < 0 ? MatchingSumBalance.Value.ToString("f0") : "OK"; } }
+
+		#endregion
+
+		[ScaffoldColumn(false)]
+		[Display(Name = "Estimated Matching Sum Spent Required up to date (including currnet period)")]
+		[Description("Relative Matching Sum of associated approved App")]
+		public decimal YtdAppMatchingSum { get; set; }
+
+		[ScaffoldColumn(false)]
+		[Description("Relative Ytd CC Grant")]
+		public decimal YtdAppCcGrant { get; set; }
+
+		public decimal MatchingSumStatus { get; set; }
+		public decimal CcGrantStatus { get; set; }
+
+		[ScaffoldColumn(false)]
+		public int? UtdMatch { get; set; }
+
+		public static IQueryable<SubServiceRowModes> asdf(IQueryable<SubRepAppBudgetPair> source)
+		{
+			var q = source.Select(a =>
+				 new
+				 {
+					 SubReport = a.SubReport,
+					 AppBudgetService = a.AppBudgetService,
+					 CcExp =
+						 a.SubReport.Amount
+						 + ((decimal?)a.SubReport.ClientReports.Sum(cr => cr.Amount) ?? 0) //amount per client
+						 + ((decimal?)a.SubReport.ClientReports.SelectMany(cr => cr.ClientAmountReports).Sum(ar => ar.Amount) ?? 0)	//amount per client
+						 + ((decimal?)a.SubReport.ClientReports.Sum(cr => cr.Rate * cr.ClientAmountReports.Sum(ar => ar.Quantity)) ?? 0) //homecare: rate * quantity
+					 ,
+					 MatchExp = (a.SubReport.MatchingSum ?? 0),
+					 AppLen = System.Data.Objects.EntityFunctions.DiffDays(a.SubReport.AppBudgetService.AppBudget.App.StartDate, a.SubReport.AppBudgetService.AppBudget.App.EndDate),
+					 MrLen = a.SubReport.AppBudgetService.SubReports
+						 .Where(sr => sr.MainReportId == a.SubReport.MainReportId || sr.MainReport.StatusId == (int)MainReport.Statuses.Approved || sr.MainReport.StatusId == (int)MainReport.Statuses.AwaitingProgramOfficerApproval)
+						 .Select(sr => sr.MainReport).Distinct()
+						 .Sum(mr => System.Data.Objects.EntityFunctions.DiffDays(mr.Start, mr.End))
+					 ,
+					 YtdCcExp = a.AppBudgetService.SubReports
+						 .Where(sr => sr.MainReportId == a.SubReport.MainReportId || sr.MainReport.StatusId == (int)MainReport.Statuses.Approved || sr.MainReport.StatusId == (int)MainReport.Statuses.AwaitingProgramOfficerApproval)
+						 .Sum(sr => sr.Amount
+						 + ((decimal?)sr.ClientReports.Sum(cr => cr.Amount) ?? 0) //amount per client
+						 + ((decimal?)sr.ClientReports.SelectMany(cr => cr.ClientAmountReports).Sum(ar => ar.Amount) ?? 0)	//amount per client
+						 + ((decimal?)sr.ClientReports.Sum(cr => cr.Rate * cr.ClientAmountReports.Sum(ar => ar.Quantity)) ?? 0) //homecare: rate * quantity
+						 ),
+					 YtdMatchingSum = (a.AppBudgetService.SubReports
+						.Where(sr => sr.MainReportId == a.SubReport.MainReportId || sr.MainReport.StatusId == (int)MainReport.Statuses.Approved || sr.MainReport.StatusId == (int)MainReport.Statuses.AwaitingProgramOfficerApproval)
+						.Sum(sr => sr.MatchingSum) ?? 0),
+					 AppCcGrant = a.AppBudgetService.AppBudget.App.CcGrant,
+					 AppMatchingSum = a.AppBudgetService.AppBudget.App.RequiredMatch,
+					 ApprovedCcGrant = a.AppBudgetService.CcGrant,
+					 ApprovedMatchingSum = a.AppBudgetService.RequiredMatch
+				 }
+			).Select(a => new SubServiceRowModes()
+			{
+				SubReport= a.SubReport,
+				Id = (int?)a.SubReport.Id,
+				MainReportId = (int?)a.SubReport.Id,
+				ExcRate = (Decimal?)a.SubReport.MainReport.ExcRate,
+				AppBudgetServiceId = (int?)a.SubReport.AppBudgetServiceId ?? 0,
+				AgencyId = (int?)a.AppBudgetService.Agency.Id ?? 0,
+				SerId = (int?)a.AppBudgetService.Agency.AgencyGroup.Id,
+				SerName = a.AppBudgetService.Agency.AgencyGroup.Name,
+				ServiceId = (int?)a.AppBudgetService.Service.Id ?? 0,
+				ServiceName = a.AppBudgetService.Service.Name,
+				ServiceTypeName = a.AppBudgetService.Service.ServiceType.Name,
+				AgencyName = a.AppBudgetService.Agency.Name,
+				SerCur = a.AppBudgetService.AppBudget.AgencyGroup.CurrencyId,
+				AppCur = a.AppBudgetService.AppBudget.App.Fund.CurrencyCode,
+				CcExp = (int?)a.CcExp??0,
+				MatchExp = (int)a.MatchExp,
+				YtdCcExp = (int)a.YtdCcExp,
+				YtdMatchExp = (int)a.YtdMatchingSum,
+				CcExpAppCur = (int?)(a.CcExp * a.SubReport.MainReport.ExcRate) ?? 0,
+				MatchingSumBalance = (a.ApprovedMatchingSum * a.MrLen / a.AppLen)
+
+			});
+			return q;
+		}
+	}
+	public class SubRepAppBudgetPair
+	{
+		public AppBudgetService AppBudgetService { get; set; }
+		public SubReport SubReport { get; set; }
+	}
+}

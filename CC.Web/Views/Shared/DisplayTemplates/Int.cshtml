@@ -1,0 +1,11 @@
+﻿@model Nullable<int>
+@if (Model.HasValue)
+{
+	<span class="stringdisplaytemplate">
+	@Model.Value.ToString("n0")
+	</span>
+}
+else
+{
+	<span class="stringdisplaytemplate" style="color: #666">------</span>
+}

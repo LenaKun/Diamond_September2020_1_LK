@@ -1,0 +1,348 @@
+﻿@model SubReportDetailsModel
+@{
+	ViewBag.Title = "Detailed Report";
+}
+@section Header
+{
+	<style>
+		input.decimal {
+			width: 5em;
+		}
+
+		table.grid ul {
+			padding: 0;
+		}
+
+		table.grid ul {
+			list-style: none;
+		}
+	</style>
+	<script>
+		$(document).ready(function () {
+			$(".date").datepicker({
+				minDate: "@Model.MainReportStart",
+				maxDate: "@Model.MainReportEnd.AddDays(-1)"
+			});
+		});
+
+        $.fn.serializeObject = function()
+        {
+            var o = {};
+            var a = this.serializeArray();
+            $.each(a, function() {
+                if (o[this.name] !== undefined) {
+                    if (!o[this.name].push) {
+                        o[this.name] = [o[this.name]];
+                    }
+                    o[this.name].push(this.value || '');
+                } else {
+                    o[this.name] = this.value || '';
+                }
+            });
+            return o;
+        };
+
+	</script>
+	<script id="dt" type="text/javascript">
+	//simple datatable init
+	var editLink = '<button type="button" class="edit">Edit</button><button type="button" class="add">Add</button>';
+	var dataTable = null;
+
+	$(document).ready(function () {
+
+		var oTable = $('table.grid').dataTable({
+			"bJQueryUI": true,
+			"sPaginationType": "full_numbers",
+			"bServerSide": true,
+			"aaSorting": [[0, "asc"], [1, "asc"]],
+			"sAjaxSource": '@Url.Action("GetClientEventsCount", new { Id = Model.Id })',
+			"aoColumns": [
+				{
+					"mData": "EventDate", "sTitle": "Date of Event", "sClass": "date required", "mRender": function (val, t, obj) {
+						var result = renderDate(val);
+						if (t == "edit" || t == "insert") {
+							result = '<input type="text" name="EventDate" class="date required" value="' + result + '"/>';
+						}
+						return result;
+					}
+				},
+				{
+					"mData": "JNVCount", "sTitle": "Count of JNV attending", "mRender": function (val, t, obj) {
+						var result = val;
+						if (t == "edit" || t == "insert") {
+							if (val == null) {
+								result = 0;
+							}
+							result = '<input name="JNVCount" class="required decimal number" value="' + result + '"/>';
+						}
+
+						return result;
+					}
+				},
+				{
+					"mData": "TotalCount", "sTitle": "Count of Total Attendees", "mRender": function (val, t, obj) {
+						var result = val;
+						if (t == "edit" || t == "insert") {
+							if (result == null) {
+								result = '<input name="TotalCount" class="decimal number" value=""/>';
+							}
+							else {
+								result = '<input name="TotalCount" class="decimal number" value="' + result + '"/>';
+							}
+						}
+
+						return result;
+					}
+				},
+				{
+					"mData": "Remarks", "sTitle": "Remarks", "mRender": function (val, t, obj) {
+						if (t == "edit" || t == "insert") {
+							if (val == null) val = '';
+							return '<input name="Remarks" class="" value="' + val + '"/>';
+
+						}
+
+						return val;
+					}
+				},
+
+
+				{
+					"mData": null, "sTitle": "Edit", "bVisible": "@Model.CanBeEdited" == "True", "mRender": function (val, t, obj) {
+
+						var html = '';
+						switch (t) {
+							case 'display':
+								html = '<button type="button" class="edit">Edit</button>';
+								html += '<button type="button" class="add">Add</button>';
+								html += '<button type="button" class="delete">Delete</button>';
+								break;
+							case 'insert':
+							case 'edit':
+								html = '<button type="button" class="update">Update</button><button type="button" class="cancel">Cancel</button>';
+								break;
+						}
+						return html
+					}
+				}
+
+			],
+			"fnServerParams": function (aoData) {
+				aoData.push({ name: "IE", value: Math.random() });
+			},
+			"fnRowCallback": function (nRow, aData, iDisplayIndex) {
+				/* set tr id. assume the id is in the first column of data */
+				return nRow;
+			},
+			"oLanguage": {
+				"sEmptyTable": "@Model.CanBeEdited" == "True" ? '<button type="button" id="footer_add" class="add" style="float:right;">Add</button>' : 'No Data'
+			}
+		});
+		$('button.filter').click(function () {
+			oTable.fnDraw();
+		});
+
+
+		@if (Model.CanBeEdited)
+   {
+			<text>
+		$('table.grid button.edit').live('click', function () {
+			oTable.find('button.cancel').click();
+			var $tr = $(this).closest('tr');
+			var tr = $tr.get(0);
+			oTable.fnRefresh(tr, null, 'edit');
+		});
+		$('table.grid button.cancel').live('click', function () {
+			if ($('#footer_add').length) {
+				$('#footer_add').show();
+			}
+			var $tr = $(this).closest('tr');
+			var tr = $tr.get(0);
+			var oData = oTable.fnGetData(tr);
+			if (tr["_DT_NewRow"] || !oData) {
+				oTable.fnDeleteRow(tr, null, false);
+				$tr.remove();
+				oTable.fnDraw(false);
+			}
+			else {
+				if (oData.JNVCount == 0) {
+					oTable.fnDraw(false);
+				}
+				else {
+					oTable.fnRefresh(tr, null, 'display');
+				}
+			}
+		});
+		$('table.grid button.add').live('click', function () {
+			if ($('#footer_add').length) {
+				$('#footer_add').hide();
+			}
+			var $tr = $(this).closest('tr');
+			var tr = $tr.get(0);
+			var oData = oTable.fnGetData(tr);
+
+			var extendOdata = {
+				Id: null,
+				EventDate: '@Model.MainReportStart.ToString("s")',
+				JNVCount: 0,
+				TotalCount: null,
+				Remarks: ''
+			}
+
+			tr = $(this).closest('tr');
+			var $n = tr.clone();
+
+			if (oData) {
+				$.extend(oData, extendOdata);
+			}
+			else {
+				oData = extendOdata;
+
+				var htmlTr = '<tr><td><input id="eventDate" name="EventDate" class="date required" /></td>';
+				htmlTr += '<td><input name="JNVCount" class="required decimal number" /></td>';
+				htmlTr += '<td><input name="TotalCount" class="decimal number" /></td>';
+				htmlTr += '<td><input name="Remarks" /></td>';
+				htmlTr += '<td><button type="button" class="update">Update</button><button type="button" class="cancel">Cancel</button></td>'
+				htmlTr += '</tr>';
+
+				$n = $(htmlTr);
+			}
+
+			$n.insertBefore(tr);
+			var n = $n.get(0);
+			var aodata = oTable.fnAddData(oData, false);
+			n["_DT_RowIndex"] = aodata[0];
+			n["_DT_NewRow"] = true;
+
+			oTable.fnRefresh(n, null, 'insert');
+
+		});
+
+		$('table.grid button.delete').live('click', function () {
+			oTable.find('button.cancel').click();
+			var $tr = $(this).closest('tr');
+			var tr = $tr.get(0);
+			var oData = oTable.fnGetData(tr);
+			$.ajax({
+				type: 'POST',
+				url: '@Url.Action("DeleteClientEventsCountRow")',
+				dataType: 'json',
+				data: {
+					id: oData.Id,
+					IE: Math.random()
+				}
+			}).done(function () {
+				oTable.fnDraw(false);
+				location.reload();
+			}).fail(function () {
+				alert("An error occured while deleting the report...");
+			});
+
+		});
+		$('table.grid button.update').live('click', function () {
+
+			var $tr = $(this).closest('tr');
+			var tr = $tr.get(0);
+			var oData = oTable.fnGetData(tr);
+
+			var $form = $tr.closest('form');
+			if (!$form.valid()) {
+				return false;
+			}
+			var input = $form.serializeObject();
+
+			var d = {
+				Id: oData ? oData.Id : null,
+				SubReportId: '@Model.Id',
+				EventDate: input.EventDate,
+				JNVCount: input.JNVCount,
+				TotalCount: input.TotalCount,
+				Remarks: input.Remarks,
+				IE: Math.random(),
+
+			};
+			$('table.grid tbody tr').find('input, button').attr('disabled', 'disabled');
+
+			var request = $.ajax({
+				url: '@Url.Action("SaveClientEventsCountReport")',
+				type: 'POST',
+				dataType: 'json',
+				contentType: 'application/json; charset=utf-8',
+				data: JSON.stringify(d)
+			}).done(function (data, textStatus, jqXHR) {
+				if (data.errors) {
+					$('#ErrorsDialog').html("<li>" + data.errors.join('</li><li>') + '</li>');
+					$('#ErrorsDialog').dialog({
+						modal: true,
+						dialogClass: "hideCloseButton",
+						buttons: {
+							Ok: function () {
+								$(this).dialog("close");
+								$('table.grid tbody').find('input, button').removeAttr('disabled');
+
+							},
+							Cancel: function () {
+								$(this).dialog("close");
+								$('table.grid').dataTable().fnDraw(false);
+							},
+						}
+					});
+
+				}
+				else {
+					$('table.grid').dataTable().fnDraw(false);
+				}
+			}).fail(function (jqXHR, textStatus) {
+				$('#ErrorsDialog').html("an error occured ... ");
+				$('#ErrorsDialog').dialog({
+					modal: true,
+					dialogClass: "hideCloseButton",
+					buttons: {
+						Ok: function () {
+							$(this).dialog("close");
+							$('table.grid tbody').find('input, button').removeAttr('disabled');
+						}
+					}
+				});
+
+			});
+		});
+
+		</text>
+   }
+
+	});
+</script>
+}
+
+<h2>Detailed Report</h2>
+
+@Html.ValidationSummary()
+
+<p>
+
+	<a href="@Url.Action("Details", "MainReports", new { id = Model.MainReportId })" class="button">Go to Financial Report</a>
+</p>
+
+@Html.Partial("Header", Model.DetailsHeader)
+
+
+<form>
+	<table class="grid">
+		<thead>
+			<tr></tr>
+		</thead>
+		<tbody></tbody>
+	</table>
+
+</form>
+
+<div>
+	<a href="@Url.Action("Export", new { id = Model.Id })" class="button">Export</a>
+</div>
+<p>
+	<a href="@Url.Action("Details", "MainReports", new { id = Model.MainReportId })" class="button">
+		Go to Financial Report
+	</a>
+</p>
+<div id="ErrorsDialog"></div>

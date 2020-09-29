@@ -1,0 +1,85 @@
+﻿@model CC.Data.CfsAmount
+
+@{
+    ViewBag.Title = "CFS Amount";
+}
+<h2>@ViewBag.Title</h2>
+
+@section Header{
+    <style>
+        .emergencyCapsFloat {
+            float: left;
+            margin-right: 2em;
+        }
+    </style>
+}
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary();
+    <table>
+        <tr>
+            <th>
+                @Html.LabelFor(f => f.Id)
+            </th>
+            <td>
+                @Html.DisplayFor(f => f.Id)
+                @Html.HiddenFor(f => f.Id)
+            </td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(f => f.Year)
+            </th>
+            <td>
+                @Html.DropDownListFor(f => f.Year, Model.Years)
+            </td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(f => f.CurrencyId)
+            </th>
+            <td>
+                @Html.DropDownListFor(f => f.CurrencyId, Model.Currencies)
+            </td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(f => f.Level)
+            </th>
+            <td>
+                @Html.DropDownListFor(f => f.Level, Model.Levels)
+            </td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(f => f.Amount)
+            </th>
+            <td>
+                @Html.EditorFor(f => f.Amount)
+            </td>
+        </tr>
+    </table>
+    <button type="submit">Submit</button>
+
+    <div class="floatContainer">
+        <h3>Countries</h3>
+
+        @foreach (IEnumerable<SelectListItem> partition in ((IEnumerable<SelectListItem>)ViewBag.Countries).ToList().Partition(3))
+        {
+            <div style="float:left; width: 30%">
+                @foreach (SelectListItem item in partition)
+                {
+                    <div>
+                        <input type="checkbox" name="cIds" value="@item.Value" id="@string.Format("c{0}",item.Value)"
+                               @if (item.Selected) { @("checked='checked'") ; } />
+                        <label for="@string.Format("c{0}",item.Value)">@item.Text</label>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+
+    <p>
+        <button type="submit">Submit</button>
+    </p>
+}

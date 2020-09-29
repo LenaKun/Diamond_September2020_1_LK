@@ -1,0 +1,25 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+	var roleId = (CC.Data.FixedRoles)(((CC.Web.Security.CcPrincipal)HttpContext.Current.User).CcUser.RoleId);
+    var s = new Dictionary<string, string>();
+    s.Add("Financial Report Recap", Url.Action("FinancialReportRecap", new { controller = "AgencyReporting", area = string.Empty }));
+    s.Add("Budget Recap", Url.Action("BudgetRecap", new { controller = "AgencyReporting", area = string.Empty }));
+	s.Add("Over 105 Hours Homecare Report", Url.Action("ReportedHcClients", new { controller = "AgencyReporting", area = string.Empty }));
+	s.Add("Homecare Details", Url.Action("HomecareDetails", new { controller = "AgencyReporting", area = string.Empty }));
+	if (roleId != FixedRoles.BMF)
+	{
+		s.Add("Socialization Clients Count Report", Url.Action("SocializationClientsCountReport", new { controller = "AgencyReporting", area = string.Empty }));
+	}
+	s.Add("DAF Date Range Report", Url.Action("DafDateRangeReport", new { controller = "AgencyReporting", area = string.Empty }));
+}
+@section SubMenu{
+
+    <ul id="subMenu" class="menu">
+        @foreach (var link in s)
+        {
+            <li><a href="@link.Value">@link.Key</a></li>
+        }      
+    </ul>
+    @RenderSection("SubMenu", false)
+}
+@RenderBody()

@@ -1,0 +1,252 @@
+﻿<ServiceTypes>
+  <Service>
+    <Type>Emergency Assistance</Type>
+    <Name>Housing &amp; Related Costs</Name>
+    <ReportingType>1</ReportingType>
+  </Service>
+  <Service>
+    <Type>Emergency Assistance</Type>
+    <Name>Dental</Name>
+    <ReportingType>1</ReportingType>
+  </Service>
+  <Service>
+    <Type>Emergency Assistance</Type>
+    <Name>Food</Name>
+    <ReportingType>1</ReportingType>
+  </Service>
+  <Service>
+    <Type>Emergency Assistance</Type>
+    <Name>Medical</Name>
+    <ReportingType>1</ReportingType>
+  </Service>
+  <Service>
+    <Type>Emergency Assistance</Type>
+    <Name>Housekeeping/Homecare</Name>
+    <ReportingType>1</ReportingType>
+  </Service>
+  <Service>
+    <Type>Emergency Assistance</Type>
+    <Name>Client Transportation</Name>
+    <ReportingType>1</ReportingType>
+  </Service>
+  <Service>
+    <Type>Emergency Assistance</Type>
+    <Name>Other- Associated Costs By Client.</Name>
+    <ReportingType>1</ReportingType>
+  </Service>
+  <Service>
+    <Type>Emergency Assistance</Type>
+    <Name>Other- Total Cost with Clients Names.</Name>
+    <ReportingType>2</ReportingType>
+  </Service>
+  <Service>
+    <Type>Emergency Assistance</Type>
+    <Name>Other- Total Cost No Names</Name>
+    <ReportingType>3</ReportingType>
+  </Service>
+  <Service>
+    <Type>Homecare</Type>
+    <Name>Chore/Housekeeper Services</Name>
+    <ReportingType>1</ReportingType>
+  </Service>
+  <Service>
+    <Type>Homecare</Type>
+    <Name>Personal/Nursing Care</Name>
+    <ReportingType>1</ReportingType>
+  </Service>
+  <Service>
+    <Type>Homecare</Type>
+    <Name>Skilled Nursing</Name>
+    <ReportingType>1</ReportingType>
+  </Service>
+  <Service>
+    <Type>Homecare</Type>
+    <Name>Personnel</Name>
+    <ReportingType>1</ReportingType>
+  </Service>
+  <Service>
+    <Type>Homecare</Type>
+    <Name>Program Costs</Name>
+    <ReportingType>4</ReportingType>
+  </Service>
+  <Service>
+    <Type>Food Programs</Type>
+    <Name>Meals-On-Wheels</Name>
+    <ReportingType>1</ReportingType>
+  </Service>
+  <Service>
+    <Type>Food Programs</Type>
+    <Name>Food Packages</Name>
+    <ReportingType>1</ReportingType>
+  </Service>
+  <Service>
+    <Type>Food Programs</Type>
+    <Name>Congregate Meals</Name>
+    <ReportingType>2</ReportingType>
+  </Service>
+  <Service>
+    <Type>Food Programs</Type>
+    <Name>Food Vouchers</Name>
+    <ReportingType>1</ReportingType>
+  </Service>
+  <Service>
+    <Type>Food Programs</Type>
+    <Name>Personnel</Name>
+    <ReportingType>4</ReportingType>
+  </Service>
+  <Service>
+    <Type>Client Transportation</Type>
+    <Name>Client Transportation</Name>
+    <ReportingType>1</ReportingType>
+  </Service>
+  <Service>
+    <Type>Client Transportation</Type>
+    <Name>Personnel</Name>
+    <ReportingType>4</ReportingType>
+  </Service>
+  <Service>
+    <Type>Medical Program</Type>
+    <Name>Medical Program</Name>
+    <ReportingType>1</ReportingType>
+  </Service>
+  <Service>
+    <Type>Dental Program</Type>
+    <Name>Dental Program</Name>
+    <ReportingType>1</ReportingType>
+  </Service>
+  <Service>
+    <Type>Medical Equipment</Type>
+    <Name>Medical Equipment</Name>
+    <ReportingType>1</ReportingType>
+  </Service>
+  <Service>
+    <Type>Medicine</Type>
+    <Name>Medicine</Name>
+    <ReportingType>1</ReportingType>
+  </Service>
+  <Service>
+    <Type>Minor Home Modifications</Type>
+    <Name>Minor Home Modifications</Name>
+    <ReportingType>1</ReportingType>
+  </Service>
+  <Service>
+    <Type>Winter Relief</Type>
+    <Name>Winter Relief</Name>
+    <ReportingType>1</ReportingType>
+  </Service>
+  <Service>
+    <Type>Case Management</Type>
+    <Name>Personnel</Name>
+    <ReportingType>4</ReportingType>
+  </Service>
+  <Service>
+    <Type>Other Services</Type>
+    <Name>Respite Care (Adult Day Care)</Name>
+    <ReportingType>1</ReportingType>
+  </Service>
+  <Service>
+    <Type>Other Services</Type>
+    <Name>Rehabilitation</Name>
+    <ReportingType>1</ReportingType>
+  </Service>
+  <Service>
+    <Type>Other Services</Type>
+    <Name>Psychiatric Care</Name>
+    <ReportingType>1</ReportingType>
+  </Service>
+  <Service>
+    <Type>Other Services</Type>
+    <Name>Therapeutic Sessions</Name>
+    <ReportingType>3</ReportingType>
+  </Service>
+  <Service>
+    <Type>Other Services</Type>
+    <Name>Group Therapy</Name>
+    <ReportingType>2</ReportingType>
+  </Service>
+  <Service>
+    <Type>Other Services</Type>
+    <Name>Friendly Visitor Program</Name>
+    <ReportingType>1</ReportingType>
+  </Service>
+  <Service>
+    <Type>Other Services</Type>
+    <Name>Personnel</Name>
+    <ReportingType>4</ReportingType>
+  </Service>
+  <Service>
+    <Type>Other Services</Type>
+    <Name>Other- Associated Costs By Client.</Name>
+    <ReportingType>1</ReportingType>
+  </Service>
+  <Service>
+    <Type>Other Services</Type>
+    <Name>Other- Total Cost with Clients Names.</Name>
+    <ReportingType>2</ReportingType>
+  </Service>
+  <Service>
+    <Type>Other Services</Type>
+    <Name>Other- Total Cost No Names</Name>
+    <ReportingType>3</ReportingType>
+  </Service>
+  <Service>
+    <Type>Socialization</Type>
+    <Name>Café Europa - Materials and Supplies</Name>
+    <ReportingType>3</ReportingType>
+  </Service>
+  <Service>
+    <Type>Socialization</Type>
+    <Name>Café Europa - Food</Name>
+    <ReportingType>3</ReportingType>
+  </Service>
+  <Service>
+    <Type>Socialization</Type>
+    <Name>Café Europa - Entertainment</Name>
+    <ReportingType>3</ReportingType>
+  </Service>
+  <Service>
+    <Type>Socialization</Type>
+    <Name>Café Europa - Client Transportation</Name>
+    <ReportingType>3</ReportingType>
+  </Service>
+  <Service>
+    <Type>Socialization</Type>
+    <Name>Café Europa - Outreach</Name>
+    <ReportingType>3</ReportingType>
+  </Service>
+  <Service>
+    <Type>Socialization</Type>
+    <Name>Café Europa - Rent of Facility (survivor group only)</Name>
+    <ReportingType>3</ReportingType>
+  </Service>
+  <Service>
+    <Type>Socialization</Type>
+    <Name>Personnel</Name>
+    <ReportingType>3</ReportingType>
+  </Service>
+  <Service>
+    <Type>Socialization</Type>
+    <Name>Other- Associated Costs By Client.</Name>
+    <ReportingType>3</ReportingType>
+  </Service>
+  <Service>
+    <Type>Socialization</Type>
+    <Name>Other- Total Cost with Clients Names.</Name>
+    <ReportingType></ReportingType>
+  </Service>
+  <Service>
+    <Type>Socialization</Type>
+    <Name>Other- Total Cost No Names</Name>
+    <ReportingType></ReportingType>
+  </Service>
+  <Service>
+    <Type>Administrative Overhead</Type>
+    <Name>Administrative Overhead</Name>
+    <ReportingType>3</ReportingType>
+  </Service>
+  <Service>
+    <Type>Annual Home Care Assessment Fee</Type>
+    <Name>Annual Home Care Assessment Fee</Name>
+    <ReportingType>1</ReportingType>
+  </Service>
+</ServiceTypes>

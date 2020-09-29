@@ -1,0 +1,8 @@
+﻿@model Nullable<int>
+           
+@if (Model.HasValue && Enum.IsDefined(typeof(AppBudgetApprovalStatuses), Model))
+{       
+    
+    @(((CC.Data.AppBudgetApprovalStatuses)Model).ToString())
+}
+

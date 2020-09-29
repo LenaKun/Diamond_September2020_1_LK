@@ -1,0 +1,80 @@
+﻿@model UnmetNeedsImportPreviewModel
+@{
+	ViewBag.Title = "UnmetNeedsPreview";
+}
+
+<h2>Unmet Needs Preview</h2>
+
+@Html.ValidationSummary()
+<div>
+	@if (ViewData.ModelState.IsValid)
+ {
+	 using (Html.BeginForm(null, null, new { Id = Model.Id }))
+	 {
+		<button type="submit">Submit</button>
+		<span>Rows that contain errors will be ignored during the import.</span>
+	 }
+ }
+</div>
+<div>
+	@using (Html.BeginForm("UnmetNeedsImportRollback", null, new { Id = Model.Id }))
+ {
+		<button type="submit">Cancel</button>
+ }
+</div>
+
+<table id="@Model.Id">
+</table>
+<script>
+	$(function () {
+		var oDataTable = $('table#@Model.Id').dataTable({
+			"bJQueryUI": true,
+			"bProccessing": true,
+			"sPaginationType": "full_numbers",
+			"aaSorting": [[7, "desc"]],
+			"bServerSide": true,
+			"bAutoWidth": false,
+			"sAjaxSource": '@Url.Action("UnmetNeedsPreviewData", new { id = Model.Id })',
+			"fnServerParams": function (aoData) {
+				aoData.push({ name: "IE", value: Math.random() });
+			},
+			"fnServerData": function (sSource, aoData, fnCallback) {
+				//the url might be too long for the get
+				$.ajax({
+					"dataType": 'json',
+					"type": "POST",
+					"url": sSource,
+					"data": aoData,
+					"success": fnCallback
+				});
+			},
+			"aoColumns": [
+			{ "mData": "RowIndex", "sTitle": "RowIndex" },
+				{ "mData": "ClientId", "sTitle": "ClientId" },
+				{ "mData": "FirstName", "sTitle": "FirstName" },
+				{ "mData": "LastName", "sTitle": "LastName" },
+				{ "mData": "StartDate", "sTitle": "StartDate", "mRender": function (a) { return renderDate(a); } },
+				{ "mData": "WeeklyHours", "sTitle": "Weekly Hours" },
+				{
+					"mData": "RowErrors", "sTitle": "Errors", "mRender": function (a) {
+						var html = '';
+						if (a.ClientNotFound == true) { html += 'Client not found.<br />'; }
+
+						if (a.InvalidWeeklyHours == true) { html += 'Invalid Weekly Hours (must be >0 and <=168) .<br />'; }
+
+						if (a.FutureStartDate == true) { html += 'Invalid Start Date (less or equal to Today).<br />'; }
+
+						if (a.InvalidStartDate == true) { html += 'Invalid Start Date (must be between Join Date and Leave Date).<br />'; }
+
+						if (a.StartDateBeforeReportEnd == true) { html += 'Start Date cannot be within an already submitted Financial Report period.<br />'; }
+
+						if (a.OverlappingStartDate == true) { html += 'There is an overlapping or duplicate period in the system.<br />'; }
+
+						if (a.DuplicatesRowIndexes.length > 0) { html += 'Duplicate entries on rows ' + a.DuplicatesRowIndexes.join(', '); }
+						return html;
+					}
+				}
+			]
+		});
+	});
+</script>

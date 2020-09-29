@@ -1,0 +1,9 @@
+﻿@model IEnumerable<HseapDetailedRow>
+
+@{
+    ViewBag.Title = "HseapDetailedPrint";
+}
+
+<h2>HseapDetailedPrint</h2>
+
+@Html.Grid(Model).AutoGenerateColumns()

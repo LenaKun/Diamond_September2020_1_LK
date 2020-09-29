@@ -1,0 +1,23 @@
+﻿@model UnmetNeedsUploadModel
+@{
+	ViewBag.Title = "Unmet Needs Upload";
+}
+
+<h2>UnmetNeedsUpload</h2>
+@using (Html.BeginForm(null, null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+	<text>
+	@Html.ValidationSummary()
+
+	<p>Columns:</p>
+
+	<ul>
+		@foreach (var s in Model.GetCsvColumnNames())
+		{
+			<li>@s</li>
+		}
+	</ul>
+	<input type="file" name="File" />
+	<button type="submit">Submit</button>
+	</text>
+}

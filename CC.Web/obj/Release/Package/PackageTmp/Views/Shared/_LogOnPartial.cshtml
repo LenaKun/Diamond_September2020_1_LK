@@ -1,0 +1,9 @@
+﻿@if(Request.IsAuthenticated) {
+    <text>
+	Welcome <a href="@Url.Action("Details", "Account", new { area = "" })" style="color:#000"><strong>@User.Identity.Name</strong></a>!
+    [ @Html.ActionLink("Log Off", "LogOff", "Account", new { area = "" },null) ]
+	</text>
+}
+else {
+    @:[ @Html.ActionLink("Log On", "LogOn", "Account", new { area = "" },null) ]
+}

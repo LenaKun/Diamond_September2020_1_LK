@@ -1,0 +1,87 @@
+﻿@model CfsExportsModel
+@{
+    ViewBag.Title = "Exports";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<form action="@Url.Action("NewCfsClientsExport")" method="get">
+	<fieldset>
+		<legend>New CFS Awaiting Approval</legend>
+		<div class="editor-item">
+			<button type="submit">Export</button>
+		</div>
+	</fieldset>
+</form>
+
+<form action="@Url.Action("ApprovedCfsClients")" method="get">
+	<fieldset>
+		<legend>Approved CFS Clients</legend>
+		<div class="editor-item">
+			<button type="submit">Export</button>
+		</div>
+	</fieldset>
+</form>
+
+<form action="@Url.Action("ACFSUpload")" method="get">
+	<fieldset>
+		<legend>ACFS Upload</legend>
+		<div class="editor-item">
+			<button type="submit">Export</button>
+		</div>
+	</fieldset>
+</form>
+
+<form action="@Url.Action("NewCfsEligibleClientsExport")" method="get">
+	<fieldset>
+		<legend>New CFS Eiligible Clients</legend>
+		<div class="editor-item">
+			@Html.LabelFor(f => f.newCfsEligibleClientsFilter.MonthId)
+			@Html.DropDownListFor(f => f.newCfsEligibleClientsFilter.MonthId, Model.Months)
+		</div>
+		<div class="editor-item">
+			@Html.LabelFor(f => f.newCfsEligibleClientsFilter.Year)
+			@Html.EditorFor(f => f.newCfsEligibleClientsFilter.Year)
+		</div>
+		<div class="editor-item">
+			<button type="submit">Export</button>
+			<button type="reset">Reset</button>
+		</div>
+	</fieldset>
+</form>
+
+<form action="@Url.Action("CfsEligibleWithLevelChangeExport")" method="get">
+	<fieldset>
+		<legend>CFS Eiligible With Level Change</legend>
+		<div class="editor-item">
+			@Html.LabelFor(f => f.cfsEligibleWithLevelChangeFilter.MonthId)
+			@Html.DropDownListFor(f => f.cfsEligibleWithLevelChangeFilter.MonthId, Model.Months)
+		</div>
+		<div class="editor-item">
+			@Html.LabelFor(f => f.cfsEligibleWithLevelChangeFilter.Year)
+			@Html.EditorFor(f => f.cfsEligibleWithLevelChangeFilter.Year)
+		</div>
+		<div class="editor-item">
+			<button type="submit">Export</button>
+			<button type="reset">Reset</button>
+		</div>
+	</fieldset>
+</form>
+
+<form action="@Url.Action("CfsEligibleEndDateExport")" method="get">
+	<fieldset>
+		<legend>CFS Eiligible End Date</legend>
+		<div class="editor-item">
+			@Html.LabelFor(f => f.cfsEligibleEndDateFilter.MonthId)
+			@Html.DropDownListFor(f => f.cfsEligibleEndDateFilter.MonthId, Model.Months)
+		</div>
+		<div class="editor-item">
+			@Html.LabelFor(f => f.cfsEligibleEndDateFilter.Year)
+			@Html.EditorFor(f => f.cfsEligibleEndDateFilter.Year)
+		</div>
+		<div class="editor-item">
+			<button type="submit">Export</button>
+			<button type="reset">Reset</button>
+		</div>
+	</fieldset>
+</form>

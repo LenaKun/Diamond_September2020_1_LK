@@ -1,0 +1,111 @@
+﻿@model IEnumerable<CC.Data.App>
+@{
+	ViewBag.Title = "Apps";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@if (@HttpContext.Current.User.IsInRole("admin"))
+{
+    <p>
+	    @Html.ActionLink("Create New", "Create")
+    </p>
+}
+<table id="apps">
+</table>
+<script>
+	$(function () {
+		var dt = $('table#apps').dataTable({
+			"bJQueryUI": true,
+			"bProccessing": true,
+			"sPaginationType": "full_numbers",
+			"aaSorting": [[0, "asc"], [1, "asc"], [2, "asc"]],
+			"bServerSide": true,
+			"sAjaxSource": '@Url.Action("IndexData")',
+			"fnServerParams": function (aoData) {
+				aoData.push({ name: "IE", value: Math.random() });
+			},
+
+			"aoColumns": [
+                { "sTitle": "Fund Name", "mData": "FundName" },
+                { sTitle: "Ser", mData: "AgencyGroupName" },
+                { sTitle: "Name", mData: "Name" },
+                { sTitle: "Agency Contribution", mData: "AgencyContribution" },
+                { sTitle: "CC Grant", mData: "CcGrant"},
+                { sTitle: "Required Match", mData: "RequiredMatch"},
+                {
+                	sTitle: "Calendaric Year",
+                	mData: "CalendaricYear"
+                },
+				{
+					sTitle: "Only EOY validation",
+					mData:"EndOfYearValidationOnly"
+				},
+				{
+					sTitle: "Interline Transfer",
+					mData: "InterlineTransfer",
+				},
+                {
+                	sTitle: "",
+                	mData: "Id",
+                	mRender: function (data, type, full) {
+                		var result = '<a href="@Url.Action("Edit")/' + data + '">Edit</a>';
+                		return result;
+                	}
+                },
+			    {
+		            sTitle: "",
+		            mData: "Id",
+			        mRender: function (data, type, full) {
+			            var result = '<a href="@Url.Action("Details")/' + data + '">Details</a>';
+			            return result;
+			        }
+		        },
+			    {
+			        sTitle: "",
+			        mData: "Id",
+			        bVisible: '@HttpContext.Current.User.IsInRole("admin")' == 'True',
+			        mRender: function (data, type, full) {
+			            var result = '<a href="@Url.Action("Delete")/' + data + '">Delete</a>';
+			            return result;
+			        }
+			    }
+
+			],
+			"aoColumnDefs":[{"aTargets":[4,5],
+				"sClass": "number", "mRender": function (val) { return renderDecimal(val); }
+			}]
+
+		});
+	});
+</script>
+@if (HttpContext.Current.User.IsInRole("admin"))
+{
+    <fieldset>
+	    <legend>Import</legend>
+	    <form action="@Url.Action("Upload")" enctype="multipart/form-data" method="post">
+	    <table>
+	    <tr>
+		    @foreach (var item in CsvHelper.CsvHelperExtenstions.ColumnHeaderNames<CC.Web.Areas.Admin.Models.AppImportRowModel.CsvMap>())
+		    {
+			    <th>@item</th>
+		    }
+	    </tr>
+	    </table>
+	    <div>
+		    <input type="file" name="file" />
+		    <button type="submit">Upload</button>
+	    </div>
+	    </form>
+    </fieldset>
+}
+<fieldset>
+    <div class="editor-item">
+        <button type="button" id="exportBtn">Export to Excel</button>
+    </div>
+</fieldset>
+<script>
+    $('#exportBtn').click(function () {
+        window.location.href = '@Url.Action("Export")';
+    });
+</script>

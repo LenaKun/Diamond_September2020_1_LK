@@ -1,0 +1,10 @@
+﻿@model AppBudget
+@{
+	Layout = "~/Views/Shared/LayoutForEmail.cshtml";
+}
+
+
+<p>
+	Budget is approved by RPO.
+		<a href="@Url.AbsoluteAction("Details", "AppBudgets", new { id = Model.Id })">Budget details (id: @Model.Id)</a> 
+</p>

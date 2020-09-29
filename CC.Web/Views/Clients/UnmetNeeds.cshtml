@@ -1,0 +1,163 @@
+﻿@model NewUnmetNeedsEntryModel
+@{
+	Layout = null;
+	var dialogId = Guid.NewGuid();
+	var dtId = Guid.NewGuid();
+}
+
+<table id="@dtId"></table>
+
+@if (User.IsInRole(FixedRoles.Admin) || User.IsInRole(FixedRoles.Ser) || User.IsInRole(FixedRoles.AgencyUser) || User.IsInRole(FixedRoles.SerAndReviewer) || User.IsInRole(FixedRoles.AgencyUserAndReviewer))
+{
+    <button class="addnewWeekly">Add New</button>
+}
+<script>
+	$(function () {
+		var oTable = $('table#@dtId').dataTable({
+			"aaSorting": [[0, "desc"]],
+			"bProcessing": true,
+			"bFilter": false,
+			"bServerSide": true,
+			"bJQueryUI": true,
+			"cache": false,
+
+			"bLengthChange": false,
+			"sPaginationType": "full_numbers",
+			"sAjaxSource": '@Url.Action("UnmetNeedsData")',
+			"fnServerParams": function (aoData) {
+				aoData.push({ name: "ClientId", value: '@Model.ClientId' });
+			},
+			"aoColumns": [
+				{ "mData": "StartDate", "sTitle": "Start Date" },
+				{ "mData": "WeeklyHours", "sTitle": "Weekly Hours" },
+				{
+					"mData": null,
+					"bSortable": false,
+                    "bVisible": "@Model.Permissions.User.RoleId" == "@((int)FixedRoles.Admin)",
+                    "mRender": function (a, b, c) {
+						return '<button class="delete" data-startdate="' + escape(c.IsoStartDate) + '">Delete</button>';
+					}
+				}
+			]
+		});
+		$('table#@dtId button.delete').live('click', function () {
+			oTable.find(':input, button').attr('disabled', 'disabled');
+			$.ajax({
+				url: '@Url.Action("DeleteUnmetNeedsEntry")',
+				method: 'POST',
+				dataType: "json",
+				data: {
+					"ClientId": "@Model.ClientId",
+					"StartDate": unescape($(this).attr('data-startdate'))
+				}
+			}).done(function (data) {
+				oTable.fnDraw(false);
+			}).fail(function () {
+				oTable.find(':input, button').removeAttr('disabled');
+			});
+		});
+		
+		
+		var dialog = $('div#@dialogId').dialog({
+			autoOpen: false,
+			modal: true,
+			width: 'auto',
+			height: 'auto',
+            open: function (event, ui) {
+                if ("@Model.Permissions.User.RoleId" == "@((int)FixedRoles.Admin)") {
+
+                   dialog.find(':input').val('');
+				   dialog.find(':input').removeAttr('disabled');
+				   dialog.find('#@Html.FieldIdFor(f => f.WeeklyStartDate)').datepicker().trigger('focus');
+                }
+                else
+                {
+                    dialog.find('#@Html.FieldIdFor(f => f.WeeklyHours)').val('');
+                    dialog.find('#@Html.FieldIdFor(f => f.WeeklyStartDate)').prop('disabled', true);
+                }
+			},
+			buttons: {
+				"Submit": function () {
+					if (dialog.find('form').valid()) {
+					    dialog.find(':input').attr('disabled', 'disabled');
+
+						$.ajax({
+							url: '@Url.Action("CheckFunctionalityForUnmetNeedsEntry")',
+							method: 'POST',
+							dataType: "json",
+							data: {
+								clientId: parseInt('@Model.ClientId'),
+								WeeklyStartDate: dialog.find('#@Html.FieldIdFor(f => f.WeeklyStartDate)').val(),
+								WeeklyHours: dialog.find('#@Html.FieldIdFor(f => f.WeeklyHours)').val()
+							}
+						}).done(function (data) {
+							if (data && data.error) {
+							    if (confirm(data.error)) {
+							        addNewUnmetNeedsEntry();
+							    }
+							    else {
+							        dialog.find(':input').removeAttr('disabled');
+							    }
+							}
+							else {
+							    addNewUnmetNeedsEntry();
+							}
+						}).fail(function () {
+						    dialog.find(':input').removeAttr('disabled');
+						});
+					}
+				},
+				"Cancel": function () {
+					dialog.find(':input').val('');
+					dialog.dialog('close');
+				}
+			}
+		});
+		$('.addnewWeekly').click(function () {
+			dialog.dialog('open');
+		});
+		function addNewUnmetNeedsEntry() {
+		    $.ajax({
+		        url: '@Url.Action("AddNewUnmetNeedsEntry")',
+		        method: 'POST',
+		        dataType: "json",
+		        data: {
+		            clientId: parseInt('@Model.ClientId'),
+		            WeeklyStartDate: dialog.find('#@Html.FieldIdFor(f => f.WeeklyStartDate)').val(),
+		            WeeklyHours: dialog.find('#@Html.FieldIdFor(f => f.WeeklyHours)').val()
+		        }
+		    }).done(function (data) {
+		        dialog.find(':input').removeAttr('disabled');
+		        if (data && data.errors) {
+		            $('ul.UnmetNeedstaberrors').html('<li>' + data.errors.join('</li><li>') + '</li>');
+		        }
+		        else {
+		            oTable.fnDraw(false);
+
+		            dialog.dialog('close');
+		        }
+		    }).fail(function () {
+		        dialog.find(':input').removeAttr('disabled');
+		    });
+		}
+	});
+</script>
+
+<div id="@dialogId">
+	@using (Html.BeginForm("AddNewUnmetNeedsEntry"))
+	{
+	 @Html.ValidationSummary()
+		<ul class="error UnmetNeedstaberrors"></ul>
+		<div class="editor-item-block">
+			@Html.LabelFor(f => f.WeeklyHours)
+			@Html.EditorFor(f => f.WeeklyHours)
+			@Html.ValidationMessageFor(f=>f.WeeklyHours)
+		</div>
+        <div class="editor-item-block">
+            @Html.LabelFor(f => f.WeeklyStartDate)
+            @Html.EditorFor(f => f.WeeklyStartDate)
+            @Html.ValidationMessageFor(f => f.WeeklyStartDate)
+        </div>
+	}
+</div>
+

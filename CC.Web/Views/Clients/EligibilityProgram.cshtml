@@ -1,0 +1,110 @@
+﻿@model CC.Web.Models.ClientEditModel
+           
+           <fieldset>
+            <legend>General Details</legend>
+            <div class="row floatContainer">
+                <div class="editor-item">
+                    @Html.LabelFor(model => model.Data.FirstName):
+                    @Html.DisplayFor(model => model.Data.FirstName)
+                    
+                </div>
+                <div class="editor-item">
+                    @Html.LabelFor(model => model.Data.LastName):
+                    @Html.DisplayFor(model => model.Data.LastName)
+                    
+                </div>
+                <div class="editor-item">
+                    @Html.LabelFor(model => model.Data.MiddleName):
+                    @Html.DisplayFor(model => model.Data.MiddleName)
+                    
+                </div>
+                <div class="editor-item">
+                    @Html.LabelFor(model => model.Data.Agency):
+                    @Html.DisplayFor(model => model.Data.Agency)
+                </div>
+            </div>
+            @*second row*@
+            <div class="row floatContainer">
+                <div class="editor-item">
+                    @Html.LabelFor(model => model.Data.Id):
+                    @Html.DisplayFor(model => model.Data.Id)
+                </div>
+                <div class="editor-item">
+                    @Html.LabelFor(model => model.Data.NationalId):
+                    @Html.DisplayFor(model => model.Data.NationalId)
+                </div>
+                <div class="editor-item">
+                    @Html.LabelFor(model => model.Data.NationalIdType):
+                    @Html.DisplayFor(model => model.Data.NationalIdTypeId)
+                </div>
+            </div>
+            @*row 3*@
+            <div class="row floatContainer">
+                <div class="editor-item">
+                    @Html.LabelFor(model => model.Data.BirthDate):
+                    @Html.DisplayFor(model => model.Data.BirthDate)
+                </div>
+                <div class="editor-item">
+                    @Html.LabelFor(model => model.Data.Address):
+                    @Html.DisplayFor(model => model.Data.Address)
+                </div>
+                <div class="editor-item">
+                    @Html.LabelFor(model => model.Data.City):
+                    @Html.DisplayFor(model => model.Data.City)
+                </div>
+            </div>
+            @*row 4*@
+            <div class="row floatContainer">
+                <div class="editor-item">
+                    @Html.LabelFor(model => model.Data.Country):
+                    @Html.DisplayFor(model => model.Data.CountryId)
+                </div>
+                <div class="editor-item">
+                    @Html.LabelFor(model => model.Data.State):
+                    @Html.DisplayFor(model => model.Data.StateId)
+                </div>
+                <div class="editor-item">
+                    @Html.LabelFor(model => model.Data.ZIP):
+                    @Html.DisplayFor(model => model.Data.ZIP)
+                </div>
+            </div>
+        </fieldset>
+@using (Html.BeginForm())
+{           
+    <div class="row floatContainer">
+        <div class="editor-item">
+            @Html.HiddenFor(f => f.Data.Id)
+            @Html.LabelFor(model => model.Data.FundStatus):
+            @Html.EditorFor(model => model.Data.FundStatusId, "EligibilityProgram")
+        </div>
+            @Html.LabelFor(model => model.Data.IncomeCriteriaComplied):
+            @Html.EditorFor(model => model.Data.IncomeCriteriaComplied)
+        </div>
+        
+        <div class="editor-item">
+            @Html.LabelFor(model => model.Data.HomeCareEntitled):
+            @Html.DisplayFor(model => model.Data.HomeCareEntitled)
+        </div>
+        <div class="editor-item">
+        </div>
+    
+    <div class="row floatContainer">
+        <div class="editor-item">
+            @Html.LabelFor(model => model.Data.ApprovalStatus): @* Approval status can be edited by administrotor only *@
+            @if (User.IsInRole(CC.Data.FixedRoles.Admin.ToString()))
+            {
+                @Html.EditorFor(model => model.Data.ApprovalStatus)
+            }
+            else
+            {
+                <span class="dataValue">
+                    @Html.DisplayFor(model => model.Data.ApprovalStatus)
+                </span>
+            }
+        </div>
+    </div>
+    <input type="submit" value="Save" class="button confirm" />
+    <input type="button" value="Cancel" class="button cancel" />
+
+
+}

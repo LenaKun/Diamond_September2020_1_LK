@@ -1,0 +1,183 @@
+﻿@model AppBudget
+<h2>
+	Details</h2>
+<fieldset>
+	<legend>Budget</legend>
+	<span class="display-item">
+	@Html.LabelFor(f => Model.App.AgencyGroup.Name, "SER")
+	<span class="display-field">
+	@Html.DisplayFor(model => model.App.AgencyGroup.Name)
+	</span>
+	</span>
+	<span class="display-item">
+	@Html.LabelFor(model => model.App.Fund.Name, "Fund")
+	<span class="display-field">
+	@Html.DisplayFor(model => model.App.Fund.Name)
+	</span>
+	</span>
+	<span class="display-item">
+	@Html.LabelFor(model => model.App.Name, "App #")
+	<span class="display-field">
+	@Html.DisplayFor(model => model.App.Name)
+	</span>
+	</span>
+	<span class="display-item">
+	<label>
+		App's Period:</label>
+	<span class="display-field">
+	@Html.DisplayFor(model => model.App.StartDate) - @Html.DisplayFor(model => model.App.EndDate)
+	</span>
+	</span>
+	<span class="display-item">
+	@Html.LabelFor(model => model.StatusId, "Status")
+	<span class="display-field">
+	@Html.DisplayFor(model => model.StatusName)
+	@if (Model.AdditionalStatuses.Any())
+ {
+    
+        
+		<span>@string.Join(", ", Model.AdditionalStatuses.ToArray())</span>
+        
+ }
+	</span>
+	</span>
+	<span class="display-item">
+	@Html.LabelFor(model => model.PoRemarks, "PO Remarks")
+	<span class="display-field">
+	@Html.DisplayFor(model => model.PoRemarks)
+	</span>
+	</span>
+	<span class="display-item">
+	@Html.LabelFor(model => model.ValidUntill, "Valid Until")
+	<span class="display-field">
+	@Html.DisplayFor(model => model.ValidUntill)
+	</span>
+	</span>
+	<span class="display-item">
+	@Html.LabelFor(model => model.ValidRemarks, "Valid Remarks")
+	<span class="display-field">
+	@Html.DisplayFor(model => model.ValidRemarks)
+	</span>
+	</span>
+	<fieldset>@Html.DropDownList("agencyIdFilter", new SelectList(Model.AppBudgetServices.Select(f => f.Agency).Distinct().OrderBy(f => f.Name), "Id", "Name", ""), "", new { id = "agencyIdFilter" })
+		<button type="button">
+			Filter</button>
+         @if (ViewBag.canBeEdited=="Yes")
+         {
+		 <button onclick="location.href='@Url.Action("Edit",  new { id = Model.Id })';return false;">Edit</button>
+         }
+             else
+             {
+                  <button disabled="disabled">Edit</button>
+             }
+      
+		<script type="text/javascript">
+			var oTable;
+			$(document).ready(function () {
+				var oTable;
+				$(document).ready(function () {
+					oTable = $('table.dataTable').dataTable({ "bJQueryUI": true, "sPaginationType": "full_numbers" });
+
+
+					var ths = $('table.dataTable thead tr th');
+					ths.filter('.hideme').each(function () {
+						var iCol = ths.index(this);
+						oTable.fnSetColumnVis(iCol, false);
+					});
+
+
+				});
+				$('#agencyIdFilter').change(function () {
+					if ($(this).val()) {
+						oTable.fnFilter('^' + $(this).val() + '$', 0, true);
+					}
+					else {
+						oTable.fnFilter('', 0);
+					}
+				});
+			});		
+		</script>
+	</fieldset>
+	<table class="dataTable">
+		<thead>
+			<tr>
+				<th class="hideme">
+				</th>
+				<th>
+					Agency
+				</th>
+				<th>
+					Service Type
+				</th>
+				<th>
+					Service Name
+				</th>
+				<th>
+					CC Grant
+				</th>
+				<th>
+					CUR
+				</th>
+				<th>
+					Required Match
+				</th>
+				<th>
+					CUR
+				</th>
+				<th>
+					Agency's Contribution
+				</th>
+				<th>
+					CUR
+				</th>
+				<th>
+					Total Spent to Date
+				</th>
+			</tr>
+		</thead>
+		<tbody>
+			@Html.DisplayFor(f => Model.AppBudgetServices)
+		</tbody>
+	</table>
+</fieldset>
+<fieldset>
+	<legend>Totals</legend>
+	<div>
+		<label>
+			Total grant as Specified by Ser:</label>
+		@Model.AppBudgetServices.Sum(d => d.CcGrant)
+	</div>
+	<div>
+		<label>
+			Total Required Match as Specified by Ser:</label>
+		@Model.AppBudgetServices.Sum(d => d.RequiredMatch)
+	</div>
+  
+	<div>
+		<label>
+			Total Agency's Contribution as Specified by Ser:</label>
+		@Model.AppBudgetServices.Sum(d => d.AgencyContribution)
+	</div>
+	  <p></p>
+    <div>
+		<label>
+			Total CC Grant:
+		</label>
+		@Html.DisplayFor(f => Model.App.CcGrant)
+	</div>
+	<div>
+		<label>
+			Total Required Match:</label>
+		@Html.DisplayFor(f => Model.App.RequiredMatch)
+	</div>
+	<div>
+		
+      
+		
+        @if (Model.App.AgencyContribution)
+        {
+         <span>Agency Contribution for this App is required</span>
+        }
+            
+    </div>
+</fieldset>

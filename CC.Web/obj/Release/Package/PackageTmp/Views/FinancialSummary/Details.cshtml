@@ -1,0 +1,75 @@
+﻿@model FinancialSummaryDetailsModel
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>@ViewBag.Title</h2>
+<div>
+    @Html.Partial("Filter", Model)
+
+    @if (ViewData.ModelState.IsValid)
+    {
+        <text>
+        <h3 id="error" class="error" hidden="hidden"></h3>
+        <table id="FinancialSummaryOverview"></table>
+        <script>
+            $(function () {
+                var oTable = $('#FinancialSummaryOverview').dataTable({
+                    "bSort": false,
+                    "sPaginationType": "two_button",
+                	"bServerSide": true,
+					"bInfo": false,
+                    "sAjaxSource": '@Url.Action(Model.ActionName + "Data")',
+					
+                    "fnServerParams": function (aoData) {
+                        PushFinancialSummaryParameters(aoData);
+                    },
+                    "fnDrawCallback": function (oSettings) {
+                    },
+                    "aoColumns": [
+                        { "mData": "FirstName", "sTitle": "FirstName" },
+                        { "mData": "LastName", "sTitle": "LastName" },
+                        {
+                            "mData": "ClientId", "sTitle": "CCID", "mRender": function (a, b, c) {
+                                return '<a href="@Url.Action("Details", "Clients")/' + a + '">' + a + '</a>';
+                            }
+                        },
+                        { "mData": "ServiceTypeName", "sTitle": "Service Type" },
+                        { "mData": "ServiceName", "sTitle": "Service" },
+                        {
+                            "mData": "ReportStart", "sTitle": "Report Start", "mRender": function (a, b, c) {
+                                return '<a href="@Url.Action("Details", "SubReports")/' + c.SubReportId + '?ClientId=' + c.ClientId + '">' + renderDate(a, "M yy") + '</a>';
+                            }
+                        },
+                        {
+                            "mData": "ReportEnd", "sTitle": "Report End", "mRender": function (a, b, c) {
+                                return '<a href="@Url.Action("Details", "SubReports")/' + c.SubReportId + '?ClientId=' + c.ClientId + '">' + renderDate(a, "M yy", true) + '</a>';
+                            }
+                        },
+                        { "mData": "FundName", "sTitle": "Fund" },
+                        { "mData": "AppName", "sTitle": "#App" },
+                        { "mData": "Quantity", "sTitle": "Quantity", "sClass":"dec", "mRender": function (a) { return renderDecimal(a); } },
+                        { "mData": "Amount", "sTitle": "Amount", "sClass":"dec", "mRender": function (a) { return renderDecimal(a); } },
+                        { "mData": "IsEstimated", "sTitle" : "Estimated Amount?"},
+                        { "mData": "AmountPerUnit", "sTitle": "AmountPerUnit", "sClass":"dec", "mRender": function (a) { return renderDecimal(a); } },
+                        { "mData": null, "sTitle": "CUR", "mRender": function () { return '@Model.CurId'; } },
+                        {
+                            "mData": "SubReportId",
+                            "bSortable": false,
+							"sTitle": "Report ID"
+                        
+                        }
+
+                    ]
+                });
+            });
+        </script>
+        </text>
+    }
+    else
+    {
+        <text>
+        @Html.ValidationSummary()
+        </text>
+    }
+</div>

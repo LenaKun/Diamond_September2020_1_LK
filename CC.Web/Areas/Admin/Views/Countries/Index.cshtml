@@ -1,0 +1,26 @@
+﻿@model IEnumerable<CC.Data.AgencyGroup>
+@{
+	ViewBag.Title = "Countries";
+}
+
+<h2>@ViewBag.Title</h2>
+<table id="data"></table>
+<script>
+	$(function () {
+		var oTable = $('table#data').dataTable({
+			"aaSorting": [[0, "asc"]],
+			"bServerSide": true,
+			"sAjaxSource": '@Url.Action("IndexData")',
+			"aoColumns": [
+				 { "mData": "Id", "sTitle": "Id" },
+				 { "mData": "Name", "sTitle": "Name" },
+				 { "mData": "IncomeVerificationRequired", "sTitle": "Income verification required"},
+				 { "mData": "RegionName", "sTitle": "Region" },
+				 { "mData": "Language", "sTitle": "Language" },
+			]
+		});
+	});
+</script>
+
+
+

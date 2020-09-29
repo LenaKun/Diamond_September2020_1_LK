@@ -1,0 +1,98 @@
+﻿@model SubReportCreateModel 
+@{
+	ViewBag.Title = "Create";
+}
+<h2>
+	Create Detailed Report</h2>
+@Html.ValidationSummary()
+<div>
+	@Html.HiddenFor(f => f.Id)
+	@Html.HiddenFor(f => f.AgencyId)
+	@Html.HiddenFor(f => f.ServiceId)
+	@Html.Partial("Header", Model.DetailsHeader)
+</div>
+<fieldset>
+	<p>
+		This sub report does not contain any rows. Please follow one of the following options:</p>
+	<ol>
+@if (Model.ReportingMethodId != (int)CC.Data.Service.ReportingMethods.DayCenters && Model.ReportingMethodId != (int)CC.Data.Service.ReportingMethods.SupportiveCommunities
+		&& Model.ReportingMethodId != (int)CC.Data.Service.ReportingMethods.Homecare && Model.ReportingMethodId != (int)CC.Data.Service.ReportingMethods.HomecareWeekly
+		&& Model.ReportingMethodId != (int)CC.Data.Service.ReportingMethods.SoupKitchens && Model.ReportingMethodId != (int)CC.Data.Service.ReportingMethods.ClientEventsCount)
+                {
+
+		<li>
+			<form action="@Url.Action("Copy", "SubReports")" id="copy-form">
+			
+				@Html.HiddenFor(f => f.MainReportId)
+				@Html.HiddenFor(f => f.AppBudgetServiceId)
+               		<span>Copy Rows from Previous Report </span>
+				@Html.DropDownListFor(f => f.PrevSubReportId, Model.PrevReports, "")
+				<button type="button" onclick="$('#copy-dialog').dialog('open');">
+					Copy from Report</button>
+				<div id="copy-dialog">
+					<p>
+						All Reported records from the selected report will be imported into the current
+						report.</p>
+					<p>
+						Please confirm to proceed (Copy from selected report / Cancel)</p>
+				</div>
+				<script type="text/javascript">
+					$(function () {
+						$('#copy-dialog').dialog({
+							autoOpen: false,
+							resizable: false,
+							height: 'auto',
+							width: 'auto',
+							modal: true,
+							buttons: {
+								"Submit": function () {
+									$('form#copy-form').submit();
+								},
+								"Cancel": function () {
+									$(this).dialog("close");
+								}
+							}
+
+
+						});
+					});
+				</script>
+                       
+			</form>
+		</li>
+                } <!--if copy from previous-->
+		
+        @if (Model.ReportingMethodId != (int)CC.Data.Service.ReportingMethods.DayCenters && Model.ReportingMethodId != (int)CC.Data.Service.ReportingMethods.ClientEventsCount)
+                {
+            <li>
+       
+           
+			<p>Import from csv file
+				<a href="@Url.Action("Upload", "SubReportImport", Model.UploadModel)" class="button">import</a>
+			</p>
+           
+		</li>
+                }  <!--if import from csv-->
+		<li>
+			@if (Model.Id == default(int) || Model.Id == null)
+			{
+			   using (Html.BeginForm("Create", "SubReports"))
+			   { 
+				@Html.HiddenFor(f => f.MainReportId)
+				@Html.HiddenFor(f => f.AppBudgetServiceId)
+				<button type="submit">
+					Manually Enter Data</button>
+			   }
+		   }
+		   else
+		   { 
+				<a href="@Url.Action("Details",new {id = Model.Id})" class="button">Manually Enter Data</a>
+			}
+         
+
+		</li>
+	</ol>
+</fieldset>
+<div>
+	<a href="@Url.Action("Details", "MainReports", new {id = Model.MainReportId})" class="button">Go Back to Financial Report</a>
+</div>

@@ -1,0 +1,134 @@
+﻿@model SubReportDetailsModel.Header
+@using (Html.BeginForm("UpdateSubReport", "SubReports", FormMethod.Post))
+{ 
+	
+	@Html.HiddenFor(f => f.Id)
+	
+	<table class="horizontal">
+		<tr>
+			<th style="white-space: nowrap">
+				Report Details:
+			</th>
+			<td>
+				<div class="display-item">
+					@Html.LabelFor(f=>f.FundName)
+					@Html.DisplayFor(f=>f.FundName)
+				</div>
+				<div class="display-item">
+					@Html.LabelFor(f=>f.AppName)
+					@Html.DisplayFor(f=>f.AppName)
+				</div>
+				<div class="display-item">
+					@Html.LabelFor(f => f.AgencyName)
+					@Html.DisplayFor(f => f.AgencyName)
+				</div>
+				<div class="display-item">
+					@Html.LabelFor(f => f.SerName)
+					@Html.DisplayFor(f => f.SerName)
+				</div>
+				<div class="display-item">
+					@Html.LabelFor(f => f.ServiceName)
+					@Html.DisplayFor(f => f.ServiceTypeName) - 
+					@Html.DisplayFor(f => f.ServiceName)
+
+				</div>
+				<div class="display-item">
+					@Html.LabelFor(f => f.AppBudgetService.Remarks)
+					<span title="@Model.AppBudgetServiceCleanRemarks">
+					@Html.DisplayFor(f => f.AppBudgetServiceShortRemarks)
+					</span>
+				</div>
+
+				<div class="display-item">
+					@Html.LabelFor(f => f.MainReportStatus)
+					@Html.DisplayFor(f => f.MainReportStatus)
+				</div>
+				<div class="display-item">
+					@Html.LabelFor(f => f.Period)
+					@Html.DisplayFor(f => f.Period)
+				</div>
+				@if(Model.ReportingMethodId == (int)Service.ReportingMethods.HomecareWeekly)
+				{
+				<div class="display-item">
+					@Html.LabelFor(f => f.StartWeekDay)
+					@Html.DisplayFor(f => f.StartWeekDay)
+				</div>
+				}
+				<div>
+					@if (Model.Id != default(int) && Model.ReportingMethodId != (int)Service.ReportingMethods.ClientEventsCount)
+	 {
+						<text>
+                    <div id="TotalAmo" class="display-item subreport-view">
+
+                        @Html.LabelFor(f => f.Amount)<span class="required error" title="This field is required">*</span>
+                        <span class="totalAmount">
+
+                            @Html.DisplayFor(f => f.Amount)
+                           
+
+                        </span>
+
+
+                        @if (!User.IsInRole("BMF"))
+                        {
+                            @Html.LabelFor(f => f.MatchingSum)
+                            if (Model.MatchingSumRequired)
+                            { <span class="required error" title="This field is required">*</span> }
+                            @Html.DisplayFor(f => f.MatchingSum)
+                            @Html.LabelFor(f => f.AgencyContribution)
+                            @Html.DisplayFor(f => f.AgencyContribution)
+                        }
+                        @if (Model.Id != default(int) && Model.Editable)
+                        {<button type="button" class="subrepot-edit">Edit</button>}
+                       
+                    </div>
+						@if (Model.Editable) { <div class="display-item subreport-edit" style="display:none">
+							@if (Model.AmountEnabled)
+                            {
+                             <span >
+								@Html.LabelFor(f => f.Amount)
+								@Html.EditorFor(f => f.Amount)
+							</span>
+	   }
+							@Html.LabelFor(f => f.MatchingSum)
+							@if (Model.MatchingSumRequired)
+	   { <span class="required error" title="This field is required">*</span> }
+							@Html.EditorFor(f => f.MatchingSum)
+							@Html.LabelFor(f => f.AgencyContribution)
+							@Html.EditorFor(f => f.AgencyContribution)
+							<button type="submit" class="update">
+								Update</button>
+							<button type="button" class="subrepot-cancel">Cancel</button>
+						</div>
+                                               <script type="text/javascript">
+                                                   $(document).ready(function () {
+                                                       $('button.subrepot-edit').click(function () {
+                                                           $('div.subreport-view').hide();
+                                                           $('div.subreport-edit').show();
+                                                       });
+                                                       $('button.subrepot-cancel').click(function () {
+                                                           $('div.subreport-view').show();
+                                                           $('div.subreport-edit').hide();
+                                                       });
+                                                   });
+
+                                                   </script>
+    
+
+                                             
+						
+	  }
+						</text>
+	 }
+				</div>
+			</td>
+		</tr>
+	</table>
+	<div>
+		@if (!string.IsNullOrEmpty(Model.Remarks))
+  {
+			@Html.DisplayFor(f => f.Remarks)
+  }
+	</div>
+}
+   

@@ -1,0 +1,84 @@
+﻿@model IEnumerable<CC.Data.FunctionalityLevel>
+@{
+    ViewBag.Title = "Functionality Levels";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table id="fsTable">
+    <thead>
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                Active
+            </th>
+            <th>
+                MinScore
+            </th>
+            <th>
+                MaxScore
+            </th>
+            <th>
+                HcHoursLimit
+            </th>
+            <th>
+                StartDate
+            </th>
+            <th>
+                RelatedFunctionalityLevel
+            </th>
+            <th>
+                SubstractGovHours
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Active)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MinScore)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MaxScore)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.HcHoursLimit)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RelatedFunctionalityLevel.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SubstractGovHours)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id })
+                    |
+                    @Html.ActionLink("Details", "Details", new { id = item.Id })
+                    |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<script>
+    $(function () {
+        $('table#fsTable').dataTable();
+    });
+</script>

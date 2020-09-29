@@ -1,0 +1,4 @@
+﻿@model Nullable<int>
+           
+
+@Html.DropDownListFor(model => model, new SelectList((IEnumerable<FundStatus>)ViewBag.FundStatuses, "Id", "Name", Model), "")

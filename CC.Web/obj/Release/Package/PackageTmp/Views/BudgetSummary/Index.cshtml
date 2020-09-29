@@ -1,0 +1,48 @@
+﻿@model BudgetSummaryModel
+@{
+    ViewBag.Title = "Budgets Summary";
+    Layout = "~/Views/AppBudgets/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div>
+    @Html.Partial("Filter", Model)
+
+    @if (ViewData.ModelState.IsValid)
+    {
+        <text>
+
+        <table id="BudgetSummary"></table>
+        <script>
+            $(function () {
+                $('#BudgetSummary').dataTable({
+                    "aaSorting": [[0, "asc"]],
+
+                    "bServerSide": true,
+                    "sAjaxSource": '@Url.Action("Data")',
+
+                    "fnServerParams": function (aoData) {
+                        PushBudgetSummaryParameters(aoData);
+                    },
+                    "aoColumns": [
+                        { "mData": "AgencyName", "sTitle": "Agency" },
+                        { "mData": "ServiceTypeName", "sTitle": "Service Type" },
+                        { "mData": "ServiceName", "sTitle": "Service" },                        
+                        { "mData": "Fund", "sTitle": "Fund" },
+                        { "mData": "AppName", "sTitle": "App #" },
+                        { "mData": "CCGrant", "sTitle": "Amount", "sClass":"dec", "mRender": function (a) { return renderDecimal(a); } },
+                        { "mData": null, "sTitle": "CUR", "mRender": function () { return '@Model.CurId'; } }                        
+                    ]
+                });
+            });
+        </script>
+        </text>
+    }
+    else
+    {
+        <text>
+        @Html.ValidationSummary()
+        </text>
+    }
+</div>

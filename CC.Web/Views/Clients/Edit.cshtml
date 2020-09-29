@@ -1,0 +1,1276 @@
+﻿@model CC.Web.Models.ClientEditModel
+@using CC.Web
+@{
+	ViewBag.Title = "Edit Client Details";
+	var deceasedId = (int)CC.Data.LeaveReasonEnum.Deceased;
+}
+@section Header
+{
+	<script type="text/javascript">
+    $(function () {
+        $('#tabs').tabs({
+            cookie: {
+                expires: 30,
+                name: "tabset1"
+            }
+        });
+
+        //update country label, states combo on agency change
+        $('#@Html.FieldIdFor(model => model.Data.CountryId)').change(function () {
+            var url = '@Url.Content("~/data/dataservice.svc/")';
+            var stateId = $(this).val();
+            var emptyItemText = "Please select a State"
+            var $states = $('#@Html.FieldIdFor(model => model.Data.StateId)');
+            UpdateCountryAndStates(url, $states, $(this).val(), emptyItemText);
+        });
+
+
+
+
+    	$(function () {
+    		var url = '@Url.Content("~/data/dataservice.svc")';
+
+    		var $div_dc = $('.dcc');
+    		var $dcc = $('#@Html.FieldIdFor(model => model.Data.DCC_Subside)');
+    		var $div_sc = $('.sc');
+    	    var $sc = $('#@Html.FieldIdFor(model => model.Data.SC_MonthlyCost)');
+    		var agencyPicker = $('#@Html.FieldIdFor(model => model.Data.AgencyId)').change(function () {
+    			var agencyId = $(this).val();
+    			ShowForSupportiveCommunity(url, $div_sc, $sc, agencyId);
+    			ShowForDaysCenter(url, $div_dc, $dcc, agencyId);
+    		});
+    		ShowForSupportiveCommunity(url, $div_sc, null, agencyPicker.val());
+    		ShowForDaysCenter(url, $div_dc, null, agencyPicker.val());
+    	});
+
+        //deceaseddate - leavereason - leavedate - deceased com
+        var $deceased = $('span.deceased span.stringdisplaytemplate');
+        var $deceasedDate = $('#@Html.FieldIdFor(model => model.Data.DeceasedDate)');
+        var $leaveReason = $('#@Html.FieldIdFor(model => model.Data.LeaveReasonId)');
+    	var $leaveDate = $('#@Html.FieldIdFor(model => model.Data.LeaveDate)');
+    	var $maf105Date = $('#@Html.FieldIdFor(f => f.Data.MAF105Date)');
+        var $mafDate = $('#@Html.FieldIdFor(f => f.Data.MAFDate)');
+        var $has2Date = $('#@Html.FieldIdFor(f => f.Data.HAS2Date)');
+    	var $joinDate = $('#@Html.FieldIdFor(model => model.Data.JoinDate)');
+
+    	$joinDate.datepicker({
+    		minDate: new Date(1946, 1, 9)
+    	});
+
+		var prevDeceasedDate = $deceasedDate.val();
+		$deceasedDate.on('change custom-datepicker-change', function () {
+			$deceased.html(isDeceased() ? 'Yes' : 'No');
+			if ($deceasedDate.val() != '' && prevDeceasedDate == '') {
+				if ($deceasedDate.val() && $leaveReason.val() != '@deceasedId') {
+					dalert(function () {
+						if (!$leaveDate.val()) {
+							$leaveDate.val($deceasedDate.val());
+						}
+						if ($leaveReason.val() == '') {
+							$leaveReason.val('@deceasedId');
+						}
+					});
+				}
+			}
+			prevDeceasedDate = $(this).val();
+        });
+
+
+        $leaveReason.change(function () {
+			$deceased.html(isDeceased() ? 'Yes' : 'No');
+            if ($(this).val() == '@deceasedId' && $deceasedDate.val() == '') {
+                dalert(function () {
+                    if ($leaveDate.val() != '') {
+                        $deceasedDate.val($leaveDate.val());
+                        $deceasedDate.focus();
+                    }
+
+                });
+            }
+            else if (!isDeceased()) {
+                $deceasedDate.val('');
+            }
+
+        });
+        function isDeceased() {
+            return $leaveReason.val() == '@deceasedId' || $deceasedDate.val() != '';
+        }
+        function dalert(yesCallback) {
+            $('<div></div>').html('If applicable, entering a deceased date will impact the client’s pension payment. Are you sure that this client is deceased? Once updated, you will not be able to undo this. (Yes/ No)').dialog({
+                modal: true,
+                buttons: {
+                    "Yes": function () {
+                        $(this).dialog("close");
+                        $(this).dialog("destroy");
+                        yesCallback();
+                    },
+                    "No": function () {
+                        $(this).dialog("close");
+                        $(this).dialog("destroy");
+                        $deceased.html("No");
+                        $deceasedDate.val('');
+                        $leaveReason.val('');
+                    }
+                }
+
+            });
+        }
+
+        $maf105Date.datepicker({
+        	onSelect: function () {
+        		$(this).valid();
+        		if ('@User.IsInRole(FixedRoles.Admin)' == "False") {
+        			mafalert(true);
+        		}
+        	}
+        });
+    	$mafDate.datepicker({
+    		onSelect: function () {
+    			$(this).valid();
+    			if ('@User.IsInRole(FixedRoles.Admin)' == "False") {
+    				mafalert(false);
+    			}
+    		}
+        });
+
+        $has2Date.datepicker({
+    		onSelect: function () {
+    			$(this).valid();
+    			if ('@User.IsInRole(FixedRoles.Admin)' == "False") {
+    				has2alert();
+    			}
+    		}
+        });
+
+    	function mafalert(is105) {
+    		var msg = 'You will not be able to update or reset the MAF Date once entered, are you sure?'
+    		if (is105) {
+    			msg = 'You will not be able to update or reset the MAF 105+ Date once entered, are you sure?';
+    		}
+        	$('<div></div>').html(msg).dialog({
+        		modal: true,
+        		buttons: {
+        			"Confirm": function () {
+        				$(this).dialog("close");
+        				$(this).dialog("destroy");
+        			},
+        			"Cancel": function () {
+        				$(this).dialog("close");
+        				$(this).dialog("destroy");
+        				$maf105Date.val('');
+        			}
+        		}
+
+        	});
+        }
+    });
+
+        function has2alert() {
+
+        }
+        
+
+	</script>
+	<script id="formalert" type="text/javascript">
+		function IsTheFormModified() {
+			var modified = false;
+			$('form#clientDetailsForm').find('input').each(function () {
+				if ($(this).val() !== $.data(this, 'ccoval')) {
+					modified = true;
+				}
+			});
+			return modified;
+		}
+
+		$(function () {
+			//save the original values
+			$('form#clientDetailsForm').find(':input').each(function () {
+				$.data(this, 'ccoval', $(this).val());
+			});
+			$('form#clientDetailsForm').find(':input').keyup(function () {
+				var dialogButtons = $('#addNewHcPeriodDialog, #addNewFuncScoreDialog');
+				if ($(this).val() != $.data(this, 'ccoval')) {
+					dialogButtons.button('option', 'disabled', true); //.attr('disabled', 'disabled');
+				}
+				else {
+					dialogButtons.button('option', 'disabled', false); //.attr('disabled', 'disabled');
+				}
+			});
+
+			//set the original values on the "save changes" and "cancel" buttons click
+			//so that the onbeforeunload will n
+			$('form#clientDetailsForm').find('.button').filter('.confirm, .cancel').click(function () {
+				window.onbeforeunload = null;
+			});
+
+			$('#addNewFuncScoreDialog').click(function (e) {
+				e.preventDefault();
+				if (IsTheFormModified()) {
+					alert("Please Save Changes first.");
+				}
+				else {
+					$(selector).dialog({ modal: true });
+				}
+				return false;
+			});
+		});
+
+		window.onbeforeunload = function (e) {
+			if (IsTheFormModified()) {
+				return "There may be unsaved changes.";
+			}
+		}
+
+	</script>
+}
+@section SubMenu{
+}
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "clientDetailsForm" }))
+{
+	<div>
+		@Html.ValidationSummary()
+		@Html.HiddenFor(model => model.IsDuplicate)
+		@Html.HiddenFor(model => model.ForceInsertDuplicate)
+		@Html.HiddenFor(model => model.UserRegionId)
+		@if (Model.IsDuplicate)
+		{
+			<div id="duplicateAlertContainer">
+				<script type="text/javascript">
+					$(function () {
+						$('#forceInsertConfirm').click(function () {
+							window.onbeforeunload = null;
+							$('#@Html.FieldIdFor(model => model.ForceInsertDuplicate)').val(true);
+																									$(this).closest('form').submit();
+																								});
+
+																					$('#forceInsertCancel').click(function () {
+																						$('#@Html.FieldIdFor(model => model.IsDuplicate)').val(false);
+																									$('#@Html.FieldIdFor(model => model.ForceInsertDuplicate)').val(false);
+																									$('#duplicateAlertContainer').hide();
+																								});
+
+																				});
+
+				</script>
+				<input type="button" class="button save" id="forceInsertConfirm" value="Yes" />
+				<input type="button" class="button cancel" id="forceInsertCancel" value="No" />
+			</div>
+		}
+		<fieldset>
+			<legend>General Details</legend>
+			<div class="row floatContainer">
+				<div class="editor-item">
+					@Html.LabelFor(model => model.Data.FirstName):
+					@if (Model.Data.ApprovalStatusId == 1 && !User.IsInRole(CC.Data.FixedRoles.GlobalOfficer.ToString()) || User.IsInRole(CC.Data.FixedRoles.Admin.ToString()))
+					{
+						@Html.EditorFor(model => model.Data.FirstName)
+					}
+					else
+					{
+						@Html.HiddenFor(model => model.Data.FirstName)
+						@Html.DisplayFor(model => model.Data.FirstName)
+					}
+				</div>
+				<div class="editor-item">
+					@Html.LabelFor(model => model.Data.LastName):
+					@if (Model.Data.ApprovalStatusId == 1 && !User.IsInRole(CC.Data.FixedRoles.GlobalOfficer.ToString()) || User.IsInRole(CC.Data.FixedRoles.Admin.ToString()))
+					{
+						@Html.EditorFor(model => model.Data.LastName)
+					}
+					else
+					{
+						@Html.HiddenFor(model => model.Data.LastName)
+						@Html.DisplayFor(model => model.Data.LastName)
+					}
+				</div>
+				<div class="editor-item">
+					@Html.LabelFor(model => model.Data.MiddleName):
+					@if (!User.IsInRole(CC.Data.FixedRoles.GlobalOfficer.ToString()))
+					{
+						@Html.EditorFor(model => model.Data.MiddleName)
+					}
+					else
+					{
+						@Html.HiddenFor(model => model.Data.MiddleName)
+						@Html.DisplayFor(model => model.Data.MiddleName)
+					}
+				</div>
+				<div class="editor-item">
+					@Html.LabelFor(model => model.Data.Agency):
+					@if (!User.IsInRole(CC.Data.FixedRoles.GlobalOfficer.ToString()))
+					{
+						@Html.EditorFor(model => model.Data.AgencyId)
+					}
+					else
+					{
+						@Html.HiddenFor(model => model.Data.AgencyId)
+						@Html.DisplayFor(model => model.Data.Agency.Name)
+					}
+				</div>
+				<div class="editor-item">
+					@Html.LabelFor(model => model.Data.Gender):
+					@if (!User.IsInRole(CC.Data.FixedRoles.GlobalOfficer.ToString()))
+					{
+						@Html.EditorFor(model => model.Data.Gender)
+					}
+					else
+					{
+						@Html.HiddenFor(model => model.Data.Gender)
+						@Html.DisplayFor(model => model.Data.Gender)
+					}
+				</div>
+			</div>
+			@*second row*@
+			<div class="row floatContainer">
+				<div class="editor-item">
+					@Html.LabelFor(model => model.Data.Id):
+					@Html.DisplayFor(model => model.Data.Id)
+					@Html.HiddenFor(model => model.Data.Id)
+
+				</div>
+				<div class="editor-item">
+
+					@Html.LabelFor(model => model.Data.NationalId):
+					@if (ClientEditModel.IsNationalIdEditable(Model.Data, Model.Permissions.User) && !User.IsInRole(CC.Data.FixedRoles.GlobalOfficer.ToString()))
+					{
+						@Html.EditorFor(model => model.Data.NationalId)
+					}
+					else
+					{
+						@Html.HiddenFor(model => model.Data.NationalId)
+						@Html.DisplayFor(model => model.Data.NationalId)
+					}
+
+				</div>
+				<div class="editor-item">
+					@Html.LabelFor(model => model.Data.NationalIdType):
+					@if (ClientEditModel.IsNationalIdEditable(Model.Data, Model.Permissions.User) && !User.IsInRole(CC.Data.FixedRoles.GlobalOfficer.ToString()) && (User.IsInRole(FixedRoles.Admin) || Model.UserRegionId != 2))
+					{
+						@Html.DropDownListFor(model => model.Data.NationalIdTypeId, Model.NationalIdTypes)
+					}
+					else
+					{
+						@Html.HiddenFor(model => model.Data.NationalIdTypeId)
+						@Html.DisplayFor(model => model.Data.NationalIdType.Name)
+					}
+				</div>
+				<div class="editor-item">
+					@Html.LabelFor(model => model.Data.InternalId)
+					@if (!User.IsInRole(CC.Data.FixedRoles.GlobalOfficer.ToString()))
+					{
+						@Html.EditorFor(model => model.Data.InternalId)
+					}
+					else
+					{
+						@Html.HiddenFor(model => model.Data.InternalId)
+						@Html.DisplayFor(model => model.Data.InternalId)
+					}
+				</div>
+			</div>
+			@*row 3*@
+			<div class="row floatContainer">
+				<div class="editor-item">
+					@Html.LabelFor(model => model.Data.BirthDate):
+					@if (!User.IsInRole(CC.Data.FixedRoles.GlobalOfficer.ToString()) && (Model.Data.ApprovalStatusId == (int)ApprovalStatusEnum.New || !User.IsInRole(CC.Data.FixedRoles.AgencyUser) && !User.IsInRole(CC.Data.FixedRoles.Ser)
+																						&& !User.IsInRole(CC.Data.FixedRoles.AgencyUserAndReviewer) && !User.IsInRole(CC.Data.FixedRoles.SerAndReviewer)))
+					{
+						@Html.EditorFor(model => model.Data.BirthDate, "BirthDate")
+					}
+					else
+					{
+						@Html.HiddenFor(model => model.Data.BirthDate)
+						@Html.DisplayFor(model => model.Data.BirthDate)
+					}
+				</div>
+				<div class="editor-item">
+					@Html.LabelFor(model => model.Data.Address):
+					@if (!User.IsInRole(CC.Data.FixedRoles.GlobalOfficer.ToString()))
+					{
+						@Html.EditorFor(model => model.Data.Address)
+					}
+					else
+					{
+						@Html.HiddenFor(model => model.Data.Address)
+						@Html.DisplayFor(model => model.Data.Address)
+					}
+				</div>
+				<div class="editor-item">
+					@Html.LabelFor(model => model.Data.City):
+					@if (!User.IsInRole(CC.Data.FixedRoles.GlobalOfficer.ToString()))
+					{
+						@Html.EditorFor(model => model.Data.City)
+					}
+					else
+					{
+						@Html.HiddenFor(model => model.Data.City)
+						@Html.DisplayFor(model => model.Data.City)
+					}
+				</div>
+			</div>
+			@*row 4*@
+			<div class="row floatContainer">
+				<div class="editor-item">
+					@Html.LabelFor(model => model.Data.CountryId):
+					@{
+						var cantUpdateCountry = User.IsInRole(FixedRoles.GlobalOfficer);
+						cantUpdateCountry |= (User.IsInRole(FixedRoles.AgencyUser) || User.IsInRole(FixedRoles.Ser) || User.IsInRole(FixedRoles.AgencyUserAndReviewer) || User.IsInRole(FixedRoles.SerAndReviewer)) && Model.Data.CountryId.HasValue;
+					}
+					@if (cantUpdateCountry && !User.IsInRole(FixedRoles.Admin) && Model.UserRegionId == 2)
+					{
+						@Html.HiddenFor(model => model.Data.CountryId)
+						@Html.DisplayFor(model => model.Data.Country.Name)
+					}
+					else
+					{
+						@Html.EditorFor(model => model.Data.CountryId, "CountryIdPicker")
+					}
+				</div>
+				<div class="editor-item">
+					@Html.LabelFor(model => model.Data.State):
+					@if (!User.IsInRole(CC.Data.FixedRoles.GlobalOfficer.ToString()))
+					{
+						@Html.DropDownListFor(model => model.Data.StateId, Model.States)
+					}
+					else
+					{
+						@Html.HiddenFor(model => model.Data.StateId)
+						@Html.DisplayFor(model => model.Data.StateId)
+					}
+				</div>
+				<div class="editor-item">
+					@Html.LabelFor(model => model.Data.ZIP):
+					@if (!User.IsInRole(CC.Data.FixedRoles.GlobalOfficer.ToString()))
+					{
+						@Html.EditorFor(model => model.Data.ZIP)
+					}
+					else
+					{
+						@Html.HiddenFor(model => model.Data.ZIP)
+						@Html.DisplayFor(model => model.Data.ZIP)
+					}
+				</div>
+			</div>
+		</fieldset>
+		<fieldset>
+			<legend>Join / Leave Details</legend>
+
+			<div class="row floatContainer">
+				<div class="editor-item">
+					@Html.LabelFor(model => model.Data.JoinDate):
+					@if (User.IsInRole(CC.Data.FixedRoles.Admin.ToString()))
+					{
+						@Html.EditorFor(model => model.Data.JoinDate)
+						@Html.DescriptionFor(model => model.Data.JoinDate)
+					}
+					else
+					{
+						@Html.HiddenFor(model => model.Data.JoinDate)
+						@Html.DisplayFor(model => model.Data.JoinDate)
+					}
+
+
+				</div>
+				<div class="editor-item">
+					@Html.LabelFor(model => model.Data.AdministrativeLeave)
+					@if (Model.Permissions.User.RoleId == (int)FixedRoles.Admin || Model.Permissions.User.RoleId == (int)FixedRoles.GlobalOfficer)
+					{
+						@Html.EditorFor(model => model.Data.AdministrativeLeave)
+					}
+					else
+					{
+						@Html.DisplayFor(model => model.Data.AdministrativeLeave)
+						@Html.HiddenFor(model => model.Data.AdministrativeLeave)
+					}
+					@Html.DescriptionFor(model => model.Data.AdministrativeLeave)
+				</div>
+				<div class="editor-item">
+					@Html.LabelFor(model => model.Data.LeaveDate):
+					@if (!Model.Data.AdministrativeLeave || Model.Permissions.User.RoleId == (int)FixedRoles.Admin || Model.Permissions.User.RoleId == (int)FixedRoles.GlobalOfficer)
+					{
+						@Html.EditorFor(model => model.Data.LeaveDate)
+					}
+					else
+					{
+						@Html.DisplayFor(model => model.Data.LeaveDate)
+						@Html.HiddenFor(model => model.Data.LeaveDate)
+					}
+					@Html.DescriptionFor(model => model.Data.LeaveDate)
+				</div>
+				<div class="editor-item">
+					@Html.LabelFor(model => model.Data.LeaveReason):
+					@if (!Model.Data.AdministrativeLeave || Model.Permissions.User.RoleId == (int)FixedRoles.Admin || Model.Permissions.User.RoleId == (int)FixedRoles.GlobalOfficer)
+					{
+						@Html.DropDownListFor(model => model.Data.LeaveReasonId, Model.LeaveReasons)
+					}
+					else
+					{
+						@Html.DisplayFor(model => model.Data.LeaveReason.Name)
+						@Html.HiddenFor(model => model.Data.LeaveReasonId)
+					}
+				</div>
+				@if (User.IsInRole(FixedRoles.Admin) || User.IsInRole(FixedRoles.GlobalOfficer))
+				{
+					<div class="editor-item">
+						@Html.LabelFor(model => model.Data.AutoLeaveOverride):
+						@Html.EditorFor(model => model.Data.AutoLeaveOverride)
+					</div>
+				}
+			</div>
+			<div class="row floatContainer">
+				<div class="editor-item">
+					@Html.LabelFor(model => model.Data.LeaveRemarks):
+
+					<span id="LeaveRemarksDisplayContainer">
+						@Html.DisplayFor(model => model.Data.LeaveRemarks)
+					</span>
+					<span id="LeaveRemarksEditorContainer" style="display: none">
+						@Html.EditorFor(model => model.Data.LeaveRemarks)
+					</span>
+					<script>
+							$('#@Html.FieldIdFor(model => model.Data.AdministrativeLeave)').change(function () {
+								if ($(this).is(':checked')) {
+									$('#LeaveRemarksDisplayContainer').show();
+									$('#LeaveRemarksEditorContainer').hide();
+								}
+								else {
+									$('#LeaveRemarksDisplayContainer').hide();
+									$('#LeaveRemarksEditorContainer').show();
+								}
+							}).change();
+					</script>
+				</div>
+				<div class="editor-item">
+					@Html.LabelFor(model => model.Data.Deceased):
+					<span class="deceased">@Html.DisplayFor(model => model.Data.Deceased)</span>
+				</div>
+				<div class="editor-item">
+					@Html.LabelFor(model => model.Data.DeceasedDate):
+					@if (Model.Data.DeceasedDate.HasValue && !Model.Permissions.CanChangeDeceasedDate && Model.Permissions.User.RoleId != (int)FixedRoles.GlobalOfficer)
+					{
+						@Html.DisplayFor(model => model.Data.DeceasedDate)
+						@Html.HiddenFor(model => model.Data.DeceasedDate)
+					}
+					else
+					{
+						@Html.EditorFor(model => model.Data.DeceasedDate)
+					}
+
+				</div>
+			</div>
+		</fieldset>
+		<fieldset>
+			<legend>Other</legend>
+			<div class="row floatContainer">
+				<div>
+					@Html.LabelFor(model => model.Data.NaziPersecutionDetails):
+					@Html.EditorFor(model => model.Data.NaziPersecutionDetails)
+
+				</div>
+			</div>
+			<div class="row floatContainer">
+				<div>
+					@Html.LabelFor(model => model.Data.Remarks):
+					@Html.EditorFor(model => model.Data.Remarks)
+
+				</div>
+			</div>
+			<div class="row floatContainer dcc" hidden="hidden">
+				<div>
+					@Html.LabelFor(model => model.Data.DCC_Client):
+					@Html.CheckBoxFor(model => model.Data.DCC_Client)
+				</div>
+				<div class="dcc1">
+					@Html.LabelFor(model => model.Data.DCC_Subside):
+					@Html.DropDownListFor(model => model.Data.DCC_Subside, Model.DccSubsides)
+				</div>
+				<div class="dcc1">
+					@Html.LabelFor(model => model.Data.DCC_VisitCost):
+					@Html.EditorFor(model => model.Data.DCC_VisitCost)
+				</div>
+			</div>
+
+			<div class="row floatContainer sc" hidden="hidden">
+				<div>
+					@Html.LabelFor(model => model.Data.SC_Client):
+					@Html.CheckBoxFor(model => model.Data.SC_Client)
+				</div>
+                <div class="sc1">
+                    @Html.LabelFor(model => model.Data.SC_MonthlyCost):
+                    <!--@Html.EditorFor(model => model.Data.SC_MonthlyCost)-->
+                    @Html.DisplayFor(model => model.Data.SC_MonthlyCost)
+                </div>
+			</div>
+		</fieldset>
+	</div>
+	<div class="clear controlsContainer">
+		<input type="submit" value="Save" class="button confirm" />
+		<a href='@Url.Action("Details", new { id = Model.Data.Id })' class="button cancel">Cancel</a>
+	</div>
+
+	<div id="tabs">
+		<ul>
+			<li><a href="#personalDetails">Personal Details</a></li>
+			<li><a href="#eligibility">Eligibility</a></li>
+			<li><a href="#disability">Functionality</a></li>
+			<li><a href="#history">Modifications History</a></li>
+		</ul>
+		<div id="personalDetails" class="floatContainer">
+			<div class="floatContainer">
+                <div class="column2">
+                    <div>
+                        @Html.LabelFor(model => model.Data.PobCity):
+                        @if (!User.IsInRole(CC.Data.FixedRoles.GlobalOfficer.ToString()))
+                        {
+                            @Html.EditorFor(model => model.Data.PobCity)
+                        }
+                        else
+                        {
+                            @Html.DisplayFor(model => model.Data.PobCity)
+                            @Html.HiddenFor(model => model.Data.PobCity)
+                        }
+                    </div>
+                    <div>
+                        @Html.LabelFor(model => model.Data.BirthCountryId):
+                        @{
+                            var cantUpdateBirthCountry = User.IsInRole(FixedRoles.GlobalOfficer);
+                            cantUpdateBirthCountry |= (User.IsInRole(FixedRoles.AgencyUser) || User.IsInRole(FixedRoles.Ser) || User.IsInRole(FixedRoles.AgencyUserAndReviewer) || User.IsInRole(FixedRoles.SerAndReviewer)) && Model.Data.BirthCountryId.HasValue;
+                        }
+                        @if (cantUpdateBirthCountry)
+                        {
+                            @Html.DisplayFor(model => model.Data.BirthCountry.Name)
+                            @Html.HiddenFor(model => model.Data.BirthCountryId)
+                        }
+                        else
+                        {
+                            @Html.EditorFor(model => model.Data.BirthCountryId)
+                        }
+                    </div>
+                    <div>
+                        @Html.LabelFor(model => model.Data.PrevFirstName):
+                        @if (!User.IsInRole(CC.Data.FixedRoles.GlobalOfficer.ToString()))
+                        {
+                            @Html.EditorFor(model => model.Data.PrevFirstName)
+                        }
+                        else
+                        {
+                            @Html.DisplayFor(model => model.Data.PrevFirstName)
+                            @Html.HiddenFor(model => model.Data.PrevFirstName)
+                        }
+                    </div>
+                    <div>
+                        @Html.LabelFor(model => model.Data.PrevLastName):
+                        @if (!User.IsInRole(CC.Data.FixedRoles.GlobalOfficer.ToString()))
+                        {
+                            @Html.EditorFor(model => model.Data.PrevLastName)
+                        }
+                        else
+                        {
+                            @Html.DisplayFor(model => model.Data.PrevLastName)
+                            @Html.HiddenFor(model => model.Data.PrevLastName)
+                        }
+                    </div>
+                    <div>
+                        @Html.LabelFor(model => model.Data.Phone):
+                        @if (!User.IsInRole(CC.Data.FixedRoles.GlobalOfficer.ToString()))
+                        {
+                            @Html.EditorFor(model => model.Data.Phone)
+                        }
+                        else
+                        {
+                            @Html.DisplayFor(model => model.Data.Phone)
+                            @Html.HiddenFor(model => model.Data.Phone)
+                        }
+                    </div>
+                    <div>
+                        @Html.LabelFor(model => model.Data.CompensationProgramName):
+                        @if (!User.IsInRole(CC.Data.FixedRoles.GlobalOfficer.ToString()))
+                        {
+                            @Html.EditorFor(model => model.Data.CompensationProgramName)
+                        }
+                        else
+                        {
+                            @Html.DisplayFor(model => model.Data.CompensationProgramName)
+                            @Html.HiddenFor(model => model.Data.CompensationProgramName)
+                        }
+                    </div>
+                    <div>
+                        @Html.LabelFor(model => model.Data.IsCeefRecipient)
+                        @if (Model.Permissions.CanEditCeefFields && !User.IsInRole(CC.Data.FixedRoles.GlobalOfficer.ToString()))
+                        {
+                            @Html.EditorFor(model => model.Data.IsCeefRecipient)
+                        }
+                        else
+                        {
+                            @Html.DisplayFor(model => model.Data.IsCeefRecipient)
+                            @Html.HiddenFor(model => model.Data.IsCeefRecipient)
+                        }
+                    </div>
+                    <div>
+                        @Html.LabelFor(model => model.Data.CeefId)
+                        @if (Model.Permissions.CanEditCeefFields && !User.IsInRole(CC.Data.FixedRoles.GlobalOfficer.ToString()))
+                        {
+                            @Html.EditorFor(model => model.Data.CeefId)
+                        }
+                        else
+                        {
+                            @Html.DisplayFor(model => model.Data.CeefId)
+                            @Html.HiddenFor(model => model.Data.CeefId)
+                        }
+                    </div>
+                    <div>
+                        @Html.LabelFor(model => model.Data.AddCompName)
+                        @if (Model.Permissions.CanEditCeefFields && !User.IsInRole(CC.Data.FixedRoles.GlobalOfficer.ToString()))
+                        {
+                            @Html.EditorFor(model => model.Data.AddCompName)
+                        }
+                        else
+                        {
+                            @Html.DisplayFor(model => model.Data.AddCompName)
+                            @Html.HiddenFor(model => model.Data.AddCompName)
+                        }
+                    </div>
+                    <div>
+                        @Html.LabelFor(model => model.Data.AddCompId)
+                        @if (Model.Permissions.CanEditCeefFields && !User.IsInRole(CC.Data.FixedRoles.GlobalOfficer.ToString()))
+                        {
+                            @Html.EditorFor(model => model.Data.AddCompId)
+                        }
+                        else
+                        {
+                            @Html.DisplayFor(model => model.Data.AddCompId)
+                            @Html.HiddenFor(model => model.Data.AddCompId)
+                        }
+                    </div>
+                    <div>
+                        @Html.LabelFor(model => model.Data.HomecareWaitlist):
+                        @if (!User.IsInRole(CC.Data.FixedRoles.GlobalOfficer.ToString()))
+                        {
+                            @Html.EditorFor(model => model.Data.HomecareWaitlist)
+                        }
+                        else
+                        {
+                            @Html.DisplayFor(model => model.Data.HomecareWaitlist)
+                            @Html.HiddenFor(model => model.Data.HomecareWaitlist)
+                        }
+                    </div>
+                    
+                    <div>
+                        @Html.LabelFor(model => model.Data.OtherServicesWaitlist):
+                        @if (!User.IsInRole(CC.Data.FixedRoles.GlobalOfficer.ToString()))
+                        {
+                            @Html.EditorFor(model => model.Data.OtherServicesWaitlist)
+                        }
+                        else
+                        {
+                            @Html.DisplayFor(model => model.Data.OtherServicesWaitlist)
+                            @Html.HiddenFor(model => model.Data.OtherServicesWaitlist)
+                        }
+                    </div>
+                    <div>
+                        @Html.LabelFor(model => model.Data.CommPrefsId):
+                        @if (!User.IsInRole(CC.Data.FixedRoles.GlobalOfficer.ToString()))
+                        {
+                            @Html.DropDownListFor(model => model.Data.CommPrefsId, Model.CommunicationsPreferences)
+                        }
+                        else
+                        {
+                            @Html.DisplayFor(model => model.Data.CommunicationsPreference.Name)
+                            @Html.HiddenFor(model => model.Data.CommPrefsId)
+                        }
+                    </div>
+                    <div>
+                        @Html.LabelFor(model => model.Data.CareReceivedId):
+                        @if (!User.IsInRole(CC.Data.FixedRoles.GlobalOfficer.ToString()))
+                        {
+                            @Html.DropDownListFor(model => model.Data.CareReceivedId, Model.CareReceivingOptions)
+                        }
+                        else
+                        {
+                            @Html.DisplayFor(model => model.Data.CareReceivingOption.Name)
+                            @Html.HiddenFor(model => model.Data.CareReceivedId)
+                        }
+                    </div>
+                </div>
+                <div class="column2">
+                    <div>
+                        @Html.LabelFor(model => model.Data.OtherFirstName):
+                        @if (!User.IsInRole(CC.Data.FixedRoles.GlobalOfficer.ToString()))
+                        {
+                            @Html.EditorFor(model => model.Data.OtherFirstName)
+                        }
+                        else
+                        {
+                            @Html.DisplayFor(model => model.Data.OtherFirstName)
+                            @Html.HiddenFor(model => model.Data.OtherFirstName)
+                        }
+                    </div>
+                    <div>
+                        @Html.LabelFor(model => model.Data.OtherLastName):
+                        @if (!User.IsInRole(CC.Data.FixedRoles.GlobalOfficer.ToString()))
+                        {
+                            @Html.EditorFor(model => model.Data.OtherLastName)
+                        }
+                        else
+                        {
+                            @Html.DisplayFor(model => model.Data.OtherLastName)
+                            @Html.HiddenFor(model => model.Data.OtherLastName)
+                        }
+                    </div>
+                    <div>
+                        @Html.LabelFor(model => model.Data.OtherDob):
+                        @if (!User.IsInRole(CC.Data.FixedRoles.GlobalOfficer.ToString()))
+                        {
+                            @Html.EditorFor(model => model.Data.OtherDob)
+                        }
+                        else
+                        {
+                            @Html.DisplayFor(model => model.Data.OtherDob)
+                            @Html.HiddenFor(model => model.Data.OtherDob)
+                        }
+                    </div>
+                    <div>
+                        @Html.LabelFor(model => model.Data.OtherId):
+                        @if (!User.IsInRole(CC.Data.FixedRoles.GlobalOfficer.ToString()))
+                        {
+                            @Html.EditorFor(model => model.Data.OtherId)
+                        }
+                        else
+                        {
+                            @Html.DisplayFor(model => model.Data.OtherId)
+                            @Html.HiddenFor(model => model.Data.OtherId)
+                        }
+                    </div>
+                    <div>
+                        @Html.LabelFor(model => model.Data.OtherIdTypeId):
+                        @if (!User.IsInRole(CC.Data.FixedRoles.GlobalOfficer.ToString()))
+                        {
+                            @Html.DropDownListFor(model => model.Data.OtherIdTypeId, Model.NationalIdTypes)
+                        }
+                        else
+                        {
+                            @Html.DisplayFor(model => model.Data.OtherIdTypeId)
+                            @Html.HiddenFor(model => model.Data.OtherIdTypeId)
+                        }
+                    </div>
+                    <div>
+                        @Html.LabelFor(model => model.Data.OtherAddress):
+                        @if (!User.IsInRole(CC.Data.FixedRoles.GlobalOfficer.ToString()))
+                        {
+                            @Html.EditorFor(model => model.Data.OtherAddress)
+                        }
+                        else
+                        {
+                            @Html.DisplayFor(model => model.Data.OtherAddress)
+                            @Html.HiddenFor(model => model.Data.OtherAddress)
+                        }
+                    </div>
+                    <div>
+                        @Html.LabelFor(model => model.Data.PreviousAddressInIsrael):
+                        @if (!User.IsInRole(CC.Data.FixedRoles.GlobalOfficer.ToString()))
+                        {
+                            @Html.EditorFor(model => model.Data.PreviousAddressInIsrael)
+                        }
+                        else
+                        {
+                            @Html.DisplayFor(model => model.Data.PreviousAddressInIsrael)
+                            @Html.HiddenFor(model => model.Data.PreviousAddressInIsrael)
+                        }
+                    </div>
+                    <div>
+
+                        @Html.LabelFor(model => model.Data.UnableToSign):
+                        @if (!User.IsInRole(CC.Data.FixedRoles.GlobalOfficer.ToString()))
+                        {
+                            @Html.EditorFor(model => model.Data.UnableToSign)
+                        }
+                        else
+                        {
+                            @Html.DisplayFor(model => model.Data.UnableToSign)
+                            @Html.HiddenFor(model => model.Data.UnableToSign)
+                        }
+
+
+
+                    </div>
+                </div>
+			</div>
+		</div>
+		<div id="eligibility">
+			<div class="floatContainer">
+				<fieldset>
+
+
+
+					@if (Model.Permissions.CanSeeProgramField)
+					{
+						<div class="editor-item">
+							@Html.LabelFor(model => model.Data.FundStatus):
+							@Html.DisplayFor(model => model.Data.FundStatus.Name)
+						</div>
+					}
+					<div class="editor-item">
+						<a id="showicdisclaimer" href="#">Show Disclaimer</a>
+						<script type="text/javascript">
+							$(function () {
+								$('#showicdisclaimer').click(function () {
+									$('#icDisclaimer').dialog({ modal: true });
+								});
+							});
+						</script>
+						<div id="icDisclaimer" style="display: none">
+							<p>
+								A client’s eligibility to receive services funded through the Claims Conference’s social welfare grants is detailed in the guidelines of the Allocation Letter.  If your agency received a grant which requires a client to be financially eligible in order to receive services under the grant, then the agency must assess a client’s income and assets.  By clicking “Income Criteria Complied,” your agency is confirming that the client’s income and assets have been verified to confirm eligibility and the required supporting financial documentation is in the client’s file.
+							</p>
+						</div>
+						@Html.LabelFor(model => model.Data.IncomeCriteriaComplied):
+						@if (Model.Data.IncomeCriteriaComplied && Model.Permissions.User.RoleId != (int)FixedRoles.Admin)
+						{
+							@Html.DisplayFor(model => model.Data.IncomeCriteriaComplied);
+							@Html.HiddenFor(model => model.Data.IncomeCriteriaComplied)
+						}
+						else
+						{
+							@Html.EditorFor(model => model.Data.IncomeCriteriaComplied)
+						}
+
+					</div>
+                    <div class="editor-item">
+                        @Html.LabelFor(model => model.Data.ApprovalStatus):
+                        @Html.DisplayFor(model => model.Data.ApprovalStatus.Name)
+                        @Html.HiddenFor(model => model.Data.ApprovalStatusId)
+                    </div>
+					<div class="editor-item">
+						@Html.LabelFor(model => model.Data.AustrianEligible):
+						@if (Model.Permissions.User.RoleId != (int)FixedRoles.Admin && Model.Permissions.User.RoleId != (int)FixedRoles.RegionOfficer && Model.Permissions.User.RoleId != (int)FixedRoles.GlobalOfficer)
+						{
+							@Html.DisplayFor(model => model.Data.AustrianEligible);
+							@Html.HiddenFor(model => model.Data.AustrianEligible)
+						}
+						else
+						{
+							@Html.EditorFor(model => model.Data.AustrianEligible)
+						}
+					</div>
+
+					<div class="editor-item">
+						@Html.LabelFor(model => model.Data.RomanianEligible):
+						@if (Model.Permissions.User.RoleId != (int)FixedRoles.Admin && Model.Permissions.User.RoleId != (int)FixedRoles.RegionOfficer && Model.Permissions.User.RoleId != (int)FixedRoles.GlobalOfficer)
+						{
+							@Html.DisplayFor(model => model.Data.RomanianEligible);
+							@Html.HiddenFor(model => model.Data.RomanianEligible)
+						}
+						else
+						{
+							@Html.EditorFor(model => model.Data.RomanianEligible)
+						}
+					</div>
+				</fieldset>
+				<div id="hcepContainer" class="clear">
+					@Html.Action("Index", "HomeCareEntitledPeriods", new { ClientId = Model.Data.Id })
+				</div>
+			</div>
+		</div>
+		<div id="disability">
+            <div class="floatContainer">
+                <div class="editor-item">
+                    @Html.LabelFor(model => model.Data.HomeCareEntitled):
+                    @Html.DisplayFor(model => model.Data.HomeCareEntitled)
+                </div>
+                <div class="editor-item">
+                    @Html.LabelFor(model => model.Data.CurrentFunctionalityLevel):
+                    @Html.DisplayFor(model => model.Data.CurrentFunctionalityLevel.Name)
+                </div>
+                <div class="editor-item">
+                    @Html.LabelFor(model => model.Data.CurrentFunctionalityLevel.HcHoursLimit):
+                    @Html.DisplayFor(model => model.Data.CurrentFunctionalityLevel.HcHoursLimit)
+                </div>
+                <div class="editor-item">
+                    @Html.LabelFor(model => model.Data.MAFDate):
+                    @if (Model.Data.MAFDate == null || User.IsInRole(FixedRoles.Admin))
+                    {
+                        @Html.EditorFor(model => model.Data.MAFDate)
+                        @Html.DescriptionFor(model => model.Data.MAFDate)
+                    }
+                    else
+                    {
+                        @Html.DisplayFor(model => model.Data.MAFDate);
+                        @Html.HiddenFor(model => model.Data.MAFDate)
+                    }
+                </div>
+                <div class="editor-item">
+                    @Html.LabelFor(model => model.Data.MAF105Date):
+                    @if (Model.Data.MAF105Date == null || User.IsInRole(FixedRoles.Admin))
+                    {
+                        @Html.EditorFor(model => model.Data.MAF105Date)
+                        @Html.DescriptionFor(model => model.Data.MAF105Date)
+                    }
+                    else
+                    {
+                        @Html.DisplayFor(model => model.Data.MAF105Date);
+                        @Html.HiddenFor(model => model.Data.MAF105Date)
+                    }
+                </div>
+                <div class="editor-item">
+                    @Html.LabelFor(model => model.Data.HAS2Date):
+                    @if (Model.Data.HAS2Date == null || User.IsInRole(FixedRoles.Admin))
+                    {
+                    
+                    @Html.EditorFor(model => model.Data.HAS2Date)
+                    @Html.DescriptionFor(model => model.Data.HAS2Date)
+                    }
+                    else
+                    {
+                    @Html.DisplayFor(model => model.Data.HAS2Date);
+                    @Html.HiddenFor(model => model.Data.HAS2Date)
+                    }
+
+                </div>
+                @*<div class="editor-item">
+            @Html.LabelFor(model => model.Data.GfHours):
+            @if (Model.Permissions.CanChangeGfHours)
+            {
+                @Html.EditorFor(model => model.Data.GfHours)
+            }
+            else
+            {
+                @Html.HiddenFor(model => model.Data.GfHours)
+                @Html.DisplayFor(model => model.Data.GfHours)
+            }
+
+        </div>*@
+                <div>
+                </div>
+                @Html.Action("Index", "FunctionalityScores", new { ClientId = Model.Data.Id })
+            </div>
+		</div>
+		<div id="history">
+			@Html.Partial("~/Views/Clients/Audit.cshtml", Model.Data.Id)
+		</div>
+	</div>
+	<div class="clear controlsContainer">
+		<button type="button" id="secondSubmitButton" class="button confirm">Save</button>
+		<a href='@Url.Action("Details", new { id = Model.Data.Id })' class="button cancel">Cancel</a>
+		<script>
+			$(function () {
+				$('#secondSubmitButton').click(function () {
+					window.onbeforeunload = null;
+					$('#clientDetailsForm').submit();
+				});
+			});
+		</script>
+	</div>
+	
+	<script type="text/javascript">
+
+		/*
+			* Datepicker for Jeditable
+			*
+			* Copyright (c) 2011 Piotr 'Qertoip' Włodarek
+			*
+			* Licensed under the MIT license:
+			*   http://www.opensource.org/licenses/mit-license.php
+			*
+			* Depends on jQuery UI Datepicker
+			*
+			* Project home:
+			*   http://github.com/qertoip/jeditable-datepicker
+			*
+			*/
+
+		// add :focus selector
+		jQuery.expr[':'].focus = function (elem) {
+			return elem === document.activeElement && (elem.type || elem.href);
+		};
+
+		$.editable.addInputType('datepicker', {
+
+			/* create input element */
+			element: function (settings, original) {
+				var form = $(this),
+					input = $('<input />');
+				input.attr('autocomplete', 'off');
+				form.append(input);
+				return input;
+			},
+
+			/* attach jquery.ui.datepicker to the input element */
+			plugin: function (settings, original) {
+				var form = this,
+					input = form.find("input");
+
+				// Don't cancel inline editing onblur to allow clicking datepicker
+				settings.onblur = 'nothing';
+
+				input.datepicker({
+					onSelect: function () {
+						// clicking specific day in the calendar should
+						// submit the form and close the input field
+						form.submit();
+					},
+
+					onClose: function () {
+						setTimeout(function () {
+							if (!input.is(':focus')) {
+								// input has NO focus after 150ms which means
+								// calendar was closed due to click outside of it
+								// so let's close the input field without saving
+								if ($(input).val()) {
+									form.submit();
+								}
+								else {
+									original.reset(form);
+								}
+							} else {
+								// input still HAS focus after 150ms which means
+								// calendar was closed due to Enter in the input field
+								// so lets submit the form and close the input field
+								form.submit();
+							}
+
+							// the delay is necessary; calendar must be already
+							// closed for the above :focus checking to work properly;
+							// without a delay the form is submitted in all scenarios, which is wrong
+						}, 150);
+					}
+				});
+			}
+		});
+
+	</script>
+
+	<script type="text/javascript">
+
+	var agency = $('#@Html.FieldIdFor(model => model.Data.AgencyId)').select2({
+		width: 300,
+		initSelection: function (element, callback) {
+			var id = $(element).val();
+			if (id !== "") {
+				$.ajax('@Url.Content("~/data/dataservice.svc/Agencies")' + '(' + id + ')', {
+					dataType: "json",
+				}).done(function (data) {
+					var a = data.d;
+					callback({ id: a.Id, text: a.Name });
+				}).fail(function () {
+					callback(null);
+				});
+			}
+		},
+		ajax: {
+			url: '@Url.Content("~/data/dataservice.svc/Agencies")',
+				dataType: "json",
+				data: function (term) {
+					var filters = [];
+					if (term) {
+						filters.push("substringof('" + escape(term) + "', Name) eq true");
+					}
+					return {
+						"$filter": filters.join(" and "),
+						"$orderby": "Name"
+					};
+				},
+				results: function (data) {
+					return {
+						results: $.map(data.d, function (a) { return { id: a.Id, text: a.Name } })
+					};
+				}
+			}
+		});
+
+	@if (!cantUpdateBirthCountry)
+	{
+		<text>
+			var birthcountry = $('#@Html.FieldIdFor(model => model.Data.BirthCountryId)').select2({
+				width: 300,
+				initSelection: function (element, callback) {
+					var id = $(element).val();
+					if (id !== "") {
+						$.ajax('@Url.Content("~/data/dataservice.svc/BirthCountries")' + '(' + id + ')', {
+							dataType: "json",
+						}).done(function (data) {
+							var a = data.d;
+							callback({ id: a.Id, text: a.Name });
+						}).fail(function () {
+							callback(null);
+						});
+					}
+				},
+				ajax: {
+					url: '@Url.Content("~/data/dataservice.svc/BirthCountries")',
+					dataType: "json",
+					data: function (term) {
+						var filters = [];
+						if (term) {
+							filters.push("substringof('" + escape(term) + "', Name) eq true");
+						}
+						return {
+							"$filter": filters.join(" and "),
+							"$orderby": "Name"
+						};
+					},
+					results: function (data) {
+						return {
+							results: $.map(data.d, function (a) { return { id: a.Id, text: a.Name } })
+						};
+					}
+				}
+			});
+		</text>
+	}
+
+    $('#Data_NationalIdTypeId').change(function () {
+        var NatTypeid = $('#Data_NationalIdTypeId').val();
+        if (NatTypeid == 1) {
+            $('label[for=Data_NationalId]').append('<span class="error" title="This field is required">*</span>');
+        }
+        else {
+            $('label[for=Data_NationalId]').find('span').remove();
+        }
+    });
+
+
+    var $dcc = $('#@Html.FieldIdFor(model => model.Data.DCC_Subside)');
+	var $dcc_cost = $('#@Html.FieldIdFor(model => model.Data.DCC_VisitCost)');
+	var $sc = $('#@Html.FieldIdFor(model => model.Data.SC_MonthlyCost)');
+
+	var $chk_support = $('#@Html.FieldIdFor(model => model.Data.SC_Client)');
+
+
+	$chk_support.change(function () {
+		if ($(this).is(":checked")) {
+			$(".sc1").show();
+
+
+
+		}
+		else {
+			$(".sc1").hide();
+			$sc.val("");
+		}
+	});
+
+	$chk_support.change();
+
+
+	var $chk_dcc = $('#@Html.FieldIdFor(model => model.Data.DCC_Client)');
+
+
+	$chk_dcc.change(function () {
+		if ($(this).is(":checked")) {
+			$(".dcc1").show();
+
+
+		}
+		else {
+			$(".dcc1").hide();
+			$dcc.val("");
+			$dcc_cost.val("");
+		}
+	});
+
+	$chk_dcc.change();
+
+	</script>
+}
+@**********************************************************************************************************************************************************************************************************************************************************@
+@**********************************************************************************************************************************************************************************************************************************************************@
+@**********************************************************************************************************************************************************************************************************************************************************@

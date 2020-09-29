@@ -1,0 +1,84 @@
+/*
+Post-Deployment Script Template							
+--------------------------------------------------------------------------------------
+ This file contains SQL statements that will be appended to the build script.		
+ Use SQLCMD syntax to include a file in the post-deployment script.			
+ Example:      :r .\myfile.sql								
+ Use SQLCMD syntax to reference a variable in the post-deployment script.		
+ Example:      :setvar TableName MyTable							
+               SELECT * FROM [$(TableName)]					
+--------------------------------------------------------------------------------------
+*/
+
+
+<<<<<<< HEAD
+:setvar DatabaseName "cc"
+
+use $(DatabaseName)
+
+IF  EXISTS(SELECT name FROM master.dbo.syslogins WHERE name = '$(DatabaseName)')
+BEGIN
+	print 'recreating the cc user...'
+	begin try
+		drop user cc
+		create user cc for login $(DatabaseName) with default_schema=dbo
+		EXEC sp_addrolemember 'db_owner', 'cc'
+		print 'the cc user linked back to $(DatabaseName) login.'
+	end try
+	begin catch
+		--execute cc.sp_getErrorInfo
+		PRINT '--------------------------------------------------'
+		print 'WARNING!!! failed to reenable the login			 '
+		PRINT '--------------------------------------------------'
+	end catch
+	end
+ELSE
+	BEGIN
+	PRINT '--------------------------------------------------'
+	print 'WARNING!!! The login $(DatabaseName) was not found'
+	PRINT '--------------------------------------------------'
+END
+
+Go
+=======
+--:setvar DatabaseName "master"
+
+--use $(DatabaseName)
+
+
+--IF  EXISTS(SELECT name FROM master.dbo.syslogins WHERE name = '$(DatabaseName)')
+--BEGIN
+--	print 'recreating the cc user...'
+--	begin try
+--		drop user cc
+--		create user cc for login $(DatabaseName) with default_schema=dbo
+--		EXEC sp_addrolemember 'db_owner', 'cc'
+--		print 'the cc user linked back to $(DatabaseName) login.'
+--	end try
+--	begin catch
+--		--execute cc.sp_getErrorInfo
+--		PRINT '--------------------------------------------------'
+--		print 'WARNING!!! failed to reenable the login			 '
+--		PRINT '--------------------------------------------------'
+--	end catch
+--	end
+--ELSE
+--	BEGIN
+--	PRINT '--------------------------------------------------'
+--	print 'WARNING!!! The login $(DatabaseName) was not found'
+--	PRINT '--------------------------------------------------'
+--END
+
+--Go
+>>>>>>> origin/dev
+		
+
+
+
+if not Exists(select top 1 id from dbo.LeaveReasons where id=8)
+begin
+	set identity_insert dbo.LeaveReasons on
+	insert into dbo.leavereasons (id, name)
+	values ( 8 , 'Nursing Home/Old Age Home')
+	set identity_insert dbo.leavereasons off
+end

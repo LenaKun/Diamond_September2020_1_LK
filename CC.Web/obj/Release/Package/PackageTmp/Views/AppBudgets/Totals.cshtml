@@ -1,0 +1,90 @@
+﻿@model CC.Web.Models.AppBudgetTotals
+	   @{
+		   Layout = null;
+
+}
+<fieldset>
+	<legend>Totals</legend>
+	<div>
+		<label>
+			Total grant as Specified by Ser:</label>
+		<span class="display-field">@Html.DisplayFor(f=>f.CcGrant)</span>
+	</div>
+    @if(!User.IsInRole("BMF"))
+    {
+	    <div>
+		    <label>
+			    Total Required Match as Specified by Ser:</label>
+		    @Html.DisplayFor(f=>f.RequiredMatch)
+	    </div>
+	    <div>
+		    <label>
+			    Total Agency Contribution as Specified by Ser:</label>
+		    @Html.DisplayFor(f=>f.AgencyContribution)
+	    </div>
+    }
+	<p></p>
+	<div>
+		<label>
+			Total CC Grant:
+		</label>
+		@Html.DisplayFor(f=>f.AppAmount)
+	</div>
+    @if(!User.IsInRole("BMF"))
+    {
+	    <div>
+		    <label>
+			    Total Required Match:</label>
+		    @Html.DisplayFor(f=>f.AppMatch)
+	    </div>
+    }
+	<div>
+		<label>Total Spent:</label>
+		@Html.DisplayFor(f => f.Spend)
+	</div>
+    @if(Model.isLastReport)
+    {
+        <div>
+            <label>Cancellation Amount:</label>
+            @Html.DisplayFor(f => f.CancellationAmount)
+        </div>
+    }
+	<div>
+		<label>Administrative overhead percentage:</label>
+		@Html.DisplayFor(f=>f.AdminPercentage)
+	</div>
+	<div>
+		<label>Home care percentage:</label>
+		@Html.DisplayFor(f=>f.HcPercentage)
+	</div>
+	<div>
+		<label>Other percentage:</label>
+		@Html.DisplayFor(f=>f.OtherPercentage)
+	</div>
+	<div>
+	@if (Model.AgencyContributionRequired && !User.IsInRole("BMF"))
+    {
+		<span>Agency Contribution for this App is required</span>
+    }
+	</div>
+	<ul>
+	@if (Model.AgencyTotals.Count > 1)
+ {
+ <text>
+	@foreach (var f in Model.AgencyTotals)
+ {
+		<li>
+			<label>Agency</label>@Html.DisplayFor(model=>f.AgencyName)
+			<label>CC Grant</label>@Html.DisplayFor(model=>f.CcGrant)
+            @if(!User.IsInRole("BMF"))
+            {
+			    <label>Required Match</label>@Html.DisplayFor(model=>f.RequiredMatch)
+			    <label>Agency Contribution</label>@Html.DisplayFor(model=>f.AgencyContribution)
+            }
+		</li>
+ }
+ </text>
+ }
+	 </ul>
+	
+</fieldset>

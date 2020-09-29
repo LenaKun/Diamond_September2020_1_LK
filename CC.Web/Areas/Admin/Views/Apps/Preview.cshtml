@@ -1,0 +1,113 @@
+﻿@model Guid
+@{
+	ViewBag.Title = "Preview";
+	bool HasErrors = ViewBag.HasErrors;
+}
+
+<h2>Preview</h2>
+<table id="@Model"></table>
+<script>
+
+	$('#@Model').dataTable({
+		"bJQueryUI": true,
+		"bProccessing": true,
+		"sPaginationType": "full_numbers",
+		"aaSorting": [[11, "desc"]],
+		"bServerSide": true,
+		"sAjaxSource": '@Url.Action("PreviewData", new { id = Model })',
+		"bAutoWidth": false,
+		"fnServerData": function (sSource, aoData, fnCallback) {
+			$.ajax({
+				"dataType": 'json',
+				"type": "GET",
+				"url": sSource,
+				"data": aoData,
+				"success": fnCallback
+			});
+		},
+		"fnServerParams": function (aoData) {
+			aoData.push({ name: "Id", value: "@Model" });
+			aoData.push({ name: "IE", value: Math.random() });
+		},
+		"aoColumns": [
+			{ mData: "FundName", sTitle: "Fund" },
+			{ mData: "AgencyGroupName", sTitle: "Ser" },
+			{ mData: "CurrencyId", sTitle: "Currency" },
+			{ mData: "Name", sTitle: "Name" },
+			{
+				mData: "AgencyContribution", sTitle: "Agency Contribution"
+			},
+			{
+				mData: "CcGrant", sTitle: "CC Grant",
+				sClass: "number",
+				mRender: function (a) { return renderDecimal(a); }
+			},
+			{
+				mData: "RequiredMatch", sTitle: "RequiredMatch",
+				sClass: "number",
+				mRender: function (a) { return renderDecimal(a); }
+			},
+			{
+				mData: "MaxAdminAmount", sTitle: "Max Admin Amount",
+				sClass: "number",
+				mRender: function (a) { return renderDecimal(a); }
+			},
+			{
+				mData: "MaxNonHcAmount", sTitle: "Max Non HC Amount",
+				sClass: "number",
+				mRender: function (a) { return renderDecimal(a); }
+			},
+			{
+				mData: "HistoricalExpenditureAmount", sTitle: "Historical Expenditure Amount",
+				sClass: "number",
+				mRender: function (a) { return renderDecimal(a); }
+			},
+			{
+				mData: "AvgReimbursementCost", sTitle: "Average Reimbursement Cost",
+				sClass: "number",
+				mRender: function (a) { return renderDecimal(a); }
+			},
+			{ mData: "Year", sTitle: "Calendaric Year", sClass: "number" },
+			{
+				sTitle: "Only EOY validation",
+				mData:"EndOfYearValidationOnly"
+			},
+			{
+				sTitle: "Interline Transfer",
+				mData: "InterlineTransfer",
+			},
+			{
+				mData: "USDRate", sTitle: "USD Rate",
+				sClass: "number",
+				mRender: function (a) { return renderDecimal(a); }
+			},
+			{
+				mData: "ILSRate", sTitle: "ILS Rate",
+				sClass: "number",
+				mRender: function (a) { return renderDecimal(a); }
+			},
+			{
+				mData: "EURRate", sTitle: "EUR Rate",
+				sClass: "number",
+				mRender: function (a) { return renderDecimal(a); }
+			},
+			{
+				mData: "Errors", sTitle: "Errors"
+			}
+				
+		]
+	});
+</script>
+
+@if (!HasErrors)
+{
+	using (Html.BeginForm(new { action = "Import", Controller = "Apps", area = "Admin", id = Model }))
+	{
+		<button type="submit">Import</button>
+	}
+}
+@using (Html.BeginForm(new { action = "CancelImport", Controller = "Apps", area = "Admin", id=Model }))
+{
+	<button type="submit">Cancel</button>
+}
+

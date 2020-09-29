@@ -1,0 +1,12 @@
+﻿@model IEnumerable<MhmImportRow>
+
+@Html.Grid(Model).Columns(column=>{
+
+	column.For(f => f.Index);
+	column.For(f => f.ClientId).Named("CCID");
+	column.For(f => f.ClientName);
+	column.For(f => f.ItemTypeId);
+	column.For(f => f.ItemTypeName).Named("Item Type") ;
+	column.For(f => f.Amount);
+	column.For(f => Html.UnsortedList(f.Errors));
+})

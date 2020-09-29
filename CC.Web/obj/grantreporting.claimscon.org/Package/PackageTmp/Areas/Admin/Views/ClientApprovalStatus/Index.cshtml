@@ -1,0 +1,154 @@
+﻿@model CC.Web.Areas.Admin.Models.ClientsIndexModel
+@{
+	ViewBag.Title += "Clients JNV Status";
+}
+
+<h2>@ViewBag.Title</h2>
+
+
+
+@if (Model.Messages.Any())
+{
+	<ul>
+		@foreach (var message in Model.Messages)
+  {
+			<li>@message</li>
+  }
+	</ul>
+}
+<fieldset>
+	<legend>Uppdated Clients Csv Export</legend>
+	@using (Html.BeginForm("CsvExport", "ClientApprovalStatus"))
+	{
+		@Html.ValidationSummary()	
+
+		
+
+		<ol>
+			@foreach (var item in Model.HistoryExportModel.Presets)
+			{
+				<li>
+					<input id="@(string.Format("pf{0}", item.i))" type="radio" name="pf" class="pf" value="@item.value" />
+					<label for="@(string.Format("pf{0}", item.i))">@item.display</label>
+				</li>
+			}
+		</ol>
+		
+		@Html.LabelFor(f => f.HistoryExportModel.Start)<span>:</span>
+		@Html.EditorFor(f => f.HistoryExportModel.Start)
+		@Html.HiddenFor(f => f.HistoryExportModel.Fields)
+
+		<input type="submit" value="submit" />
+		<script>
+			$(':radio.pf').change(function () {
+				var $fields = $('#@Html.FieldIdFor(f => f.HistoryExportModel.Fields)');
+					var checked = $(':radio.pf:checked');
+					if (checked.length > 0) {
+						$fields.val(checked.val());
+					}
+					else {
+						$fields.val('');
+					}
+				});
+		</script>
+	}
+</fieldset>
+<fieldset>
+	<legend>New Clients</legend>
+
+	<div>@Html.LabelFor(model => model.NewClientsCount)
+		@Html.DisplayFor(model => model.NewClientsCount)
+        <a href="@Url.Action("Index")" style="color:red"><i class="fa fa-refresh"></i></a>
+		<a class="button" href="@Url.Action("ExportNew")">Export New Clients</a>        
+	</div>
+	<div>
+		@Html.LabelFor(model => model.NewClientsExportedCount)
+		@Html.DisplayFor(model => model.NewClientsExportedCount)
+        <a href="@Url.Action("Index")" style="color:red"><i class="fa fa-refresh"></i></a>
+		<a class="button" href="@Url.Action("UpdateNewToPending")" onclick="return confirm('Are you sure?');">Update status of new clients to Pending</a>
+	</div>
+</fieldset>
+<fieldset>
+	<legend>Import JNV Status</legend>
+	<form action="@Url.Action("Upload")" method="post" enctype="multipart/form-data">
+	@if (ViewBag.ImportApprovalStatusError != null && !string.IsNullOrEmpty(ViewBag.ImportApprovalStatusError))
+	 {
+		<div class="error">@ViewBag.ImportApprovalStatusError</div>	 
+	 }
+	<div>
+		<ul>
+			@foreach (string s in Model.GetFundStatusFieldNames())
+   {
+				<li>@s</li>
+   }
+		</ul>
+		<label for="asif">
+			Csv File:</label>
+		<input type="file" name="file" />
+	</div>
+	<button type="submit" name="submit">Upload</button>
+	</form>
+</fieldset>
+<fieldset>
+	<legend>Import Master Ids</legend>
+		<form action="@Url.Action("UploadMasterIds","ClientApprovalStatus")" method="post" enctype="multipart/form-data">
+			@if (ViewBag.ImportMasterIdsError != null && !string.IsNullOrEmpty(ViewBag.ImportMasterIdsError))
+			{
+				<div class="error">@ViewBag.ImportMasterIdsError</div>
+			}
+	<div>
+		<ul>
+			@foreach (string s in  CsvHelper.CsvHelperExtenstions.ColumnHeaderNames<MasterIdImportCsvMap>())
+			{
+				<li>@s</li>
+			}
+		</ul>
+		<label for="asif">
+			Csv File:</label>
+		<input type="file" name="file" />
+	</div>
+	<button type="submit" name="submit">Upload</button>
+	</form>
+</fieldset>
+
+<fieldset>
+    <legend>CFS auto import/ upload</legend>
+    <form action="@Url.Action("ScanAndImportCfsFiles", "ClientApprovalStatus")" method="post">
+        <button type="submit" name="submit">Invoke CFS auto import/ upload</button> Last Run: @if (ViewBag.LastRun != null) { @ViewBag.LastRun }
+    </form>
+</fieldset>
+
+<fieldset>
+    <legend>Clients Service Date Report</legend>
+    <form action="@Url.Action("ClientsServiceDate", "ClientApprovalStatus")" method="post">
+        <button type="submit" name="submit">Export</button>
+    </form>
+</fieldset>
+<fieldset>
+    <legend>Clients Rejected Pending Report</legend>
+    <form action="@Url.Action("ClientsRejectedPending", "ClientApprovalStatus")" method="post">
+        <button type="submit" name="submit">Export</button>
+    </form>
+</fieldset>
+
+<fieldset>
+	<legend>Send Client HAS change notifications</legend>
+	<form action="@Url.Action("SendHasNotifications")" method="post">
+		<label for="f">From</label>
+		<input type="text" id="f" name="from" class="date" />
+		<label for="t">To</label>
+		<input type="text" id="t" name="to" class="date" />
+		<button type="submit">Send</button>
+	</form>
+</fieldset>
+
+<fieldset>
+	<legend>Send Client JNV status change notifications</legend>
+	<form action="@Url.Action("SendNotifications")" method="post">
+		<label for="f">From</label>
+		<input type="text" id="jnvf" name="f" class="date" />
+		<label for="t">To</label>
+		<input type="text" id="jnvt" name="t" class="date" />
+		<button type="submit">Send</button>
+	</form>
+</fieldset>

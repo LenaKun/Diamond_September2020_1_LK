@@ -1,0 +1,136 @@
+﻿@model CC.Data.Fund
+@{
+    ViewBag.Title = "Create Fund";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>Fund</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.MasterFundId, "MasterFund")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("MasterFundId", String.Empty)
+            @Html.ValidationMessageFor(model => model.MasterFundId)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Name)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Name)
+            @Html.ValidationMessageFor(model => model.Name)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.StartDate)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.StartDate)
+            @Html.ValidationMessageFor(model => model.StartDate)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.EndDate)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.EndDate)
+            @Html.ValidationMessageFor(model => model.EndDate)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Amount)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Amount)
+            @Html.ValidationMessageFor(model => model.Amount)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.CurrencyCode, "Currency")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("CurrencyCode", String.Empty)
+            @Html.ValidationMessageFor(model => model.CurrencyCode)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.OtherServicesMax, "Other Services Max (%)")
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.OtherServicesMax)
+            @Html.ValidationMessageFor(model => model.OtherServicesMax)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.HomecareMin, "Homecare Min (%)")
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.HomecareMin)
+            @Html.ValidationMessageFor(model => model.HomecareMin)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.AdminMax, "Admin Max (%)")
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.AdminMax)
+            @Html.ValidationMessageFor(model => model.AdminMax)
+        </div>
+        <div class="editor-label">
+            Exchange Rates
+        </div>
+        <div>
+            <table>
+                <tr>
+                    <th>CUR</th>
+                    <th>Rate</th>
+                </tr>
+                @foreach (var item in CC.Data.Currency.ConvertableCurrencies)
+                {
+                    <text>
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(f => item)
+                        </td>
+                        <td>
+                            <input type="text" name="@item" 
+                            value="@Model.GetExchangeRate(item).Value.Format()" />
+                        </td>
+                    </tr>
+                    </text>
+                }
+            </table>
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.AustrianEligibleOnly, "Austrian Eligible Only?")
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.AustrianEligibleOnly)
+            @Html.ValidationMessageFor(model => model.AustrianEligibleOnly)
+        </div>
+		 <div class="editor-label">
+            @Html.LabelFor(model => model.RomanianEligibleOnly, "Romanian Eligible Only?")
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.RomanianEligibleOnly)
+            @Html.ValidationMessageFor(model => model.RomanianEligibleOnly)
+        </div>
+        <p>
+            <input type="submit" value="Create" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

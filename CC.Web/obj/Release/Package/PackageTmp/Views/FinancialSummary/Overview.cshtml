@@ -1,0 +1,73 @@
+﻿@model FinancialSummaryOverviewModel
+@{
+    ViewBag.Title = "Overview";
+}
+
+<h2>@ViewBag.Title</h2>
+<div>
+    @Html.Partial("Filter", Model)
+
+    @if (ViewData.ModelState.IsValid)
+    {
+        <text>
+        <h3 id="error" class="error" hidden="hidden"></h3>
+        <table id="FinancialSummaryOverview"></table>        
+        <script>
+            $(function () {
+                var oTable = $('#FinancialSummaryOverview').dataTable({
+                	"bSort": false,
+                	"sPaginationType": "two_button",
+                	"bServerSide": true,
+                	"bInfo": false,
+                    "sAjaxSource": '@Url.Action(Model.ActionName + "Data")',
+
+                    "fnServerParams": function (aoData) {
+                        PushFinancialSummaryParameters(aoData);
+                    },
+                    "fnDrawCallback": function (oSettings) {
+                    },
+                    "aoColumns": [
+                        { "mData": "AgencyName", "sTitle": "Agency" },
+                        { "mData": "ServiceTypeName", "sTitle": "Service Type" },
+                        { "mData": "ServiceName", "sTitle": "Service" },
+                        {
+                        	"mData": "ClientsCount", "sTitle": "Clients", "mRender": function (a) { return a == null ? "N/A" : a; } },
+                        { "mData": "UniqueClientsCount", "sTitle": "Unique Clients", "mRender": function (a) { return a == null ? "N/A" : a; } },
+                        { "mData": "AvgAmountPerMaster", "sTitle": "Average Cost Per Unduplicated  Client", "sClass":"dec", "mRender": function (a) { return renderDecimal(a); } },
+
+                        { "mData": "FundsCount", "sTitle": "Funds" },
+                        { "mData": "MasterFundName", "sTitle": "Master Fund" },
+                        { "mData": "Amount", "sTitle": "Amount", "sClass":"dec", "mRender": function (a) { return renderDecimal(a); } },
+                        { "mData": "CcGrant", "sTitle": "CC Grant [Budget]", "sClass":"dec", "mRender": function (a) { return renderDecimal(a); } },
+                        { "mData": null, "sTitle": "CUR", "mRender": function () { return '@Model.CurId'; } },
+                        {
+                        	"mData": null, "sTitle": null, "bSortable": false, "mRender": function (a, b, c) {                      	    
+                        	    var aoData = [];
+                        	    PushFinancialSummaryParameters(aoData);
+                        	    SetFinancialSummaryValue(aoData, { name: "AgencyId", value: c.AgencyId });
+                        	    SetFinancialSummaryValue(aoData, { name: "ServiceId", value: c.ServiceId });
+                        	    var qs = $.param(aoData);
+                        	    var result = '<a href="@Url.Action("Index")?';
+                        	    result += qs;
+                        	    result += '">Summary</a>&nbsp;';
+                        	    if (c.ClientsCount > 0) {
+                        	        result += '<a href="@Url.Action("Details")?';
+                        	        result += qs;
+                        	        result += '">Details</a>';
+                        	    }
+                        	    return result;
+                            }
+                        }
+                    ]
+                });
+            });
+        </script>
+        </text>
+    }
+    else
+    {
+        <text>
+        @Html.ValidationSummary()
+        </text>
+    }
+</div>

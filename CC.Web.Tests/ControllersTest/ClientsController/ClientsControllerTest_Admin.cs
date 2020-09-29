@@ -1,0 +1,418 @@
+﻿
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting.Web;
+using System.Web.Mvc;
+using System.Collections.Generic;
+using System.Linq;
+using CC.Data;
+using CC.Data.Tests;
+using CC.Web.Tests;
+using CC.Web;
+using CC.Web.Controllers;
+using CC.Web.Models;
+
+namespace CC.Web.Tests
+{
+
+
+    //folder for controller
+    //file for every role - copy - but different result
+    //property get target that create target for current user
+    //type of test: sequrity - allowed/denied
+    //sequrity - filtered data
+    //update - verify result
+
+
+    /// <summary>
+    ///This is a test class for ClientsControllerTest and is intended
+    ///to contain all ClientsControllerTest Unit Tests
+    ///</summary>
+    [TestClass()]
+    public class ClientsControllerTest_Admin
+    {
+
+
+        private TestContext testContextInstance;
+
+        /// <summary>
+        ///Gets or sets the test context which provides
+        ///information about and functionality for the current test run.
+        ///</summary>
+        ///
+
+        public ClientsController GetTarget_ForUser(FixedRoles role, string AgencyName = "")
+        {
+
+            ClientsController target = new ClientsController();
+            ccEntities context = new ccEntities();
+
+            target.CcUser = Helper.GetUser(role, AgencyName);
+            return target;
+
+        }
+
+        ClientsController target;
+        ContextMocks mocks;
+        public ClientsController Target
+        {
+            get
+            {
+                if (target == null)
+                {
+                    target = GetTarget_ForUser(FixedRoles.Admin);
+                    mocks = new ContextMocks(Target, true, true);
+                }
+                return target;
+            }
+            set
+            {
+                target = value;
+            }
+        }
+
+
+        public TestContext TestContext
+        {
+            get
+            {
+                return testContextInstance;
+            }
+            set
+            {
+                testContextInstance = value;
+            }
+        }
+
+        #region Additional test attributes
+        // 
+        //You can use the following additional attributes as you write your tests:
+        //
+        //Use ClassInitialize to run code before running the first test in the class
+        [ClassInitialize()]
+        public static void MyClassInitialize(TestContext testContext)
+        {
+            CC.Data.Tests.Helper.PrepareTestData();
+        }
+        //
+        //Use ClassCleanup to run code after all tests in a class have run
+        //[ClassCleanup()]
+        //public static void MyClassCleanup()
+        //{
+        //}
+        //
+        //Use TestInitialize to run code before running each test
+        //[TestInitialize()]
+        //public void MyTestInitialize()
+        //{
+        //}
+        //
+        //Use TestCleanup to run code after each test has run
+        //[TestCleanup()]
+        //public void MyTestCleanup()
+        //{
+        //}
+        //
+        #endregion
+
+
+        /// <summary>
+        ///A test for Index
+        ///</summary>
+        // TODO: Ensure that the UrlToTest attribute specifies a URL to an ASP.NET page (for example,
+        // http://.../Default.aspx). This is necessary for the unit test to be executed on the web server,
+        // whether you are testing a page, web service, or a WCF service.
+
+        [TestMethod()]
+        public void IndexTest()
+        {
+
+            //show clients list for user
+
+            target = GetTarget_ForUser(FixedRoles.Admin);
+            ViewResult actual = Target.Index();
+
+            Assert.IsNotNull(actual, "Did not render a view");
+
+            Assert.IsFalse(actual.ViewBag.Permission == CC.Data.Services.PermissionsFactory.GetPermissionsFor(target.CcUser), "Permissions is wrong");
+            Assert.IsFalse(actual.ViewName != "", "name of the view must be empty");
+
+        }
+
+
+
+
+
+        [TestMethod()]
+        public void IndexTest_TryUpdateStatus_NotSelectedClients()
+        {
+            //try to change approval status without select clients
+            target = GetTarget_ForUser(FixedRoles.Admin);
+            mocks = new ContextMocks(target, true, false);
+            ClientsListModel model = new ClientsListModel();
+            model.UpdateModel.SelectedClientIds = null;
+            model.UpdateModel.NewApprovalStatusId = (int)ApprovalStatusEnum.Approved;
+
+
+
+            ActionResult actual = target.Index(model);
+
+            Assert.IsNotNull(actual, "action result can not be null");
+            string content = ((System.Web.Mvc.ContentResult)actual).Content;
+            Assert.IsTrue(content == "selection is empty", "result must be:selection is empty");
+
+        }
+
+
+        [TestMethod()]
+        public void IndexTest_TryUpdateStatus_NotSelectedStatus()
+        {
+            //try to change approval status widthout select status value
+
+            ClientsListModel model = new ClientsListModel();
+
+            List<int> ClientIds = null;
+            ClientIds = CC.Data.Tests.Helper.GetTestClientIdsList();
+            model.UpdateModel.SelectedClientIds = ClientIds;
+            model.UpdateModel.NewApprovalStatusId = 0;
+
+
+            // var mocks = new ContextMocks(Target, true, false);
+            ActionResult actual = Target.Index(model);
+
+
+            Assert.IsNotNull(actual, "action result can not be null");
+
+            string content = ((System.Web.Mvc.ContentResult)actual).Content;
+            Assert.IsTrue(content == "0 records updated.", "result must be:0 records updated.");
+
+
+
+        }
+
+
+
+        [TestMethod()]
+        public void IndexTest_UpdateStatus()
+        {
+
+            ClientsListModel model = new ClientsListModel();
+
+            List<int> ClientIds = null;
+            ClientIds = CC.Data.Tests.Helper.GetTestClientIdsList();
+            model.UpdateModel.SelectedClientIds = ClientIds;
+            model.UpdateModel.NewApprovalStatusId = (int)ApprovalStatusEnum.Approved;
+
+            ActionResult actual = Target.Index(model);
+            Assert.IsNotNull(actual, "action result can not be null");
+
+            string content = ((System.Web.Mvc.ContentResult)actual).Content;
+            Assert.IsTrue(content == "3 records updated.", "result must be:3 records updated. ");
+
+            List<Client> updClients = CC.Data.Tests.Helper.GetTestClientsList(); //clients after changed
+
+
+            foreach (Client cl in updClients)
+            {
+                if (cl.ApprovalStatusId != (int)ApprovalStatusEnum.Approved)
+                {
+                    Assert.Inconclusive("Approval status for client " + cl.FirstName + " not updated ");
+
+                }
+
+            }
+
+
+        }
+
+
+
+
+
+
+        [TestMethod()]
+        public void IndexDataTable_Test()
+        {
+            string sort = "asc";
+            string col = "1";
+            int paramStart = 0;
+
+
+
+            Target.Request.QueryString.Add("sSortDir_0", sort);
+            Target.Request.QueryString.Add("iSortCol_0", col);
+
+
+
+
+            ClientsListDataTableModel param = new ClientsListDataTableModel();
+
+            int n = new ccEntities().Clients.Count();
+
+
+            ActionResult actual;
+
+            param.iDisplayLength = n;
+            param.iDisplayStart = paramStart;
+            actual = target.IndexDataTables(param);
+
+            Assert.IsNotNull(param.aaData, "result data can not be empty");
+
+            int m = param.aaData.ToList<ClientsListEntry>().Count;
+
+
+
+            Assert.IsTrue(n == m, "Admin must get all clients"); //verify number
+
+            //verify info      
+            var c1 = param.aaData.Where(x => x.FirstName == "Client1");
+            Assert.IsTrue(c1.Count() > 0, "Admin must get Client1");
+
+
+
+
+        }
+
+
+        //tomorrow - 2 data tests; finish client test for admin
+        //create other tests for admin - now only sequrity, that action done, details opened
+
+        //next date - tests for officers
+        //next test - for users and run all
+
+
+
+
+
+        [TestMethod()]
+        public void Details_Test()
+        {
+            CC.Data.Tests.Helper.PrepareTestData();
+            ClientsController target = new ClientsController(); // TODO: Initialize to an appropriate value
+            User ccUser = CC.Data.Tests.Helper.GetAdminUser();
+            var mocks = new ContextMocks(target, true, false);
+            target.CcUser = ccUser;
+            Client cc = CC.Data.Tests.Helper.GetClient("Client1");
+            Nullable<int> id = cc.Id;
+            Nullable<bool> newClient = false;
+
+            ViewResult actual = target.Details(id, newClient);
+
+            Assert.IsNotNull(actual, " view result can not be null");
+
+            System.Web.Mvc.ViewResultBase viewResult = (System.Web.Mvc.ViewResultBase)actual;
+
+            ViewDataDictionary data = viewResult.ViewData;
+
+            Assert.IsNotNull(data.Keys.Count() == 3, "must be 3 dataitems: client data, agencies, permissions");
+
+            Client cl = (Client)data.Model;
+
+            Assert.IsTrue(cl.Id == cc.Id && cl.FirstName == "Client1", " must open detail of client with name " + cc.FirstName);
+
+            //now write the same test for user, that not have permissions for this client"
+
+        }
+
+
+
+        [TestMethod()]
+        public void Create_Test()
+        {
+
+            ActionResult actual = Target.Create();
+            ViewResult actualView = (ViewResult)actual;
+
+
+            Assert.IsNotNull(actual, "action result can not be null");
+
+            Assert.IsNotNull(actualView.ViewBag, "view bag can not be null");
+
+            Assert.IsNotNull(actualView.ViewBag.FunctionalityLevels, "View Bag must include functionality levels");
+            Assert.IsNotNull(actualView.ViewBag.FunctionalityLevels, "View Bag must include countries");
+
+
+
+        }
+
+
+        [TestMethod()]
+        public void CreatePost_Test()
+        {
+            ClientCreateModel cm = new ClientCreateModel();
+            cm.Data = new Client();
+            string randomName = System.IO.Path.GetRandomFileName();
+            cm.Data.FirstName = randomName;
+            cm.Data.LastName = "last";
+            cm.Data.City = "city";
+            cm.Data.Address = "address";
+            cm.Data.AgencyId = new ccEntities().Agencies.First().Id;
+            cm.Data.CountryId = new ccEntities().Countries.First().Id;
+            cm.Data.JoinDate = DateTime.Now;
+
+
+            ActionResult actual = Target.Create(cm);
+
+
+
+            ccEntities context = new ccEntities();
+            Client newClient = context.Clients.Single(x => x.FirstName == randomName);
+
+            Assert.IsNotNull(newClient == null, "new client was not created");
+
+            Assert.IsTrue(newClient.City == "city", "new client city was not saved");
+
+
+        }
+
+
+        [TestMethod()]
+        public void Edit_Test()
+        {
+            Client cl = new ccEntities().Clients.Single(x => x.FirstName == "Client1");
+
+
+            ActionResult actual = Target.Edit(cl.Id);
+            ViewResult actualView = (ViewResult)actual;
+
+            Assert.IsNotNull(actual, "action result can not be null");
+
+
+            Assert.IsNotNull(actualView, "action result can not be null");
+
+            Assert.IsNotNull(actualView.Model, "action result can not be null");
+
+            ClientEditModel cm = (ClientEditModel)actualView.Model;
+
+            Assert.IsTrue(cm.Data.FirstName == "Client1", "Client name must be Client1");
+        }
+
+
+
+        [TestMethod()]
+        public void EditPost_Test()
+        {
+            Client cl = new ccEntities().Clients.Single(x => x.FirstName == "Client1");
+            ClientEditModel cm = new ClientEditModel();
+            cm.Data = cl;
+            cl.City = "changed city";
+
+
+
+            ActionResult actual = Target.Edit(cl.Id);
+            ViewResult actualView = (ViewResult)actual;
+
+            Assert.IsNotNull(actual, "action result can not be null");
+
+
+            Assert.IsNotNull(actualView, "action result can not be null");
+
+            Assert.IsNotNull(actualView.Model, "action result can not be null");
+
+            ClientEditModel newModel = (ClientEditModel)actualView.Model;
+
+            Assert.IsTrue(cm.Data.City == "changed city", "Client city must be changed");
+        }
+
+    }
+}

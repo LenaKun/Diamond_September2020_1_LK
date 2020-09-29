@@ -1,0 +1,91 @@
+﻿@model CC.Data.User
+@{
+	ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+	<legend>User</legend>
+
+
+	<div class="display-label">UserName</div>
+	<div class="display-field">
+		@Html.DisplayFor(model => model.UserName)
+	</div>
+
+	<div class="display-label">Email</div>
+	<div class="display-field">
+		@Html.DisplayFor(model => model.Email)
+	</div>
+
+    <div class="display-label">Add to BCC?</div>
+	<div class="display-field">
+		@Html.DisplayFor(model => model.AddToBcc)
+	</div>
+	
+	<div class="display-label">@Html.LabelFor(f=>f.DecimalDisplayDigits)</div>
+	<div class="display-field">
+		@Html.DisplayFor(model => model.DecimalDisplayDigits)
+	</div>
+
+    <div class="display-label">Failed Password Attempt Count</div>
+    <div class="display-field">
+        @ViewBag.FailedPasswordAttemptCount
+    </div>
+
+	<div class="display-label">Role</div>
+	<div class="display-field">
+		@Html.DisplayFor(model => model.Role.Name)
+	</div>
+
+	@switch ((CC.Data.FixedRoles)Model.RoleId)
+ {
+	 case CC.Data.FixedRoles.AgencyUser:
+	 case CC.Data.FixedRoles.DafEvaluator:
+	 case CC.Data.FixedRoles.DafReviewer:
+	 case CC.Data.FixedRoles.AgencyUserAndReviewer:
+		<text>
+		<div class="display-label">Agency</div>
+		<div class="display-field">
+			@Html.DisplayFor(model => model.Agency.Name)
+		</div>
+		</text> 
+		 break;
+	 case CC.Data.FixedRoles.Ser:
+	 case CC.Data.FixedRoles.SerAndReviewer:
+		<text>
+		<div class="display-label">SER</div>
+		<div class="display-field">
+			@Html.DisplayFor(model => model.AgencyGroup.DisplayName)
+		</div>
+		</text>
+         break;
+     case CC.Data.FixedRoles.RegionReadOnly:
+    <text>
+        <div class="display-label">Region</div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.Region.Name)
+        </div>
+    </text>
+         break;
+     case CC.Data.FixedRoles.RegionOfficer:
+     case CC.Data.FixedRoles.RegionAssistant:
+	 <div class="display-label">SERs</div>
+		<div class="display-field">
+		<ul>
+			@foreach (var ser in Model.AgencyGroups)
+   {
+				<li>@ser.DisplayName</li>
+   }
+		</ul>
+		</div>
+   break;
+
+ }
+
+</fieldset>
+<p>
+	@Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -1,0 +1,5 @@
+﻿@model Nullable<DateTime>
+@{
+    var val=Model.HasValue? Model.Value.AddDays(-1).ToShortDateString():null;
+}
+@Html.DisplayFor(model=>val)

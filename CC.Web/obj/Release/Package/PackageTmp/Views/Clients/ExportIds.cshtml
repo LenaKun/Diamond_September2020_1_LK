@@ -1,0 +1,20 @@
+﻿@model ExportClientsNewClientIdsModel
+@{
+	ViewBag.Title = "Export";
+}
+
+<h2>Export</h2>
+
+@using (Html.BeginForm())
+{
+	<div class="display-item">
+		@Html.LabelFor(f => f.CreateDate)
+		@Html.EditorFor(f => f.CreateDate)
+	</div>
+	<div class="display-item">
+		@Html.LabelFor(f => f.AgencyGroupId)
+		@Html.DropDownListFor(f => f.AgencyGroupId, Model.AgencyGroups)
+	</div>
+	<button type="submit">Submit</button>
+}
+

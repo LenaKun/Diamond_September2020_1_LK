@@ -1,0 +1,274 @@
+﻿@model NewUnmetNeedsOtherEntryModel
+@{
+	Layout = null;
+	var dialogId = Guid.NewGuid();
+	var dtId = Guid.NewGuid();
+}
+
+@using (Html.BeginForm("SaveUnmetNeedsOther", "Clients"))
+{
+	<table id="@dtId" class="grid"></table>
+}
+
+@if (User.IsInRole(FixedRoles.Admin) || User.IsInRole(FixedRoles.Ser) || User.IsInRole(FixedRoles.AgencyUser) || User.IsInRole(FixedRoles.SerAndReviewer) || User.IsInRole(FixedRoles.AgencyUserAndReviewer))
+{
+	<button class="addnewOther">Add New</button>
+}
+<script>
+	$(function () {
+		var editLink = '<button type="button" class="edit">Edit</button>';
+
+		var oTable = $('table#@dtId').dataTable({
+			"aaSorting": [[0, "desc"]],
+			"bProcessing": true,
+			"bFilter": false,
+			"bServerSide": true,
+			"bJQueryUI": true,
+			"cache": false,
+
+			"bLengthChange": false,
+			"sPaginationType": "full_numbers",
+			"sAjaxSource": '@Url.Action("UnmetNeedsOtherData")',
+			"fnServerParams": function (aoData) {
+				aoData.push({ name: "ClientId", value: '@Model.ClientId' });
+			},
+			"aoColumns": [
+				{ "mData": "ServiceType", "sTitle": "Service Type" },
+				{ "mData": "Amount", "sTitle": "Amount", "sClass": 'edit' },
+				{ "mData": "CUR", "sTitle": "CUR" },
+				{
+					//last colum with buttons
+					"aTargets": [-1],
+					"sWidth": "7em",
+					"mData": null,
+					"bSortable": false,
+					"sClass": 'control',
+					"mRender": function (val, type, full) {
+
+						var res = editLink;
+						return res;
+					}
+				}
+			]
+		});
+
+		$('table.grid button.edit').live('click', function () {
+			$('table.grid button.cancel').click();
+			var $tr = $(this).closest('tr');
+			var tr = $tr.get(0);
+			var data = null;
+			if ($tr.hasClass('add')) {
+				data = $tr.data('data');
+			}
+			else {
+				data = oTable.fnGetData(tr);
+			}
+			var settings = oTable.fnSettings();
+			var columns = settings.aoColumns;
+
+
+			$tr.find('td.edit').each(function () {
+				var $td = $(this);
+				var td = $td.get(0);
+				var aPos = oTable.fnGetPosition(td); //array of [row index, column index (visible), column index (all)]
+				var iRow = aPos[0];
+				var iCol = aPos[2];
+
+				var column = columns[iCol];
+				var editor = null;
+				var value = data[iCol];
+
+				var editor = null;
+				switch (iCol) {
+					case 1:
+						var x = data.Amount;
+						editor = $('<input id="amount" size=5 value=' + x + '/>');
+						editor.val(x);
+
+						break;
+				}
+				if (column.sName != "") editor.attr('name', column.sName);
+				if (column.sClass != "") editor.addClass(column.sClass);
+
+				$td.html('').append(editor);
+
+			});
+			$tr.addClass('selected');
+			$tr.find('td.control').html('<button type="button" class="update">Save</button>' + '<button type="button" class="cancel">Cancel</button>');
+			//first focus creates datepicker, second shows it
+			$tr.find('input:first').focus().focus();
+		});
+		$('table.grid button.cancel').live('click', function () {
+
+			var $tr = $(this).closest('tr');
+			var tr = $tr.get(0);
+			var data = oTable.fnGetData(tr);
+
+			oTable.fnUpdate(data, tr, undefined, false, false);
+		});
+		$('table.grid button.update').live('click', function () {
+
+			var $tr = $(this).closest('tr');
+			var idEmptyFlag = false; // requiere for refresh
+			var id = $tr.attr('id');
+			if (id == "")
+				idEmptyFlag = true;
+
+			var tr = $tr.get(0);
+			var data = oTable.fnGetData(tr);
+
+			var $form = $tr.closest('form');
+
+			if (!$form.valid())
+				return;
+
+
+			var d = $form.serializeArray();
+
+			var amount = parseFloat($("#amount").val());
+			if (isNaN(amount)) {
+				alert("The amount must be a number");
+				return;
+			}
+
+			d.push({ name: "Amount", value: $("#amount").val() });
+			d.push({ name: "ServiceTypeId", value: data.ServiceTypeId });
+			d.push({ name: "ServiceType", value: data.ServiceType });
+			d.push({ name: "ClientId", value: '@Model.ClientId' });
+			d.push({ name: "CUR", value: '@Model.CUR' });
+
+			var dd = {};
+			for (var i in d) {
+				dd[d[i].name] = d[i].value;
+			}
+			$('table.grid tbody tr').find(':input, button').attr('disabled', 'disabled');
+			var request = $.ajax({
+				url: $form.attr('action'),
+				type: 'POST',
+				dataType: "json",
+				data: dd
+			})
+			request.success(function (data, textStatus, jqXHR) {
+
+				if (data.success) {
+					oTable.fnUpdate(dd, tr, undefined, false, false);
+					$('table.grid tbody tr').find(':input, button').removeAttr('disabled');
+					if (idEmptyFlag)
+						oTable.fnDraw(false);
+				}
+				else {
+					showSuccess(data.errors);
+				}
+
+			});
+			request.done(function (msg) {
+
+			});
+			request.fail(function (jqXHR, textStatus) {
+			});
+		});
+
+		var dialog = $('div#@dialogId').dialog({
+			autoOpen: false,
+			modal: true,
+			width: 'auto',
+			height: 'auto',
+			open: function (event, ui) {
+				dialog.find(':input').val('');
+				dialog.find(':input').removeAttr('disabled');
+			},
+			buttons: {
+				"Submit": function () {
+					if (dialog.find('form').valid()) {
+						dialog.find(':input').attr('disabled', 'disabled');
+						addNewUnmetNeedsOtherEntry();
+						dialog.find(':input').removeAttr('disabled');
+					}
+				},
+				"Cancel": function () {
+					dialog.find(':input').val('');
+					dialog.dialog('close');
+				}
+			}
+		});
+		$('.addnewOther').click(function () {
+			dialog.dialog('open');
+		});
+		function addNewUnmetNeedsOtherEntry() {
+			$.ajax({
+				url: '@Url.Action("AddNewUnmetNeedsOtherEntry")',
+				method: 'POST',
+				dataType: "json",
+				data: {
+					clientId: parseInt('@Model.ClientId'),
+					ServiceTypeId: dialog.find('#@Html.FieldIdFor(f => f.ServiceTypeId)').val(),
+					Amount: dialog.find('#@Html.FieldIdFor(f => f.Amount)').val(),
+					CUR: '@Model.CUR'
+				}
+			}).done(function (data) {
+				dialog.find(':input').removeAttr('disabled');
+				if (data && data.errors) {
+					$('ul.UnmetNeedsOthertaberrors').html('<li>' + data.errors.join('</li><li>') + '</li>');
+				}
+				else {
+					oTable.fnDraw(false);
+
+					dialog.dialog('close');
+				}
+			}).fail(function () {
+				dialog.find(':input').removeAttr('disabled');
+			});
+		}
+	});
+
+	function showSuccess(errors) {
+		console.log("errors", errors);
+		if (errors) {
+			errors.join('</li><li>');
+		}
+		else {
+			errors = "";
+		}
+
+		var errstr = '<ul class="error"><li>' + errors + '</li></ul>';
+		$(errstr).dialog({
+			modal: true,
+			dialogClass: "hideCloseButton",
+			buttons: {
+				Ok: function () {
+					$(this).dialog("close");
+					$(this).dialog("destroy");
+					$('table.grid tbody').find(':input, button').removeAttr('disabled');
+				},
+				Cancel: function () {
+					$(this).dialog("close");
+					$(this).dialog("destroy");
+					$('table.grid').dataTable().fnDraw(false);
+				}
+			}
+		});
+
+
+	}
+</script>
+
+<div id="@dialogId">
+	@using (Html.BeginForm("AddNewUnmetNeedsOtherEntry"))
+	{
+		@Html.ValidationSummary()
+		<ul class="error UnmetNeedsOthertaberrors"></ul>	
+		<p>Enter in the amount which is currently unavailable due to budgetary limitations</p>
+		<p>that the agency feels would cover the client’s need for the service selected for one month.</p>  
+		<p>This amount should be entered in the main currency the agency receives its grants in.</p>
+		<div class="editor-item-block">
+			@Html.LabelFor(f => f.ServiceTypeId)
+			@Html.DropDownListFor(f => f.ServiceTypeId, Model.ServiceTypes)
+			@Html.ValidationMessageFor(f => f.ServiceTypeId)
+		</div>
+		<div class="editor-item-block">
+			@Html.LabelFor(f => f.Amount)
+			@Html.EditorFor(f => f.Amount)
+			@Html.ValidationMessageFor(f => f.Amount)
+		</div>
+	}
+</div>

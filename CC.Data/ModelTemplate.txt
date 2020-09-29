@@ -1,0 +1,43 @@
+﻿
+
+
+
+				var previousValue = <#=code.FieldName(edmProperty)#>;
+
+				var changingArgs = new ValueChangingEventArgs<<#=code.Escape(edmProperty.TypeUsage)#>>()
+				{
+					OldValue = previousValue,
+					NewValue = value
+				};
+				On<#=code.Escape(edmProperty)#>Changing(changingArgs);
+				
+				if(!changingArgs.Cancel)
+				{
+					<#=code.FieldName(edmProperty)#> = value;
+
+					On<#=code.Escape(edmProperty)#>Changed(previousValue,value);
+
+					OnPropertyChanged("<#=edmProperty.Name#>");
+				}
+            }
+        }
+    }
+	//changing event
+	public event EventHandler<ValueChangingEventArgs<<#=code.Escape(edmProperty.TypeUsage)#>>> <#=code.Escape(edmProperty)#>Changing;
+	public void On<#=code.Escape(edmProperty)#>Changing(ValueChangingEventArgs<<#=code.Escape(edmProperty.TypeUsage)#>> args)
+	{
+		if(<#=code.Escape(edmProperty)#>Changing!=null)
+		{
+			<#=code.Escape(edmProperty)#>Changing(this, args);
+		}
+	}
+	//changed event
+	public event EventHandler<ValueChangedEventArgs<<#=code.Escape(edmProperty.TypeUsage)#>>> <#=code.Escape(edmProperty)#>Changed;
+	public void On<#=code.Escape(edmProperty)#>Changed(<#=code.Escape(edmProperty.TypeUsage)#> oldValue, <#=code.Escape(edmProperty.TypeUsage)#> newValue)
+	{
+		if(<#=code.Escape(edmProperty)#>Changed!=null)
+		{
+			var args = new ValueChangedEventArgs<<#=code.Escape(edmProperty.TypeUsage)#>>(oldValue,newValue);
+			<#=code.Escape(edmProperty)#>Changed(this, args);
+		}
+	}

@@ -1,0 +1,75 @@
+﻿@model UnmetNeedsOtherImportPreviewModel
+@{
+	ViewBag.Title = "UnmetNeedsOtherPreview";
+}
+
+<h2>Unmet Needs - Other Preview</h2>
+
+@Html.ValidationSummary()
+<div>
+	@if (ViewData.ModelState.IsValid)
+	{
+		using (Html.BeginForm(null, null, new { Id = Model.Id, newRows = Model.NewRows }))
+		{
+			<button type="submit">Submit</button>
+			<span>Rows that contain errors will be ignored during the import.</span>
+		}
+	}
+</div>
+<div>
+	@using (Html.BeginForm("UnmetNeedsOtherImportRollback", null, new { Id = Model.Id, newRows = Model.NewRows }))
+	{
+		<button type="submit">Cancel</button>
+	}
+</div>
+
+<table id="@Model.Id"></table>
+<script>
+	$(function () {
+		var oDataTable = $('table#@Model.Id').dataTable({
+			"bJQueryUI": true,
+			"bProccessing": true,
+			"sPaginationType": "full_numbers",
+			"aaSorting": [[7, "desc"]],
+			"bServerSide": true,
+			"bAutoWidth": false,
+			"sAjaxSource": '@Url.Action("UnmetNeedsOtherPreviewData", new { id = Model.Id, newRows = Model.NewRows })',
+			"fnServerParams": function (aoData) {
+				aoData.push({ name: "IE", value: Math.random() });
+			},
+			"fnServerData": function (sSource, aoData, fnCallback) {
+				//the url might be too long for the get
+				$.ajax({
+					"dataType": 'json',
+					"type": "POST",
+					"url": sSource,
+					"data": aoData,
+					"success": fnCallback
+				});
+			},
+			"aoColumns": [
+			{ "mData": "RowIndex", "sTitle": "RowIndex" },
+				{ "mData": "ClientId", "sTitle": "ClientId" },
+				{ "mData": "FirstName", "sTitle": "FirstName" },
+				{ "mData": "LastName", "sTitle": "LastName" },
+				{ "mData": "ServiceTypeImportId", "sTitle": "ServiceTypeImportId" },
+				{ "mData": "Amount", "sTitle": "Amount" },
+				{
+					"mData": "RowErrors", "sTitle": "Errors", "mRender": function (a) {
+						var html = '';
+						if (a.ClientNotFound == true) { html += 'Client not found.<br />'; }
+
+						if (a.InvalidAmount == true) { html += 'Invalid Amount (must be >= 0) .<br />'; }
+
+						if (a.DuplicatesRowIndexes.length > 0) { html += 'Duplicate entries on rows ' + a.DuplicatesRowIndexes.join(', '); }
+
+						if (a.DuplicateEntries == true && '@Model.NewRows' == 'True') { html += 'The client already has an entry for this service type. To update the amount, the Import Update Rows should be used.' }
+
+						if (a.InvalidServiceType == true) { html += 'This Service Type is not allowed to be reported in Unmet needs - other'; }
+						return html;
+					}
+				}
+			]
+		});
+	});
+</script>

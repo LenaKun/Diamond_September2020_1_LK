@@ -1,0 +1,6 @@
+﻿@model AppBudget
+@{
+	Layout = "~/Views/Shared/LayoutForEmail.cshtml";
+}
+<p>The budget recently submitted by your agency for Fund @Model.App.Fund.Name, App @Model.App.Name has been rejected by the Claims Conference for the following reason:</p>
+<p>@Html.Raw(Model.PoRemarks)</p>

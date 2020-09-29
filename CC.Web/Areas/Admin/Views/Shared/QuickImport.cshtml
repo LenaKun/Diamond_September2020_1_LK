@@ -1,0 +1,47 @@
+﻿@model CC.Web.Areas.Admin.Controllers.QuickImportModel
+<table id="it">
+    <thead>
+        <tr>
+            @foreach (var name in Model.GetNames())
+            {
+                <th>
+                    @name
+                </th>
+            }
+            <th>
+                Errors
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Data)
+        {
+            <tr>
+                @foreach (var value in item.GetValues())
+                {
+                    <td>
+                        @value
+                    </td>
+                }
+                <td>
+                    <ul>
+                        @foreach (var vr in item.ValidationResult)
+                        {
+                            <li>
+                                @Html.DisplayFor(model => vr.ErrorMessage)
+                            </li>
+                        }
+                    </ul>
+                    @Html.DisplayFor(model => item.UpdateException.Message)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<script type="text/javascript">
+    $(function () {
+        $('table#it').dataTable();
+    });
+</script>
+Rows updated:@Model.rowsUpdated
+Errors count:@Model.errorsCount

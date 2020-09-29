@@ -1,0 +1,31 @@
+﻿@model AppBudget
+@{
+	Layout = null;
+}
+
+<table class="horizontal">
+	<tr>
+		<th>@Html.LabelFor(f => f.App.AgencyGroup.Name, "SER")</th>
+		<th>@Html.LabelFor(f => f.App.Fund.Name, "Fund")</th>
+		<th>@Html.LabelFor(f => f.App.Name, "App #")</th>
+		<th>@Html.LabelFor(f => f.App.CurrencyId, "App Currency")</th>
+		<th>@Html.LabelFor(f => f.App.StartDate, "App's Period")</th>
+		<th>@Html.LabelFor(f => f.StatusId, "Status")</th>
+		<th>@Html.LabelFor(f => f.PoRemarks, "PO Remarks")</th>
+		<th>@Html.LabelFor(f => f.ValidUntill, "Valid Until")</th>
+		<th>@Html.LabelFor(f => f.ValidRemarks, "Valid Remarks")</th>
+		<th>@Html.LabelFor(f => f.FormASubmitted, "Was a Form A submitted?")</th>
+	</tr>
+	<tr>
+		<td>@Html.DisplayFor(f => f.App.AgencyGroup.Name)</td>
+		<td>@Html.DisplayFor(f => f.App.Fund.Name)</td>
+		<td>@Html.DisplayFor(f => f.App.Name)</td>
+		<td>@Html.DisplayFor(f => f.App.CurrencyId)</td>
+		<td>@Html.DisplayFor(f => f.App.StartDate) - @Html.DisplayFor(f => f.App.EndDateDisplay)</td>
+		<td>@Html.DisplayFor(f => f.StatusDisplay) </td>
+		<td>@Html.DisplayFor(f => f.PoRemarks)</td>
+		<td>@Html.DisplayFor(f => f.ValidUntill)</td>
+		<td>@Html.DisplayFor(f => f.ValidRemarks)</td>
+		<td>@Html.DisplayFor(f => f.FormASubmitted)</td>
+	</tr>
+</table>

@@ -1,0 +1,30 @@
+﻿@model  AppBudgetStatusHistoryModel
+@{
+	ViewBag.Title = "Status History";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@Html.Partial("Header", Model.AppBudget)
+
+@Html.Grid(Model.StatusHistory).Columns(column =>
+{
+	column.For(f => f.UserName).Named("UserName");
+	column.For(f => f.Date).Named("Date");
+	column.For(f => f.OldStatus).Named("Old Value");
+	column.For(f => f.NewStatus).Named("New Status");
+})
+<a href="@Url.Action("Details",new {id=Model.AppBudget.Id})" class="button">Details</a>
+<script type="text/javascript">
+	$(document).ready(function () {
+		$('table.grid').dataTable({
+			"bJQueryUI": true,
+			"sPaginationType": "full_numbers",
+			"aaSorting": [[0, "asc"]], //cap name asc
+			"aoColumnDefs": [
+				{ "aTargets": [-1], "bSortable": false },//the column with links,
+
+			]
+		});
+	});
+</script>

@@ -1,0 +1,168 @@
+D:\Diamond_01282020\cc\Code\CC.Core\bin\Debug\CC.Extensions.dll
+D:\Diamond_01282020\cc\Code\CC.Core\bin\Debug\CC.Extensions.pdb
+D:\Diamond_01282020\cc\Code\CC.Core\bin\Debug\EPPlus.dll
+D:\Diamond_01282020\cc\Code\CC.Core\bin\Debug\itextsharp.dll
+D:\Diamond_01282020\cc\Code\CC.Core\bin\Debug\Microsoft.Web.Infrastructure.dll
+D:\Diamond_01282020\cc\Code\CC.Core\bin\Debug\System.Web.Helpers.dll
+D:\Diamond_01282020\cc\Code\CC.Core\bin\Debug\System.Web.Mvc.dll
+D:\Diamond_01282020\cc\Code\CC.Core\bin\Debug\System.Web.Razor.dll
+D:\Diamond_01282020\cc\Code\CC.Core\bin\Debug\System.Web.WebPages.Deployment.dll
+D:\Diamond_01282020\cc\Code\CC.Core\bin\Debug\System.Web.WebPages.dll
+D:\Diamond_01282020\cc\Code\CC.Core\bin\Debug\System.Web.WebPages.Razor.dll
+D:\Diamond_01282020\cc\Code\CC.Core\bin\Debug\EPPlus.xml
+D:\Diamond_01282020\cc\Code\CC.Core\bin\Debug\itextsharp.xml
+D:\Diamond_01282020\cc\Code\CC.Core\bin\Debug\System.Web.Helpers.xml
+D:\Diamond_01282020\cc\Code\CC.Core\bin\Debug\System.Web.Mvc.xml
+D:\Diamond_01282020\cc\Code\CC.Core\bin\Debug\System.Web.Razor.xml
+D:\Diamond_01282020\cc\Code\CC.Core\bin\Debug\System.Web.WebPages.xml
+D:\Diamond_01282020\cc\Code\CC.Core\bin\Debug\System.Web.WebPages.Deployment.xml
+D:\Diamond_01282020\cc\Code\CC.Core\bin\Debug\System.Web.WebPages.Razor.xml
+D:\Diamond_01282020\cc\Code\CC.Core\obj\Debug\CC.Extensions.csprojAssemblyReference.cache
+D:\Diamond_01282020\cc\Code\CC.Core\obj\Debug\CC.Extensions.csproj.CoreCompileInputs.cache
+D:\Diamond_01282020\cc\Code\CC.Core\obj\Debug\CC.Extensions.csproj.CopyComplete
+D:\Diamond_01282020\cc\Code\CC.Core\obj\Debug\CC.Extensions.dll
+D:\Diamond_01282020\cc\Code\CC.Core\obj\Debug\CC.Extensions.pdb
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Core\bin\Debug\CC.Extensions.dll
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Core\bin\Debug\CC.Extensions.pdb
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Core\bin\Debug\EPPlus.dll
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Core\bin\Debug\itextsharp.dll
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Core\bin\Debug\Microsoft.Web.Infrastructure.dll
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Core\bin\Debug\System.Web.Helpers.dll
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Core\bin\Debug\System.Web.Mvc.dll
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Core\bin\Debug\System.Web.Razor.dll
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Core\bin\Debug\System.Web.WebPages.Deployment.dll
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Core\bin\Debug\System.Web.WebPages.dll
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Core\bin\Debug\System.Web.WebPages.Razor.dll
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Core\bin\Debug\EPPlus.xml
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Core\bin\Debug\itextsharp.xml
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Core\bin\Debug\System.Web.Helpers.xml
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Core\bin\Debug\System.Web.Mvc.xml
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Core\bin\Debug\System.Web.Razor.xml
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Core\bin\Debug\System.Web.WebPages.xml
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Core\bin\Debug\System.Web.WebPages.Deployment.xml
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Core\bin\Debug\System.Web.WebPages.Razor.xml
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Core\obj\Debug\CC.Extensions.csprojAssemblyReference.cache
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Core\obj\Debug\CC.Extensions.csproj.CoreCompileInputs.cache
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Core\obj\Debug\CC.Extensions.csproj.CopyComplete
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Core\obj\Debug\CC.Extensions.dll
+D:\Diamond_Tasks_January_2020\cc\Code\CC.Core\obj\Debug\CC.Extensions.pdb
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Core\bin\Debug\CC.Extensions.dll
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Core\bin\Debug\CC.Extensions.pdb
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Core\bin\Debug\EPPlus.dll
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Core\bin\Debug\itextsharp.dll
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Core\bin\Debug\Microsoft.Web.Infrastructure.dll
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Core\bin\Debug\System.Web.Helpers.dll
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Core\bin\Debug\System.Web.Mvc.dll
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Core\bin\Debug\System.Web.Razor.dll
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Core\bin\Debug\System.Web.WebPages.Deployment.dll
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Core\bin\Debug\System.Web.WebPages.dll
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Core\bin\Debug\System.Web.WebPages.Razor.dll
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Core\bin\Debug\EPPlus.xml
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Core\bin\Debug\itextsharp.xml
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Core\bin\Debug\System.Web.Helpers.xml
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Core\bin\Debug\System.Web.Mvc.xml
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Core\bin\Debug\System.Web.Razor.xml
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Core\bin\Debug\System.Web.WebPages.xml
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Core\bin\Debug\System.Web.WebPages.Deployment.xml
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Core\bin\Debug\System.Web.WebPages.Razor.xml
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Core\obj\Debug\CC.Extensions.csprojAssemblyReference.cache
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Core\obj\Debug\CC.Extensions.csproj.CoreCompileInputs.cache
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Core\obj\Debug\CC.Extensions.csproj.CopyComplete
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Core\obj\Debug\CC.Extensions.dll
+D:\Current\Diamond_Tasks_January_2020\cc\Code\CC.Core\obj\Debug\CC.Extensions.pdb
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Core\bin\Debug\CC.Extensions.dll
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Core\bin\Debug\CC.Extensions.pdb
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Core\bin\Debug\EPPlus.dll
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Core\bin\Debug\itextsharp.dll
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Core\bin\Debug\Microsoft.Web.Infrastructure.dll
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Core\bin\Debug\System.Web.Helpers.dll
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Core\bin\Debug\System.Web.Mvc.dll
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Core\bin\Debug\System.Web.Razor.dll
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Core\bin\Debug\System.Web.WebPages.Deployment.dll
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Core\bin\Debug\System.Web.WebPages.dll
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Core\bin\Debug\System.Web.WebPages.Razor.dll
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Core\bin\Debug\EPPlus.xml
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Core\bin\Debug\itextsharp.xml
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Core\bin\Debug\System.Web.Helpers.xml
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Core\bin\Debug\System.Web.Mvc.xml
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Core\bin\Debug\System.Web.Razor.xml
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Core\bin\Debug\System.Web.WebPages.xml
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Core\bin\Debug\System.Web.WebPages.Deployment.xml
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Core\bin\Debug\System.Web.WebPages.Razor.xml
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Core\obj\Debug\CC.Extensions.csprojAssemblyReference.cache
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Core\obj\Debug\CC.Extensions.csproj.CoreCompileInputs.cache
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Core\obj\Debug\CC.Extensions.csproj.CopyComplete
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Core\obj\Debug\CC.Extensions.dll
+D:\Current\Diamond_Tasks_January_2020 _LatestVersion\cc\Code\CC.Core\obj\Debug\CC.Extensions.pdb
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Core\bin\Debug\CC.Extensions.dll
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Core\bin\Debug\CC.Extensions.pdb
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Core\bin\Debug\EPPlus.dll
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Core\bin\Debug\itextsharp.dll
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Core\bin\Debug\Microsoft.Web.Infrastructure.dll
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Core\bin\Debug\System.Web.Helpers.dll
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Core\bin\Debug\System.Web.Mvc.dll
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Core\bin\Debug\System.Web.Razor.dll
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Core\bin\Debug\System.Web.WebPages.Deployment.dll
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Core\bin\Debug\System.Web.WebPages.dll
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Core\bin\Debug\System.Web.WebPages.Razor.dll
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Core\bin\Debug\EPPlus.xml
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Core\bin\Debug\itextsharp.xml
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Core\bin\Debug\System.Web.Helpers.xml
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Core\bin\Debug\System.Web.Mvc.xml
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Core\bin\Debug\System.Web.Razor.xml
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Core\bin\Debug\System.Web.WebPages.xml
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Core\bin\Debug\System.Web.WebPages.Deployment.xml
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Core\bin\Debug\System.Web.WebPages.Razor.xml
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Core\obj\Debug\CC.Extensions.csproj.CoreCompileInputs.cache
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Core\obj\Debug\CC.Extensions.csproj.CopyComplete
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Core\obj\Debug\CC.Extensions.dll
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Core\obj\Debug\CC.Extensions.pdb
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Core\obj\Debug\CC.Extensions.csprojAssemblyReference.cache
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Core\bin\Debug\CC.Extensions.dll
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Core\bin\Debug\CC.Extensions.pdb
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Core\bin\Debug\EPPlus.dll
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Core\bin\Debug\itextsharp.dll
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Core\bin\Debug\Microsoft.Web.Infrastructure.dll
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Core\bin\Debug\System.Web.Helpers.dll
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Core\bin\Debug\System.Web.Mvc.dll
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Core\bin\Debug\System.Web.Razor.dll
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Core\bin\Debug\System.Web.WebPages.Deployment.dll
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Core\bin\Debug\System.Web.WebPages.dll
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Core\bin\Debug\System.Web.WebPages.Razor.dll
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Core\bin\Debug\EPPlus.xml
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Core\bin\Debug\itextsharp.xml
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Core\bin\Debug\System.Web.Helpers.xml
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Core\bin\Debug\System.Web.Mvc.xml
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Core\bin\Debug\System.Web.Razor.xml
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Core\bin\Debug\System.Web.WebPages.xml
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Core\bin\Debug\System.Web.WebPages.Deployment.xml
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Core\bin\Debug\System.Web.WebPages.Razor.xml
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Core\obj\Debug\CC.Extensions.csprojAssemblyReference.cache
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Core\obj\Debug\CC.Extensions.csproj.CoreCompileInputs.cache
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Core\obj\Debug\CC.Extensions.csproj.CopyComplete
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Core\obj\Debug\CC.Extensions.dll
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Core\obj\Debug\CC.Extensions.pdb
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Core\bin\Debug\CC.Extensions.dll
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Core\bin\Debug\CC.Extensions.pdb
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Core\bin\Debug\EPPlus.dll
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Core\bin\Debug\itextsharp.dll
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Core\bin\Debug\Microsoft.Web.Infrastructure.dll
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Core\bin\Debug\System.Web.Helpers.dll
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Core\bin\Debug\System.Web.Mvc.dll
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Core\bin\Debug\System.Web.Razor.dll
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Core\bin\Debug\System.Web.WebPages.Deployment.dll
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Core\bin\Debug\System.Web.WebPages.dll
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Core\bin\Debug\System.Web.WebPages.Razor.dll
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Core\bin\Debug\EPPlus.xml
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Core\bin\Debug\itextsharp.xml
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Core\bin\Debug\System.Web.Helpers.xml
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Core\bin\Debug\System.Web.Mvc.xml
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Core\bin\Debug\System.Web.Razor.xml
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Core\bin\Debug\System.Web.WebPages.xml
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Core\bin\Debug\System.Web.WebPages.Deployment.xml
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Core\bin\Debug\System.Web.WebPages.Razor.xml
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Core\obj\Debug\CC.Extensions.csproj.CoreCompileInputs.cache
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Core\obj\Debug\CC.Extensions.csproj.CopyComplete
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Core\obj\Debug\CC.Extensions.dll
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Core\obj\Debug\CC.Extensions.pdb
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Core\obj\Debug\CC.Extensions.csprojAssemblyReference.cache

@@ -1,0 +1,135 @@
+﻿@model CommentsModelBase
+@using MvcContrib.UI.Grid
+@{
+	ViewBag.Title = Model.Title;
+	var id = Guid.NewGuid();
+}
+@section Header{
+	@if(Model.Comments.Count() > 0)
+	{
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$('table#@id').dataTable({
+				"bJQueryUI": true,
+				"sPaginationType": "full_numbers",
+				"aaSorting": [[2, "desc"]],
+				"aoColumnDefs": [
+					{
+						"aTargets": [0],
+						"sWidth": "70em",
+						"sClass": "comment compactRemark",
+						"mRender": function (data, vis, full) {
+							if (full[3] == "True") { // a file
+								if (data.indexOf("Program Overview") > -1) {
+									return '<a href="@Url.Action("ProgramOverviewFile", "MainReports", new { id = Model.Id })">' + data + '</a>';
+								}
+								else if (data.indexOf("Minutes") > -1) {
+									return '<a href="@Url.Action("MhsaFile", "MainReports", new { id = Model.Id })">' + data + '</a>';
+								}
+								else {
+									var commentId = parseInt(full[4]);
+									return '<a href="@Url.Action("PostApprovalCommentFile")/'+ full[4] +'">' + data + '</a>';
+								}
+							}
+							return data;
+						}
+					},
+					{
+						"aTargets": [3,4], "bVisible": false
+					}
+				]
+			});
+			$('.comment').live('click',function () {
+				$(this).toggleClass('compactRemark');
+				$(this).find('.comment').toggleClass('compactRemark');
+			});
+		});
+	</script>
+	}
+	<style>
+		.comment > div
+		{
+			cursor:pointer;
+			overflow: auto;
+		}
+		.comment.compactRemark > div
+		{
+
+			max-height: 6em;
+			
+			overflow:hidden;
+			text-overflow:ellipsis;
+		}
+	</style>
+}
+
+<h2>
+	@Html.DisplayFor(f=>f.Title)</h2>
+<table>
+	<tr>
+		<th>Financial Report Details:
+		</th>
+		<td>
+			<div class="display-item">
+				@Html.LabelFor(f=>f.Id)
+				@Html.DisplayFor(f=>f.Id)
+			</div>
+			<div class="display-item">
+				@Html.LabelFor(f=>f.AgenencyGroupName)
+				@Html.DisplayFor(f=>f.AgenencyGroupName)
+			</div>
+			<div class="display-item">
+				@Html.LabelFor(f=>f.Period)	
+				@Html.DisplayFor(f=>f.Period)
+			</div>
+		</td>
+	</tr>
+</table>
+
+@if(Model.Comments.Count() > 0)
+{
+@Html.Grid(Model.Comments).AutoGenerateColumns().Attributes(new Dictionary<string,object>{{"id",id}})
+}
+
+@if (Model.CanAddRemarks)
+{
+	using (Html.BeginForm(null, null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+	{
+		@Html.ValidationSummary()
+		@Html.HiddenFor(f => f.PostApprovalComment)
+		<fieldset>
+			@Html.LabelFor(f => f.NewComment)<br />
+			@Html.EditorFor(f => f.NewComment)
+			@if (Model.PostApprovalComment)
+			{
+				<text>File/s:</text>
+				<ul id="postApprovalFiles">
+					<li><input type="file" name="file"/></li>
+				</ul>
+				<script>
+					$(function () {
+						var filesList = $('#postApprovalFiles').on('change', ':input', function () {
+							console.debug('ccc');
+							if (this.value == "") {
+								$(this).closest('li').remove();
+							}
+							if (filesList.find(':file[value=""]').length == 0) {
+								var x = $('li:first-child', filesList).clone();
+								x.find(':input').val('');
+								$('#postApprovalFiles').append(x);
+							}
+						})
+					})
+				</script>
+			}
+			<p>
+				<button type="submit" class="submit">
+					Submit</button>
+				<a href="@Url.Action("Details", new { id = Model.Id })" class="button cancel">Cancel</a>
+			</p>
+		</fieldset>
+	}
+}
+<p>
+	@Html.ActionLink("Back to Details", "Details", new { id = Model.Id })
+</p>

@@ -1,0 +1,79 @@
+﻿@model HseapSummaryModel
+@{
+    ViewBag.Title = "HSEAP Summary";
+}
+
+<h2>@ViewBag.Title</h2>
+<table>
+    <thead>
+        <tr>
+            <th></th>
+            <th colspan="3">QUARTER: @Model.Start.ToMonthString() to @Model.EndDisplay.ToMonthString()</th>
+            <th colspan="3">INCEPTION-TO-DATE</th>
+        </tr>
+        <tr>
+            <th>Category of Grant</th>
+            <th>Number of Nazi Victims Served</th>
+            <th>Number of Grants</th>
+            <th>Total Amount (USD)</th>
+            <th>Number of Nazi Victims Served</th>
+            <th>Number of Grants</th>
+            <th>Total Amount (USD)</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var row in Model.Data)
+        {
+            <tr>
+                <td>@Html.DisplayFor(f => row.TypeName)
+                    @if (!string.IsNullOrWhiteSpace(row.TypeDescription))
+                    {<text>(@Html.DisplayFor(f => row.TypeDescription))</text>}
+                </td>
+                <td>
+                    @Html.DisplayFor(f => row.ReportSummary.ClientsCount)
+                </td>
+                <td>
+                    @Html.DisplayFor(f => row.ReportSummary.GrantsCount)
+                </td>
+                <td>
+                    @Html.DisplayFor(f => row.ReportSummary.TotalAmount)
+                </td>
+                <td>
+                    @Html.DisplayFor(f => row.AppSummary.ClientsCount)
+                </td>
+                <td>
+                    @Html.DisplayFor(f => row.AppSummary.GrantsCount)
+                </td>
+                <td>
+                    @Html.DisplayFor(f => row.AppSummary.TotalAmount)
+                </td>
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <td>TOTAL</td>
+            <td>
+                @Html.DisplayFor(f => f.TotalsRow.ReportSummary.ClientsCount)
+            </td>
+            <td>
+                @Html.DisplayFor(f => f.TotalsRow.ReportSummary.GrantsCount)
+            </td>
+            <td>
+                @Html.DisplayFor(f => f.TotalsRow.ReportSummary.TotalAmount)
+            </td>
+            <td>
+                @Html.DisplayFor(f => f.TotalsRow.AppSummary.ClientsCount)
+            </td>
+            <td>
+                @Html.DisplayFor(f => f.TotalsRow.AppSummary.GrantsCount)
+            </td>
+            <td>
+                @Html.DisplayFor(f => f.TotalsRow.AppSummary.TotalAmount)
+            </td>
+        </tr>
+    </tfoot>
+</table>
+<div>
+    <a href="@Url.Action("HseapSummaryExport", "MainReports", new { id = Model.Id })"  class="button">Export</a>
+</div>

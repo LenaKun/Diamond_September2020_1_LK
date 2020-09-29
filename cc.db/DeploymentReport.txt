@@ -1,0 +1,94 @@
+﻿** Highlights
+     Tables that will be rebuilt
+       [dbo].[Clients]
+     Clustered indexes that will be dropped
+       None
+     Clustered indexes that will be created
+       None
+     Possible data issues
+       The type for column PartTimePercentage in table [dbo].[PersonnelReports] is currently  DECIMAL (18) NULL but is being
+         changed to  SMALLMONEY NULL. Data loss could occur.
+       The type for column Salary in table [dbo].[PersonnelReports] is currently  DECIMAL (18) NULL but is being changed to 
+         SMALLMONEY NULL. Data loss could occur.
+       The type for column ServicePercentage in table [dbo].[PersonnelReports] is currently  DECIMAL (18) NULL but is being
+         changed to  SMALLMONEY NULL. Data loss could occur.
+
+** User actions
+     Drop
+       on [dbo].[Clients].[ApprovalStatusId] (Default Constraint)
+       on [dbo].[Clients].[IncomeCriteriaComplied] (Default Constraint)
+       on [dbo].[Clients].[IncomeVerificationRequired] (Default Constraint)
+       on [dbo].[Clients].[IsCeefRecipient] (Default Constraint)
+       on [dbo].[Clients].[UpdatedAt] (Default Constraint)
+       on [dbo].[Clients].[CreatedAt] (Default Constraint)
+       on [dbo].[Clients] (Foreign Key)
+       on [dbo].[Clients] (Foreign Key)
+       on [dbo].[Clients] (Foreign Key)
+       on [dbo].[Clients] (Foreign Key)
+       on [dbo].[Clients] (Foreign Key)
+       on [dbo].[Clients] (Foreign Key)
+       on [dbo].[Clients] (Foreign Key)
+       on [dbo].[Clients] (Foreign Key)
+       on [dbo].[Clients] (Foreign Key)
+       on [dbo].[ClientReports] (Foreign Key)
+       [dbo].[FK_HcCarryOverHours_Clients] (Foreign Key)
+       on [dbo].[ClientReportBase] (Foreign Key)
+       on [dbo].[EmergencyReports] (Foreign Key)
+       on [dbo].[Services] (Check Constraint)
+       on [dbo].[Services] (Check Constraint)
+     Alter
+       [cc.db] (Assembly)
+       [dbo].[PersonnelReports] (Table)
+       [dbo].[ImportFS] (Procedure)
+     Table rebuild
+       [dbo].[Clients] (Table)
+     Create
+       [dbo].[ImportClients] (Table)
+       [dbo].[ImportHcep] (Table)
+       Default Constraint on [dbo].[ImportClients].[ApprovalStatusId] (Default Constraint)
+       Default Constraint on [dbo].[ImportClients].[IncomeCriteriaComplied] (Default Constraint)
+       Default Constraint on [dbo].[ImportClients].[IncomeVerificationRequired] (Default Constraint)
+       Default Constraint on [dbo].[ImportClients].[IsCeefRecipient] (Default Constraint)
+       Default Constraint on [dbo].[ImportClients].[UpdatedAt] (Default Constraint)
+       Default Constraint on [dbo].[ImportClients].[CreatedAt] (Default Constraint)
+       [dbo].[FK__Clients_MasterClients] (Foreign Key)
+       Check Constraint on [dbo].[Services].[MinExpPercentage] (Check Constraint)
+       Check Constraint on [dbo].[Services].[MaxExpPercentage] (Check Constraint)
+       [dbo].[ImportHcepProc] (Procedure)
+
+** Supporting actions
+     Drop
+       [dbo].[FK__HomeCareEntitledPeriods_Clients] (Foreign Key)
+       [dbo].[FK_MedicalEquipmentReports_Clients] (Foreign Key)
+       [dbo].[FK_MhmReports_Clients] (Foreign Key)
+       [dbo].[FK__FunctionalityScores__Clients] (Foreign Key)
+     Create
+       [dbo].[Clients].[Clients_Name] (Index)
+       [dbo].[Clients].[Clients_hce] (Index)
+       [dbo].[Clients].[IX_Clients_JoinDate] (Index)
+       Foreign Key on [dbo].[Clients].[AgencyId] (Foreign Key)
+       Foreign Key on [dbo].[Clients].[StateId] (Foreign Key)
+       Foreign Key on [dbo].[Clients].[LeaveReasonId] (Foreign Key)
+       Foreign Key on [dbo].[Clients].[ApprovalStatusId] (Foreign Key)
+       Foreign Key on [dbo].[Clients].[FundStatusId] (Foreign Key)
+       Foreign Key on [dbo].[Clients].[UpdatedById] (Foreign Key)
+       Foreign Key on [dbo].[Clients].[NationalIdTypeId] (Foreign Key)
+       Foreign Key on [dbo].[Clients].[OtherIdTypeId] (Foreign Key)
+       Foreign Key on [dbo].[ClientReports].[ClientId] (Foreign Key)
+       [dbo].[FK__HomeCareEntitledPeriods_Clients] (Foreign Key)
+       Foreign Key on [dbo].[ClientReportBase].[ClientId] (Foreign Key)
+       Foreign Key on [dbo].[EmergencyReports].[ClientId] (Foreign Key)
+       [dbo].[FK_MedicalEquipmentReports_Clients] (Foreign Key)
+       [dbo].[FK_MhmReports_Clients] (Foreign Key)
+       [dbo].[FK__FunctionalityScores__Clients] (Foreign Key)
+       [dbo].[ClientsDeleteTrigger] (Trigger)
+       [dbo].[ClientsUpdateClrTrigger] (Trigger)
+     Refresh
+       [dbo].[ImportCri] (Procedure)
+       [dbo].[ImportCriEmergency] (Procedure)
+       [dbo].[InsertClient] (Procedure)
+
+The type for column PartTimePercentage in table [dbo].[PersonnelReports] is currently  DECIMAL (18) NULL but is being changed to  SMALLMONEY NULL. Data loss could occur.
+The type for column Salary in table [dbo].[PersonnelReports] is currently  DECIMAL (18) NULL but is being changed to  SMALLMONEY NULL. Data loss could occur.
+The type for column ServicePercentage in table [dbo].[PersonnelReports] is currently  DECIMAL (18) NULL but is being changed to  SMALLMONEY NULL. Data loss could occur.
+

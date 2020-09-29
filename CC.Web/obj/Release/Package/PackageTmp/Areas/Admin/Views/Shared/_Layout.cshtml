@@ -1,0 +1,96 @@
+﻿@{
+	Layout = "~/Views/Shared/_layout.cshtml";
+}
+@RenderSection("Header", false)
+@section SubMenu
+{
+	<ul id="subMenu" class="menu">
+		@if (HttpContext.Current.User.IsInRole(CC.Data.FixedRoles.Admin.ToString()) || HttpContext.Current.User.IsInRole(CC.Data.FixedRoles.GlobalOfficer.ToString()) || HttpContext.Current.User.IsInRole(CC.Data.FixedRoles.AuditorReadOnly.ToString())
+				|| HttpContext.Current.User.IsInRole(CC.Data.FixedRoles.CfsAdmin.ToString()))
+        {
+			if (HttpContext.Current.User.IsInRole(CC.Data.FixedRoles.Admin.ToString()) || HttpContext.Current.User.IsInRole(CC.Data.FixedRoles.GlobalOfficer.ToString()))
+			{
+				<li>
+					@Html.ActionLink("Automated Reports", "Index", "AutomatedReports", new { area = "admin" }, null)
+				</li>
+			}
+			if (HttpContext.Current.User.IsInRole(CC.Data.FixedRoles.Admin.ToString()))
+            {
+			    <li>
+				    @Html.ActionLink("JNV Status", "Index", "ClientApprovalStatus", new { area = "admin" },null)
+			    </li>
+			    <li>
+				    @Html.ActionLink("Master Funds", "Index", "MasterFunds", new { area = "admin" }, null)
+			    </li>
+			    <li>
+				    @Html.ActionLink("Funds", "Index", "Funds", new { area = "admin" }, null)
+			    </li>
+            }
+			if (!HttpContext.Current.User.IsInRole(CC.Data.FixedRoles.CfsAdmin.ToString()))
+			{
+				<li>
+					@Html.ActionLink("Apps", "Index", "Apps", new { area = "admin" }, null)
+				</li>
+			}
+			if (HttpContext.Current.User.IsInRole(CC.Data.FixedRoles.Admin.ToString()))
+            {
+			    <li>
+				    @Html.ActionLink("Service Types", "Index", "ServiceTypes", new { area = "admin" }, null)
+			    </li>
+			    <li>
+				    @Html.ActionLink("Services", "Index", "Services", new { area = "admin" }, null)
+			    </li>
+			    <li>
+				    @Html.ActionLink("Emergency Caps", "Index", "EmergencyCaps", new { area = "admin" }, null)
+			    </li>
+				<li>
+					@Html.ActionLink("Homecare Caps", "Index", "HCWeeklyCaps", new { area = "admin" }, null)
+				</li>
+				<li>
+					@Html.ActionLink("MHM Caps", "Index", "MhmCaps", new { area = "admin" }, null)
+				</li>
+			    <li>
+				    @Html.ActionLink("Deleted Clients", "Index", "DeletedClients", new { area = "admin" }, null)
+			    </li>
+			    <li>
+				    @Html.ActionLink("SERs", "Index", "AgencyGroups", new { area = "admin" },null)
+			    </li>
+			    <li>
+				    @Html.ActionLink("Agencies", "Index", "Agencies", new { area = "admin" },null)
+			    </li>
+	  		    <li>
+				    @Html.ActionLink("Disability Levels", "Index", "FunctionalityLevels", new { area = "admin" },null)
+			    </li>
+			    <li>
+				    @Html.ActionLink("Regions", "Index", "Regions", new { area = "admin" },null)
+			    </li>
+				<li>
+					@Html.ActionLink("Comm Prefs", "Index", "CommPrefs", new { area = "admin" }, null)
+				</li>
+			    <li>
+				    @Html.ActionLink("Resources", "Index", "Resources", new { area = "admin" },null)
+			    </li>
+				<li>
+					@Html.ActionLink("General Settings", "Index", "GeneralSettings", new { area = "admin" }, null)
+				</li>
+				<!--<li>
+					@Html.ActionLink("Send Email To Users", "Index", "SendEmailToUsers", new { area = "admin" }, null)
+				</li>-->
+			}
+			if (HttpContext.Current.User.IsInRole(CC.Data.FixedRoles.Admin.ToString()) || HttpContext.Current.User.IsInRole(CC.Data.FixedRoles.CfsAdmin.ToString()))
+			{
+				<li>
+					@Html.ActionLink("CFS Amounts", "Index", "CfsAmounts", new { area = "admin" }, null)
+				</li>
+			}
+			if (HttpContext.Current.User.IsInRole(CC.Data.FixedRoles.Admin.ToString()))
+			{
+				<li>
+					@Html.ActionLink("Landing Page", "Index", "LandingPageSettings", new { area = "admin" }, null)
+				</li>
+			}
+		}
+
+	</ul>
+}
+@RenderBody()

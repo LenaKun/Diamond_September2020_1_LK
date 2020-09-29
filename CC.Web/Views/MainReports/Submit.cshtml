@@ -1,0 +1,266 @@
+﻿@model MainReportSubmissionScreenModel
+
+@{
+    /**/
+
+    /**/
+
+    ViewBag.Title = "Submission";
+}
+<style>
+
+    .dt-buttons {
+        background-color: #CCCCCC;
+    }
+
+    .dt-button buttons-excel buttons-html5 {
+        background-color: #CCCCCC;
+    }
+
+    .dataTables_filter {
+        background-color: #CCCCCC;
+        width: 99%;
+        float: left;
+    }
+
+
+    .DataTables_Table_0_filter {
+        background-color: #CCCCCC;
+    }
+
+
+    .sorting_asc {
+        background-color: #e6e6e6;
+    }
+
+    .sorting {
+        background-color: #e6e6e6;
+    }
+
+
+    DataTables_Table_0_length {
+        background-color: #CCCCCC;
+    }
+
+    dataTables_length {
+        background-color: #CCCCCC;
+    }
+</style>
+
+@section Header{
+
+    @if (Model.Errors.Any())
+    {
+        <script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
+        <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+        <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/1.5.6/js/dataTables.buttons.min.js"></script>
+        <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.flash.min.js"></script>
+        <script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+        <script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+        <script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+        <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.html5.min.js"></script>
+        <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.print.min.js"></script>
+        <script type="text/javascript" language="javascript" src="../../../../examples/resources/demo.js"></script>
+        <script type="text/javascript" class="init"></script>
+
+        <script type="text/javascript" class="init">
+            //simple datatable init
+            //$(document).ready(function () { $('table.grid').dataTable({ "bJQueryUI": true, "sPaginationType": "full_numbers" }); });
+
+            $(document).ready(function () {
+                $('table.grid').dataTable({
+                    "bJQueryUI": true, "sPaginationType": "full_numbers", "oLanguage": { "sLengthMenu": "Show _MENU_ entries per page" },
+                    "dom": 'lBfrtip', "buttons": [{
+                        text: 'Export To Excel', extend: 'excelHtml5', exportOptions: { columns: [0, 1, 2, 3] }, title: 'Main Report Submission Errors', message: 'The following errors need to be fixed before submitting report.'
+                    }]
+
+                });
+            });
+        </script>
+    }
+    else
+    {
+        <script type="text/javascript" class="init">
+            //simple datatable init
+            //$(document).ready(function () { $('table.grid').dataTable({ "bJQueryUI": true, "sPaginationType": "full_numbers" }); });
+
+            $(document).ready(function () {
+                $('table.grid').dataTable({
+                    "bJQueryUI": true, "sPaginationType": "full_numbers", "oLanguage": { "sLengthMenu": "Show _MENU_ entries per page" },
+                    "dom": 'lBfrtip', "buttons": [{
+                        text: 'Export To Excel', extend: 'excelHtml5', exportOptions: { columns: [0, 1, 2, 3] }, title: 'Main Report Submission Errors', message: 'The following errors need to be fixed before submitting report.'
+                    }]
+
+                });
+            });
+        </script>
+    }
+}
+
+
+
+<script type="text/javascript">
+
+    function exportTableToExcel(tableID) {
+
+        //var dataType = 'application/vnd.ms-excel';
+        // var tableSelect = document.getElementById(tableID);
+        //var tableHTML = tableSelect.outerHTML.replace(/ /g, '%20');
+
+        // var tableHTML = tableSelect.outerHTML;
+        // Specify file name
+        // filename = filename ? filename + '.xls' : 'excel_data.xls';
+
+        // Create download link element
+        // downloadLink = document.createElement("a");
+
+        //document.body.appendChild(downloadLink);
+
+        // Setting the file name
+        //  downloadLink.download = filename;
+
+        //triggering the function
+        // downloadLink.click();
+
+        //document.write(tableID);
+
+
+        var table = document.getElementById("tableID");
+        var html = table.outerHTML;
+        var url = 'data:application/vnd.ms-excel,' + escape(html); // Set your html table into url
+        elem.setAttribute("href", url);
+        elem.setAttribute("download", "export.xls"); // Choose the file name
+        return false;
+    }
+</script>
+
+<h2>
+    Main report Submission
+</h2>
+@Html.ValidationSummary()
+<table>
+    <thead>
+        <tr>
+            <th>
+                Fund
+            </th>
+            <th>
+                App #
+            </th>
+            <th>
+                Month From
+            </th>
+            <th>
+                Month To
+            </th>
+            <th>
+                Ser
+            </th>
+            <th>
+                Exc. Rate
+            </th>
+            <th>
+                Report Status
+            </th>
+            <th>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                @Html.DisplayFor(f => f.FundName)
+            </td>
+            <td>
+                @Html.DisplayFor(f => f.AppName)
+            </td>
+            <td>
+                @Html.DisplayFor(f => f.Start)
+            </td>
+            <td>
+                @Html.DisplayFor(f => f.End)
+            </td>
+            <td>
+                @Html.DisplayFor(f => f.AgencyGroupName)
+            </td>
+            <td>
+                @Html.DisplayFor(f => f.ExcRate)
+            </td>
+            <td>
+                @Html.DisplayFor(f => f.Status)
+            </td>
+            <td></td>
+        </tr>
+    </tbody>
+</table>
+
+
+@if (Model.Errors.Any())
+{
+    <script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/1.5.6/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.flash.min.js"></script>
+    <script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.html5.min.js"></script>
+    <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.print.min.js"></script>
+    <script type="text/javascript" language="javascript" src="../../../../examples/resources/demo.js"></script>
+    <script type="text/javascript" class="init"></script>
+    <fieldset>
+        <legend>Errors:</legend>
+        <p class="error">The following errors need to be fixed before submitting report.</p>
+        <a href="@Url.Action("Details", new { id = Model.Id })">Back to Details</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <!--<a href="">Export Errors to Excel</a>-->
+        <!--<iframe id="txtArea1" style="display:none"></iframe>
+        <button onclick="exportTableToExcel('table.grid')">Export Table Errors Data To Excel File</button>-->
+
+        @Html.Grid(Model.Errors).AutoGenerateColumns().Columns(column =>
+        {
+            column.For(f => f.SubReportId == default(int) ? new MvcHtmlString(string.Empty) : f.ReportingMethodId != (int)Service.ReportingMethods.SoupKitchens && f.ReportingMethodId != (int)Service.ReportingMethods.DayCenters
+                        ? Html.ActionLink("Detailed Report", "Details", "SubReports", new { id = f.SubReportId }, null) : Html.ActionLink("Detailed Report", "Calendar", "SubReports", new { id = f.SubReportId }, null));
+            column.For(f => f.ClientId==default(int)? new MvcHtmlString(string.Empty): Html.ActionLink("Client Details", "Details", "Clients", new { id = f.ClientId }, null));
+        })
+    </fieldset>
+
+
+}
+else
+{
+}
+
+@if (Model.Warnings.Any())
+{
+    <fieldset>
+        <legend>Warnings:</legend>
+
+        @Html.Grid(Model.Warnings).AutoGenerateColumns().Columns(column =>
+        {
+            column.For(f => f.SubReportId == default(int) ? new MvcHtmlString(string.Empty) : f.ReportingMethodId != (int)Service.ReportingMethods.SoupKitchens && f.ReportingMethodId != (int)Service.ReportingMethods.DayCenters
+                        ? Html.ActionLink("Detailed Report", "Details", "SubReports", new { id = f.SubReportId }, null) : Html.ActionLink("Detailed Report", "Calendar", "SubReports", new { id = f.SubReportId }, null));
+            column.For(f => f.ClientId == default(int) ? new MvcHtmlString(string.Empty) : Html.ActionLink("Client Details", "Details", "Clients", new { id = f.ClientId }, null));
+        })
+    </fieldset>
+
+}
+
+
+@if (!Model.Errors.Any())
+{
+    if (Model.Ser != null)
+    {
+        @Html.Partial("SerSubmit", Model.Ser)
+    }
+    else
+    {
+        <p>The report can't be submitted</p>
+    }
+}
+
+<fieldset>
+    <a href="@Url.Action("Details", new { id = Model.Id })">Back to Details</a>
+
+
+</fieldset>
+

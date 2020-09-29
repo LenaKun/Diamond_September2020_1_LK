@@ -1,0 +1,8 @@
+﻿@model Nullable<int>
+@{
+    
+    
+    
+}
+
+@Html.DropDownList("", new SelectList((IEnumerable<Country>)ViewBag.Countries, "Id", "Name", Model), "")

@@ -1,0 +1,74 @@
+﻿@model MainReportSelectAppModel
+@{
+    ViewBag.Title = "Create a New Financial Report- App Selection";
+}
+<h2>Create a New Financial Report- App Selection</h2>
+@section Header{
+	<script type="text/javascript">
+		$(function () {
+			$('#@Html.FieldIdFor(f => f.FundId)').change(function () {
+				asdf("Apps", $(this).val() ? "FundId eq " + $(this).val() : null, '#@Html.FieldIdFor(f => f.AppId)');
+			});
+		});
+
+		function asdf(objectSetName, filter, dependantSelector, select, orderby) {
+
+			//var val = $(this).val()
+			select = typeof orderby !== 'undefined' ? select : "Id,Name";
+			orderby = typeof orderby !== 'undefined' ? orderby : "Name";
+
+			var dataUrl = '@Url.Content("~/Data/DataService.svc/")' + objectSetName + '?';
+			dataUrl += "$select=" + select;
+			if (filter) {
+				dataUrl += "&$filter=" + filter;
+			}
+			dataUrl += "&$orderby=" + orderby;
+			$.ajax({
+				url: dataUrl,
+				method: "GET",
+				dataType: 'json',
+				success: function (data, textStatus, jqXHR) {
+					var child = $(dependantSelector);
+					child.html('');
+					$.each(data.d, function (i, value) {
+						child.append($('<option/>').attr('value', value.Id).html(value.Name));
+					});
+
+				},
+				error: function (jqXHR, textStatus, errorThrown) {
+				}
+			});
+		}
+	</script>
+}
+
+@using (Html.BeginForm())
+{ 
+	
+	@Html.ValidationSummary()
+	<p>
+		Please select an App:</p>
+	<table>
+		<tr>
+			<th rowspan="2">
+				Report Details:
+			</th>
+			<th>
+				Fund
+			</th>
+			<th>
+				App #
+			</th>
+		</tr>
+		<tr>
+			<td>@Html.DropDownListFor(f => f.FundId, Model.Funds, "")
+			</td>
+			<td>@Html.DropDownListFor(f => f.AppId, Model.Apps, "")
+			</td>
+		</tr>
+	</table>
+	<fieldset>
+		<button type="submit" class="submit">
+			Continue</button>
+	</fieldset>
+}

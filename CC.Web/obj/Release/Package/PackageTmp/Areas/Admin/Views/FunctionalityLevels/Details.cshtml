@@ -1,0 +1,55 @@
+﻿@model CC.Data.FunctionalityLevel
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>FunctionalityLevel</legend>
+
+    <div class="display-label">Name</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Name)
+    </div>
+
+    <div class="display-label">Active</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Active)
+    </div>
+
+    <div class="display-label">MinScore</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.MinScore)
+    </div>
+
+    <div class="display-label">MaxScore</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.MaxScore)
+    </div>
+
+    <div class="display-label">HcHoursLimit</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.HcHoursLimit)
+    </div>
+
+    <div class="display-label">StartDate</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.StartDate)
+    </div>
+
+    <div class="display-label">RelatedFunctionalityLevel</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.RelatedFunctionalityLevel.Name)
+    </div>
+
+    <div class="display-label">SubstractGovHours</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.SubstractGovHours)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

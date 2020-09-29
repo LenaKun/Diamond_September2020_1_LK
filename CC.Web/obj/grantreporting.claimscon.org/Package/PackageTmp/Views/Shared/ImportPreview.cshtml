@@ -1,0 +1,79 @@
+﻿@model CC.Web.Areas.Admin.Controllers.IImportModel
+<h1>
+    Import Preview</h1>
+@if (Model.Exceptions.Any())
+{
+    <p>
+        The following unexpected errors occured:
+        <ul>
+            @foreach (var ex in Model.Exceptions)
+            {
+                <li>@ex.Message</li>
+            }
+        </ul>
+    </p>
+    <p>Please fix the errors and upload the file again.</p>
+    <button onclick="javascript: window.history.go(-1)">
+        Cancel</button>
+}
+else
+{
+    <table id="it" style="width: 100%">
+        <thead>
+            <tr>
+                @foreach (var name in Model.GetNames())
+                {
+                    <th>
+                        @name
+                    </th>
+                }
+                <th>
+                    Errors
+                </th>
+                @*<th>
+                hidden
+            </th>*@
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.ViewData)
+            {
+                <tr>
+                    @foreach (var value in item.GetValues())
+                    {
+                        <td>
+                            @value
+                        </td>
+                    }
+                    <td class="error">
+                        <ul>
+                            @foreach (var vr in item.Validationresults)
+                            {
+                                <li>
+                                    @Html.DisplayFor(model => vr.ErrorMessage)
+                                </li>
+                            }
+                        </ul>
+                        @Html.DisplayFor(model => item.Exception.Message)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <script type="text/javascript">
+        $(function () {
+            var oTable = $('table#it').dataTable({
+                bFilter: false,
+                bLengthChange: false
+            });
+        });
+    </script>
+    <label>
+        Errors Count:</label>@Model.ErrorsCount
+    <fieldset>
+            <ul>
+                <li>Records that contain errors will be ignored during import</li>
+            </ul>
+        <a href="@Url.Action("Import", new { id = Model.Id })" class="button">Import</a>
+    </fieldset>
+}

@@ -1,0 +1,106 @@
+﻿@model IEnumerable<CC.Data.Service>
+@{
+	ViewBag.Title = "Resources";
+}
+<h2>@ViewBag.Title</h2>
+
+<script type="text/javascript">
+	$(function () {
+		var oTable =	$('table.grid').dataTable({
+			"bJQueryUI": true,
+			"bServerSide": true,
+			"sPaginationType": "full_numbers",
+			"aaSorting": [[0, "asc"], [1, "asc"]],
+			"sAjaxSource": "@Url.Action("IndexData")",
+			"aoColumns": [{
+				sTitle: "Culture",
+				mData: "Culture"
+			}, {
+				sTitle: "Key",
+				mData: "Key"
+			}, {
+				sTitle: "Value",
+				mData: "Value",
+				"mRenderEdit": function (val, type, obj) {
+					return '<textarea class="required" style="width:96%" value="">' + obj.Value + '</textarea>';
+				}
+			},{
+				"mData": null,
+				"mRender": function (val, type, obj) {
+					return "<a class='edit fa fa-pencil-square-o' title='Edit'></a>";
+				},
+				"mRenderEdit": function (val, type, obj) {
+					var html = "<a class='update fa fa-check' title='Update'></a>"
+					html += "<a class='cancel fa fa-undo' title='Cancel'></a>";
+					return html;
+				}
+			}]
+		});
+		oTable.on('click', '.edit', function () {
+			var $tr = $(this).closest('tr');
+			var data = oTable.fnGetData($tr.get(0));
+			var settings = oTable.fnSettings();
+			var columns = settings.aoColumns;
+			var $tds = $tr.find('td');
+			$tds.each(function (i, td) {
+				var col = columns[i];
+				if (col.mRenderEdit) {
+					var $td = $(td);
+					$td.html(col.mRenderEdit(null, null, data));
+				}
+			});
+		});
+
+		oTable.on('click', '.cancel', function () {
+			oTable.fnDraw(false);
+		});
+
+		oTable.on('click', '.update', function () {
+			var settings = oTable.fnSettings();
+			var $tr = $(this).closest('tr');
+			var data = oTable.fnGetData($tr.get(0));
+			var newdata = $.extend({}, data);
+			var columns = settings.aoColumns;
+			$tr.find('td').each(function (i, td) {
+				var col = columns[i];
+				if (col.mData) {
+					var input = $(td).find('textarea:first-child');
+					if (input.length > 0) {
+						newdata[col.mData] = input.val();
+					}
+				}
+			});
+			$.ajax({
+				"dataType": 'json',
+				"contentType": "application/json; charset=utf-8",
+				"type": "POST",
+				"url": "@Url.Action("SaveResource")",
+				"data": JSON.stringify(newdata)
+			}).done(function () {
+				oTable.fnUpdate(newdata, $tr.get(0));
+			}).fail(function (jqXHR, textStatus, errorThrown) {
+				console.log(jqXHR);
+			});
+
+		});
+
+	});
+</script>
+<table class="grid"></table>
+<fieldset>
+	<div class="editor-item">
+		<a href="@Url.Action("Export")">Export to Excel</a>
+	</div>
+</fieldset>
+<fieldset>
+	<form action="@Url.Action("Import")" method="post" enctype="multipart/form-data">
+		<input type="file" name="file" />
+		<button type="submit">Import</button>
+	</form>
+
+</fieldset>
+<script>
+	$('#exportBtn').click(function () {
+		window.location.href = '@Url.Action("Export")';
+	});
+</script>

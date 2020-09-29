@@ -1,0 +1,16 @@
+﻿@{
+	Layout = "~/Views/Shared/_Layout.cshtml";
+    
+}
+@section Header{
+	@RenderSection("Header", false)
+}
+@section SubMenu{
+
+	<ul id="subMenu" class="menu">
+		<li>@Html.ActionLink("Financial Reports List", "Index", "MainReports")</li>
+		@RenderSection("SubMenu", false)
+        <li><a href="https://grantreporting.claimscon.org/DiamondHelp/financial-reports/index.html" target="_blank">Help</a></li>
+	</ul>
+}
+@RenderBody()

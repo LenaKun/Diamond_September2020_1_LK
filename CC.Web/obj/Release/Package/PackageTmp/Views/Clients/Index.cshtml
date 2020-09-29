@@ -1,0 +1,580 @@
+﻿@model CC.Web.Models.ClientsListModel
+@{
+	ViewBag.Title = "Clients list";
+	int regionId = ViewBag.RegionId;
+}
+<h2>Clients list</h2>
+@section SubMenu{
+}
+<script type="text/javascript">
+	$(function () {
+		$('div.filter').find(':input').not('button').keypress(function (e) {
+
+			code = (e.keyCode ? e.keyCode : e.which);
+			if (code == 13) {
+				e.preventDefault();
+				$('div.filter button#go').click();
+			}
+
+		});
+	});
+</script>
+<div id="divTable">
+	<div id="filter">
+		<fieldset style="overflow: auto">
+			@if (!User.IsInRole("RegionReadOnly"))
+			{
+				<div class="editor-item">
+					<label>
+						Region:
+					</label>
+					@Html.EditorFor(f => f.Filter.RegionId)
+				</div>
+			}
+			<div class="editor-item">
+				<label>
+					Ser:
+				</label>
+				@Html.EditorFor(f => f.Filter.AgencyGroupId)
+			</div>
+			<div class="editor-item">
+				<label>
+					Agency:
+				</label>
+				@Html.EditorFor(f => f.Filter.AgencyId)
+				<script type="text/javascript">
+					var region = $('#@Html.FieldIdFor(model => model.Filter.RegionId)').select2({
+						width: 300,
+						allowClear: true,
+						placeholder: "All Regions",
+						initSelection: function (element, callback) {
+							var id = $(element).val();
+							if (id !== "") {
+								$.ajax('@Url.Content("~/data/dataservice.svc/Regions")' + '(' + id + ')', {
+									dataType: "json",
+								}).done(function (data) {
+									var a = data.d;
+									callback({ id: a.Id, text: a.Name });
+								}).fail(function () {
+									callback(null);
+								});
+							}
+						},
+						ajax: {
+							url: '@Url.Content("~/data/dataservice.svc/Regions")',
+							dataType: "json",
+							data: function (term) {
+								var filters = [];
+								if (term) {
+									filters.push("substringof('" + escape(term) + "', Name) eq true");
+								}
+								return {
+									"$filter": filters.join(" and "),
+									"$select": "Id,Name",
+									"$orderby": "Name"
+								};
+							},
+							results: function (data) {
+								return {
+									results: $.map(data.d, function (a) { return { id: a.Id, text: a.Name } })
+								};
+							}
+						}
+					});
+					var agencyGroup = $('#@Html.FieldIdFor(model => model.Filter.AgencyGroupId)').select2({
+						width: 300,
+						allowClear: true,
+						placeholder: "All Agency Groups",
+						initSelection: function (element, callback) {
+							var id = $(element).val();
+							if (id !== "") {
+								$.ajax('@Url.Content("~/data/dataservice.svc/AgencyGroups")' + '(' + id + ')', {
+									dataType: "json",
+								}).done(function (data) {
+									var a = data.d;
+									callback({ id: a.Id, text: a.Name });
+								}).fail(function () {
+									callback(null);
+								});
+							}
+						},
+						ajax: {
+							url: '@Url.Content("~/data/dataservice.svc/AgencyGroups")',
+							dataType: "json",
+							data: function (term) {
+								var filters = [];
+								if (region.val()) {
+									filters.push("Country/RegionId eq " + region.val());
+								}
+								if (term) {
+									filters.push("substringof('" + escape(term) + "', Name) eq true");
+								}
+								return {
+									"$filter": filters.join(" and "),
+									"$select": "Id,Name",
+									"$orderby": "Name"
+								};
+							},
+							results: function (data) {
+								return {
+									results: $.map(data.d, function (a) { return { id: a.Id, text: a.Name } })
+								};
+							}
+						}
+					});
+					var agency = $('#@Html.FieldIdFor(model => model.Filter.AgencyId)').select2({
+						width: 300,
+						allowClear: true,
+						placeholder: "All Agencies",
+						initSelection: function (element, callback) {
+							var id = $(element).val();
+							if (id !== "") {
+								$.ajax('@Url.Content("~/data/dataservice.svc/Agencies")' + '(' + id + ')', {
+									dataType: "json",
+								}).done(function (data) {
+									var a = data.d;
+									callback({ id: a.Id, text: a.Name });
+								}).fail(function () {
+									callback(null);
+								});
+							}
+						},
+						ajax: {
+							url: '@Url.Content("~/data/dataservice.svc/Agencies")',
+							dataType: "json",
+							data: function (term) {
+								var filters = [];
+								var isAdmin = @HttpContext.Current.User.IsInRole(FixedRoles.Admin).ToString().ToLower();
+								if (region.val() && isAdmin) {
+									filters.push("AgencyGroup/Country/RegionId eq " + region.val());
+								}
+								if (agencyGroup.val()) {
+									filters.push("GroupId eq " + agencyGroup.val());
+								}
+								if (term) {
+									filters.push("substringof('" + escape(term) + "', Name) eq true");
+								}
+								return {
+									"$select": "Id,Name",
+									"$filter": filters.join(" and "),
+									"$orderby": "Name"
+								};
+							},
+							results: function (data) {
+								return {
+									results: $.map(data.d, function (a) { return { id: a.Id, text: a.Name } })
+								};
+							}
+						}
+					});
+					region.change(function () {
+						agencyGroup.select2('val', '');
+						agency.select2('val', '');
+					});
+					agencyGroup.change(function () {
+						agency.select2('val', '');
+					});
+				</script>
+			</div>
+			<div class="editor-item">
+				<label>
+					Approval Status:
+				</label>
+				@Html.DropDownList("ApprovalStatusId", new SelectList(Model.ApprovalStatuses, "Key", "Value"), "")
+			</div>
+			<div class="editor-item">
+				<label>
+					First Name:
+				</label>
+				@Html.EditorFor(f => f.Filter.FirstName)
+			</div>
+			<div class="editor-item">
+				<label>
+					Last Name:
+				</label>
+				@Html.EditorFor(f => f.Filter.LastName)
+			</div>
+			<div class="editor-item">
+				<label>
+					Government Issued ID:
+				</label>
+				@Html.EditorFor(f => f.Filter.NationalId)
+			</div>
+			<div class="editor-item">
+				<label>
+					ID:
+				</label>
+				@Html.EditorFor(f => f.Filter.Id)
+			</div>
+			<div class="editor-item">
+				<label>Active</label>
+				<select id="active">
+					<option value="">All</option>
+					<option value="true">Active clients</option>
+					<option value="false">Inactive Clients</option>
+				</select>
+			</div>
+			<div class="editor-item">
+				<label>Create Date From:</label>
+				@Html.EditorFor(f => f.Filter.CreateDateFrom)
+			</div>
+			<div class="editor-item">
+				<label>Create Date To:</label>
+				@Html.EditorFor(f => f.Filter.CreateDateTo)
+			</div>
+			<div class="editor-item">
+				<label>Austrian Eligible</label>
+				<input type="checkbox" id="AustrianEligible" />
+			</div>
+			<div class="editor-item">
+				<label>Romanian Eligible</label>
+				<input type="checkbox" id="RomanianEligible" />
+			</div>
+			@if (((CC.Data.Services.IPermissionsBase)ViewBag.Permissions).CanSeeSc)
+			{
+				<div class="editor-item">
+					<label>SC</label>
+					<input type="checkbox" id="SC" />
+				</div>
+			}
+			@if (((CC.Data.Services.IPermissionsBase)ViewBag.Permissions).CanSeeDcc)
+			{
+				<div class="editor-item">
+					<label>DCC</label>
+					<input type="checkbox" id="DCC" />
+				</div>
+			}
+			@if (!User.IsInRole("BMF"))
+			{
+				<div class="editor-item">
+					<label>GG Reported Only</label>
+					<input type="checkbox" id="GGReportedOnly" />
+				</div>
+			}
+			<div class="editor-item">
+				<label>Homecare Waitlist Only</label>
+				<input type="checkbox" id="HcWaitlistOnly" />
+			</div>
+			<div class="editor-item">
+				<label>Other Services Waitlist Only</label>
+				<input type="checkbox" id="OtherWaitlistOnly" />
+			</div>
+			<div class="editor-item">
+				<button type="button" id="go" class="button">
+					Go
+				</button>
+				<button type="button" id="reset" class="button">
+					Reset
+				</button>
+			</div>
+			@if(!User.IsInRole(FixedRoles.CfsAdmin))
+			{
+				<div class="editor-item" id="exportContainer" style="display:none">
+					<label>Export Option</label>
+					@Html.DropDownList("ClientExportList", Model.GetExportList(), new { id = "ddlExport" })
+					<button type="button" id="exportBtn">
+						<i class="fa fa-folder-open-o"></i> Export
+					</button>
+					<script type="text/javascript">
+						$(function () {
+							$('#exportBtn').click(function () {
+								var location = '@Url.Action("Export", "Clients")?';
+								var filterValues = [];
+								var ff = $('#filter :input').each(function () {
+									if ($(this).attr('id') && $(this).val()) {
+										if ($(this).is(":checkbox")) {
+											if ($(this).is(":checked")) {
+												$(this).val(true)
+											}
+											else {
+												$(this).val(false)
+											}
+										}
+										var name = $(this).attr('id');
+										if ($(this).attr('id').indexOf("Filter_") >= 0) {
+											name = $(this).attr('id').substring(7, $(this).attr('id').length);
+										}
+										filterValues.push({ "name": name, "value": $(this).val() });
+									}
+
+								});
+								filterValues.push({ "name": "ExportOption", "value": $("#ddlExport").val() });
+								location += $.param(filterValues);
+								window.location = location;
+							});
+						});
+					</script>
+					<button type="button" onclick="window.print()">
+						Print
+					</button>
+				</div>
+			}
+		</fieldset>
+	</div>
+</div>
+<fieldset class="blockElement">
+	<h3>
+		Please select desired filter values and click the Go button to show the clients list
+	</h3>
+</fieldset>
+@using (Html.BeginForm())
+{
+	<table id="clientsListTable" style="width: 100%;display:none">
+		<thead>
+			<tr>
+				<th>
+					&nbsp;
+				</th>
+				<th>Last Name </th>
+				<th>First Name </th>
+				<th>CC ID </th>
+				<th>Birth Date </th>
+				<th>Government Issued ID </th>
+				<th>Address </th>
+				<th>City </th>
+                <th>Birth Country </th>
+				<th>Ser </th>
+				<th>Agency </th>
+				<th>Join Date </th>
+				<th>Functionality Level </th>
+				<th>Approval Status </th>
+				<th>Allowed Home Care Hours </th>
+				<th>Grandfathered Hours </th>
+				<th>GG Reported?</th>
+				<th>Details </th>
+			</tr>
+		</thead>
+	</table>
+	if ((this.ViewBag.Permissions as CC.Data.Services.IPermissionsBase).CanChangeApprovalStatus)
+	{
+		<fieldset id="approvalStausUpdate" style="display:none">
+			<span>Update Approval Status of selected clients to: </span>
+			@Html.DropDownListFor(model => model.UpdateModel.NewApprovalStatusId, EnumExtensions.ToSelectList<CC.Data.ApprovalStatusEnum>
+		(), "Select an Approval Status")
+			<button id="batchUpdateApprovalStatus" value="Update">
+				Update
+			</button>
+			<script type="text/javascript">
+				$(function () {
+					$('#batchUpdateApprovalStatus').click(function () {
+						var form = $(this).closest('form');
+						if (form.valid()) {
+							var url = '@Url.Action("Index")';
+							$.ajax({
+								url: url,
+								type: 'POST',
+								data: $(this).closest('form').serialize(),
+								success: function (data, textStatus, jqXHR) {
+									alert(data);
+									$('#clientsListTable').dataTable().fnDraw(false);
+								},
+								error: function (xhr) {
+									alert('uhoh');
+								}
+							});
+						}
+						return false;
+					});
+				});
+			</script>
+		</fieldset>
+	}
+}
+<div id="newClient">
+	@if ((this.ViewBag.Permissions as CC.Data.Services.IPermissionsBase).CanCreateNewClient)
+	{
+
+		@Html.ActionLink("Add A New Client", "Create", null, new { @class = "button bold addnew" })
+		if (User.IsInRole(FixedRoles.Admin))
+		{
+			<button class="button bold addnew ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" onclick="CheckSerAndConfirm(event)">Create Eligibility For All SER</button>
+			<a class="description" href="#" title="Clicking this button will create eligibility period for all the active clients in your SER with JNV status NEW that do not have any eligiabiltiy period. The eligibility start date will be the same as the client Join Date.">?</a>
+		}
+	}
+</div>
+<script id="clientsListDataTable" type="text/javascript">
+	function CheckSerAndConfirm(e) {
+		var ser = $('#@Html.FieldIdFor(f => f.Filter.AgencyGroupId)');
+		var serId = parseInt(ser.select2('val'));
+		if(!!serId && confirm("This will create eligibility period to all the active clients in your SER that are without any eligibility period and based on their Join Date. Continue?")) {
+			$.ajax({
+				url: '@Url.Action("CreateEligibility")',
+				type: 'POST',
+				dataType: 'json',
+				data: { serId: serId },
+			}).done(function (data) {
+				if (data.success) {
+					if(data.numOfRows > 0) {
+						alert("Eligibility created successfully. The number of eligibility periods created is " + data.numOfRows);
+					}
+					else {
+						alert("No eligibility periods were created");
+					}
+				}
+				else {
+					var errstr = '<ul class="error"><li>' + data.errors.join('</li><li>') + '</li></ul>';
+					alert(errstr);
+				}
+			}).fail(function () {
+				alert('Failed creating eligibility');
+			});
+		}
+		else if (!serId) {
+			alert("Please filter for a SER first");
+		}
+	}
+
+	$(function () {
+		var tableElement = $('#clientsListTable');
+		var blockElement = $('#blockElement');
+		var goButton=$('#filter #go');
+		var resetButton = $('#filter #reset');
+		var exportContainer = $('#exportContainer');
+		var updateApprovalStatusContainer = $('#approvalStausUpdate');
+
+		tableElement.hide();
+		resetButton.hide();
+		exportContainer.hide();
+		updateApprovalStatusContainer.hide();
+		blockElement.show();
+		goButton.one('click', function(){
+			tableElement.show();
+			resetButton.show();
+			exportContainer.show();
+			blockElement.hide();
+			initDataTable();
+		})
+		function initDataTable() {
+			var otable = tableElement.dataTable({
+				"aaSorting": [[3, "asc"]],
+				"bProcessing": true,
+				"bFilter": false,
+				"bServerSide": true,
+				"bJQueryUI": true,
+				"cache": false,
+				"sPaginationType": "full_numbers",
+				"sAjaxSource": '@Url.Action("IndexDataTables")',
+				"aoColumnDefs": [{
+					"aTargets": [0, -1], "bSortable": false
+				}, {
+					"aTargets": [0], mData: null, sClass: "readonly",
+					"bVisible": @((this.ViewBag.Permissions as CC.Data.Services.IPermissionsBase).CanChangeApprovalStatus.ToString().ToLower()),
+					"fnRender": function (o, val) {
+						var url = '@Url.Action("Details", "Clients")';
+						return '<input type="checkbox" name="@Html.FieldNameFor(model => model.UpdateModel.SelectedClientIds)" value="' + o.aData["Id"] + '" />';
+					}
+				}, {
+					"aTargets": [1], "sName": "LastName", mData: "LastName", sClass: "readonly"
+				}, {
+					"aTargets": [2], "sName": "FirstName", mData: "FirstName", sClass: "readonly"
+				}, {
+					"aTargets": [9], "sName": "AgencyGroupName", mData: "AgencyGroupName", sClass: "readonly"
+				}, {
+					"aTargets": [10], "sName": "AgencyName", mData: "AgencyName", sClass: "readonly"
+				}, {
+					"aTargets": [3], mData: "Id", bUseRendered: false, sClass: "readonly",
+					"fnRender": function (o, val) {
+						var url = '@Url.Action("Details", "Clients")';
+						return '<a href="' + url + '/' + val + '">' + val + '</a>';
+					},
+				}, {
+					"aTargets": [5], "sName": "NationalId", mData: "NationalId", sClass: "readonly"
+				}, {
+					"aTargets": [11], "sName": "JoinDate", mData: "JoinDate", sClass: "readonly", bUseRendered: false, sType: "date",
+					fnRender: function (o, val) {
+						return renderDate(val);
+					}
+				}, {
+					"aTargets": [6], "sName": "Address", mData: "Address", sClass: "readonly"
+				}, {
+					"aTargets": [7], "sName": "City", mData: "City", sClass: "readonly"
+				}, {
+                    "aTargets": [8], "sName": "BirthCountry", mData: "BirthCountry", sClass: "readonly"
+				}, {
+					"aTargets": [4], "sName": "BirthDate", mData: "BirthDate", sClass: "readonly", sType: "date",
+					fnRender: function (o, val) {
+						return renderDate(val);
+					}
+				}, {
+					"aTargets": [12], "sName": "FunctionalityLevelName", mData: "FunctionalityLevelName", sClass: "readonly"
+				}, {
+					"aTargets": [13], "sName": "ApprovalStatusName", mData: "ApprovalStatusName", sClass: "readonly"
+				}, {
+					"aTargets": [14], "sName": "AllowedHcHours", mData: "AllowedHcHours", sClass: "readonly",
+					"fnRender": function (o, val) {
+						return val == "" ? "N/A" : val;
+					}
+				}, {
+					"aTargets": [15], "sName": "GfHours", mData: "GfHours", sClass: "editable"
+				}, {
+					"aTargets": [16], "sName": "GGReportedOnly", mData: "GGReportedOnly", sClass: "readonly",
+					"bVisible": "@User.IsInRole("BMF")" == "False",
+					"fnRender": function (o, val) {
+						return val ? "Yes" : "No";
+					}
+				}, {
+					"aTargets": [17], mData: "Id", bUseRendered: false, sClass: "readonly",
+					"fnRender": function (o, val) {
+						var url = '@Url.Action("Details", "Clients")';
+						return '<a href="' + url + '/' + val + '">Details</a>';
+					},
+
+				}],
+				"fnServerData": function (sSource, aoData, fnCallback) {
+					aoData.push({ "name": "IE", "value": "e" + Math.random() });
+					var ff = $('#filter :input').each(function () {
+						if ($(this).attr('id') && $(this).val()) {
+							if ($(this).is(":checkbox")) {
+								if ($(this).is(":checked")) {
+									$(this).val(true)
+								}
+								else {
+									$(this).val(false)
+								}
+							}
+							var name = $(this).attr('id');
+							if ($(this).attr('id').indexOf("Filter_") >= 0) {
+								name = $(this).attr('id').substring(7, $(this).attr('id').length);
+							}
+							aoData.push({ "name": name, "value": $(this).val() });
+						}
+
+					});
+					$.getJSON(sSource, aoData, function (json) { fnCallback(json) });
+				},
+				"fnDrawCallback": function( oSettings ) {
+					var hasData = oSettings.aoData.length>0;
+					exportContainer.toggle(hasData);
+					updateApprovalStatusContainer.toggle(hasData);
+				},
+				"fnRowCallback": function (nRow, aData, iDisplayIndex) {
+					/* set tr id. assume the id is in the first column of data */
+					if (aData["Id"]) {
+						$(nRow).attr("id", aData["Id"]);
+					}
+					return nRow;
+				}
+			});
+
+			//binding to the filter GO button
+			goButton.click(function () {
+				otable.fnDraw();
+			});
+
+			//binding to the filter RESET button
+			resetButton.click(function () {
+				$('#filter :input').not(':button').not(':checkbox').val('');
+				$('#filter :input').not(':button').not(':checkbox').select2('val', '');
+				$('#AustrianEligible').prop('checked', false);
+				$('#RomanianEligible').prop('checked', false);
+				$('#SC').prop('checked', false);
+				$('#DCC').prop('checked', false);
+				$('#HcWaitlistOnly').prop('checked', false);
+				$('#OtherWaitlistOnly').prop('checked', false);
+				otable.fnDraw();
+			});
+
+		}
+	});
+
+</script>

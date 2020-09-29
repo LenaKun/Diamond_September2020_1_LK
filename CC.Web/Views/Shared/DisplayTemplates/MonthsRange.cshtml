@@ -1,0 +1,4 @@
+﻿@model Range<DateTime>
+<span class="stringdisplaytemplate">
+@Model.Start.ToMonthString() - @Model.End.AddMonths(-1).ToMonthString()
+</span>

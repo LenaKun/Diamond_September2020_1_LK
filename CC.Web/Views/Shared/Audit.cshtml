@@ -1,0 +1,123 @@
+﻿@{
+	ViewBag.Title = "Audit";
+	Layout = null;
+}
+<button type="button" id="showAuditButton">@Resources.Resource.Audit</button>
+<div id="auditDialog" title="Audit">
+	<div class="dataTablesContainer">
+		<table class="layoutTable">
+			<tr>
+				<td class="labelCell">
+					<label>
+						@Resources.Resource.FilterBy:
+					</label>
+				</td>
+				<td id="historyFilter">
+					@Resources.Resource.FieldName:&nbsp;
+					<input type="text" id="fieldName" @*placeholder="FieldName"*@ />
+					@Resources.Resource.DateFrom:&nbsp;
+					<input type="text" class="date" id="fromDate" @*placeholder="Date From"*@ />
+					@Resources.Resource.DateTo:&nbsp;&nbsp;
+					<input type="text" class="date" id="toDate" @*placeholder="Date To"*@ />
+					&nbsp;
+					<button type="button" id="go" class="button">
+						@Resources.Resource.Go
+					</button>
+					&nbsp;
+					<button type="button" id="reset" class="button">
+						@Resources.Resource.Reset
+					</button>
+				</td>
+			</tr>
+		</table>
+		<table id="historyDataTable">
+			<thead>
+				<tr>
+					<th>
+						@Resources.Resource.Date
+					</th>
+					<th>
+						@Resources.Resource.FieldName
+					</th>
+					<th>
+						@Resources.Resource.OldValue
+					</th>
+					<th>
+						@Resources.Resource.NewValue
+					</th>
+					<th>
+						@Resources.Resource.UpdatedBy
+					</th>
+				</tr>
+			</thead>
+		</table>
+	</div>
+</div>
+
+<script type="text/javascript">
+	$(function () {
+		var historyDataTable;
+		var dialog = $('#auditDialog').dialog({
+			autoOpen: false,
+			modal: true,
+			width: 'auto',
+			height: 'auto',
+			open: function (event, ui) {
+				if(!historyDataTable){
+					historyDataTable = $('table#historyDataTable').dataTable({
+						"bProcessing": true,
+						"bLengthChange": false,
+						"bFilter": false,
+						"bServerSide": true,
+						"bJQueryUI": true,
+						"aaSorting": [[0, 'desc']],
+						"sPaginationType": "full_numbers",
+						"sAjaxSource": '@Url.Action("Audit")',
+						"fnServerData": function (sSource, aoData, fnCallback) {
+							var ff = $('#historyFilter :input').each(function () {
+								aoData.push({ "name": $(this).attr('id'), "value": $(this).val() })
+							});
+							aoData.push({ "name": "Id", 'value': @Model });
+							$.getJSON(sSource, aoData, function (json) {
+								console.log('dd', json);
+								fnCallback(json) });
+						},
+						"aoColumns": [{
+							"mData": 'UpdateDate', "sTitle": "@Resources.Resource.Date", "mRender": function(val){
+								return renderDateTime(val);
+							}
+						}, {
+							"mData": "FieldName", "sTitle": "@Resources.Resource.FieldName"
+						}, {
+							"mData": "OldValue", "sTitle": "@Resources.Resource.OldValue"
+						}, {
+							"mData": "NewValue", "sTitle": "@Resources.Resource.NewValue"
+						}, {
+							"mData": "UpdatedBy", "sTitle": "@Resources.Resource.UpdatedBy"
+						}]
+
+					});
+					$('#historyFilter #go').click(function () {
+						historyDataTable.fnDraw();
+					});
+
+					$('#historyFilter #reset').click(function () {
+						$(this).closest('td').find('input').val('');
+						historyDataTable.fnDraw();
+					});
+				}
+				else{
+					historyDataTable.fnDraw();
+				}
+			},
+			buttons: {
+				"@Resources.Resource.Close": function () {
+					dialog.dialog('close');
+				}
+			}
+		});
+		$('#showAuditButton').click(function(){
+			dialog.dialog('open');
+		});
+	});
+</script>

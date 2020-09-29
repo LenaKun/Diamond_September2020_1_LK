@@ -1,0 +1,77 @@
+﻿@model AppBudgetRevisionHistoryModel
+@{
+	ViewBag.Title = "Revision History";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@Html.Partial("Header", Model.AppBudget)
+
+@if (Model.Rows.Any())
+{
+	<fieldset id="filter">
+		<legend>Filter</legend>
+		@Html.Label("Agencies", "Agency")
+		@Html.DropDownList("Agencies", "")
+		@Html.Label("RevisionDates", "Revision Date")
+		@Html.DropDownList("RevisionDates", "")
+		@Html.Label("Services", "Service")
+		@Html.DropDownList("Services", "")
+		@Html.Label("ServiceTypes", "Service Type")
+		@Html.DropDownList("ServiceTypes", "")
+		<button type="button" class="reset">Reset</button>
+	</fieldset>
+	<script>
+        var isNotBmf = '@User.IsInRole("BMF")' == 'False';
+		$(function () {
+		    var dt = $('table.grid').dataTable({
+		        "bJQueryUI": true,
+		        "sPaginationType": "full_numbers",
+		        "aaSorting": [[0, "asc"]],
+		        "aoColumnDefs": [
+					{ "aTargets": [0, 1, 2, 3], "bVisible": false },
+					{ "aTargets": [4], "iDataSort": 3 },
+		            { "aTargets": [10, 11, 12, 13], "bVisible": isNotBmf }
+				]
+			});
+
+			$('#Agencies').change(function () {
+				dt.fnFilter($(this).val(), 0);
+			});
+			$('#Services').change(function () {
+				dt.fnFilter($(this).val(), 1);
+			});
+			$('#ServiceTypes').change(function () {
+				dt.fnFilter($(this).val(), 2);
+			});
+			$('#RevisionDates').change(function () {
+				dt.fnFilter($(this).val(), 3);
+			});
+			$('#filter button.reset').click(function () {
+				$('#filter select').val('').change();
+			});
+		});
+	</script>
+}
+@Html.Grid(Model.Rows).Columns(column =>
+	{
+		column.For(f => f.AgencyId);
+		column.For(f => f.ServiceId);
+		column.For(f => f.ServiceTypeId);
+		column.For(f => (f.Date - new DateTime(1970, 1, 1)).TotalMilliseconds);
+		column.For(f => f.Date).Named("Revision Date");
+		column.For(f => f.AgencyName).Named("Agency");
+		column.For(f => f.ServiceType).Named("Service type");
+		column.For(f => f.ServiceName).Named("Service");
+		column.For(f => Html.DisplayFor(a => f.CCGrant)).Named("CC grant");
+		column.For(f => f.CurrencyCode).Named("CUR");
+		column.For(f => Html.DisplayFor(a => f.RequiredMatch)).Named("Required match");
+		column.For(f => f.CurrencyCode).Named("CUR");
+		column.For(f => Html.DisplayFor(a => f.AgencyContribution)).Named("Agency contribution");
+		column.For(f => f.CurrencyCode).Named("CUR");
+		column.For(f => f.Remarks).Named("Remarks");
+	})
+<p>
+	<a href="@Url.Action("Details", new { id = Model.AppBudget.Id })" class="button">Budget Details</a>
+</p>
+

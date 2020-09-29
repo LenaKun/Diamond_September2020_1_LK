@@ -1,0 +1,84 @@
+﻿@model IEnumerable<CC.Data.Fund>
+@{
+    ViewBag.Title = "Funds";
+}
+<h2>@ViewBag.Title</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table id="FundsTable">
+    <thead>
+        <tr>
+			<th>Id</th>
+            <th>
+                MasterFund
+            </th>
+            <th>
+                Name
+            </th>
+            <th>
+                StartDate
+            </th>
+            <th>
+                EndDate
+            </th>
+            <th>
+                Amount
+            </th>
+            <th>
+                Currency
+            </th>
+            <th></th>
+        </tr>
+
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MasterFund.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Amount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Currency.Name)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+            @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                </td>
+            </tr>
+        }
+    </tbody>
+
+</table>
+<fieldset>
+    <div class="editor-item">
+        <button type="button" id="exportBtn">Export to Excel</button>
+    </div>
+</fieldset>
+<script>
+    $('#exportBtn').click(function () {
+        window.location.href = '@Url.Action("Export")';
+    });
+
+    $(function () {
+        $('#FundsTable').dataTable();
+    });
+</script>

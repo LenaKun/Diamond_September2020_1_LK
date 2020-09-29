@@ -1,0 +1,33 @@
+﻿@model CC.Web.Areas.Admin.Models.AutomatedReportsModel
+@{
+    ViewBag.Title = "Automated Reports";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<form action="@Url.Action("Update")" method="post">
+    <div>
+        @if (ViewData.ModelState["Success"] != null && ViewData.ModelState["success"].Errors.Count > 0)
+        {
+            @Html.ValidationSummary(true, ViewData.ModelState["Success"].Errors[0].ErrorMessage, new { @class = "validation-summary-success" })
+        }
+    </div>
+    <div class="editor-item">
+        @Html.LabelFor(f => f.LastEmailDate)
+        @Html.DisplayFor(f => f.LastEmailDate)
+    </div>
+    <div class="editor-item">
+        @Html.LabelFor(f => f.Status)
+        @Html.DisplayFor(f => f.Status)
+    </div>
+    <div class="editor-item">
+        @Html.LabelFor(f => f.IsActive)
+        @Html.EditorFor(f => f.IsActive)
+    </div>
+    <div class="editor-item">
+        <button type="submit">Update</button>
+    </div>
+    <div class="editor-item">
+        <a href="@Url.Action("EmailAllReports")" class="button">Email All Reports Now</a>
+    </div>
+</form>

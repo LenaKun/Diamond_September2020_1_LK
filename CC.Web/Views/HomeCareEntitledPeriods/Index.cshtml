@@ -1,0 +1,97 @@
+﻿@model HomeCareEntitledPeriodsIndexModel
+@{
+    Layout = null;
+}
+<div class="dataTablesContainer">
+    @if (Model.Permissions.CanDeleteHcePeriod)
+    {
+        <button id="btnDeleteHcepRow">
+        </button>
+    }
+    <table id="hcepDataTable" width="100%">
+        <thead>
+            <tr>
+                <th>
+                    Start Date
+                </th>
+                <th>
+                    End Date
+                </th>
+                <th>
+                    Updated By
+                </th>
+                <th>
+                    Updated At
+                </th>
+            </tr>
+        </thead>
+    </table>
+</div>
+<script type="text/javascript">
+    $(function () {
+        var hcepDataTable = $('table#hcepDataTable').dataTable({
+
+            "binfo": true,
+            "bProcessing": true,
+            "bLengthChange": false,
+            "bFilter": false,
+            "bServerSide": true,
+            "bJQueryUI": true,
+            "sPaginationType": "full_numbers",
+
+            "sAjaxSource": '@Url.Action("IndexDataTable", "HomeCareEntitledPeriods", new { ClientId = Model.ClientId })',
+            "fnRowCallback": function (nRow, aData, iDisplayIndex) {
+                /* set tr id. assume the id is in the first column of data */
+                if (aData["Id"]) {
+                    $(nRow).attr("id", aData["Id"]);
+                }
+                return nRow;
+            },
+            "aoColumns":
+            [
+                { "sName": "StartDate", mData: "StartDate" },
+                { "sName": "EndDate", mData: "EndDate", sClass: "ui-datepicker-inline" },
+                { "sName": "UpdatedBy", mData: "UpdatedBy" },
+                { "sName": "UpdatedAt", mData: "UpdatedAt" }
+            ]
+        });
+    });
+</script>
+@if (Model.CanEdit)
+{
+    <script type="text/javascript">
+        $(function () {
+            $('table#hcepDataTable').dataTable().makeEditable({
+            	aoColumns: [null, { type: "datepicker" }, null, null, null],
+                sUpdateURL: '@Url.Action("Update", "HomeCareEntitledPeriods")',
+                sDeleteURL: '@Url.Action("Delete", "HomeCareEntitledPeriods")',
+                sDeleteRowButtonId: "btnDeleteHcepRow",
+                sDeleteHttpMethod: "Post",
+                oDeleteRowButtonOptions: {
+                    label: "Remove",
+                    icons: { primary: 'ui-icon-trash' }
+                },
+                fnOnDeleting: function (tr, id) {
+                    if (id)
+                        return true;
+                    else
+                        return false;
+                },
+                fnOnDeleting: function (tr, id, fnDeleteRow) {
+                    if (confirm("The period will be deleted")) {
+                        fnDeleteRow(id);
+                    }
+                    else {
+                        return false;
+                    }
+                },
+                fnOnDeleted: function (status) {
+                    $("#trace").append("Deleted action finished. Status - " + status);
+                },
+
+
+            });
+        });
+    </script> 
+        
+}

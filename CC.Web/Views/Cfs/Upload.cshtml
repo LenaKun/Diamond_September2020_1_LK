@@ -1,0 +1,19 @@
+﻿@{
+	ViewBag.Title = "Update CFS Start Date";
+}
+
+<h2>Upload</h2>
+
+<form action="@Url.Action("Upload")" method="post" enctype="multipart/form-data">
+	@Html.ValidationSummary()
+	<p>Columns:</p>
+	<ul>
+		@foreach (string s in Model)
+		{
+			<li>@s</li>
+		}
+
+	</ul>
+	<input type="file" name="file" />
+	<button type="submit">Submit</button>
+</form>

@@ -1,0 +1,43 @@
+D:\Diamond_01282020\cc\Code\CC.Web\App_Data\dacpac\cc.db.dacpac
+D:\Diamond_01282020\cc\Code\CC.Web\App_Data\dacpac\
+D:\Diamond_01282020\cc\Code\CC.Web\App_Data\dacpac\cc.db.dll
+D:\Diamond_01282020\cc\Code\CC.Web\App_Data\dacpac\cc.db.pdb
+D:\Diamond_01282020\cc\Code\cc.db\obj\Debug\cc.db.sqlprojAssemblyReference.cache
+D:\Diamond_01282020\cc\Code\cc.db\obj\Debug\Model.xml
+D:\Diamond_01282020\cc\Code\cc.db\obj\Debug\refactor.xml
+D:\Diamond_01282020\cc\Code\cc.db\obj\Debug\postdeploy.sql
+D:\Diamond_01282020\cc\Code\cc.db\obj\Debug\predeploy.sql
+D:\Diamond_01282020\cc\Code\cc.db\obj\Debug\cc.db.dll
+D:\Diamond_01282020\cc\Code\cc.db\obj\Debug\cc.db.pdb
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Web\App_Data\dacpac\cc.db.dacpac
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Web\App_Data\dacpac\
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Web\App_Data\dacpac\cc.db.dll
+D:\Current\Latest_Development\Diamond\cc\Code\CC.Web\App_Data\dacpac\cc.db.pdb
+D:\Current\Latest_Development\Diamond\cc\Code\cc.db\obj\Debug\cc.db.sqlprojAssemblyReference.cache
+D:\Current\Latest_Development\Diamond\cc\Code\cc.db\obj\Debug\Model.xml
+D:\Current\Latest_Development\Diamond\cc\Code\cc.db\obj\Debug\refactor.xml
+D:\Current\Latest_Development\Diamond\cc\Code\cc.db\obj\Debug\postdeploy.sql
+D:\Current\Latest_Development\Diamond\cc\Code\cc.db\obj\Debug\predeploy.sql
+D:\Current\Latest_Development\Diamond\cc\Code\cc.db\obj\Debug\cc.db.dll
+D:\Current\Latest_Development\Diamond\cc\Code\cc.db\obj\Debug\cc.db.pdb
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Web\App_Data\dacpac\cc.db.dacpac
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Web\App_Data\dacpac\
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Web\App_Data\dacpac\cc.db.dll
+D:\Current\BackUp\05282020_Version onProduction\Code\CC.Web\App_Data\dacpac\cc.db.pdb
+D:\Current\BackUp\05282020_Version onProduction\Code\cc.db\obj\Debug\cc.db.sqlprojAssemblyReference.cache
+D:\Current\BackUp\05282020_Version onProduction\Code\cc.db\obj\Debug\Model.xml
+D:\Current\BackUp\05282020_Version onProduction\Code\cc.db\obj\Debug\refactor.xml
+D:\Current\BackUp\05282020_Version onProduction\Code\cc.db\obj\Debug\postdeploy.sql
+D:\Current\BackUp\05282020_Version onProduction\Code\cc.db\obj\Debug\predeploy.sql
+D:\Current\BackUp\05282020_Version onProduction\Code\cc.db\obj\Debug\cc.db.dll
+D:\Current\BackUp\05282020_Version onProduction\Code\cc.db\obj\Debug\cc.db.pdb
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Web\App_Data\dacpac\cc.db.dacpac
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Web\App_Data\dacpac\
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Web\App_Data\dacpac\cc.db.dll
+D:\Current\Latest_Development\Diamond_Latest\Code\CC.Web\App_Data\dacpac\cc.db.pdb
+D:\Current\Latest_Development\Diamond_Latest\Code\cc.db\obj\Debug\Model.xml
+D:\Current\Latest_Development\Diamond_Latest\Code\cc.db\obj\Debug\refactor.xml
+D:\Current\Latest_Development\Diamond_Latest\Code\cc.db\obj\Debug\postdeploy.sql
+D:\Current\Latest_Development\Diamond_Latest\Code\cc.db\obj\Debug\predeploy.sql
+D:\Current\Latest_Development\Diamond_Latest\Code\cc.db\obj\Debug\cc.db.dll
+D:\Current\Latest_Development\Diamond_Latest\Code\cc.db\obj\Debug\cc.db.pdb

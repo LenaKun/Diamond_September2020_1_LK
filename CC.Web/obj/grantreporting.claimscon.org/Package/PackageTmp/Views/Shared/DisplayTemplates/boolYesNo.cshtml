@@ -1,0 +1,7 @@
+﻿@model Nullable<bool>
+
+@{
+	var str = Model.HasValue ? Model.Value.ToYesNo():null;
+	}
+@Html.DisplayFor(model => str)
+

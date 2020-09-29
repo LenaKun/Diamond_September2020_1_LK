@@ -1,0 +1,205 @@
+﻿@model SubReportDetailsModel
+@{
+	ViewBag.Title = "Detailed Report";
+}
+@section Header
+{
+	<script>
+		var loadTotals = function () {
+			$('div#totals').load('@Url.Action("GetTotals", new { Id = Model.Id})' + '?IE=' + Math.random(), function () {
+				$('span.totalAmount').html($('div#totals span.totalAmount').html());
+			});
+		};
+	</script>
+	<script type="text/javascript">
+		var editable = '@Model.CanBeEdited' == 'True';
+		
+		$(function () {
+			$('table#programcosts').dataTable({
+				"bJQueryUI": true,
+				"sPaginationType": "full_numbers",
+				"bServerSide": true,
+				"bProcessing": true,
+				"sAjaxSource": '@Url.Action("GetRows", new { Id = Model.Id })',
+				"aoColumnDefs": [
+					{
+						"aTargets": ["_all"],
+						"bSortable": false
+					},
+					{
+						"aTargets": [0],
+						"sWidth": "1%"
+					},
+					{ "aTargets": [1, 2, 3, 4], "sWidth": "7em" },
+					{ "aTargets": [5, 6], "sWidth": "3em" },
+					{
+						//last colum with buttons
+						"aTargets": [-1],
+						//"bVisible": editable,
+						"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+							if (editable) {
+								$(nTd).html('<button type="button" class="delete">Delete</button><button type="button" class="edit">Modify</button>').addClass('control');
+							}
+						}
+					}
+
+
+
+				],
+				"fnServerParams": function (aoData) {
+					aoData.push({ name: "IE", value: Math.random() });
+					aoData.push({ name: "AppBudgetServiceId", value: "@Model.AppBudgetServiceId" });
+					aoData.push({ name: "AgencyId", value: "@Model.AgencyId" });
+				},
+				"fnRowCallback": function (nRow, aData, iDisplayIndex) {
+					$(nRow).attr("id", aData[0])
+					;
+
+					return nRow;
+				}
+			});
+
+			$('table#programcosts button.edit').live('click', function () {
+				var tr = $(this).closest('tr');
+				var oData = $('table#programcosts').dataTable().fnGetData(tr.get(0));
+				tr.find('td:nth-child(3)').html('').append($('<input type="text"/>').val(oData[2]));
+				tr.find('td:nth-child(4)').html('').append($('<input type="text"/>').val(oData[3]));
+				tr.find('td:last-child').html('<button type="button" class="update">Update</button><button type="button" class="cancel">Cancel</button>');
+			});
+			$('table#programcosts button.cancel').live('click', function () {
+				$('table#programcosts').dataTable().fnDraw();
+			});
+			$('table#programcosts button.update').live('click', function () {
+				var tr = $(this).closest('tr');
+				var oData = $('table#programcosts').dataTable().fnGetData(tr.get(0));
+				var d = {
+					Id: oData[0],
+					SubReportId: '@Model.Id',
+					ProgramCostTypeId: oData[7],
+					Amount: tr.find('td:nth-child(3) input').val(),
+					PercentFundedByCC: tr.find('td:nth-child(4) input').val(),
+					IE: Math.random()
+				};
+
+				$.ajax({
+					type: 'POST',
+					url: '@Url.Action("UpdateProgramCost")',
+					data: d,
+					success: function () {
+						$('table#programcosts').dataTable().fnDraw();
+						loadTotals();
+					},
+					error: function (xhrInstance, message, optional) {
+						alert('error');
+					},
+					complete: function (data, status) {
+					}
+				});
+			});
+			$('table#programcosts button.delete').live('click', function () {
+				var tr = $(this).closest('tr');
+				var oData = $('table#programcosts').dataTable().fnGetData(tr.get(0));
+				var d = {
+					Id: oData[0],
+					IE: Math.random()
+				};
+
+				$.ajax({
+					type: 'POST',
+					url: '@Url.Action("DeleteProgramCost")',
+					data: d,
+					success: function () {
+						$('table#programcosts').dataTable().fnDraw(false);
+						loadTotals();
+					},
+					error: function (xhrInstance, message, optional) {
+						alert('error');
+					},
+					complete: function (data, status) {
+					}
+				});
+			});
+		});
+	</script>
+}
+<h2>Detailed Report</h2>
+
+@Html.ValidationSummary()
+
+<p>
+	<a href="@Url.Action("Details", "MainReports", new { id = Model.MainReportId })" class="button">Go to Financial Report</a>
+	@if (Model.CanBeEdited){ <a href="@Url.Action("Create", "SubReports", new { Id = Model.Id, AppBudgetServiceId = Model.AppBudgetServiceId, MainReportId = Model.MainReportId })" class="button">Import</a>}
+</p>
+
+@Html.Partial("Header", Model.DetailsHeader)
+
+
+<table id="programcosts">
+	<thead>
+		<tr>
+			<th>Id</th>
+			<th>CostType</th>
+			<td>Total Amount</td>
+			<th>Percent funded By CC</th>
+			<th>Amount funded by CC</th>
+			<th>CUR</th>
+			<th></th>
+		</tr>
+	</thead>
+</table>
+
+<div id="totals">
+	@Html.Partial(Model.Totals.ViewName, Model.Totals)
+</div>
+<div>
+	<a href="@Url.Action("Export", new { id = Model.Id })" class="button">Export</a>
+</div>
+<p>
+	<a href="@Url.Action("Details", "MainReports", new { id = Model.MainReportId })" class="button">Go to Financial Report</a>
+	@if (Model.CanBeEdited){ <a href="@Url.Action("Create", "SubReports", new { Id = Model.Id, AppBudgetServiceId = Model.AppBudgetServiceId, MainReportId = Model.MainReportId })" class="button">Import</a>}
+    @if (Model.CanBeEdited)
+   {
+        <button type="button" class="button" onclick="setToDef()">
+					Set To Default</button>
+        <script>
+            function setToDef() {
+                dalert(function () {
+                    var d = {
+                        Id: '@Model.Id'
+                    };
+                    $.ajax({
+                        type: 'POST',
+                        url: '@Url.Action("DeleteChildReportRows")',
+                        data: d,
+                        success: function (data) {
+                        	location.reload();
+                        },
+                        error: function () {
+                            alert('error');
+                        }
+                    });
+
+                })
+            }
+            function dalert(yesCallback) {
+                $('<div></div>').html('All Sub Report Record will be deleted, continue ?').dialog({
+                    modal: true,
+                    buttons: {
+                        "Yes": function () {
+                            $(this).dialog("close");
+                            $(this).dialog("destroy");
+                            yesCallback();
+                        },
+                        "No": function () {
+                            $(this).dialog("close");
+                            $(this).dialog("destroy");
+
+                        }
+                    }
+
+                });
+            }
+        </script>
+		
+   }
+</p>

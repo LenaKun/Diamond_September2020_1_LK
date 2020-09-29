@@ -1,0 +1,35 @@
+﻿@model UnmetNeedsOtherUploadModel
+@{
+	ViewBag.Title = "Unmet Needs - Other Upload";
+}
+
+<h2>Unmet Needs - Other Upload @(Model.NewRows ? "New" : "Existing")</h2>
+
+<div>
+	<p>Service Types:</p>
+	<ul>
+		@foreach(var st in Model.GetAllowedServiceTypes())
+		{
+			<li>@st.Value - @st.Key</li>	  
+		}
+	</ul>
+</div>
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+	<text>
+		@Html.ValidationSummary()
+
+		<p>Columns:</p>
+
+		<ul>
+			@foreach (var s in Model.GetCsvColumnNames())
+			{
+				<li>@s</li>
+			}
+		</ul>
+		<input type="file" name="File" />
+		@Html.HiddenFor(f => f.NewRows)
+		<button type="submit">Submit</button>
+	</text>
+}

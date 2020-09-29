@@ -1,0 +1,26 @@
+﻿@model CC.Data.Models.DafQuestion
+
+<tr>
+	<td>
+		@Html.DisplayFor(x => x.Text)
+		<span class="error" title="This field is required">*</span>
+		@Html.HiddenFor(x => x.Text)
+		@Html.HiddenFor(x => x.Id)
+	</td>
+	<td>
+		<ul>
+			@for (int i = 0; i < Model.Options.Count; i++)
+			{
+				<li>
+					@Html.HiddenFor(x => x.Options[i].Id)
+					@Html.HiddenFor(x => x.Options[i].Text)
+					<label>
+						@Html.RadioButtonFor(x => x.SelectedAnswerId, Model.Options[i].Id,
+						new Dictionary<string, object> { { "data-score", Model.Options[i].Score } })
+						@Model.Options[i].Text
+					</label>
+				</li>
+			}
+		</ul>
+	</td>
+</tr>

@@ -1,0 +1,685 @@
+﻿@model SubReportDetailsModel
+@{
+	ViewBag.Title = "Detailed Report";
+}
+@section Header
+{
+	<script>
+		var loadTotals = function () {
+			$('div#totals').load('@Url.Action("GetTotals", new { Id = Model.Id })' + '?IE=' + Math.random(), function () {
+				$('span.totalAmount').html($('div#totals span.totalAmount').html());
+			});
+		};
+	</script>
+	<style>
+		input.decimal {
+			width: 5em;
+		}
+
+		table.grid ul {
+			padding: 0;
+		}
+
+		table.grid ul {
+			list-style: none;
+		}
+		.ui-dialog-titlebar-close {
+			visibility: hidden;
+		}
+	</style>
+	<script>
+
+		$.fn.serializeObject = function () {
+			var o = {};
+			var a = this.serializeArray();
+			$.each(a, function () {
+				if (o[this.name] !== undefined) {
+					if (!o[this.name].push) {
+						o[this.name] = [o[this.name]];
+					}
+					o[this.name].push(this.value || '');
+				} else {
+					o[this.name] = this.value || '';
+				}
+			});
+			return o;
+		};
+
+	</script>
+	<script id="dt" type="text/javascript">
+	//simple datatable init
+	var editLink = '<button type="button" class="edit">Edit</button><button type="button" class="add">Add</button>';
+	var dataTable = null;
+
+	$(document).ready(function () {
+		var oTable = $('table.grid').dataTable({
+			"bJQueryUI": true,
+			"sPaginationType": "full_numbers",
+			"bServerSide": true,
+			"aaSorting": [[0, "asc"], [1, "asc"]],
+			"sAjaxSource": '@Url.Action("ClientReportsListWeekly", new { Id = Model.Id })',
+			"aoColumns": [
+				{ "mData": "FirstName", "sClass": "ClientFirstName", "sTitle": "First Name" },
+				{ "mData": "LastName", "sClass": "ClientLastName", "sTitle": "Last Name" },
+				{ "mData": "HASName", "sClass": "ClientApprovalStatus", "sTitle": "HAS" },
+
+
+				{
+					"mData": "ClientId", "sClass": "ClientId", "sTitle": "CC ID",
+					"mRender": function (a) {
+						return '<a href="@Url.Action("Details","Clients")/' + a + '">' + a + '</a>';
+					}
+				},
+				{
+					"mData": "Rate", "sClass": "Rate", "sTitle": "Rate", "mRender": function (val, t, obj) {
+						var result = renderDecimal(val);
+						if (t == "edit" || t == "insert") {
+							if (val == null) {
+								result = 0;
+							}
+							result = '<input name="Rate" class="required decimal number" value="' + result + '"/>';
+						}
+
+						return result;
+					}
+				},
+				{ "mData": "Cur", "sClass": "Cur", "sTitle": "CUR" },
+				@for (var i = 1; i <= Model.WeeksCount; i++)
+     {
+						<text>
+					{
+						"mData": "@string.Format("W{0}", i)",
+						"sTitle": "@String.Format("W{0}", (i - 1 + Model.StartingWeekNumber))",
+						"sClass": "Quantity",
+						"mRender": function (val, t, obj) {
+							var strVal = renderDecimal(val);
+							if (t == "edit" || t == "insert") {
+								return '<input name="@string.Format("W{0}", i)" class="decimal number" value="' + (val == null ? "" : strVal) + '"/>';
+							}
+							else {
+								return strVal;
+							}
+						}
+					},
+					</text>
+     }
+				{
+					"mData": "Remarks", "sTitle": "Unique Circumstances",
+					"mRender": function (val, t, obj) {
+
+						if (t == "edit" || t == "insert") {
+							if (val == null) val = '';
+							return '<input name="Remarks" class="" value="' + val + '"/>';
+
+						}
+
+						return val;
+					}
+				},
+				{
+					"mData": null, "sClass": "TotalQuantity", "sTitle": "Total Hours",
+					"mRender": function (val, t, obj) {
+						return renderDecimal(obj.W1 + obj.W2 + obj.W3 + obj.W4 + obj.W5 + obj.W6 + obj.W7 + obj.W8 + obj.W9 + obj.W10 + obj.W11 + obj.W12 + obj.W13 + obj.W14 + obj.W15);
+					}
+				},
+				{
+					"mData": "HcCaps", "sTitle": '@(Model.ExceptionalHomeCareHours && @Model.CoPGovHoursValidation)' == "True" ? "Allowed Govt Hours/week" : "Allowed Hours/week", "mRender": function (a, b, c) {
+						//collapse adjustent periods with same hccap
+						if (a == null) {
+							return 'N/A';
+						}
+						else {
+							for (var i = a.length - 1; i > 0; i--) {
+								if (a[i].HcCap == a[i - 1].HcCap && a[i].StartDate == a[i - 1].EndDate) {
+									a[i - 1].EndDate = a[i].EndDate;
+									a.splice(i, 1);
+								}
+							}
+						}
+
+                        var result;
+                        var cfsDate = new Date();
+                        if (c.CfsDate) {
+                            cfsDate = new Date(c.CfsDate);
+						}
+						var mrEndDate = new Date('@Model.MainReportEnd');
+						if (a.length == 1 && (a[0].AfterReportStart || a[0].EndDate)) {
+                            var endDateStr = "null";
+                            var startDate = new Date(a[0].StartDate);
+							if (a[0].EndDate) {
+                                var endDate = new Date(a[0].EndDate);
+								endDateStr = $.datepicker.formatDate('dd M yy', endDate);
+								if (c.LeaveDate) {
+									var leaveDate = new Date(c.LeaveDate);
+									leaveDate.setDate(leaveDate.getDate() + 1);
+									if (leaveDate.getTime() == endDate.getTime()) {
+										endDateStr = renderDate(a[i].EndDate, null, -1);
+									}
+                                }
+                                if (c.CfsDate && cfsDate < endDate) {
+                                    endDateStr = renderDate(c.CfsDate, null, -1);
+                                    result = '<ul><li>' + renderDate(a[0].StartDate) + ' - ' + endDateStr + ' : ' + a[0].HcCap + '*</li>';
+                                    result += '<li>' + renderDate(c.CfsDate) + ' - null : 0</li></ul>';
+                                    //result = "test1";
+                                }
+                                else {
+                                    result = '<ul><li>' + renderDate(a[0].StartDate) + ' - ' + endDateStr + ' : ' + a[0].HcCap + '*</li></ul>';
+                                    //result = "test2";
+                                }
+							}
+							else {
+								if (c.CfsDate && cfsDate >= startDate) {
+                                    endDateStr = renderDate(c.CfsDate, null, -1);
+                                    result = '<ul><li>' + renderDate(a[0].StartDate) + ' - ' + endDateStr + ' : ' + a[0].HcCap + '</li>';
+                                    result += '<li>' + renderDate(c.CfsDate) + ' - null : 0</li></ul>';
+                                   // result = "test3";
+								}
+								else if (c.CfsDate && cfsDate < mrEndDate) {
+									result = '<ul><li>' + renderDate(c.CfsDate) + ' - null : 0</li></ul>';
+                                    //result = "test4";
+								}
+                                else {
+                                    result = '<ul><li>' + renderDate(a[0].StartDate) + ' - ' + endDateStr + ' : ' + a[0].HcCap + '</li></ul>';
+                                    //result = "test5";
+                                }
+							}
+						}
+						else if (a.length == 1) {
+							var startDate = new Date(a[0].StartDate);
+							if (c.CfsDate && cfsDate >= startDate) {
+                                endDateStr = renderDate(c.CfsDate, null, -1);
+                                result = '<ul><li>' + renderDate(a[0].StartDate) + ' - ' + endDateStr + ' : ' + a[0].HcCap + '</li>';
+                                result += '<li>' + renderDate(c.CfsDate) + ' - null : 0</li></ul>';
+                                //result = "test1";
+							}
+                            else if (c.CfsDate && cfsDate < mrEndDate) {
+                                result = '<ul><li>' + renderDate(c.CfsDate) + ' - null : 0</li></ul>';
+                                //result = "test2";
+                            }
+                            //else if (c.HAS2Date && cfsDate < mrEndDate) {
+                                //result = '<ul><li>' + renderDate(c.CfsDate) + ' - null : 0</li></ul>';
+                            //}
+                           // else if (a[0].HcCap == 168) {
+                                
+                               // result = '<ul><li>' + renderDate(a[0].StartDate) + ' - ' + renderDate(a[0].EndDate) +  ' :56 '  + '</li>';
+                           // }
+                            else {
+                                result = a[0].HcCap;
+                            //result = "test";
+                                //va//S2Date = new Date(c.HAS2Date);
+                               // result = '<ul><li>' + renderDate(a[0].StartDate) + ' - ' + renderDate(c.CfsDate) + ' : ' + a[0].HcCap + '*</li></ul>';
+                            }
+						}
+						else if (a.length > 1) {
+							result = '<ul>';
+                            for (var i = 0; i < a.length; i++) {
+                                var startDate = new Date(a[i].StartDate);
+                                var endDate = new Date(a[i].EndDate);
+                                if (c.CfsDate && (cfsDate < endDate || !a[i].EndDate) && cfsDate >= startDate) {
+                                    result += '<li>' + renderDate(a[i].StartDate) + ' - ' + renderDate(c.CfsDate, null, -1) + ' : ' + a[i].HcCap + ' </li>';
+                                    result += '<li>' + renderDate(c.CfsDate) + ' - null : 0</li>';
+                                    //result = "test6";
+                                    break;
+                                }
+								result += '<li>' + renderDate(a[i].StartDate) + ' - ' + renderDate(a[i].EndDate, null, -1) + ' : ' + a[i].HcCap + ' </li>';
+                               // result = "test7";
+							}
+							result += '</ul>';
+						}
+						else {
+							result = 'N/A';
+						}
+						return result;
+					}
+				},
+
+				{
+					"mData": null, "sTitle": "Edit", "bVisible": "@Model.CanBeEdited" == "True", "mRender": function (val, t, obj) {
+
+						var html = '';
+						switch (t) {
+							case 'display':
+								html = '<button type="button" class="edit">Edit</button>';
+								if (obj.ClientReportId) {
+									html += '<button type="button" class="add">Add</button>';
+									html += '<button type="button" class="delete">Delete</button>';
+								}
+								break;
+							case 'insert':
+							case 'edit':
+								html = '<button type="button" class="update">Update</button><button type="button" class="cancel">Cancel</button>';
+								break;
+						}
+						return html
+					}
+				}
+
+			],
+			"aoColumnDefs": [
+				@if(Model.WeeksCount == 12) {
+					<text>
+					{
+						"aTargets": [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21],
+						"bSortable": false
+					},
+					</text>
+				} else if(Model.WeeksCount == 13) {
+					<text>
+					{
+						"aTargets": [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22],
+						"bSortable": false
+					},
+					</text>
+				} else if (Model.WeeksCount == 14) {
+					<text>
+					{
+						"aTargets": [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23],
+						"bSortable": false
+					},
+					</text>
+				} else if (Model.WeeksCount == 15) {
+					<text>
+					{
+						"aTargets": [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24],
+						"bSortable": false
+					},
+					</text>
+				}
+				{
+					"aTargets": [0, 1],
+					"bSortable": true
+				}
+			],
+			"fnServerParams": function (aoData) {
+
+				aoData.push({ name: "IE", value: Math.random() });
+				aoData.push({ name: "AppBudgetServiceId", value: "@Model.AppBudgetServiceId" });
+				aoData.push({ name: "AgencyId", value: "@Model.AgencyId" });
+				aoData.push({ name: "@Html.FieldNameFor(f => f.Filter.ClientName)", value: $('#@Html.FieldIdFor(f => f.Filter.ClientName)').val() });
+				aoData.push({ name: "@Html.FieldNameFor(f => f.Filter.ClientId)", value: $('#@Html.FieldIdFor(f => f.Filter.ClientId)').val() });
+				aoData.push({ name: "@Html.FieldNameFor(f => f.Filter.ReportedOnly)", value: $('#@Html.FieldIdFor(f => f.Filter.ReportedOnly)').val() });
+			}
+		, "fnRowCallback": function (nRow, aData, iDisplayIndex) {
+			/* set tr id. assume the id is in the first column of data */
+
+			return nRow;
+		}
+		});
+		$('button.filter').click(function () {
+			oTable.fnDraw();
+		});
+		$('button.reset').click(function () {
+			$(this).closest('table').find(':input').val('');
+			oTable.fnDraw();
+		});
+		var weeksCount = parseInt("@Model.WeeksCount");
+		var startingWeek = new Date("@Model.StartingWeek.ToString()");
+		var reportStart = new Date("@Model.MainReportStart.ToString()");
+		var diffFirstWeek = 0;
+		@if(Model.StartingWeek.DayOfWeek != Model.DetailsHeader.StartWeekDay)
+		{
+			<text>
+		diffFirstWeek = parseInt("@((int)Model.DetailsHeader.StartWeekDay - (int)Model.StartingWeek.DayOfWeek)");
+		startingWeek = addDays(startingWeek, diffFirstWeek);
+		if (diffFirstWeek < 0) {
+			startingWeek = addDays(startingWeek, 7);
+		}
+		</text>
+		}
+		$('table.grid thead th').each(function (i, v) {
+			if (i == 2) {
+				this.setAttribute('title', 'Homecare Approval Status');
+			}
+			if (i >= 6 && i < weeksCount + 6) {
+				if (i == 6 && diffFirstWeek != 0) {
+					this.setAttribute('title', (reportStart.toDateString() + " - " + (addDays(startingWeek, -1).toDateString())));
+				}
+				else if (diffFirstWeek != 0) {
+					var nextWeek = addDays(startingWeek, (7 * (i - 6)) - 1);
+					var currWeek = addDays(startingWeek, 7 * (i - 7));
+					if (nextWeek.getFullYear() == currWeek.getFullYear()) {
+						this.setAttribute('title', currWeek.toDateString() + " - " + nextWeek.toDateString());
+					}
+					else {
+						this.setAttribute('title', currWeek.toDateString() + " - " + (new Date(currWeek.getFullYear(), 11, 31)).toDateString());
+					}
+				}
+				else {
+					var nextWeek = addDays(startingWeek, (7 * (i - 5)) - 1);
+					var currWeek = addDays(startingWeek, 7 * (i - 6));
+					if (nextWeek.getFullYear() == currWeek.getFullYear()) {
+						this.setAttribute('title', currWeek.toDateString() + " - " + nextWeek.toDateString());
+					}
+					else {
+						this.setAttribute('title', currWeek.toDateString() + " - " + (new Date(currWeek.getFullYear(), 11, 31)).toDateString());
+					}
+				}
+			}
+		});
+
+		function addDays(date, days) {
+			var result = new Date(date);
+			result.setDate(result.getDate() + days);
+			return result;
+		}
+
+
+		@if (Model.CanBeEdited)
+   {
+			<text>
+		$('table.grid button.edit').live('click', function () {
+			oTable.find('button.cancel').click();
+			var $tr = $(this).closest('tr');
+			var tr = $tr.get(0);
+			oTable.fnRefresh(tr, null, 'edit');
+		});
+		$('table.grid button.cancel').live('click', function () {
+			var $tr = $(this).closest('tr');
+			var tr = $tr.get(0);
+			var oData = oTable.fnGetData(tr);
+			if (tr["_DT_NewRow"]) {
+				oTable.fnDeleteRow(tr, null, false);
+				$tr.remove();
+			}
+			else {
+				oTable.fnRefresh(tr, null, 'display');
+			}
+		});
+		$('table.grid button.add').live('click', function () {
+			var $tr = $(this).closest('tr');
+			var tr = $tr.get(0);
+			var oData = oTable.fnGetData(tr);
+
+			$.extend(oData, {
+				ClientReportId: 0,
+				Rate: 0,
+				Remarks: '',
+				W1: 0,
+				W2: 0,
+				W3: 0,
+				W4: 0,
+				W5: 0,
+				W6: 0,
+				W7: 0,
+				W8: 0,
+				W9: 0,
+				W10: 0,
+				W11: 0,
+				W12: 0,
+				W13: 0,
+				W14: 0,
+				W15: 0,
+				TotalQuantity: 0
+			});
+
+			tr = $(this).closest('tr');
+			var $n = tr.clone();
+
+			$n.insertBefore(tr);
+
+			var n = $n.get(0);
+			var aodata = oTable.fnAddData(oData, false);
+			n["_DT_RowIndex"] = aodata[0];
+			n["_DT_NewRow"] = true;
+
+			oTable.fnRefresh(n, null, 'insert');
+
+
+		});
+
+		$('table.grid button.delete').live('click', function () {
+			oTable.find('button.cancel').click();
+			var $tr = $(this).closest('tr');
+			var tr = $tr.get(0);
+			var oData = oTable.fnGetData(tr);
+			$.ajax({
+				type: 'POST',
+				url: '@Url.Action("DeleteClientReport")',
+				dataType: 'json',
+				data: {
+					Id: oData.ClientReportId,
+					IE: Math.random()
+				}
+			}).done(function () {
+				oTable.fnDraw(false);
+				location.reload();
+			}).fail(function () {
+				alert("An error occured while deleting the report...");
+			});
+
+		});
+		$('table.grid button.update').live('click', function () {
+
+			var $tr = $(this).closest('tr');
+			var tr = $tr.get(0);
+			var oData = oTable.fnGetData(tr);
+
+			var $form = $tr.closest('form');
+			if (!$form.valid()) {
+				return false;
+			}
+			var input = $form.serializeObject();
+			var quantity = [];
+
+			if (input.W1 || input.W1 == "") {
+				quantity.push(input.W1.replace(",", ""));
+			}
+			if (input.W2 || input.W2 == "") {
+				quantity.push(input.W2.replace(",", ""));
+			}
+			if (input.W3 || input.W3 == "") {
+				quantity.push(input.W3.replace(",", ""));
+			}
+			if (input.W4 || input.W4 == "") {
+				quantity.push(input.W4.replace(",", ""));
+			}
+			if (input.W5 || input.W5 == "") {
+				quantity.push(input.W5.replace(",", ""));
+			}
+			if (input.W6 || input.W6 == "") {
+				quantity.push(input.W6.replace(",", ""));
+			}
+			if (input.W7 || input.W7 == "") {
+				quantity.push(input.W7.replace(",", ""));
+			}
+			if (input.W8 || input.W8 == "") {
+				quantity.push(input.W8.replace(",", ""));
+			}
+			if (input.W9 || input.W9 == "") {
+				quantity.push(input.W9.replace(",", ""));
+			}
+			if (input.W10 || input.W10 == "") {
+				quantity.push(input.W10.replace(",", ""));
+			}
+			if (input.W11 || input.W11 == "") {
+				quantity.push(input.W11.replace(",", ""));
+			}
+			if (input.W12 || input.W12 == "") {
+				quantity.push(input.W12.replace(",", ""));
+			}
+			if (input.W13 || input.W13 == "") {
+				quantity.push(input.W13.replace(",", ""));
+			}
+			if (input.W14 || input.W14 == "") {
+				quantity.push(input.W14.replace(",", ""));
+			}
+			if (input.W15 || input.W15 == "") {
+				quantity.push(input.W15.replace(",", ""));
+			}
+
+			var d = {
+				Id: oData.ClientReportId,
+				clientId: oData.ClientId,
+				subReportId: '@Model.Id',
+				rate: input.Rate,
+				quantity: quantity,
+				remarks: input.Remarks,
+				IE: Math.random(),
+
+			};
+			$('table.grid tbody tr').find('input, button').attr('disabled', 'disabled');
+
+			var request = $.ajax({
+				url: '@Url.Action("UpdateWeekly")',
+				type: 'POST',
+				dataType: 'json',
+				contentType: 'application/json; charset=utf-8',
+				data: JSON.stringify(d)
+			}).done(function (data, textStatus, jqXHR) {
+				if (data.errors) {
+					$('#ErrorsDialog').html("<li>" + data.errors.join('</li><li>') + '</li>');
+					$('#ErrorsDialog').dialog({
+						modal: true,
+						buttons: {
+							Ok: function () {
+								$(this).dialog("close");
+								$('table.grid tbody').find('input, button').removeAttr('disabled');
+
+							},
+							Cancel: function () {
+								$(this).dialog("close");
+								$('table.grid').dataTable().fnDraw(false);
+							}
+						}
+					});
+
+				}
+				else {
+					$('table.grid').dataTable().fnDraw(false);
+					loadTotals();
+				}
+			}).fail(function (jqXHR, textStatus) {
+				$('#ErrorsDialog').html("an error occured ... ");
+				$('#ErrorsDialog').dialog({
+					modal: true,
+					buttons: {
+						Ok: function () {
+							$(this).dialog("close");
+							$('table.grid tbody').find('input, button').removeAttr('disabled');
+						}
+					}
+				});
+
+			});
+		});
+
+		</text>
+   }
+
+	});
+	</script>
+}
+
+<h2>Detailed Report</h2>
+
+@Html.ValidationSummary()
+
+<p>
+
+	<a href="@Url.Action("Details", "MainReports", new { id = Model.MainReportId })" class="button">Go to Financial Report</a>
+	@if (Model.CanBeEdited)
+	{ <a href="@Url.Action("Create", "SubReports", new { Id = Model.Id, AppBudgetServiceId = Model.AppBudgetServiceId, MainReportId = Model.MainReportId })" class="button">Import</a>}
+</p>
+
+@Html.Partial("Header", Model.DetailsHeader)
+
+<table class="filter horizontal">
+	<tr>
+		<th style="white-space: nowrap">
+			Filter By:
+		</th>
+		<td style="width: 100%">
+			<div class="display-item">
+				@Html.LabelFor(f => f.Filter.ClientName)
+				@Html.EditorFor(f => f.Filter.ClientName)
+			</div>
+			<div class="display-item">
+				@Html.LabelFor(f => f.Filter.ClientId)
+				@Html.EditorFor(f => f.Filter.ClientId)
+			</div>
+			<div class="display-item">
+				@Html.LabelFor(f => f.Filter.ReportedOnly)
+				@Html.DropDownListFor(f => f.Filter.ReportedOnly, Model.Filter.ReportedOnlySelectList)
+			</div>
+			<div class="display-item">
+				<button type="button" class="filter">
+					Go
+				</button>
+				<button type="button" class="reset">
+					Reset
+				</button>
+			</div>
+		</td>
+	</tr>
+</table>
+<form>
+	<table class="grid">
+		<thead>
+			<tr></tr>
+		</thead>
+		<tbody></tbody>
+	</table>
+
+</form>
+
+<div id="totals">
+	@Html.Partial(Model.Totals.ViewName, Model.Totals)
+</div>
+<div>
+	<a href="@Url.Action("Export", new { id = Model.Id })" class="button">Export</a>
+</div>
+<p>
+	<a href="@Url.Action("Details", "MainReports", new { id = Model.MainReportId })" class="button">
+		Go to Financial Report
+	</a>
+
+	@if (Model.CanBeEdited)
+	{ <a href="@Url.Action("Create", "SubReports", new { Id = Model.Id, AppBudgetServiceId = Model.AppBudgetServiceId, MainReportId = Model.MainReportId })" class="button">Import</a>}
+	@if (Model.CanBeEdited)
+	{
+		<button type="button" class="button" onclick="setToDef()">
+			Set To Default
+		</button>
+		<script>
+			function setToDef() {
+				dalert(function () {
+					var d = {
+						Id: '@Model.Id'
+					};
+					$.ajax({
+						type: 'POST',
+						url: '@Url.Action("DeleteChildReportRows")',
+						data: d,
+						success: function (data) {
+							location.reload();
+						},
+						error: function () {
+							alert('error');
+						}
+					});
+
+				})
+			}
+			function dalert(yesCallback) {
+				$('<div></div>').html('All Sub Report Record will be deleted, continue ?').dialog({
+					modal: true,
+					buttons: {
+						"Yes": function () {
+							$(this).dialog("close");
+							$(this).dialog("destroy");
+							yesCallback();
+						},
+						"No": function () {
+							$(this).dialog("close");
+							$(this).dialog("destroy");
+
+						}
+					}
+
+				});
+			}
+		</script>
+
+	}
+</p>
+<div id="ErrorsDialog"></div>

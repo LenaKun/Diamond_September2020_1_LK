@@ -1,0 +1,39 @@
+﻿@model SubReportDetailsModel.SubReportTotals
+@{
+	Layout = null;
+}
+
+<table>
+	<tr>
+		<th>Totals:</th>
+		<td>
+			<div class="display-item">
+				@Html.LabelFor(f => f.TotalAmountReported)
+				<span class="totalAmount">@Html.DisplayFor(f => f.TotalAmountReported)</span>
+			</div>
+			<div class="display-item">
+				@Html.LabelFor(f => f.TotalClients)
+				@Html.DisplayFor(f => f.TotalClients)
+			</div>
+            @if(!User.IsInRole("BMF"))
+            {
+			    <div class="display-item">
+				    @Html.LabelFor(f => f.AppMatchingSum)
+				    @Html.DisplayFor(f => f.AppMatchingSum)
+			    </div>
+			    <div class="display-item">
+				    @Html.LabelFor(f => f.YtdMatchExp)
+				    @Html.DisplayFor(f => f.YtdMatchExp)
+			    </div>
+			    <div class="display-item">
+				    @Html.LabelFor(f => f.EstimatedMatchingSum)
+				    @Html.DisplayFor(f => f.EstimatedMatchingSum)
+			    </div>
+			    <div class="display-item">
+				    @Html.LabelFor(f => f.MatchingSumStatus)
+				    @Html.DisplayFor(f => f.MatchingSumStatus)
+			    </div>
+            }
+		</td>
+	</tr>
+</table>

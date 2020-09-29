@@ -1,0 +1,304 @@
+﻿
+
+//  padLeft
+//--------------------------------------------------------------------------------------------------------------
+function parseJsonDateString(value) {
+	var re = /-?\d+/;
+	var m = re.exec(value);
+	var d = new Date(parseInt(m[0]));
+	return d;
+}
+Date.prototype.toString = function (format) {
+	format = format? format:'dd M yy';
+	return $.datepicker.formatDate(format, this);
+}
+
+
+
+
+
+
+
+//  padLeft
+//--------------------------------------------------------------------------------------------------------------
+String.prototype.padLeft = function (n, pad) {
+
+	var str = pad !== undefined ? String(pad).substring(0, 1) : ' ';
+	return Array(n - this.length + 1)
+		.join(str)
+		+ this;
+}
+Number.prototype.padLeft = function (n, str) {
+	str = str || '0';
+	return (this < 0 ? '-' : '') +
+			String(Math.abs(this)).padLeft(n, str);
+}
+
+
+//  padLeft
+//--------------------------------------------------------------------------------------------------------------
+Date.prototype.format = function (f) {
+	if (!this.valueOf())
+		return ' ';
+
+	var d = this;
+
+	var gsMonthNames = [
+			'January',
+			'February',
+			'March',
+			'April',
+			'May',
+			'June',
+			'July',
+			'August',
+			'September',
+			'October',
+			'November',
+			'December'
+			];
+
+	// a global day names array
+	var gsDayNames = [
+			'Sunday',
+			'Monday',
+			'Tuesday',
+			'Wednesday',
+			'Thursday',
+			'Friday',
+			'Saturday'
+			];
+
+	return f.replace(/(yyyy|yy|mmmm|mmm|mm|dddd|ddd|dd|hh|nn|ss|a\/p)/gi,
+		function ($1) {
+			switch ($1.toLowerCase()) {
+
+				case 'yyyy': return d.getFullYear();
+				case 'yy': return String(d.getFullYear()).substr(2, 2);
+				case 'mmmm': return gsMonthNames[d.getMonth()];
+				case 'mmm': return gsMonthNames[d.getMonth()].substr(0, 3);
+				case 'mm': return (d.getMonth() + 1).padLeft(2);
+				case 'dddd': return gsDayNames[d.getDay()];
+				case 'ddd': return gsDayNames[d.getDay()].substr(0, 3);
+				case 'dd': return d.getDate().padLeft(2);
+				case 'hh': return ((h = d.getHours() % 12) ? h : 12).padLeft(2);
+				case 'nn': return d.getMinutes().padLeft(2);
+				case 'ss': return d.getSeconds().padLeft(2);
+				case 'a/p': return d.getHours() < 12 ? 'a' : 'p';
+			}
+		}
+	);
+}
+
+
+//  serializ
+//--------------------------------------------------------------------------------------------------------------
+$.fn.serializeObject = function () {
+	var o = {};
+	var a = $(this).find(':input').map(function (a, b) { return [b.name, b.value]; });
+
+	$.each(a, function () {
+		if (o[this.name] !== undefined) {
+			if (!o[this.name].push) {
+				o[this.name] = [o[this.name]];
+			}
+			o[this.name].push(this.value || '');
+		} else {
+			o[this.name] = this.value || '';
+		}
+	});
+	return o;
+};
+
+
+jQuery(function () {
+	jQuery.support.placeholder = false;
+
+});
+$(function () {
+	test = document.createElement('input');
+	support = true;
+	if (!support) {
+		var active = document.activeElement;
+		$(':text').focus(function () {
+			if ($(this).attr('placeholder') != '' && $(this).val() == $(this).attr('placeholder')) {
+				$(this).val('').removeClass('hasPlaceholder');
+			}
+		}).blur(function () {
+			if ($(this).attr('placeholder') != '' && ($(this).val() == '' || $(this).val() == $(this).attr('placeholder'))) {
+				$(this).val($(this).attr('placeholder')).addClass('hasPlaceholder');
+			}
+		});
+		$(':text').blur();
+		$(active).focus();
+		$('form').submit(function () {
+			$(this).find('.hasPlaceholder').each(function () { $(this).val(''); });
+		});
+	}
+});
+
+$.fn.ajaxify = function (target) {
+	$(this).submit(function (event) {
+		//Prevents other event handlers from being called.
+		event.stopImmediatePropagation();
+
+		//Prevents the event from bubbling up the DOM tree, preventing any parent handlers from being notified of the event.
+		event.stopPropagation();
+
+
+		if ($(this).valid()) {
+			$.ajax({
+				url: this.action,
+				type: this.method,
+				data: $(this).serialize(),
+				success: function (result) {
+					$(target).html(result);
+					$(target).find('form').ajaxify(target);
+				}
+			});
+		}
+		return false;
+	});
+};
+//todo - unfinished
+(function ($) {
+	$.fn.UpdateChildSelect = function (options) {
+		var options = $.extend({
+			select:"Id,Name",
+			orderby:"Name"
+
+		},options);
+		
+		
+		return this.change(function(){
+			var dataUrl = '@Url.Content("~/Data/DataService.svc/")' + options.objectSetName + '?';
+			dataUrl += "$select=" + options.select;
+			if ($(this).val()) {
+				dataUrl += "&$filter="+options.Filter.replace("{0}",$(this).val());
+			}
+			dataUrl += "&$orderby=" + options.orderby;
+			console.log("asdf() - " + dataUrl);
+			$.ajax({
+				url: dataUrl,
+				method: "GET",
+				dataType: 'json',
+				success: function (data, textStatus, jqXHR) {
+					var child = $(options.dependantSelector);
+					child.html('');
+					$.each(data.d, function (i, value) {
+						child.append($('<option/>').attr('value', value.Id).html(value.Name));
+					});
+	
+				},
+				error: function (jqXHR, textStatus, errorThrown) {
+	
+				}
+			});
+		});
+		
+
+		return this;
+	};
+})(jQuery);
+
+
+String.prototype.parseDecimal = function () {
+	return parseFloat(this.replace(/,/, ''));
+};
+
+Number.prototype.formatMoney = function (c, d, t) {
+	
+	
+	var n = this,
+	c = isNaN(c = Math.abs(c)) ? 2 : c,
+	d = d == undefined ? "." : d,
+	t = t == undefined ? "," : t, s = n < 0 ? "-" : "",
+	i = parseInt(n = Math.abs(+n || 0).toFixed(c)) + "",
+	j = (j = i.length) > 3 ? j % 3 : 0;
+	return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
+};
+
+
+
+function UpdateCountryAndStates(url, $states, $country, agencyId, emptyItemText) {
+	if (agencyId) {
+
+		if (url.indexOf('?') < 0)
+			url += "?";
+
+		url += "&$filter=Id%20eq%20" + agencyId + "&$expand=AgencyGroup/Country/States&$select=AgencyGroup/Country/Name,AgencyGroup/Country/States/Name,AgencyGroup/Country/States/Id";
+		$('<p/>').val(url).appendTo($('#trace'));
+
+
+		$states.html("<option>Working...</option>");
+		$states.attr('disabled', 'disabled');
+		$.ajax({
+			type: "GET",
+			url: url,
+			contentType: "application/json; charset=utf-8",
+			dataType: "json",
+			success: function (response) {
+				var agencies = (typeof response.d) == 'string' ? eval('(' + response.d + ')') : response.d;
+				var agency = agencies[0];
+				console.log(agency);
+
+
+				$country.html(agency.AgencyGroup.Country.Name);
+				$states.attr('disabled', 'disabled');
+				$states.html('<option value="">No options available</option>');
+
+				if (agency.AgencyGroup.Country) {
+					var states = agency.AgencyGroup.Country.States;
+					if (states.length > 0) {
+						$states.html('');
+						$states.html('<option value="">' + emptyItemText + '</option>');
+						$states.removeAttr('disabled');
+						for (var i in states) {
+							var item = states[i];
+							var option = $("<option></option>").attr("value", item.Id).text(item.Name);
+							$states.append(option);
+						}
+					}
+
+				}
+
+
+			},
+			error: function () {
+				$states.attr('disabled', 'disabled');
+				$states.html('<option value="">No options available</option>');
+			}
+
+		});
+	}
+	else {
+		$states.attr('disabled', 'disabled');
+		$states.html('<option value="">No options available</option>');
+	}
+
+}
+
+
+<<<<<<< HEAD
+Number.prototype.toMoney = function (decimals, decimal_sep, thousands_sep) {
+	var n = this,
+	c = isNaN(decimals) ? 2 : Math.abs(decimals), //if decimal is zero we must take it, it means user does not want to show any decimal
+	d = decimal_sep || '.', //if no decimal separator is passed we use the dot as default decimal separator (we MUST use a decimal separator)
+
+	/*
+	according to [http://stackoverflow.com/questions/411352/how-best-to-determine-if-an-argument-is-not-sent-to-the-javascript-function]
+	the fastest way to check for not defined parameter is to use typeof value === 'undefined' 
+	rather than doing value === undefined.
+	*/
+	t = (typeof thousands_sep === 'undefined') ? ',' : thousands_sep, //if you don't want to use a thousands separator you can pass empty string as thousands_sep value
+
+	sign = (n < 0) ? '-' : '',
+
+	//extracting the absolute value of the integer part of the number and converting to string
+	i = parseInt(n = Math.abs(n).toFixed(c)) + '',
+
+	j = ((j = i.length) > 3) ? j % 3 : 0;
+	return sign + (j ? i.substr(0, j) + t : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : '');
+}
+=======
+>>>>>>> import

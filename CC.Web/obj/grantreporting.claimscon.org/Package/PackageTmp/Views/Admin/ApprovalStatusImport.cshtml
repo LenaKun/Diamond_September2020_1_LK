@@ -1,0 +1,13 @@
+﻿@{
+    ViewBag.Title = " Approval Status Import";
+}
+
+<h2>Import New Clients</h2>
+
+@using (Html.BeginForm("ApprovalStatusImport", "Admin", 
+                    FormMethod.Post, new { enctype = "multipart/form-data" }))
+{       
+         
+        <input name="uploadFile" type="file" />
+        <input type="submit" value="Upload File" />
+}

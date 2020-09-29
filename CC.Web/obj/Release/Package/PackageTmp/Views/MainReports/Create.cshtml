@@ -1,0 +1,49 @@
+﻿@model MainReportCreateModel
+@{
+    ViewBag.Title = "Create a New Financial Report- Reporting Period";
+}
+<h2>Create a New Financial Report- Reporting Period</h2>
+@section Header{
+	<script type="text/javascript">
+	</script>
+}
+
+	
+	@if (Model.IsValid)
+ {
+	 using (Html.BeginForm())
+	 { 
+	@Html.ValidationSummary("The Main report was not created due to following errors:")
+	<p>Please select an app:</p>
+	
+	@Html.HiddenFor(f => f.MainReport.AppBudgetId)
+	
+	<table>
+		<tr>
+			<th rowspan="2"> Report Details: </th>
+			<th> Fund </th>
+			<th> App # </th>
+			<th> Report Start Month </th>
+			<th> Ser </th>
+				<th> Exchange Rate </th>
+			<th> Report Status </th>
+		</tr>
+		<tr>
+			<td>@Html.DisplayFor(f => f.MainReport.AppBudget.App.Fund.Name) </td>
+			<td>@Html.DisplayFor(f => f.MainReport.AppBudget.App.Name) </td>
+			<td>@Html.DropDownListFor(f => f.MainReport.Start, Model.StartDates) </td>
+			<td>@Html.DisplayFor(f => f.MainReport.AppBudget.App.AgencyGroup.Name) </td>
+				<td>@Html.EditorFor(f => f.MainReport.ExcRate) </td>
+			<td> New </td>
+		</tr>
+	</table>
+	<fieldset>
+		<button type="submit" class="submit">Continue</button>
+	</fieldset>
+	 }
+ }
+ else
+ { 
+	@Html.ValidationSummary()
+	@Html.ActionLink("Select Another App", "SelectApp", "MainReports")
+ }

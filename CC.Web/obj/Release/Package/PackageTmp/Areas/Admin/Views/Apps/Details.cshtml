@@ -1,0 +1,128 @@
+﻿@model CC.Data.App
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>App</legend>
+
+    <div class="display-label">@Html.LabelFor(model => model.FundId)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Fund.Name)
+    </div>
+    <div class="display-label">@Html.LabelFor(model => model.AgencyGroupId)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.AgencyGroup.Name)
+    </div>
+
+    <div class="display-label">@Html.LabelFor(model => model.Name)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Name)
+    </div>
+
+    <div class="display-label">@Html.LabelFor(model => model.CurrencyId)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.CurrencyId)
+    </div>
+
+    <div class="display-label">@Html.LabelFor(model => model.AgencyContribution)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.AgencyContribution)
+    </div>
+
+    <div class="display-label">@Html.LabelFor(model => model.CcGrant)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.CcGrant)
+    </div>
+
+    <div class="display-label">@Html.LabelFor(model => model.RequiredMatch)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.RequiredMatch)
+    </div>
+
+    <div class="display-label">@Html.LabelFor(model => model.CalendaricYear)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.CalendaricYear)
+    </div>
+
+    <div class="display-label">@Html.LabelFor(model => model.OtherServicesMax, "Other Services Max (%)")</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.OtherServicesMax)
+    </div>
+
+    <div class="display-label">@Html.LabelFor(model => model.HomecareMin, "Homecare Min (%)")</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.HomecareMin)
+    </div>
+
+    <div class="display-label">@Html.LabelFor(model => model.AdminMax, "Admin Max (%)")</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.AdminMax)
+    </div>
+    <div>Admin% and Other % are only in effect if the total NONE homecare services amount allowed is zero/ empty.</div>
+    <div class="display-label">@Html.LabelFor(model => model.MaxHcCaseManagementPersonnel, "Cap for Homecare - Case Management Personnel")</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.MaxHcCaseManagementPersonnel)
+    </div>
+    <div class="display-label">@Html.LabelFor(model => model.MaxServicesPersonnelOther, "Cap for Other Services - Personnel - Other and Other Services - Personnel - Other with names")</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.MaxServicesPersonnelOther)
+    </div>
+    <div class="display-label">@Html.LabelFor(model => model.FuneralExpenses, "Cap for Other Services - Funeral Expenses")</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.FuneralExpenses)
+    </div>
+    <div class="display-label">@Html.LabelFor(model => model.EndOfYearValidationOnly)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.EndOfYearValidationOnly)
+    </div>
+    <div class="display-label">@Html.LabelFor(model => model.InterlineTransfer)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.InterlineTransfer)
+    </div>
+    <div class="display-label">@Html.LabelFor(model => model.MaxAdminAmount)</div>
+    <div class="display-field"> @Html.DisplayFor(model => model.MaxAdminAmount) </div>
+    <div class="display-label">@Html.LabelFor(model => model.MaxNonHcAmount)</div>
+    <div class="display-field"> @Html.DisplayFor(model => model.MaxNonHcAmount) </div>
+    <div class="display-label">@Html.LabelFor(model => model.HistoricalExpenditureAmount)</div>
+    <div class="display-field"> @Html.DisplayFor(model => model.HistoricalExpenditureAmount) </div>
+    <div class="display-label">@Html.LabelFor(model => model.AvgReimbursementCost)</div>
+    <div class="display-field"> @Html.DisplayFor(model => model.AvgReimbursementCost) </div>
+    <div class="display-label">Exchange Rates:</div>
+    <div>
+        <table>
+            <tr>
+                <th>CUR</th>
+                <th>Rate</th>
+            </tr>
+            @foreach (var item in Model.AppExchangeRates)
+            {
+                <text>
+                    <tr>
+                        <td>@Html.DisplayFor(f => item.CurId)</td>
+                        <td>@Html.DisplayFor(f => item.Value) </td>
+                    </tr>
+                </text>
+            }
+        </table>
+    </div>
+    <div class="display-label">Services:</div>
+    <div>
+        <ul>
+            @foreach (var s in Model.Services.OrderBy(f => f.Name))
+            {
+                <li>@s.Name</li>
+            }
+        </ul>
+    </div>
+</fieldset>
+<p>
+    @if (@HttpContext.Current.User.IsInRole("admin") || @HttpContext.Current.User.IsInRole("GlobalOfficer"))
+    { 
+        @Html.ActionLink("Edit", "Edit", new { id=Model.Id })
+    }
+    | @Html.ActionLink("Back to List", "Index")
+</p>

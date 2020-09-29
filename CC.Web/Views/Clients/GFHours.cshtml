@@ -1,0 +1,210 @@
+﻿@model NewGFHoursEntryModel
+@{
+	Layout = null;
+	var dialogId = Guid.NewGuid();
+	var dtId = Guid.NewGuid();
+}
+
+<table id="@dtId"></table>
+
+@if (User.IsInRole(FixedRoles.Admin))
+{
+	<button class="addnewGFHours">Add New</button>
+}
+<script>
+	$(function () {
+		var oTable = $('table#@dtId').dataTable({
+			"aaSorting": [[0, "desc"]],
+			"bProcessing": true,
+			"bFilter": false,
+			"bServerSide": true,
+			"bJQueryUI": true,
+			"cache": false,
+
+			"bLengthChange": false,
+			"sPaginationType": "full_numbers",
+			"sAjaxSource": '@Url.Action("GFHoursData")',
+			"fnServerParams": function (aoData) {
+				aoData.push({ name: "ClientId", value: '@Model.ClientId' });
+			},
+			"aoColumns": [
+				{ "mData": "StartDate", "sTitle": "Start Date" },
+				{ "mData": "Value", "sTitle": "Hours" },
+				{ "mData": "Type", "sTitle": "Type" },
+				{
+					"mData": null,
+					"bSortable": false,
+					"bVisible": "@Model.Permissions.User.RoleId" == "@((int)FixedRoles.Admin)",
+					"mRender": function (a, b, c) {
+						return '<button class="edit" data-startdate="' + escape(c.IsoStartDate) + '">Edit</button>';
+					}
+				},
+				{
+					"mData": null,
+					"bSortable": false,
+					"bVisible": "@Model.Permissions.User.RoleId" == "@((int)FixedRoles.Admin)",
+					"mRender": function (a, b, c) {
+						return '<button class="delete" data-startdate="' + escape(c.IsoStartDate) + '">Delete</button>';
+					}
+				}
+			]
+		});
+		$('table.#@dtId button.edit').live('click', function () {
+			var $tr = $(this).closest('tr');
+			var tr = $tr.get(0);
+			var data = $('table.#@dtId').dataTable().fnGetData(tr);
+
+			//close all rows
+			$('table.#@dtId').not(tr).find('button.cancel').click();
+
+			makeEditable($tr, tr, data);
+
+			$tr.find('td:nth-child(4)').html('<button type="button" class="update" data-startdate="' + $(this).attr("data-startdate") + '">Update</button>' + '<button type="button" class="cancel">Cancel</button>');
+		});
+		function makeEditable($tr, tr, data) {
+			$tr.find('td:nth-child(2)').html('<input type="text" class="required number" name="@Html.FieldNameFor(f => f.Value)" value="' + new String(data.Value).replace(',', '') + '"/>');
+			var types = @Html.Raw(Json.Encode(Model.GFHoursTypes));
+			var typeEl = $tr.find('td:nth-child(3)');
+			var html = '<select>';
+			$.each(types, function(i, v) {
+				html += '<option value="' + v.Value + '"';
+				if(data.Type == v.Text) {
+					html += ' selected="selected"';
+				}
+				html += '>' + v.Text + '</option>';
+			});
+			typeEl.html(html);
+		}
+		$('table.#@dtId button.cancel').live('click', function () {
+			var $tr = $(this).closest('tr');
+			var tr = $tr.get(0);
+			var dataTable = $('table.#@dtId').dataTable();
+			var data = dataTable.fnGetData(tr);
+
+			dataTable.fnUpdate(data, tr);
+
+		})
+		$('table.#@dtId button.update').live('click', function () {
+			var $tr = $(this).closest('tr');
+			var tr = $tr.get(0);
+			var dataArray = $('table.#@dtId').dataTable().fnGetData(tr);
+			var d = {
+				ClientId: '@Model.ClientId',
+				GFStartDate: unescape($(this).attr('data-startdate')),
+				Value: dataArray.Value,
+				Type: 0
+			};
+			$tr.find('input').each(function (index, Element) {
+				var el = $(Element);
+				d[el.attr('name')] = el.val();
+			});
+			$tr.find('select').each(function(index, Element) {
+				var el = $(Element);
+				d['Type'] = el.val();
+			});
+
+			$.ajax({
+				url: '@Url.Action("UpdateGFHoursEntry")',
+				type: 'POST',
+				data: d,
+				success: function (data, textStatus, jqXHR) {
+					oTable.fnDraw(false);
+				},
+				error: function (jqXHR, textStatus, errorThrown) {
+					alert(errorThrown);
+				}
+			});
+		});
+
+		$('table#@dtId button.delete').live('click', function () {
+			oTable.find(':input, button').attr('disabled', 'disabled');
+			$.ajax({
+				url: '@Url.Action("DeleteGFHoursEntry")',
+				method: 'POST',
+				dataType: "json",
+				data: {
+					"ClientId": "@Model.ClientId",
+					"StartDate": unescape($(this).attr('data-startdate'))
+				}
+			}).done(function (data) {
+				oTable.fnDraw(false);
+			}).fail(function () {
+				oTable.find(':input, button').removeAttr('disabled');
+			});
+		});
+
+
+		var dialog = $('div#@dialogId').dialog({
+			autoOpen: false,
+			modal: true,
+			width: 'auto',
+			height: 'auto',
+			open: function (event, ui) {
+				dialog.find(':input').val('');
+				dialog.find(':input').removeAttr('disabled');
+				dialog.find('#@Html.FieldIdFor(f => f.GFStartDate)').datepicker().trigger('focus');
+			},
+			buttons: {
+				"Submit": function () {
+					if (dialog.find('form').valid()) {
+						dialog.find(':input').attr('disabled', 'disabled');
+						$.ajax({
+							url: '@Url.Action("AddNewGFHoursEntry")',
+							method: 'POST',
+							dataType: "json",
+							data: {
+								clientId: parseInt('@Model.ClientId'),
+								GFStartDate: dialog.find('#@Html.FieldIdFor(f => f.GFStartDate)').val(),
+								Value: dialog.find('#@Html.FieldIdFor(f => f.Value)').val(),
+								Type: dialog.find('#@Html.FieldIdFor(f => f.Type)').val()
+							}
+						}).done(function (data) {
+							dialog.find(':input').removeAttr('disabled');
+							if (data && data.errors) {
+								$('ul.gfhourstaberrors').html('<li>' + data.errors.join('</li><li>') + '</li>');
+							}
+							else {
+								oTable.fnDraw(false);
+
+								dialog.dialog('close');
+							}
+						}).fail(function () {
+							dialog.find(':input').removeAttr('disabled');
+						});
+					}
+				},
+				"Cancel": function () {
+					dialog.find(':input').val('');
+					dialog.dialog('close');
+				}
+			}
+		});
+		$('.addnewGFHours').click(function () {
+			dialog.dialog('open');
+		});
+
+	});
+</script>
+
+<div id="@dialogId">
+	@using (Html.BeginForm("AddNewGFHoursEntry"))
+	{
+		@Html.ValidationSummary()
+		<ul class="error gfhourstaberrors"></ul>
+		<div class="editor-item-block">
+			@Html.LabelFor(f => f.Value, "Hours")
+			@Html.EditorFor(f => f.Value)
+			@Html.ValidationMessageFor(f => f.Value)
+		</div>
+		<div class="editor-item-block">
+			@Html.LabelFor(f => f.GFStartDate)
+			@Html.EditorFor(f => f.GFStartDate)
+			@Html.ValidationMessageFor(f => f.GFStartDate)
+		</div>
+	<div class="editor-item-block">
+		@Html.LabelFor(f => f.Type)
+		@Html.DropDownListFor(f => f.Type, Model.GFHoursTypes)
+		@Html.ValidationMessageFor(f => f.Type)
+	</div>
+	}
+</div>

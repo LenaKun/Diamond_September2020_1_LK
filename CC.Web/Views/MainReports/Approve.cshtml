@@ -1,0 +1,221 @@
+﻿@model MainReportApproveModel
+@if (Model.MainReportStatus != MainReport.Statuses.AwaitingAgencyResponse)
+{
+    if (Model.ShowPoWarning)
+    {
+        <p>One or more clients is receiving homecare from another agency and is causing total hours reported to exceed their cap.  Please contact your Program Officer/Program Assistant for help filling in this text box.</p>
+    }
+    else
+    {
+        <text>
+            @if (Model.RequiresAdminApproval)
+            {<p>You are attempting to report on a client for whom a different assessment score appears in another agency's records. Please consult with your Program Officer and/or Program Assistant prior to submitting this report.</p>}
+
+            <div id="cancellationAmount" hidden="hidden">
+                <fieldset>
+                    @Html.LabelFor(f => f.CancellationAmount)
+                    @Html.DisplayFor(f => f.CancellationAmount)@Html.DisplayFor(f => f.CurrencyId)
+                </fieldset>
+            </div>
+            @if ((User.IsInRole(FixedRoles.Admin) || User.IsInRole(FixedRoles.RegionOfficer) || (Model.MainReportStatus == MainReport.Statuses.AwaitingProgramAssistantApproval && User.IsInRole(FixedRoles.RegionAssistant))))
+            {
+                <button type="button" class="confirm" id="approve-button">Approve</button>
+            }
+        </text>
+    }
+    if ((User.IsInRole(FixedRoles.Admin) || User.IsInRole(FixedRoles.RegionOfficer) || (Model.MainReportStatus == MainReport.Statuses.AwaitingProgramAssistantApproval && User.IsInRole(FixedRoles.RegionAssistant))))
+    {
+        <button type="button" class="cancel" id="reject-button">Reject</button>
+    }
+    <button type="button" class="cancel" id="awaiting-agency-button">Awaiting Agency Response</button>
+}
+else if ((User.IsInRole(FixedRoles.RegionAssistant) || User.IsInRole(FixedRoles.RegionOfficer) || User.IsInRole(FixedRoles.GlobalOfficer) || User.IsInRole(FixedRoles.Admin)) &&
+        Model.PrevMainReportStatus.HasValue && Model.PrevMainReportStatus.Value == MainReport.Statuses.AwaitingProgramAssistantApproval)
+{
+<button type="button" class="confirm" id="change-status-pa">Change back status to Awaiting PA</button>
+}
+else if ((User.IsInRole(FixedRoles.RegionOfficer) || User.IsInRole(FixedRoles.GlobalOfficer) || User.IsInRole(FixedRoles.Admin)) &&
+        Model.PrevMainReportStatus.HasValue && Model.PrevMainReportStatus.Value == MainReport.Statuses.AwaitingProgramOfficerApproval)
+{
+<button type="button" class="confirm" id="change-status-po">Change back status to Awaiting PO</button>
+}
+
+<div id="dialog-change-status" title="Changes status of main report">
+    @using (Html.BeginForm("ChangeStatusBack", "MainReports", FormMethod.Post))
+    {
+        @Html.ValidationSummary()
+        @Html.HiddenFor(f => f.Id)
+        @Html.HiddenFor(f => f.LastReport)
+        @Html.HiddenFor(f => f.PrevMainReportStatus)
+        <ul>
+            <li>
+                <p>
+                    Please confirm your password to proceed:
+                </p>
+                <div>
+                    <div class="display-item">
+                        @Html.LabelFor(f => f.UserName)
+                        @Html.DisplayFor(f => f.UserName)
+                    </div>
+                </div>
+                <div>
+                    <div class="display-item">
+                        @Html.LabelFor(f => f.Password)
+                        @Html.EditorFor(f => f.Password)
+                    </div>
+                </div>
+            </li>
+        </ul>
+    }
+</div>
+
+<div id="dialog-approve" title="Approve main report">
+    @using (Html.BeginForm("Approve", "MainReports", FormMethod.Post))
+    {
+        @Html.HiddenFor(f => f.Id)
+        @Html.HiddenFor(f => f.CancellationAmount)
+        @Html.HiddenFor(f => f.CurrencyId)
+        <p>
+            Please confirm your password to proceed:
+        </p>
+        <div>
+            <div class="display-item">
+                @Html.LabelFor(f => f.LastReport)
+                @Html.EditorFor(f => f.LastReport)
+            </div>
+        </div>
+        <div>
+            <div class="display-item">
+                @Html.LabelFor(f => f.UserName)
+                @Html.DisplayFor(f => f.UserName)
+            </div>
+        </div>
+        <div>
+            <div class="display-item">
+                @Html.LabelFor(f => f.Password)
+                @Html.EditorFor(f => f.Password)
+            </div>
+        </div>
+    }
+</div>
+<div id="dialog-reject" title="Reject main report">
+    @using (Html.BeginForm("Reject", "MainReports", FormMethod.Post))
+    {
+        @Html.ValidationSummary()
+        @Html.HiddenFor(f => f.Id)
+        @Html.HiddenFor(f => f.LastReport)
+        <ul>
+            <li>
+                @Html.LabelFor(f => f.RejectionRemarks, "Please enter a reason for rejection")
+                <div>
+                    @Html.EditorFor(f => f.RejectionRemarks)
+                </div>
+            </li>
+            <li>
+                <p>
+                    Please confirm your password to proceed:
+                </p>
+                <div>
+                    <div class="display-item">
+                        @Html.LabelFor(f => f.UserName)
+                        @Html.DisplayFor(f => f.UserName)
+                    </div>
+                </div>
+                <div>
+                    <div class="display-item">
+                        @Html.LabelFor(f => f.Password)
+                        @Html.EditorFor(f => f.Password)
+                    </div>
+                </div>
+            </li>
+        </ul>
+    }
+</div>
+<div id="dialog-awaiting-agency" title="Changes status of main report">
+    @using (Html.BeginForm("AwaitingAgencyResponse", "MainReports", FormMethod.Post))
+    {
+        @Html.ValidationSummary()
+        @Html.HiddenFor(f => f.Id)
+        @Html.HiddenFor(f => f.LastReport)
+        <ul>
+            <li>
+                <p>
+                    Please confirm your password to proceed:
+                </p>
+                <div>
+                    <div class="display-item">
+                        @Html.LabelFor(f => f.UserName)
+                        @Html.DisplayFor(f => f.UserName)
+                    </div>
+                </div>
+                <div>
+                    <div class="display-item">
+                        @Html.LabelFor(f => f.Password)
+                        @Html.EditorFor(f => f.Password)
+                    </div>
+                </div>
+            </li>
+        </ul>
+    }
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var checked = '@Model.LastReport';
+        if (checked == "True") {
+            $('#cancellationAmount').show();
+        }
+        else {
+            $('#cancellationAmount').hide();
+        }
+        $('label[for="@Html.FieldIdFor(f => f.LastReport)"] > span').remove();
+    });
+    $(function () {
+    	$('#dialog-approve, #dialog-reject, #dialog-awaiting-agency, #dialog-change-status').dialog({
+            autoOpen: false,
+            resizable: false,
+            height: 'auto',
+            width: 'auto',
+            modal: true,
+            buttons: {
+                "Submit": function () {
+                    if (typeof tinyMCE !== "undefined") {
+                        tinyMCE.triggerSave();
+                    }
+                    $(this).find('form:first-child').submit();
+                },
+                "Cancel": function () {
+                    if (typeof tinyMCE !== "undefined") {
+                        tinyMCE.triggerSave();
+                    }
+                    $(this).find(':input').val('');
+                    $(this).dialog("close");
+                }
+            }
+        });
+        $('#approve-button').click(function () {
+        	var isAudit = '@Model.AgencyGroupIsAudit' == 'True';
+        	if (!isAudit || ("The agency is currently being audited by Claims Conference grant auditors. Are you sure you wish to change the status of this Budget/Report?")) {
+        		$('#dialog-approve').dialog('open');
+        	}
+        });
+    	$('#reject-button').click(function () {
+    		var isAudit = '@Model.AgencyGroupIsAudit' == 'True';
+    		if (!isAudit || confirm("The agency is currently being audited by Claims Conference grant auditors. Are you sure you wish to change the status of this Budget/Report?")) {
+        		$('#dialog-reject').dialog('open');
+        	}
+    	});
+    	$('#awaiting-agency-button').click(function () {
+    		var isAudit = '@Model.AgencyGroupIsAudit' == 'True';
+    		if (!isAudit || confirm("The agency is currently being audited by Claims Conference grant auditors. Are you sure you wish to change the status of this Budget/Report?")) {
+    			$('#dialog-awaiting-agency').dialog('open');
+    		}
+    	});
+    	$('#change-status-pa, #change-status-po').click(function () {
+    		var isAudit = '@Model.AgencyGroupIsAudit' == 'True';
+    		if (!isAudit || confirm("The agency is currently being audited by Claims Conference grant auditors. Are you sure you wish to change the status of this Budget/Report?")) {
+    			$('#dialog-change-status').dialog('open');
+    		}
+    	});
+    });
+</script>

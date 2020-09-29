@@ -1,0 +1,59 @@
+﻿@model IEnumerable<CC.Data.User>
+@{
+	ViewBag.Title = "Users Management";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<p>
+	@Html.ActionLink("Create New", "Create")
+    <a href="https://grantreporting.claimscon.org/DiamondHelp/user-management/index.html" target="_blank">Help</a>
+</p>
+<table id="data"></table>
+<fieldset>
+    <div class="editor-item">
+        <button type="button" id="exportBtn">Export to Excel</button>
+    </div>
+</fieldset>
+<script>
+    $('#exportBtn').click(function () {
+        window.location.href = '@Url.Action("Export")';
+    });
+
+	$(function () {
+		var oTable = $('table#data').dataTable({
+			"aaSorting": [[0, "asc"]],
+
+			"bServerSide": true,
+			"sAjaxSource": '@Url.Action("IndexData")',
+			"fnServerParams": function (aoData) {
+			},
+			"aoColumns": [
+				{ "mData": "Id", "sTitle": "Id" },
+				{ "mData": "Username", "sTitle": "Username" },
+				{ "mData": "FirstName", "sTitle": "FirstName" },
+				{ "mData": "LastName", "sTitle": "LastName" },
+				{ "mData": "Email", "sTitle": "Email" },
+				{ "mData": "Role", "sTitle": "Role" },
+				{ "mData": "RoleEnd", "sTitle": "" },
+				{
+				    "mData": "Id",
+				    "sTitle": "",
+				    "bSortable": false,
+				    "mRender": function (a, b, c) {
+				    	var html = '<a href="@Url.Action("Edit")/' + a + '">Edit</a> | ' +
+							'<a href="@Url.Action("Details")/' + a + '">Details</a> |';
+				    	if (c.Disabled) {
+				    		html += ' <a href="@Url.Action("EnableDisable")/' + a + '">Enable</a>';
+				    	}
+				    	else {
+				    		html += ' <a href="@Url.Action("EnableDisable")/' + a + '">Disable</a>';
+				    	}
+				 		return html;
+				 	}
+				 }
+			]
+		});
+	});
+</script>
+

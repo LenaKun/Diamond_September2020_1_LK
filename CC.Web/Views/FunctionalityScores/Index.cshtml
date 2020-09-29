@@ -1,0 +1,153 @@
+﻿@model GenericModel<int>
+@{
+    Layout = null;
+}
+<div class="dataTablesContainer">
+
+    <table id="fcDataTable" style="width: 100%">
+        <thead>
+            <tr>
+                <th class="Score">
+                    Functionality Score
+                </th>
+                <th class="StartDate">
+                    Start Date
+                </th>
+                <th class="DiagnosticScore">
+                    Diagnostic Score
+                </th>
+                <th class="LevelName">
+                    Functionality Level
+                </th>
+                <th class="HcHours">
+					Functionality HC Hours
+                </th>
+                <th class="UpdatedBy">
+                    Updated By
+                </th>
+                <th class="UpdatedAt">
+                    Updated At
+                </th>
+				<th class="DafId">
+					DAF ID
+				</th>
+            </tr>
+        </thead>
+    </table>
+	@if (Model.Permissions.CanUpdateExistingClient)
+	{
+		<button id="addNewFuncScoreDialog" onclick="javascript: $('#newFunctionalityScore').dialog({modal:true});"
+				class="button">
+			Add New
+		</button>
+		<div id="newFunctionalityScore" style="display: none">
+			<script type="text/javascript">
+				$(function () { $("#fsCreateForm").ajaxify($('#newFunctionalityScore')); });
+			</script>
+			@Html.Partial("~/Views/FunctionalityScores/Create.cshtml", new FunctionalityScore() { ClientId = Model.Data })
+		</div>
+	}
+	@if (Model.Permissions.CanDeleteFuncScore)
+	{
+		<button id="btnDeleteFuncRow"></button>
+	}
+</div>
+<script type="text/javascript">
+    $(function () {
+
+        var fcDataTable = $('table#fcDataTable').dataTable({
+            "bProcessing": true,
+            "bLengthChange": false,
+            "bFilter": false,
+            "bServerSide": true,
+            "bJQueryUI": true,
+            "sPaginationType": "full_numbers",
+            "sAjaxSource": '@Url.Action("IndexDataTable", "FunctionalityScores", new { Id = Model.Data })',
+            "aoColumns":
+            [
+                { "sName": "Id", mData: "Id", bVisible: false },
+                { "sName": "StartDate", mData: "StartDate" },
+                { "sName": "DiagnosticScore", mData: "DiagnosticScore"},
+                { "sName": "LevelName", mData: "LevelName" },
+                { "sName": "HcHours", mData: "HcHours" },
+                { "sName": "UpdatedBy", mData: "UpdatedBy" },
+                { "sName": "UpdatedAt", mData: "UpdatedAt" },
+				{
+					"sName": "DafId", mData: "DafId", mRender: function (val, stype, mData) {
+						var result = val;
+						if (mData.DafId != null) {
+							result = '&emsp;<a href="@Url.Action("Details", "Daf")/' + val + '" target="_blanck">DAF Details</a>';
+						}
+						return result;
+				}}
+            ],
+            "fnRowCallback": function (nRow, aData, iDisplayIndex) {
+                /* set tr id. assume the id is in the first column of data */
+                if (aData["Id"]) {
+                    $(nRow).attr("id", aData["Id"]);
+                }
+                return nRow;
+            }
+        }).makeEditable({
+            aoColumns: [null, null, null, null, null], //readonly http://code.google.com/p/jquery-datatables-editable/wiki/ReadOnlyCells
+            sDeleteURL: '@Url.Action("Delete", "FunctionalityScores")',
+            sDeleteHttpMethod: "Post",
+            sDeleteRowButtonId: "btnDeleteFuncRow",
+            fnOnDeleting: function (tr, id, fnDeleteRow) {
+            	$("#trace").append("Deleting row with id " + id);
+            	var data = fcDataTable.fnGetData(tr.get(0));
+            	if (id && !data.DafId) {
+                    fnDeleteRow(id);
+            	}
+            	else if (id) {
+            		alert("Please delete connected DAF record first");
+            		return false;
+            	}
+                else {
+                    return false;
+                }
+            },
+            fnOnDeleted: function (status) {
+                $("#trace").append("Deleted action finished. Status - " + status);
+            },
+            oDeleteRowButtonOptions: {
+                label: "Remove",
+                icons: { primary: 'ui-icon-trash' }
+            }
+
+        });
+
+
+        $('#fsFormContainer form').submit(function () {
+
+            var form = $(this).closest('form');
+            var data = form.closest('form').serializeObject();
+            form.find(':input').attr('disabled', 'disabled');
+            $.ajax({
+                type: 'POST',
+                context: form,
+                url: form.attr('action'),
+                data: data,
+                success: function (data, textStatus, jqXHR) {
+                    if (data.Success) {
+
+                        $(this).find(":input").not('[type="submit"]').not(":hidden").not("button").val('');
+                        fcDataTable.fnDraw(false);
+                    }
+                    else {
+                        alert(data.Errors.join(','));
+                    }
+                    fcDataTable.fnDraw(false);
+                    form.find(':input').removeAttr('disabled');
+                },
+                dataType: "json",
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert(textStatus);
+                    form.find(':input').removeAttr('disabled');
+                }
+            });
+
+            return false;
+        });
+    });
+</script>

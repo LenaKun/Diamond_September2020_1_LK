@@ -1,0 +1,159 @@
+﻿@model SubReportDetailsModel
+@{
+	ViewBag.Title = "Summary";
+}
+@section Header
+{
+	<script>
+	var loadTotals = function () {
+		$('div#totals').load('@Url.Action("GetTotals", new { Id = Model.Id})' + '?totalYtdSk=' + @Model.Totals.TotalYTDVisitCountExceptThisSr + '&IE=' + Math.random(), function () {
+				$('span.totalAmount').html($('div#totals span.totalAmount').html());
+			});
+		};
+	</script>
+	<script id="dt" type="text/javascript">
+		//simple datatable init
+		var editLink = '<button type="button" class="edit">Edit</button><button type="button" class="add">Add</button>';
+		var deleteLink = '<button type="button" class="delete">Delete</button>';
+
+		var dataTable = null;
+
+
+		$(document).ready(function () {
+			dataTable = $('table.grid').dataTable({
+				"bServerSide": true,
+				"aaSorting": [[2, "asc"], [3, "asc"]],
+				"sAjaxSource": '@Url.Action("GetRows", new { Id = Model.Id })',
+				"aoColumnDefs": [
+
+				  {
+				  	"aTargets": [0],
+				  	"bVisible": false
+				  },
+					{
+						"aTargets": [1], "mRender": function (a) {
+							return '<a href="@Url.Action("Details", "Clients")/' + a + '">' + a + '</a';
+						}
+					},
+
+					{ "aTargets": [2], "sName": "IsraelID", "sTitle": "Israel ID" },
+
+
+					{
+						"aTargets": [3, 4],
+						"bSortable": true
+					},
+					{ "aTargets": [5], "sName": "ApprovalStatus", "sTitle": "Approval Status" },
+					{ "aTargets": [6], "sName": "JoinDate", "sTitle": "Join Date", "mRender": function (val) { return renderDate(val); } },
+					{ "aTargets": [7], "sName": "VisitsCount", "sTitle": "Meal Count", "sClass": "number" },
+				],
+				"fnServerParams": function (aoData) {
+					aoData.push({ name: "IE", value: Math.random() });
+					aoData.push({ name: "AppBudgetServiceId", value: "@Model.AppBudgetServiceId" });
+					aoData.push({ name: "AgencyId", value: "@Model.AgencyId" });
+					aoData.push({ name: "@Html.FieldNameFor(f => f.Filter.ClientName)", value: $('#@Html.FieldIdFor(f => f.Filter.ClientName)').val() });
+					aoData.push({ name: "@Html.FieldNameFor(f => f.Filter.ClientId)", value: $('#@Html.FieldIdFor(f => f.Filter.ClientId)').val() });
+					aoData.push({ name: "@Html.FieldNameFor(f => f.Filter.ReportedOnly)", value: $('#@Html.FieldIdFor(f => f.Filter.ReportedOnly)').val() });
+
+				}
+					, "fnRowCallback": function (nRow, aData, iDisplayIndex) {
+						/* set tr id. assume the id is in the first column of data */
+						$(nRow).attr("clientId", aData[5]);
+						$(nRow).attr("id", aData[1]);
+						$(nRow).attr("subReportId", '@Model.Id');
+
+						return nRow;
+					}
+			});
+			$('button.filter').click(function () {
+				dataTable.fnDraw();
+			});
+			$('button.reset').click(function () {
+				$(this).closest('table').find(':input').val('');
+				dataTable.fnDraw();
+			});
+
+		});
+	</script>
+}
+<h2>
+	Summary
+</h2>
+@Html.ValidationSummary()
+<p>
+	<a href="@Url.Action("details", "MainReports" , new { id=Model.MainReportId })" class="button">Go to Financial Report</a>	
+</p>
+@Html.Partial("Header", Model.DetailsHeader)
+
+<table class="filter horizontal">
+	<tr>
+		<th style="white-space: nowrap">
+			Filter By:
+		</th>
+		<td style="width: 100%">
+			<div class="display-item">
+				@Html.LabelFor(f => f.Filter.ClientName)
+				@Html.EditorFor(f => f.Filter.ClientName)
+			</div>
+			<div class="display-item">
+				@Html.LabelFor(f => f.Filter.ClientId)
+				@Html.EditorFor(f => f.Filter.ClientId)
+			</div>
+
+			<div class="display-item">
+				@Html.LabelFor(f => f.Filter.ReportedOnly)
+				@Html.DropDownListFor(f => f.Filter.ReportedOnly, Model.Filter.ReportedOnlySelectList)
+			</div>
+			<div class="display-item">
+				<button type="button" class="filter">
+					Go
+				</button>
+				<button type="button" class="reset">
+					Reset
+				</button>
+			</div>
+		</td>
+	</tr>
+</table>
+@using (Html.BeginForm("SaveSoupKitchensReport", "SubReports"))
+{
+
+
+	<table class="grid">
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th>CC ID</th>
+
+				<th>
+					Israel ID
+				</th>
+				<th>
+					Client First Name
+				</th>
+				<th>
+					Client Last Name
+				</th>
+				<th>
+					Approval Status
+				</th>
+				<th>
+					Join Date
+				</th>
+				<th data-name="VisitsCount" data-type="int">
+					Visits Count
+				</th>
+			</tr>
+		</thead>
+		<tbody></tbody>
+	</table>
+}
+<div id="totals">
+	@Html.Partial(Model.Totals.ViewName, Model.Totals)
+</div>
+<div>
+	<a href="@Url.Action("Export", new { id=Model.Id })" class="button">Export</a>
+</div>
+<p>
+	<a href="@Url.Action("details", "MainReports" , new { id=Model.MainReportId })" class="button">Go to Financial Report </a>
+</p>

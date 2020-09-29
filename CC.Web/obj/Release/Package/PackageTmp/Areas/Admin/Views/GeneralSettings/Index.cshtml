@@ -1,0 +1,67 @@
+﻿@model GeneralSettingsModel
+@{
+	ViewBag.Title = "General Settings";
+	string SuccessMessage = ViewBag.SuccessMessage;
+	string CfsRecordsExportSuccessMessage = ViewBag.CfsRecordsExportSuccessMessage;
+    string CfsDailyDigestSuccessMessage = ViewBag.CfsDailyDigestSuccessMessage;
+}
+
+<h2>@ViewBag.Title</h2>
+
+<form action="@Url.Action("UpdateNewSerOrgNotifyEmail")" method="get">
+	<fieldset>
+		<legend>New Ser/Org notify email</legend>
+		@Html.ValidationMessageFor(f => f.NewSerOrgNotifyEmail)
+		@if (!string.IsNullOrEmpty(SuccessMessage))
+		{
+			<div><label class="validation-summary-success">@SuccessMessage</label></div>
+		}
+		<p>Please note: multiple e-mail's addresses should be inserted separated by a comma</p>
+		<div class="editor-item">
+			@Html.LabelFor(f => f.NewSerOrgNotifyEmail)
+			@Html.EditorFor(f => f.NewSerOrgNotifyEmail)
+		</div>
+		<div class="editor-item">
+			<button type="submit">Save</button>
+		</div>
+	</fieldset>
+</form>
+
+<form action="@Url.Action("UpdateDailyDigestFireHour")" method="post">
+    <fieldset>
+        <legend>CFS Daily Digest</legend>
+        @if (!string.IsNullOrEmpty(CfsDailyDigestSuccessMessage))
+        {
+            <div><label class="validation-summary-success">@CfsDailyDigestSuccessMessage</label></div>
+        }
+        <div class="eeditor-item">
+            @Html.LabelFor(f => f.CfsDailyLastDate)
+            @Html.DisplayFor(f => f.CfsDailyLastDate)
+        </div>
+        <div class="eeditor-item">
+            @Html.LabelFor(f => f.CfsDailyDigestFireHour)
+            @Html.EditorFor(f => f.CfsDailyDigestFireHour)
+        </div>
+        <div class="editor-item">
+            <button type="submit">Save</button>
+        </div>
+    </fieldset>
+</form>
+
+<form action="@Url.Action("InitiateCfsRecordsExport")" method="post">
+	<fieldset>
+		<legend>CFS Automated Export</legend>
+		@Html.ValidationMessageFor(f => f.CfsRecordsExportDateTime)
+		@if (!string.IsNullOrEmpty(CfsRecordsExportSuccessMessage))
+		{
+			<div><label class="validation-summary-success">@CfsRecordsExportSuccessMessage</label></div>
+		}
+		<div class="editor-item">
+			@Html.LabelFor(f => f.CfsRecordsExportDateTime)
+			@Html.DisplayFor(f => f.CfsRecordsExportDateTime)
+		</div>
+		<div class="editor-item">
+			<button type="submit">Initiate Export Now</button>
+		</div>
+	</fieldset>
+</form>

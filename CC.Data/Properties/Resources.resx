@@ -1,0 +1,220 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="DAF_v1" xml:space="preserve">
+    <value>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+
+&lt;!--Claims Conference Home Care Services			
+2016 Diagnostic Assessment Form			
+			
+Agency Name  			
+Client’s Full Name			
+Date of Assessment		Form #	
+			
+The following are 14 diagnostic tables that assess each individual client’s functionality status.  In each table, please fill in the corresponding number for the one answer that best describes the client’s functionality status, based on the descriptions below each function.--&gt;
+&lt;root&gt;
+	&lt;q id="1" text="Mobility outside the home"&gt;
+		&lt;a id="1" score="0"&gt;Ventures outside the home without difficulty. &lt;/a&gt;
+		&lt;a id="2" score="0.75"&gt;Does not leave home in winter.&lt;/a&gt;
+		&lt;a id="3" score="0.75"&gt;Ventures outside the home but cannot carry shopping bags by oneself.&lt;/a&gt;
+		&lt;a id="4" score="1"&gt;Only leaves home when accompanied/assisted. &lt;/a&gt;
+		&lt;a id="5" score="2"&gt;Does not leave home at all.  &lt;/a&gt;
+	&lt;/q&gt;
+	&lt;q id="2" text="House cleaning"&gt;
+		&lt;a id="1" score="0"&gt;Cleans the apartment without difficulty.&lt;/a&gt;
+		&lt;a id="2" score="0.5"&gt;Cleans and dusts independently, but requires partial assistance. &lt;/a&gt;
+		&lt;a id="3" score="1"&gt;Cleans and dusts independently, but requires assistance in performing major house cleaning tasks – washing floors, cleaning the toilet, bathroom and kitchen.&lt;/a&gt;
+		&lt;a id="4" score="2"&gt;Incapable of performing any house cleaning tasks.&lt;/a&gt;
+	&lt;/q&gt;
+	&lt;q id="3" text="Laundry"&gt;
+		&lt;a id="1" score="0"&gt;The client requires no assistance in doing laundry. &lt;/a&gt;
+		&lt;a id="2" score="0.5"&gt;The client is able to wash small items by hand but needs help with washing larger items, wringing out or hanging laundry to dry or needs assistance with using the washing machine and dryer.&lt;/a&gt;
+		&lt;a id="3" score="1"&gt;Needs assistance with all types of laundry.&lt;/a&gt;
+	&lt;/q&gt;
+	&lt;q id="4" text="Cooking and preparing food"&gt;
+		&lt;a id="1" score="0"&gt; Does not require assistance with cooking or food preparation, manages on one’s own.&lt;/a&gt;
+		&lt;a id="2" score="1"&gt;Needs partial assistance in preparing food.&lt;/a&gt;
+		&lt;a id="3" score="2"&gt;The client requires total assistance in preparing food.&lt;/a&gt;
+	&lt;/q&gt;
+	&lt;q id="5" text="Mobility within the home"&gt;
+		&lt;a id="1" score="0"&gt;Moves about the home unassisted.&lt;/a&gt;
+		&lt;a id="2" score="0"&gt;Moves about unassisted with the use of an auxiliary device (walker, cane).&lt;/a&gt;
+		&lt;a id="3" score="0.5"&gt;Moves about with or without auxiliary devices, but requires assistance in walking or getting up. &lt;/a&gt;
+		&lt;a id="4" score="0.5"&gt;Moves about in a wheelchair.  Able to get into (transfer to) the wheelchair by oneself and use it to move about the house unassisted. &lt;/a&gt;
+		&lt;a id="5" score="1"&gt;Uses a wheelchair but requires assistance to get into (transfer to) the wheelchair or to move around the house in it. &lt;/a&gt;
+		&lt;a id="6" score="1.5"&gt;Bedridden; unable to get up from the bed and take a few steps unassisted.&lt;/a&gt;
+	&lt;/q&gt;
+	&lt;q id="6" text="Falls during the last 3 months"&gt;
+		&lt;a id="1" score="0"&gt;Does not fall.&lt;/a&gt;
+		&lt;a id="2" score="0"&gt;Falls but can get up unassisted.&lt;/a&gt;
+		&lt;a id="3" score="0.5"&gt;Falls sometimes, cannot get up unassisted (at least 3 times in the last 3 months). &lt;/a&gt;
+		&lt;a id="4" score="1"&gt;Falls at least once a week and cannot get up without help.&lt;/a&gt;
+	&lt;/q&gt;
+	&lt;q id="7" text="Dressing"&gt;
+		&lt;a id="1" score="0"&gt;Dresses without assistance.&lt;/a&gt;
+		&lt;a id="2" score="0.5"&gt;Needs minor assistance when dressing: putting on socks or shoes, doing up buttons.&lt;/a&gt;
+		&lt;a id="3" score="1"&gt;Requires significant assistance with dressing.&lt;/a&gt;
+	&lt;/q&gt;
+	&lt;q id="8" text="Personal hygiene"&gt;
+		&lt;a id="1" score="0"&gt;Bathes unassisted.&lt;/a&gt;
+		&lt;a id="2" score="0.5"&gt;Must be accompanied while bathing (e.g., fears fainting / feeling unwell in the bathroom, suffers from disorientation).&lt;/a&gt;
+		&lt;a id="3" score="1"&gt;Requires minor assistance (regulating water temperature, shaving, shampooing hair).&lt;/a&gt;
+		&lt;a id="4" score="1.5"&gt;Requires major assistance during some parts of bathing (e.g., washing the back, washing the feet). &lt;/a&gt;
+		&lt;a id="5" score="2"&gt;Requires full assistance with washing and bathing.&lt;/a&gt;
+	&lt;/q&gt;
+	&lt;q id="9" text="Eating and Drinking"&gt;
+		&lt;a id="1" score="0"&gt;Eats and drinks unassisted. &lt;/a&gt;
+		&lt;a id="2" score="0.5"&gt;Eats and drinks unassisted, but requires help in serving meals and heating food. &lt;/a&gt;
+		&lt;a id="3" score="1"&gt;Needs partial assistance with eating and/or drinking. &lt;/a&gt;
+		&lt;a id="4" score="1.5"&gt;Must be fed by another person.&lt;/a&gt;
+	&lt;/q&gt;
+	&lt;q id="10" text="Taking medicines"&gt;
+		&lt;a id="1" score="0"&gt;Does not require assistance. &lt;/a&gt;
+		&lt;a id="2" score="0.5"&gt;Needs assistance in preparing each dose of medication, but is able to take medication when prompted. &lt;/a&gt;
+		&lt;a id="3" score="1"&gt;Requires complete supervision in taking medicines.&lt;/a&gt;
+	&lt;/q&gt;
+	&lt;q id="11" text="Bodily functions "&gt;
+		&lt;a id="1" score="0"&gt;Controls bodily functions and/or manages this task independently with or without the use of auxiliary devices (can change own diaper/hygienic packet/disposable pad).&lt;/a&gt;
+		&lt;a id="2" score="0.5"&gt;Partially controls bodily functions (suffers from nocturnal urinary incontinence), and/or experiences difficulty in using the toilet and therefore requires assistance.&lt;/a&gt;
+		&lt;a id="3" score="1"&gt;When using the toilet, requires assistance in moving about, dressing, or maintaining personal hygiene after performing bodily functions.&lt;/a&gt;
+		&lt;a id="4" score="1.5"&gt;Cannot control one of the bodily functions (urination or defecation) either by day or at night, cannot tend to oneself and fully depends on the assistance of others. &lt;/a&gt;
+		&lt;a id="5" score="2"&gt;Cannot use the toilet, does not control discharges (neither urinating nor defecating), cannot tend to oneself; fully depends on outside assistance. &lt;/a&gt;
+	&lt;/q&gt;
+	&lt;q id="12" text="Supervision "&gt;
+		&lt;a id="1" score="0"&gt;Does not constitute danger to oneself and/or others if left alone. &lt;/a&gt;
+		&lt;a id="2" score="3"&gt;Needs supervision only at certain times of the day/night or during certain activities&lt;/a&gt;
+		&lt;a id="3" score="6"&gt;Endangers oneself and others if left alone, requires constant presence of another person. &lt;/a&gt;
+	&lt;/q&gt;
+	&lt;q id="13" text="Eyesight"&gt;
+		&lt;a id="1" score="0"&gt;No eyesight problems&lt;/a&gt;
+		&lt;a id="2" score="0.5"&gt;Vision impaired&lt;/a&gt;
+		&lt;a id="3" score="1"&gt;Blind or legally blind&lt;/a&gt;
+	&lt;/q&gt;
+	&lt;q id="14" text="Hearing"&gt;
+		&lt;a id="1" score="0"&gt;No hearing problems&lt;/a&gt;
+		&lt;a id="2" score="0.5"&gt;Hard of hearing / hearing impaired&lt;/a&gt;
+		&lt;a id="3" score="1"&gt;Deaf / no hearing ability&lt;/a&gt;
+	&lt;/q&gt;
+&lt;/root&gt;</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="Services" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\services.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+</root>

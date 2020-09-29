@@ -1,0 +1,143 @@
+﻿@model AppBudgetCreateModel 
+@{
+	ViewBag.Title = "Create a New Budget";
+}
+<h2>@ViewBag.Title</h2>
+@section Header{
+	<script type="text/javascript">
+		//-----------------fund->app comboes
+		$(function () {
+			$('#@Html.FieldIdFor(f => f.FundId)').change(function () {
+				var clientElementSelector = '#@Html.FieldIdFor(f => f.AppId)';
+				var client = $(clientElementSelector).html('');
+				var originalValue = client.val();
+
+				var url = '@Url.Content("~/Data/DataService.svc/Apps?")';
+				url += "$select=Id,Name";
+				if ($(this).val()) {
+					url += "&$filter=FundId eq " + $(this).val();
+				}
+				url += '&$orderby=Name';
+
+
+
+				$.ajax({
+					url: url,
+					dataType: 'json',
+					success: function (data, textStatus, jqXHR) {
+
+						client.html('<option></option>');
+						for (var i = 0; i < data.d.length; i++) {
+							var a = data.d[i];
+							var option = $("<option/>").attr('value', a.Id).html(a.Name);
+							if (option.attr('value') == originalValue)
+								option.attr('selected', 'selected');
+							client.append(option);
+
+						}
+						client.change();
+					},
+					error: function (jqXHR, textStatus, errorThrown) {
+
+					}
+				});
+			});
+		});
+
+
+		//--------------------app details
+		$(function () {
+
+			var appDdl = $('#@Html.FieldIdFor(f => f.AppId)');
+			appDdl.change(function () {
+				var appId = $(this).val();
+				if (appId) {
+					$.ajax({
+						url: '@Url.Content("~/Data/DataService.svc/Apps")' + '(' + appId + ')',
+						dataType: 'json',
+						success: function (data, textStatus, jqXHR) {
+							var app = data.d;
+							$('#@Html.FieldIdFor(f => f.App)').show();
+							$('#@Html.FieldIdFor(f => f.App.StartDate)').html($.datepicker.formatDate('dd M yy', parseJsonDateString(app.StartDate)));
+							var enddate = parseJsonDateString(app.EndDate);
+							enddate = new Date(enddate.setDate(enddate.getDate() - 1));
+							$('#@Html.FieldIdFor(f => f.App.EndDate)').html($.datepicker.formatDate('dd M yy', enddate));
+
+						},
+						error: function (jqXHR, textStatus, errorThrown) {
+
+						}
+					});
+				}
+				else {
+					$('#@Html.FieldIdFor(f => f.App)').hide();
+					$('#@Html.FieldIdFor(f => f.App.StartDate)').html('');
+					$('#@Html.FieldIdFor(f => f.App.EndDate)').html('');
+				}
+			});
+
+		});
+
+	</script>
+}
+@using (Html.BeginForm())
+{
+	@Html.ValidationSummary(true)
+
+	if (System.Web.HttpContext.Current.Request.HttpMethod.ToString() == "POST")
+	{
+		if (Model.ExistingAppBudgetId() != 0)
+		{
+	<span>To edit the existing Budget, go to the </span>   
+	<button onclick="location.href='@Url.Action("Details", new { id = Model.ExistingAppBudgetId() })';return false;">
+		Budget Details</button>
+		}
+
+	}
+   
+     
+	<fieldset>
+		<legend>Budget</legend>
+		<table>
+			<tr>
+				<th rowspan="2">
+					Budget<br />
+					App<br />
+					Details:
+				</th>
+				<th>
+					@Html.LabelFor(model => model.FundId, "Fund")
+				</th>
+				<th>
+					@Html.LabelFor(model => model.AppId, "App")
+				</th>
+				<th>
+					@Html.LabelFor(f => f.App.StartDate, "Start Date"):
+				</th>
+				<th>
+					@Html.LabelFor(f => f.App.EndDate, "End Date"):
+				</th>
+			</tr>
+			<tr>
+				<td>@Html.DropDownListFor(f => f.FundId, Model.Funds, String.Empty)
+				</td>
+				<td>
+					@Html.DropDownListFor(f => f.AppId, Model.Apps, String.Empty)
+				</td>
+				<td>
+					<span id="@Html.FieldIdFor(f => f.App.StartDate)" class="editor-field"></span>
+				</td>
+				<td>
+					<span id="@Html.FieldIdFor(f => f.App.EndDate)" class="editor-field"></span>
+				</td>
+			</tr>
+		</table>
+		<p>
+
+			<input type="submit" value="Create" class="submit" />
+			<a href="@Url.Action("Index")" class="button">Cancel</a>
+		</p>
+	</fieldset>
+}
+<div>
+</div>

@@ -1,0 +1,315 @@
+﻿@model SubReportDetailsModel
+@{
+	ViewBag.Title = "Detailed Report";
+}
+@section Header
+{
+	<script>
+		var loadTotals = function () {
+			$('div#totals').load('@Url.Action("GetTotals", new { Id = Model.Id})' + '?IE=' + Math.random(), function () {
+				$('span.totalAmount').html($('div#totals span.totalAmount').html());
+			});
+		};
+	</script>
+	<script id="dt" type="text/javascript">
+		//simple datatable init
+		var editLink = '<button type="button" class="edit">Edit</button><button type="button" class="delete">Delete</button><button type="button" class="add">Add</button>';
+		var dataTable = null;
+		var editable = '@Model.CanBeEdited' == 'True';
+
+		$(document).ready(function () {
+			dataTable = $('table.grid').dataTable({
+				"bJQueryUI": true,
+				"sPaginationType": "full_numbers",
+				"bServerSide": true,
+				"bProcessing": true,
+				"aaSorting": [[1, "asc"], [2, "asc"]],
+				"sAjaxSource": '@Url.Action("GetRows", new { Id = Model.Id })',
+				"aoColumnDefs": [
+					{
+						"aTargets": [0,3,4,5,6,7],
+						"bSortable": false
+					},
+                    {
+                        "aTargets": [3],
+                        "mRender": function (a) { return '<a href="@Url.Action("Details","Clients")/' + a + '">' + a + '</a>'; }
+                    },
+						{
+							//last colum with buttons
+							"aTargets": [-1],
+							"sWidth": "7em",
+							"bSortable": false,
+							"bVisible": editable,
+							"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+								$(nTd).html(editLink).addClass('control');
+							}
+						}
+				],
+				"fnServerParams": function (aoData) {
+
+					aoData.push({ name: "IE", value: Math.random() });
+					aoData.push({ name: "AppBudgetServiceId", value: "@Model.AppBudgetServiceId" });
+					aoData.push({ name: "AgencyId", value: "@Model.AgencyId" });
+					aoData.push({ name: "@Html.FieldNameFor(f => f.Filter.ClientName)", value: $('#@Html.FieldIdFor(f => f.Filter.ClientName)').val() });
+					aoData.push({ name: "@Html.FieldNameFor(f => f.Filter.ClientId)", value: $('#@Html.FieldIdFor(f => f.Filter.ClientId)').val() });
+					aoData.push({ name: "@Html.FieldNameFor(f => f.Filter.ReportedOnly)", value: $('#@Html.FieldIdFor(f => f.Filter.ReportedOnly)').val() });
+				}
+				,
+				"fnRowCallback": function (nRow, aData, iDisplayIndex) {
+					/* set tr id. assume the id is in the first column of data */
+					$(nRow).attr("clientId", aData[3]);
+					$(nRow).attr("id", aData[0]);
+					$(nRow).attr("subReportId", '@Model.Id');
+
+					return nRow;
+				}
+			});
+			$('button.filter').click(function () {
+				dataTable.fnDraw();
+			});
+			$('button.reset').click(function () {
+				$(this).closest('table').find(':input').val('');
+				dataTable.fnDraw();
+			});
+
+		});
+	</script>
+	@if (Model.CanBeEdited)
+ {
+		<script>
+			$(function () {
+				$('table.grid button.cancel').live('click', function () {
+					$('table.grid').dataTable().fnDraw(false);
+				});
+
+				$('table.grid button.add').live('click', function () {
+					
+					var tr = $(this).closest('tr');
+					var oData = $('table.grid').dataTable().fnGetData(tr.get(0));
+					
+					//clear all but client data
+					oData[0] = null;
+					
+
+					for (var i = 4; i < oData.length; i++) {
+						oData[i] = null;
+					}
+
+					
+					var ntr = tr.clone();
+					ntr.data('data', oData);
+					ntr.insertBefore(tr);
+					ntr.find('td:nth-child(1)').html('');
+					$(ntr).find('button.edit').click();
+				});
+				$('table.grid button.edit').live('click', function () {
+					var tr = $(this).closest('tr');
+					var oData = $('table.grid').dataTable().fnGetData(tr.get(0));
+					if (!oData) {
+						oData = tr.data('data');
+					}
+					$(this).closest('td').html('<button type="button" class="update">Update</button><button type="button" class="cancel">Cancel</button>');
+					var sel = $('<select/>');
+					$.getJSON('@Url.Action("GetMedicalEquipmentItemTypes")', { subreportid: '@Model.Id', clientid: oData[3], id:oData[0], IE: Math.random() }, function (data) {
+						for(var key in data)
+						{
+
+							sel.append($('<option/>').val(data[key].Id).html(data[key].Name));
+						}
+					});
+					tr.find('td:nth-child(5)').html('').append(sel.val(oData[8]));
+						
+						
+					tr.find('td:nth-child(6)').html('').append(
+						$('<input type="text" name="Quantity"/>').val(oData[5]).addClass('required')
+						);
+					tr.find('td:nth-child(7)').html('').append(
+						$('<input type="text" name="Amout"/>').val(oData[6]).addClass('required').addClass('number')
+						);
+				});
+				$('table.grid button.update').live('click', function () {
+					var tr = $(this).closest('tr');
+					var oData = $('table.grid').dataTable().fnGetData(tr.get(0));
+					if (!oData) {
+						oData = tr.data('data');
+					}
+					var d = {
+						Id: oData[0],
+						SubReportId: '@Model.Id',
+						ClientId: oData[3],
+						EquipmentTypeId: tr.find('td:nth-child(5) select').val(),
+						Quantity: tr.find('td:nth-child(6) input').val(),
+						Amount: tr.find('td:nth-child(7) input').val()
+					};
+					var form = $(this).closest('form');
+					form.validate();
+					if (form.valid()) {
+						$.ajax({
+							type: 'POST',
+							url: '@Url.Action("SaveMedicalEquipmentReport")',
+							data: d,
+							success: function (data) {
+								$('table.grid').dataTable().fnDraw(false);
+								loadTotals();
+							},
+							error: function () {
+								alert('error');
+							}
+						});
+					}
+
+				});
+				$('table.grid button.delete').live('click', function () {
+					var tr = $(this).closest('tr');
+					var oData = $('table.grid').dataTable().fnGetData(tr.get(0));
+					if (!oData) {
+						oData = tr.data('data');
+					}
+					var d = {
+						Id: oData[0]
+					};
+					if (d.Id) {
+
+						$.ajax({
+							type: 'POST',
+							url: '@Url.Action("DeleteMedicalEquipmentRow")',
+							data: d,
+							success: function (data) {
+								$('table.grid').dataTable().fnDraw(false);
+								loadTotals();
+							},
+							error: function () {
+								alert('error');
+							}
+						});
+					}
+				});
+
+			});
+		</script>
+ }
+}
+<h2>
+	Detailed Report
+</h2>
+@Html.ValidationSummary()
+<p>
+	<a href="@Url.Action("Details", "MainReports", new { id = Model.MainReportId })" class="button">Go to Financial Report</a> @if (Model.CanBeEdited){ <a href="@Url.Action("Create", "SubReports", new { Id = Model.Id, AppBudgetServiceId = Model.AppBudgetServiceId, MainReportId = Model.MainReportId })" class="button">Import</a>}
+</p>
+@Html.Partial("Header", Model.DetailsHeader)
+<table class="filter horizontal">
+	<tr>
+		<th style="white-space: nowrap">
+			Filter By:
+		</th>
+		<td style="width: 100%">
+			<div class="display-item">
+				@Html.LabelFor(f => f.Filter.ClientName)
+				@Html.EditorFor(f => f.Filter.ClientName)
+			</div>
+			<div class="display-item">
+				@Html.LabelFor(f => f.Filter.ClientId)
+				@Html.EditorFor(f => f.Filter.ClientId)
+			</div>
+			<div class="display-item">
+				@Html.LabelFor(f => f.Filter.ReportedOnly)
+				@Html.DropDownListFor(f => f.Filter.ReportedOnly, Model.Filter.ReportedOnlySelectList)
+			</div>
+			<div class="display-item">
+				<button type="button" class="filter">
+					Go</button>
+				<button type="button" class="reset">
+					Reset</button>
+			</div>
+		</td>
+	</tr>
+</table>
+<form>
+<table class="grid">
+	<thead>
+		<tr>
+			<th>
+				Id
+			</th>
+            <th>
+				Client First Name
+			</th>
+            <th>
+				Client Last Name
+			</th>
+			<th>
+				CC ID
+			</th>
+			<th>
+				Item Type	
+			</th>
+			<th>Number of items</th>
+			<th class="edit" data-name="Amount" data-type="decimal">
+				Amount
+			</th>
+			<th>CUR</th>
+			@if (Model.CanBeEdited)
+   {
+				<th></th>
+   }
+		</tr>
+	</thead>
+	<tbody>
+	</tbody>
+</table>
+	</form>
+<div id="totals">
+	@Html.Partial(Model.Totals.ViewName, Model.Totals)
+</div>
+<div>
+	<a href="@Url.Action("Export", new { id = Model.Id })" class="button">Export</a>
+</div>
+<p>
+	<a href="@Url.Action("Details", "MainReports", new { id = Model.MainReportId })" class="button">Go to Financial Report </a>
+	@if (Model.CanBeEdited){ <a href="@Url.Action("Create", "SubReports", new { Id = Model.Id, AppBudgetServiceId = Model.AppBudgetServiceId, MainReportId = Model.MainReportId })" class="button">Import</a>}
+    @if (Model.CanBeEdited)
+   {
+        <button type="button" class="button" onclick="setToDef()">
+					Set To Default</button>
+        <script>
+            function setToDef() {
+                dalert(function () {
+                    var d = {
+                        Id: '@Model.Id'
+                    };
+                    $.ajax({
+                        type: 'POST',
+                        url: '@Url.Action("DeleteChildReportRows")',
+                        data: d,
+                        success: function (data) {
+                        	location.reload();
+                        },
+                        error: function () {
+                            alert('error');
+                        }
+                    });
+
+                })
+            }
+            function dalert(yesCallback) {
+                $('<div></div>').html('All Sub Report Record will be deleted, continue ?').dialog({
+                    modal: true,
+                    buttons: {
+                        "Yes": function () {
+                            $(this).dialog("close");
+                            $(this).dialog("destroy");
+                            yesCallback();
+                        },
+                        "No": function () {
+                            $(this).dialog("close");
+                            $(this).dialog("destroy");
+
+                        }
+                    }
+
+                });
+            }
+        </script>
+		
+   }
+</p>

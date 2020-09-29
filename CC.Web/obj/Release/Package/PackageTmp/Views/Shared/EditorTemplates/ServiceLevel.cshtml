@@ -1,0 +1,3 @@
+﻿@model int?
+		   
+@Html.DropDownList("", Enumerable.Range(1, 3).Select(f => new SelectListItem() { Value = f.ToString(), Text = string.Format("{0}", f), Selected = f == Model }), string.Empty)

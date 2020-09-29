@@ -1,0 +1,20 @@
+﻿@{
+	Layout = "~/Views/Shared/_Layout.cshtml";
+	var s = new Dictionary<string, string>();
+	s.Add("Budgets List", Url.Action("Index", new { controller = "AppBudgets", area = string.Empty }));
+	if (!User.IsInRole("BMF"))
+	{
+		s.Add("New Budget", Url.Action("Create", new { controller = "AppBudgets", area = string.Empty }));
+	}
+}
+@section SubMenu{
+	<ul id="subMenu" class="menu">
+		@foreach (var link in s)
+		{
+			<li><a href="@link.Value">@link.Key</a></li>
+		}
+            <li><a href="https://grantreporting.claimscon.org/DiamondHelp/budgets/index.html" target="_blank">Help</a></li>
+	</ul>
+	@RenderSection("SubMenu", false)
+}
+@RenderBody()

@@ -1,0 +1,46 @@
+﻿@model Guid
+@{
+	ViewBag.Title = "Preview";
+}
+
+<h2>Preview</h2>
+
+@Html.ValidationSummary()
+
+
+@if (ViewData.ModelState.IsValid)
+{
+	<form action="@Url.Action("Import", new { id = Model })" method="post">
+
+		<button type="submit">Submit</button>
+
+	</form>
+}
+<p>
+	<a href="@Url.Action("Upload", "Cfs")" class="button">Cancel</a>
+</p>
+<table id="dataTable"></table>
+<script>
+	$(function () {
+		var oDataTable = $('table#dataTable').dataTable({
+			"bJQueryUI": true,
+			"bProccessing": true,
+			"sPaginationType": "full_numbers",
+			"aaSorting": [[1, "asc"], [0, "desc"]],
+			"bServerSide": true,
+			"sAjaxSource": '@Url.Action("PreviewData", new { id = Model })',
+			"fnServerParams": function (aoData) {
+				aoData.push({ name: "IE", value: Math.random() });
+			},
+			"aoColumns": [
+				{ "mData": "RowIndex", "sTitle": "Row" },
+				{ "mData": "Errors", "sName": "Errors", "bSortable": false, "sTitle": "Errors", "mRender": function (val) { if (val && val.length > 0) { return '<ul><li>' + val.join('</li><li>') + '</li><ul>'; } else { return val; } } },
+				{ "mData": "Warning", "sTitle": "Warning" },
+				{ "mData": "ClientId", "sTitle": "CC ID" },
+				{ "mData": "ClientName", "sTitle": "Client Name" },
+				{ "mData": "StartDate", "sTitle": "Start Date", "sType": "date", "sClass": "date", "mRender": function (val, type, full) { return renderDate(val); } },
+				{ "mData": "CFSApproved", "sTitle": "CFS Approved", "sType": "date", "sClass": "date", "mRender": function (val, type, full) { return renderDate(val); } }
+			]
+		});
+	});
+</script>

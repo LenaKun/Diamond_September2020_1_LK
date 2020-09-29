@@ -1,0 +1,57 @@
+﻿@model CC.Data.ClientContact
+<fieldset>
+	<legend>Details</legend>
+	<div class="editor-label">
+		@Html.LabelFor(model => model.ContactDate)
+	</div>
+	<div class="editor-field">
+		@Html.DisplayFor(model => model.ContactDate)
+	</div>
+
+	<div class="editor-label">
+		@Html.LabelFor(model => model.ContactedUsing)
+	</div>
+	<div class="editor-field">
+		@Html.DisplayFor(model => model.ContactedUsing)
+	</div>
+
+	<div class="editor-label">
+		@Html.LabelFor(model => model.Contacted)
+	</div>
+	<div class="editor-field">
+		@Html.DisplayFor(model => model.Contacted)
+	</div>
+
+	<div class="editor-label">
+		@Html.LabelFor(model => model.CcStaffContact)
+	</div>
+	<div class="editor-field">
+		@Html.DisplayFor(model => model.CcStaffContact)
+	</div>
+
+	<div class="editor-label">
+		@Html.LabelFor(model => model.ReasonForContact)
+	</div>
+	<div class="editor-field">
+		@Html.DisplayFor(model => model.ReasonForContact)
+	</div>
+
+	<div class="editor-label">
+		@Html.LabelFor(model => model.ResponseRecievedDate)
+	</div>
+	<div class="editor-field">
+		@Html.DisplayFor(model => model.ResponseRecievedDate)
+	</div>
+
+	<div class="editor-label">
+		@Html.LabelFor(model => model.Filename)
+	</div>
+	<div class="editor-field">
+		@Html.DisplayFor(f => f.Filename)
+	</div>
+
+</fieldset>
+
+<div>
+	@Html.ActionLink("Back to Client Details", "Details", "Clients", new { id = Model.ClientId }, null)
+</div>

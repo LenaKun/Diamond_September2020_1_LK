@@ -1,0 +1,27 @@
+﻿@{
+	Layout = "~/Views/Shared/_Layout.cshtml";
+	var s = new Dictionary<string, string>();
+	s.Add("Budgets List", Url.Action("Index", new { controller = "AppBudgets", area = string.Empty }));
+	s.Add("New Budget", Url.Action("Create", new { controller = "AppBudgets", area = string.Empty }));
+    
+}
+@section Header{
+	@RenderSection("Header",false)
+}
+@section SubMenu{
+    @{
+        var roleId = (CC.Data.FixedRoles)(((CC.Web.Security.CcPrincipal)HttpContext.Current.User).CcUser.RoleId);
+    }
+<ul id="subMenu" class="menu">
+    <li>@Html.ActionLink("Clients List", "Index", "Clients")</li>
+    @if (roleId == FixedRoles.Admin || roleId == FixedRoles.AgencyUser || roleId == FixedRoles.AgencyUserAndReviewer || roleId == FixedRoles.AgencyOfficer || roleId == FixedRoles.Ser || roleId == FixedRoles.SerAndReviewer || roleId == FixedRoles.RegionAssistant)
+    {
+        <li><a href="@Url.Action("ImportHome", "Clients")">Import</a></li>
+    }
+    @RenderSection("SubMenu", false)
+    <li><a href="https://grantreporting.claimscon.org/DiamondHelp/client-management/index.html" target="_blank">Help</a></li>
+    <!--<li><a href="https://grdev.claimscon.org/DiamondHelpDev/client-management/index.html" target="_blank">Help_Test</a></li>-->
+    <!--<li><a href="http://diamondhelp.claimscon.org.s10567.gridserver.com/" target="_blank">Help_Test</a></li>-->
+</ul>
+}
+@RenderBody()

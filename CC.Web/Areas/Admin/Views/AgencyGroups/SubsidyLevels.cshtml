@@ -1,0 +1,32 @@
+﻿    @{
+        ViewBag.Title = "Subsidy Levels";
+    }
+
+    <h2>@ViewBag.Title</h2>
+
+    <table id="data"></table>
+    <script>
+    $(function () {
+        var oTable = $('table#data').dataTable({
+            "aaSorting": [[0, "asc"]],
+            "bServerSide": true,
+            "sAjaxSource": '@Url.Action("SubsidyLevelsData")',
+            "aoColumns": [
+				 { "mData": "LevelId", "sTitle": "Level Id" },
+				 { "mData": "FullSubsidy", "sTitle": "Full Subsidy" },
+				 { "mData": "StartDate", "sTitle": "Start Date", "mRender": function (a) { return renderDate(a); } },
+				 {
+				     "mData": "Amount", "sTitle": "Amount", "fnRender": function (o, val) {
+				         if (val == "") {
+				             return "N/A";
+				         }
+				         else {
+				             return val;
+				         }
+				     }
+				 }
+            ]
+        });
+    });
+    </script>
+

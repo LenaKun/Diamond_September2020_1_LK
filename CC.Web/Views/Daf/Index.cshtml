@@ -1,0 +1,227 @@
+﻿@model CC.Web.Models.DafIndexModel
+@{
+	ViewBag.Title = global::Resources.Resource.DafList;
+}
+
+<h2>@ViewBag.Title</h2>
+<div>
+	<div>
+		<form>
+			<fieldset>
+				<legend>@Resources.Resource.Filter</legend>
+				<div>
+					@Html.LabelFor(model => model.Filter.Status)
+					@Html.EditorFor(model => model.Filter.Status)
+
+					@Html.LabelFor(model => model.Filter.SerId)
+					@Html.EditorFor(model => model.Filter.SerId)
+					<script>
+						(function () {
+							var pageSize = 30;
+							var baseUrl = '@Url.Content("~/data/dataservice.svc/AgencyGroups")';
+							var params = {
+								"$select": "Id,DisplayName"
+							}
+							var clientMap = function (a) {
+								return { id: a.Id, text: a.DisplayName }
+							}
+							$('#@Html.FieldIdFor(model=>model.Filter.SerId)').select2({
+								width: 300,
+								quietMillis: 250,
+								placeholder: "@Resources.Resource.SelectAnOption",
+								allowClear: true,
+								initSelection: function (element, callback) {
+									var id = $(element).val();
+									if (id) {
+										$.ajax(baseUrl + '(' + id + ')', {
+											dataType: "json",
+											data: params
+										}).done(function (data) {
+											callback(clientMap(data.d));
+										}).fail(function () {
+											callback(null);
+										});
+									}
+								},
+								ajax: {
+									url: baseUrl,
+									dataType: "json",
+									data: function (term, page) {
+										var result = params;
+										result.$top = pageSize + 1;
+										result.$skip = (page - 1) * pageSize;
+										result.$orderby = "DisplayName";
+										if (term) {
+											result.$filter = "substringof('" + term + "', DisplayName) eq true";
+										}
+										return result;
+									},
+									results: function (data) {
+										return {
+											results: data.d.splice(0, pageSize).map(clientMap),
+											more: data.d.length > 0
+										};
+									}
+								}
+							});
+						})();
+					</script>
+
+					@Html.LabelFor(model => model.Filter.AgencyId)
+					@Html.EditorFor(model => model.Filter.AgencyId)
+					<script>
+						(function () {
+							var pageSize = 30;
+							var baseUrl = '@Url.Content("~/data/dataservice.svc/Agencies")';
+							var params = {
+								"$select": "Id,Name"
+							}
+							var clientMap = function (a) {
+								return { id: a.Id, text: a.Name }
+							}
+							$('#@Html.FieldIdFor(model=>model.Filter.AgencyId)').select2({
+								width: 300,
+								quietMillis: 1000,
+								placeholder: "@Resources.Resource.SelectAnOption",
+								allowClear: true,
+								initSelection: function (element, callback) {
+									var id = $(element).val();
+									if (id) {
+										$.ajax(baseUrl + '(' + id + ')', {
+											dataType: "json",
+											data: params
+										}).done(function (data) {
+											callback(clientMap(data.d));
+										}).fail(function () {
+											callback(null);
+										});
+									}
+								},
+								ajax: {
+									url: baseUrl,
+									dataType: "json",
+									data: function (term, page) {
+										var result = params;
+										result.$top = pageSize + 1;
+										result.$skip = (page - 1) * pageSize;
+										result.$orderby = "Name";
+										var serId = $('#@Html.FieldIdFor(model=>model.Filter.SerId)').select2('val');
+										if (serId) {
+											result.$filter = 'GroupId eq ' + serId;
+										}
+										if (term) {
+											if (result.$filter) {
+												result.$filter += " and ";
+											}
+											result.$filter = "substringof('" + term + "', Name) eq true";
+										}
+										return result;
+									},
+									results: function (data) {
+										return {
+											results: data.d.splice(0, pageSize).map(clientMap),
+											more: data.d.length > 0
+										};
+									}
+								}
+							});
+						})();
+					</script>
+
+				</div>
+				<div>
+					@Html.LabelFor(model => model.Filter.DafId)
+					@Html.EditorFor(model => model.Filter.DafId)
+
+					@Html.LabelFor(model => model.Filter.ClientId)
+					@Html.EditorFor(model => model.Filter.ClientId)
+
+					@Html.LabelFor(model => model.Filter.FirstName)
+					@Html.EditorFor(model => model.Filter.FirstName)
+				</div>
+				<div>
+					@Html.LabelFor(model => model.Filter.LastName)
+					@Html.EditorFor(model => model.Filter.LastName)
+
+					@Html.LabelFor(model => model.Filter.Search)
+					@Html.EditorFor(model => model.Filter.Search)
+				</div>
+				<div>
+					<button type="button" id="apply-filter">@Resources.Resource.Filter</button>
+					<button type="button" id="reset-filter">@Resources.Resource.Reset</button>
+					<script>
+						$('#apply-filter').click(function () {
+							$('#indexTable').DataTable().fnDraw();
+						});
+						$('#reset-filter').click(function () {
+							window.location.reload()
+						});
+					</script>
+				</div>
+			</fieldset>
+		</form>
+
+	</div>
+	<table id="indexTable"></table>
+	<div>
+		@using (Html.BeginForm("Create", "Daf", FormMethod.Get))
+		{
+			@Html.LabelFor(f => f.ClientId)
+			@Html.EditorFor(f => f.ClientId)
+			<button type="submit">@Resources.Resource.Create</button>
+		}
+
+	</div>
+	@if (User.IsInRole(FixedRoles.Admin))
+	{
+		<div>
+			@Html.ActionLink(Resources.Resource.DeletedDafList, "Index", "DeletedDaf")
+		</div>
+	}
+</div>
+
+<script>
+	$(function () {
+		var oTable = $('#indexTable').dataTable({
+			"aaSorting": [[0, "asc"]],
+			"bServerSide": true,
+			"sDom": '<"H"lp>t<"F"ip>r',
+			"sAjaxSource": '@Url.Action("IndexData")',
+			"fnServerParams": function (aoData) {
+				aoData.push({ name: '@Html.FieldNameFor(f => f.Filter.Status)', value: $('#@Html.FieldIdFor(f => f.Filter.Status)').val() });
+				aoData.push({ name: '@Html.FieldNameFor(f => f.Filter.SerId)', value: $('#@Html.FieldIdFor(f => f.Filter.SerId)').val() });
+				aoData.push({ name: '@Html.FieldNameFor(f => f.Filter.AgencyId)', value: $('#@Html.FieldIdFor(f => f.Filter.AgencyId)').val() });
+				aoData.push({ name: '@Html.FieldNameFor(f => f.Filter.DafId)', value: $('#@Html.FieldIdFor(f => f.Filter.DafId)').val() });
+				aoData.push({ name: '@Html.FieldNameFor(f => f.Filter.ClientId)', value: $('#@Html.FieldIdFor(f => f.Filter.ClientId)').val() });
+				aoData.push({ name: '@Html.FieldNameFor(f => f.Filter.FirstName)', value: $('#@Html.FieldIdFor(f => f.Filter.FirstName)').val() });
+				aoData.push({ name: '@Html.FieldNameFor(f => f.Filter.LastName)', value: $('#@Html.FieldIdFor(f => f.Filter.LastName)').val() });
+				aoData.push({ name: '@Html.FieldNameFor(f => f.Filter.Search)', value: $('#@Html.FieldIdFor(f => f.Filter.Search)').val() });
+
+			},
+			"fnDrawCallback": function (oSettings) {
+			},
+			"aoColumns": [{
+				"mData": "DafId", "sTitle": "@Resources.Resource.DafId", "mRender": function (value) {
+					return '<a href="@Url.Action("Details")/' + value + '">' + value + '</a>';
+				}
+			}, {
+				"mData": "ClientId", "sTitle": "@Resources.Resource.ClientId", "mRender": function (value) {
+					return '<a href="@Url.Action("Details", "Clients")/' + value + '">' + value + '</a>';
+				}
+			}, {
+				"mData": "StatusName", "sTitle": "@Resources.Resource.DafStatus"
+			}, {
+				"mData": "Created", "sTitle": "@Resources.Resource.Created", "mRender": renderDateTime
+			}, {
+				"mData": "Updated", "sTitle": "@Resources.Resource.Updated", "mRender": renderDateTime
+			}, {
+				"mData": "EvaluatorName", "sTitle": "@Resources.Resource.EvaluatorName"
+			}, {
+				"mData": "ClientName", "sTitle": "@Resources.Resource.ClientName"
+			}]
+
+		});
+
+	});
+</script>
+

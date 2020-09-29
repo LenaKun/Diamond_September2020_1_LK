@@ -1,0 +1,2823 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="ccModelStoreContainer" CdmEntityContainer="ccEntities">
+    <EntitySetMapping Name="ApprovalStatuses">
+      <EntityTypeMapping TypeName="ccModel.ApprovalStatus">
+        <MappingFragment StoreEntitySet="ApprovalStatuses">
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Countries">
+      <EntityTypeMapping TypeName="IsTypeOf(ccModel.Country)">
+        <MappingFragment StoreEntitySet="Countries">
+          <ScalarProperty Name="Culture" ColumnName="Culture" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Code" ColumnName="Code" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="IncomeVerificationRequired" ColumnName="IncomeVerificationRequired" />
+          <ScalarProperty Name="CcName" ColumnName="CcName" />
+          <ScalarProperty Name="CcCode" ColumnName="CcCode" />
+          <ScalarProperty Name="RegionId" ColumnName="RegionId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="FunctionalityLevels">
+      <EntityTypeMapping TypeName="IsTypeOf(ccModel.FunctionalityLevel)">
+        <MappingFragment StoreEntitySet="FunctionalityLevels">
+          <ScalarProperty Name="SubstractGovHours" ColumnName="SubstractGovHours" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Active" ColumnName="Active" />
+          <ScalarProperty Name="MinScore" ColumnName="MinScore" />
+          <ScalarProperty Name="MaxScore" ColumnName="MaxScore" />
+          <ScalarProperty Name="HcHoursLimit" ColumnName="HcHoursLimit" />
+          <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+          <ScalarProperty Name="RelatedLevel" ColumnName="RelatedLevel" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="FunctionalityScores">
+      <EntityTypeMapping TypeName="IsTypeOf(ccModel.FunctionalityScore)">
+        <MappingFragment StoreEntitySet="FunctionalityScores">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+          <ScalarProperty Name="DiagnosticScore" ColumnName="DiagnosticScore" />
+          <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+          <ScalarProperty Name="FunctionalityLevelId" ColumnName="FunctionalityLevelId" />
+          <ScalarProperty Name="UpdatedAt" ColumnName="UpdatedAt" />
+          <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+          <ScalarProperty Name="Errors" ColumnName="Errors" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="FundStatuses">
+      <EntityTypeMapping TypeName="ccModel.FundStatus">
+        <MappingFragment StoreEntitySet="FundStatuses">
+          <ScalarProperty Name="HomecareApprovalStatusName" ColumnName="HomecareApprovalStatusName" />
+          <ScalarProperty Name="ApprovalStatusName" ColumnName="ApprovalStatusName" />
+          <ScalarProperty Name="IncomeVerificationRequired" ColumnName="IncomeVerificationRequired" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Histories">
+      <EntityTypeMapping TypeName="ccModel.History">
+        <MappingFragment StoreEntitySet="History">
+          <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+          <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+          <ScalarProperty Name="NewValue" ColumnName="NewValue" />
+          <ScalarProperty Name="OldValue" ColumnName="OldValue" />
+          <ScalarProperty Name="FieldName" ColumnName="FieldName" />
+          <ScalarProperty Name="TableName" ColumnName="TableName" />
+          <ScalarProperty Name="ReferenceId" ColumnName="ReferenceId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="HomeCareEntitledPeriods">
+      <EntityTypeMapping TypeName="IsTypeOf(ccModel.HomeCareEntitledPeriod)">
+        <MappingFragment StoreEntitySet="HomeCareEntitledPeriod">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+          <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+          <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+          <ScalarProperty Name="UpdatedAt" ColumnName="UpdatedAt" />
+          <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="LeaveReasons">
+      <EntityTypeMapping TypeName="ccModel.LeaveReason">
+        <MappingFragment StoreEntitySet="LeaveReasons">
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MembershipUsers">
+      <EntityTypeMapping TypeName="ccModel.MembershipUser">
+        <MappingFragment StoreEntitySet="MembershipUser">
+          <ScalarProperty Name="ExpirationDate" ColumnName="ExpirationDate" />
+          <ScalarProperty Name="FailedPasswordAnswerAttemptWindowStart" ColumnName="FailedPasswordAnswerAttemptWindowStart" />
+          <ScalarProperty Name="FailedPasswordAnswerAttemptCount" ColumnName="FailedPasswordAnswerAttemptCount" />
+          <ScalarProperty Name="FailedPasswordAttemptWindowStart" ColumnName="FailedPasswordAttemptWindowStart" />
+          <ScalarProperty Name="FailedPasswordAttemptCount" ColumnName="FailedPasswordAttemptCount" />
+          <ScalarProperty Name="LastLockoutDate" ColumnName="LastLockoutDate" />
+          <ScalarProperty Name="LastPasswordChangedDate" ColumnName="LastPasswordChangedDate" />
+          <ScalarProperty Name="LastLoginDate" ColumnName="LastLoginDate" />
+          <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+          <ScalarProperty Name="IsLockedOut" ColumnName="IsLockedOut" />
+          <ScalarProperty Name="IsApproved" ColumnName="IsApproved" />
+          <ScalarProperty Name="PasswordAnswer" ColumnName="PasswordAnswer" />
+          <ScalarProperty Name="PasswordQuestion" ColumnName="PasswordQuestion" />
+          <ScalarProperty Name="PasswordSalt" ColumnName="PasswordSalt" />
+          <ScalarProperty Name="PasswordFormat" ColumnName="PasswordFormat" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+          <ScalarProperty Name="LoweredEmail" ColumnName="LoweredEmail" />
+          <ScalarProperty Name="LoweredUserName" ColumnName="LoweredUserName" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="NationalIdTypes">
+      <EntityTypeMapping TypeName="ccModel.NationalIdType">
+        <MappingFragment StoreEntitySet="NationalIdTypes">
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Regions">
+      <EntityTypeMapping TypeName="ccModel.Region">
+        <MappingFragment StoreEntitySet="Regions">
+          <ScalarProperty Name="IncomeCriteriaRequired" ColumnName="IncomeCriteriaRequired" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RelatedFunctionalityLevels">
+      <EntityTypeMapping TypeName="ccModel.RelatedFunctionalityLevel">
+        <MappingFragment StoreEntitySet="RelatedFunctionalityLevels">
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Roles">
+      <EntityTypeMapping TypeName="ccModel.Role">
+        <MappingFragment StoreEntitySet="Roles">
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="States">
+      <EntityTypeMapping TypeName="ccModel.State">
+        <MappingFragment StoreEntitySet="States">
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="CountryId" ColumnName="CountryId" />
+          <ScalarProperty Name="Code" ColumnName="Code" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Currencies">
+      <EntityTypeMapping TypeName="ccModel.Currency">
+        <MappingFragment StoreEntitySet="Currencies">
+          <ScalarProperty Name="ExcRate" ColumnName="ExcRate" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Funds">
+      <EntityTypeMapping TypeName="ccModel.Fund">
+        <MappingFragment StoreEntitySet="Funds">
+          <ScalarProperty Name="FluxxFundName" ColumnName="FluxxFundName" />
+          <ScalarProperty Name="FluxxFundId" ColumnName="FluxxFundId" />
+          <ScalarProperty Name="AdminMax" ColumnName="AdminMax" />
+          <ScalarProperty Name="HomecareMin" ColumnName="HomecareMin" />
+          <ScalarProperty Name="OtherServicesMax" ColumnName="OtherServicesMax" />
+          <ScalarProperty Name="RomanianEligibleOnly" ColumnName="RomanianEligibleOnly" />
+          <ScalarProperty Name="AustrianEligibleOnly" ColumnName="AustrianEligibleOnly" />
+          <ScalarProperty Name="CurrencyCode" ColumnName="CurrencyCode" />
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+          <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="MasterFundId" ColumnName="MasterFundId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MasterFunds">
+      <EntityTypeMapping TypeName="ccModel.MasterFund">
+        <MappingFragment StoreEntitySet="MasterFunds">
+          <ScalarProperty Name="FluxxMasterFundName" ColumnName="FluxxMasterFundName" />
+          <ScalarProperty Name="FluxxMasterFundId" ColumnName="FluxxMasterFundId" />
+          <ScalarProperty Name="FluxxExport" ColumnName="FluxxExport" />
+          <ScalarProperty Name="CurrencyCode" ColumnName="CurrencyCode" />
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+          <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AppBudgetServices">
+      <EntityTypeMapping TypeName="ccModel.AppBudgetService">
+        <MappingFragment StoreEntitySet="AppBudgetServices">
+          <ScalarProperty Name="OriginalCcGrant" ColumnName="OriginalCcGrant" />
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+          <ScalarProperty Name="AgencyContribution" ColumnName="AgencyContribution" />
+          <ScalarProperty Name="RequiredMatch" ColumnName="RequiredMatch" />
+          <ScalarProperty Name="CcGrant" ColumnName="CcGrant" />
+          <ScalarProperty Name="AppBudgetId" ColumnName="AppBudgetId" />
+          <ScalarProperty Name="AgencyId" ColumnName="AgencyId" />
+          <ScalarProperty Name="ServiceId" ColumnName="ServiceId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Comments">
+      <EntityTypeMapping TypeName="IsTypeOf(ccModel.Comment)">
+        <MappingFragment StoreEntitySet="Comments">
+          <ScalarProperty Name="PostApprovalComment" ColumnName="PostApprovalComment" />
+          <ScalarProperty Name="IsFile" ColumnName="IsFile" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Content" ColumnName="Content" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MainReports">
+      <EntityTypeMapping TypeName="ccModel.MainReport">
+        <MappingFragment StoreEntitySet="MainReports">
+          <ScalarProperty Name="FluxxStatusId" ColumnName="FluxxStatusId" />
+          <ScalarProperty Name="FluxxModelDocumentError" ColumnName="FluxxModelDocumentError" />
+          <ScalarProperty Name="FluxxModelDocumentId" ColumnName="FluxxModelDocumentId" />
+          <ScalarProperty Name="FluxxRequestReportError" ColumnName="FluxxRequestReportError" />
+          <ScalarProperty Name="FluxxRequestReportId" ColumnName="FluxxRequestReportId" />
+          <ScalarProperty Name="MhsaFileName" ColumnName="MhsaFileName" />
+          <ScalarProperty Name="ProgramOverviewFileName" ColumnName="ProgramOverviewFileName" />
+          <ScalarProperty Name="C168OK" ColumnName="168OK" />
+          <ScalarProperty Name="LastReport" ColumnName="LastReport" />
+          <ScalarProperty Name="RequiresAdminApproval" ColumnName="RequiresAdminApproval" />
+          <ScalarProperty Name="ExcRateSource" ColumnName="ExcRateSource" />
+          <ScalarProperty Name="ExcRate" ColumnName="ExcRate" />
+          <ScalarProperty Name="Revision" ColumnName="Revision" />
+          <ScalarProperty Name="Adjusted" ColumnName="Adjusted" />
+          <ScalarProperty Name="Mhsa" ColumnName="Mhsa" />
+          <ScalarProperty Name="AcMeetingHeld" ColumnName="AcMeetingHeld" />
+          <ScalarProperty Name="ProgramOverview" ColumnName="ProgramOverview" />
+          <ScalarProperty Name="SubmittedById" ColumnName="SubmittedById" />
+          <ScalarProperty Name="ApprovedById" ColumnName="ApprovedById" />
+          <ScalarProperty Name="UpdatedById" ColumnName="UpdatedById" />
+          <ScalarProperty Name="ApprovedAt" ColumnName="ApprovedAt" />
+          <ScalarProperty Name="SubmittedAt" ColumnName="SubmittedAt" />
+          <ScalarProperty Name="UpdatedAt" ColumnName="UpdatedAt" />
+          <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+          <ScalarProperty Name="End" ColumnName="End" />
+          <ScalarProperty Name="Start" ColumnName="Start" />
+          <ScalarProperty Name="AppBudgetId" ColumnName="AppBudgetId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="MainReportAgencyComments" TypeName="ccModel.MainReportAgencyComments" StoreEntitySet="MainReportAgencyComments">
+      <EndProperty Name="MainReport">
+        <ScalarProperty Name="Id" ColumnName="MainReportId" />
+      </EndProperty>
+      <EndProperty Name="Comment">
+        <ScalarProperty Name="Id" ColumnName="CommentId" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="MainReportPoComments" TypeName="ccModel.MainReportPoComments" StoreEntitySet="MainReportPoComments">
+      <EndProperty Name="MainReport">
+        <ScalarProperty Name="Id" ColumnName="MainReportId" />
+      </EndProperty>
+      <EndProperty Name="Comment">
+        <ScalarProperty Name="Id" ColumnName="CommentId" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <EntitySetMapping Name="MainReportStatusAudits">
+      <EntityTypeMapping TypeName="ccModel.MainReportStatusAudit">
+        <MappingFragment StoreEntitySet="MainReportStatusAudits">
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="StatusChangeDate" ColumnName="StatusChangeDate" />
+          <ScalarProperty Name="NewStatusId" ColumnName="NewStatusId" />
+          <ScalarProperty Name="OldStatusId" ColumnName="OldStatusId" />
+          <ScalarProperty Name="MainReportId" ColumnName="MainReportId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SubReports">
+      <EntityTypeMapping TypeName="IsTypeOf(ccModel.SubReport)">
+        <MappingFragment StoreEntitySet="SubReports">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="MainReportId" ColumnName="MainReportId" />
+          <ScalarProperty Name="AppBudgetServiceId" ColumnName="AppBudgetServiceId" />
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="MatchingSum" ColumnName="MatchingSum" />
+          <ScalarProperty Name="AgencyContribution" ColumnName="AgencyContribution" />
+          <ScalarProperty Name="ServiceUnits" ColumnName="ServiceUnits" />
+          <ScalarProperty Name="TotalHouseholdsServed" ColumnName="TotalHouseholdsServed" />
+          <ScalarProperty Name="OverFlowReason" ColumnName="OverFlowReason" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Agencies">
+      <EntityTypeMapping TypeName="ccModel.Agency">
+        <MappingFragment StoreEntitySet="Agencies">
+          <ScalarProperty Name="GroupId" ColumnName="GroupId" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Services">
+      <EntityTypeMapping TypeName="ccModel.Service">
+        <MappingFragment StoreEntitySet="Services">
+          <ScalarProperty Name="FluxxFieldName" ColumnName="FluxxFieldName" />
+          <ScalarProperty Name="CoPGovHoursValidation" ColumnName="CoPGovHoursValidation" />
+          <ScalarProperty Name="ExceptionalHomeCareHours" ColumnName="ExceptionalHomeCareHours" />
+          <ScalarProperty Name="ServiceLevel" ColumnName="ServiceLevel" />
+          <ScalarProperty Name="SingleClientPerYearAgency" ColumnName="SingleClientPerYearAgency" />
+          <ScalarProperty Name="Active" ColumnName="Active" />
+          <ScalarProperty Name="EnforceTypeConstraints" ColumnName="EnforceTypeConstraints" />
+          <ScalarProperty Name="Personnel" ColumnName="Personnel" />
+          <ScalarProperty Name="ReportingMethodId" ColumnName="ReportingMethodId" />
+          <ScalarProperty Name="TypeId" ColumnName="TypeId" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AgencyGroups">
+      <EntityTypeMapping TypeName="ccModel.AgencyGroup">
+        <MappingFragment StoreEntitySet="AgencyGroups">
+          <ScalarProperty Name="FluxxOrganizationName" ColumnName="FluxxOrganizationName" />
+          <ScalarProperty Name="FluxxOrganizationId" ColumnName="FluxxOrganizationId" />
+          <ScalarProperty Name="CfsDate" ColumnName="CfsDate" />
+          <ScalarProperty Name="IsAudit" ColumnName="IsAudit" />
+          <ScalarProperty Name="DefaultCurrency" ColumnName="DefaultCurrency" />
+          <ScalarProperty Name="Culture" ColumnName="Culture" />
+          <ScalarProperty Name="ScSubsidyLevelId" ColumnName="ScSubsidyLevelId" />
+          <ScalarProperty Name="DayCenter" ColumnName="DayCenter" />
+          <ScalarProperty Name="SC_FullSubsidy" ColumnName="SC_FullSubsidy" />
+          <ScalarProperty Name="SupportiveCommunities" ColumnName="SupportiveCommunities" />
+          <ScalarProperty Name="Support" ColumnName="Support" />
+          <ScalarProperty Name="ExcludeFromReports" ColumnName="ExcludeFromReports" />
+          <ScalarProperty Name="DisplayName" ColumnName="DisplayName" />
+          <ScalarProperty Name="ForceIsraelID" ColumnName="ForceIsraelID" />
+          <ScalarProperty Name="RequiredMatch" ColumnName="RequiredMatch" />
+          <ScalarProperty Name="CanSubmitRevisionReports" ColumnName="CanSubmitRevisionReports" />
+          <ScalarProperty Name="ReportingPeriodId" ColumnName="ReportingPeriodId" />
+          <ScalarProperty Name="CountryId" ColumnName="CountryId" />
+          <ScalarProperty Name="StateId" ColumnName="StateId" />
+          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="Addr2" ColumnName="Addr2" />
+          <ScalarProperty Name="Addr1" ColumnName="Addr1" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AppBudgets">
+      <EntityTypeMapping TypeName="ccModel.AppBudget">
+        <MappingFragment StoreEntitySet="AppBudgets">
+          <ScalarProperty Name="FluxxModelDocumentError" ColumnName="FluxxModelDocumentError" />
+          <ScalarProperty Name="FluxxModelDocumentId" ColumnName="FluxxModelDocumentId" />
+          <ScalarProperty Name="FluxxGrantRequestError" ColumnName="FluxxGrantRequestError" />
+          <ScalarProperty Name="FluxxStateUpdatedAt" ColumnName="FluxxStateUpdatedAt" />
+          <ScalarProperty Name="FormASubmitted" ColumnName="FormASubmitted" />
+          <ScalarProperty Name="RequiredMatch" ColumnName="RequiredMatch" />
+          <ScalarProperty Name="TotalCcGrant" ColumnName="TotalCcGrant" />
+          <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+          <ScalarProperty Name="ValidRemarks" ColumnName="ValidRemarks" />
+          <ScalarProperty Name="ValidUntill" ColumnName="ValidUntill" />
+          <ScalarProperty Name="Revised" ColumnName="Revised" />
+          <ScalarProperty Name="AppId" ColumnName="AppId" />
+          <ScalarProperty Name="UpdatedByGpoId" ColumnName="UpdatedByGpoId" />
+          <ScalarProperty Name="UpdatedByGpoAt" ColumnName="UpdatedByGpoAt" />
+          <ScalarProperty Name="UpdatedByRpoId" ColumnName="UpdatedByRpoId" />
+          <ScalarProperty Name="UpdatedByRpoAt" ColumnName="UpdatedByRpoAt" />
+          <ScalarProperty Name="UpdatedBySerId" ColumnName="UpdatedBySerId" />
+          <ScalarProperty Name="UpdatedBySerAt" ColumnName="UpdatedBySerAt" />
+          <ScalarProperty Name="UpdatedByAgencyId" ColumnName="UpdatedByAgencyId" />
+          <ScalarProperty Name="UpdatedByAgencyAt" ColumnName="UpdatedByAgencyAt" />
+          <ScalarProperty Name="UpdatedById" ColumnName="UpdatedById" />
+          <ScalarProperty Name="UpdatedAt" ColumnName="UpdatedAt" />
+          <ScalarProperty Name="PoRemarks" ColumnName="PoRemarks" />
+          <ScalarProperty Name="AgencyRemarks" ColumnName="AgencyRemarks" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Users">
+      <EntityTypeMapping TypeName="ccModel.User">
+        <MappingFragment StoreEntitySet="Users">
+          <ScalarProperty Name="Disabled" ColumnName="Disabled" />
+          <ScalarProperty Name="TemporaryPassword" ColumnName="TemporaryPassword" />
+          <ScalarProperty Name="AddToBcc" ColumnName="AddToBcc" />
+          <ScalarProperty Name="DecimalDisplayDigits" ColumnName="DecimalDisplayDigits" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="Comment" ColumnName="Comment" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="UserName" ColumnName="UserName" />
+          <ScalarProperty Name="RegionId" ColumnName="RegionId" />
+          <ScalarProperty Name="AgencyGroupId" ColumnName="AgencyGroupId" />
+          <ScalarProperty Name="AgencyId" ColumnName="AgencyId" />
+          <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+          <ScalarProperty Name="UniqueId" ColumnName="UniqueId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Apps">
+      <EntityTypeMapping TypeName="ccModel.App">
+        <MappingFragment StoreEntitySet="Apps">
+          <ScalarProperty Name="FuneralExpenses" ColumnName="FuneralExpenses" />
+          <ScalarProperty Name="FluxxGrantRequestError" ColumnName="FluxxGrantRequestError" />
+          <ScalarProperty Name="FluxxGrantRequestId" ColumnName="FluxxGrantRequestId" />
+          <ScalarProperty Name="MaxServicesPersonnelOther" ColumnName="MaxServicesPersonnelOther" />
+          <ScalarProperty Name="MaxHcCaseManagementPersonnel" ColumnName="MaxHcCaseManagementPersonnel" />
+          <ScalarProperty Name="AvgReimbursementCost" ColumnName="AvgReimbursementCost" />
+          <ScalarProperty Name="HistoricalExpenditureAmount" ColumnName="HistoricalExpenditureAmount" />
+          <ScalarProperty Name="MaxAdminAmount" ColumnName="MaxAdminAmount" />
+          <ScalarProperty Name="MaxNonHcAmount" ColumnName="MaxNonHcAmount" />
+          <ScalarProperty Name="AdminMax" ColumnName="AdminMax" />
+          <ScalarProperty Name="HomecareMin" ColumnName="HomecareMin" />
+          <ScalarProperty Name="OtherServicesMax" ColumnName="OtherServicesMax" />
+          <ScalarProperty Name="InterlineTransfer" ColumnName="InterlineTransfer" />
+          <ScalarProperty Name="EndOfYearValidationOnly" ColumnName="EndOfYearValidationOnly" />
+          <ScalarProperty Name="CurrencyId" ColumnName="CurrencyId" />
+          <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+          <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+          <ScalarProperty Name="RequiredMatch" ColumnName="RequiredMatch" />
+          <ScalarProperty Name="CcGrant" ColumnName="CcGrant" />
+          <ScalarProperty Name="AgencyContribution" ColumnName="AgencyContribution" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="AgencyGroupId" ColumnName="AgencyGroupId" />
+          <ScalarProperty Name="FundId" ColumnName="FundId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="AppServices" TypeName="ccModel.AppServices" StoreEntitySet="AppServices">
+      <EndProperty Name="Service">
+        <ScalarProperty Name="Id" ColumnName="ServiceId" />
+      </EndProperty>
+      <EndProperty Name="App">
+        <ScalarProperty Name="Id" ColumnName="AppId" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <EntitySetMapping Name="EmergencyCaps">
+      <EntityTypeMapping TypeName="ccModel.EmergencyCap">
+        <MappingFragment StoreEntitySet="EmergencyCaps">
+          <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+          <ScalarProperty Name="UpdatedAt" ColumnName="UpdatedAt" />
+          <ScalarProperty Name="CurrencyId" ColumnName="CurrencyId" />
+          <ScalarProperty Name="Active" ColumnName="Active" />
+          <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+          <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+          <ScalarProperty Name="DiscretionaryPercentage" ColumnName="DiscretionaryPercentage" />
+          <ScalarProperty Name="CapPerPerson" ColumnName="CapPerPerson" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="EmergencyCapCountries" TypeName="ccModel.EmergencyCapCountries" StoreEntitySet="EmergencyCapCountries">
+      <EndProperty Name="EmergencyCap">
+        <ScalarProperty Name="Id" ColumnName="EmergencyCapId" />
+      </EndProperty>
+      <EndProperty Name="Country">
+        <ScalarProperty Name="Id" ColumnName="CountryId" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="EmergencyCapFunds" TypeName="ccModel.EmergencyCapFunds" StoreEntitySet="EmergencyCapFunds">
+      <EndProperty Name="Fund">
+        <ScalarProperty Name="Id" ColumnName="FundId" />
+      </EndProperty>
+      <EndProperty Name="EmergencyCap">
+        <ScalarProperty Name="Id" ColumnName="EmergencyCapId" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <EntitySetMapping Name="ProgramCosts">
+      <EntityTypeMapping TypeName="ccModel.ProgramCost">
+        <MappingFragment StoreEntitySet="ProgramCosts">
+          <ScalarProperty Name="SubReportId" ColumnName="SubReportId" />
+          <ScalarProperty Name="PercentFundedByCC" ColumnName="PercentFundedByCC" />
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="ProgramCostTypeId" ColumnName="ProgramCostTypeId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ProgramCostTypes">
+      <EntityTypeMapping TypeName="ccModel.ProgramCostType">
+        <MappingFragment StoreEntitySet="ProgramCostTypes">
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AppBudgetServiceAudits">
+      <EntityTypeMapping TypeName="ccModel.AppBudgetServiceAudit">
+        <MappingFragment StoreEntitySet="AppBudgetServiceAudit">
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+          <ScalarProperty Name="AgencyContribution" ColumnName="AgencyContribution" />
+          <ScalarProperty Name="RequiredMatch" ColumnName="RequiredMatch" />
+          <ScalarProperty Name="CcGrant" ColumnName="CcGrant" />
+          <ScalarProperty Name="AgencyId" ColumnName="AgencyId" />
+          <ScalarProperty Name="ServiceId" ColumnName="ServiceId" />
+          <ScalarProperty Name="AppBudgetId" ColumnName="AppBudgetId" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PersonnelReports">
+      <EntityTypeMapping TypeName="ccModel.PersonnelReport">
+        <MappingFragment StoreEntitySet="PersonnelReports">
+          <ScalarProperty Name="PositionType" ColumnName="PositionType" />
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+          <ScalarProperty Name="ServicePercentage" ColumnName="ServicePercentage" />
+          <ScalarProperty Name="PartTimePercentage" ColumnName="PartTimePercentage" />
+          <ScalarProperty Name="Salary" ColumnName="Salary" />
+          <ScalarProperty Name="Position" ColumnName="Position" />
+          <ScalarProperty Name="AppBudgetServiceId" ColumnName="AppBudgetServiceId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DeletedClients">
+      <EntityTypeMapping TypeName="ccModel.DeletedClient">
+        <MappingFragment StoreEntitySet="DeletedClients">
+          <ScalarProperty Name="DeleteRasonId" ColumnName="DeleteRasonId" />
+          <ScalarProperty Name="DeletedByUserId" ColumnName="DeletedByUserId" />
+          <ScalarProperty Name="DeletedAt" ColumnName="DeletedAt" />
+          <ScalarProperty Name="JoinDate" ColumnName="JoinDate" />
+          <ScalarProperty Name="LeaveDate" ColumnName="LeaveDate" />
+          <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="EmergencyReportTypes">
+      <EntityTypeMapping TypeName="ccModel.EmergencyReportType">
+        <MappingFragment StoreEntitySet="EmergencyReportTypes">
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ClientAmountReports">
+      <EntityTypeMapping TypeName="IsTypeOf(ccModel.ClientAmountReport)">
+        <MappingFragment StoreEntitySet="ClientAmountReport">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="ClientReportId" ColumnName="ClientReportId" />
+          <ScalarProperty Name="ReportDate" ColumnName="ReportDate" />
+          <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MedicalEquipmentReports">
+      <EntityTypeMapping TypeName="ccModel.MedicalEquipmentReport">
+        <MappingFragment StoreEntitySet="MedicalEquipmentReports">
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+          <ScalarProperty Name="EquipmentTypeId" ColumnName="EquipmentTypeId" />
+          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+          <ScalarProperty Name="SubReportId" ColumnName="SubReportId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MedicalEquipmentTypes">
+      <EntityTypeMapping TypeName="ccModel.MedicalEquipmentType">
+        <MappingFragment StoreEntitySet="MedicalEquipmentTypes">
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MhmReports">
+      <EntityTypeMapping TypeName="ccModel.MhmReport">
+        <MappingFragment StoreEntitySet="MhmReports">
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+          <ScalarProperty Name="TypeId" ColumnName="TypeId" />
+          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+          <ScalarProperty Name="SubReportId" ColumnName="SubReportId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MhmTypes">
+      <EntityTypeMapping TypeName="ccModel.MhmType">
+        <MappingFragment StoreEntitySet="MhmTypes">
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ClientReports">
+      <EntityTypeMapping TypeName="IsTypeOf(ccModel.ClientReport)">
+        <MappingFragment StoreEntitySet="ClientReports">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+          <ScalarProperty Name="SubReportId" ColumnName="SubReportId" />
+          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+          <ScalarProperty Name="Rate" ColumnName="Rate" />
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="EmergencyReports">
+      <EntityTypeMapping TypeName="ccModel.EmergencyReport">
+        <MappingFragment StoreEntitySet="EmergencyReports">
+          <ScalarProperty Name="UniqueCircumstances" ColumnName="UniqueCircumstances" />
+          <ScalarProperty Name="Total" ColumnName="Total" />
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+          <ScalarProperty Name="Discretionary" ColumnName="Discretionary" />
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="ReportDate" ColumnName="ReportDate" />
+          <ScalarProperty Name="TypeId" ColumnName="TypeId" />
+          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+          <ScalarProperty Name="SubReportId" ColumnName="SubReportId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Clients">
+      <EntityTypeMapping TypeName="IsTypeOf(ccModel.Client)">
+        <MappingFragment StoreEntitySet="Clients">
+          <ScalarProperty Name="UnableToSign" ColumnName="UnableToSign" />
+          <ScalarProperty Name="HAS2Date" ColumnName="HAS2Date" />
+          <ScalarProperty Name="MAF105Date" ColumnName="MAF105Date" />
+          <ScalarProperty Name="CareReceivedId" ColumnName="CareReceivedId" />
+          <ScalarProperty Name="CommPrefsId" ColumnName="CommPrefsId" />
+          <ScalarProperty Name="OtherServicesWaitlist" ColumnName="OtherServicesWaitlist" />
+          <ScalarProperty Name="HomecareWaitlist" ColumnName="HomecareWaitlist" />
+          <ScalarProperty Name="MAFDate" ColumnName="MAFDate" />
+          <ScalarProperty Name="AutoLeaveOverride" ColumnName="AutoLeaveOverride" />
+          <ScalarProperty Name="SC_Client" ColumnName="SC_Client" />
+          <ScalarProperty Name="DCC_Client" ColumnName="DCC_Client" />
+          <ScalarProperty Name="SC_MonthlyCost" ColumnName="SC_MonthlyCost" />
+          <ScalarProperty Name="DCC_VisitCost" ColumnName="DCC_VisitCost" />
+          <ScalarProperty Name="DCC_Subside" ColumnName="DCC_Subside" />
+          <ScalarProperty Name="CountryId" ColumnName="CountryId" />
+          <ScalarProperty Name="MasterIdClcd" ColumnName="MasterIdClcd" />
+          <ScalarProperty Name="RomanianEligible" ColumnName="RomanianEligible" />
+          <ScalarProperty Name="ApprovalStatusUpdated" ColumnName="ApprovalStatusUpdated" />
+          <ScalarProperty Name="GGReportedCount" ColumnName="GGReportedCount" />
+          <ScalarProperty Name="BirthCountryId" ColumnName="BirthCountryId" />
+          <ScalarProperty Name="AustrianEligible" ColumnName="AustrianEligible" />
+          <ScalarProperty Name="AdministrativeLeave" ColumnName="AdministrativeLeave" />
+          <ScalarProperty Name="Gender" ColumnName="Gender" />
+          <ScalarProperty Name="ACPExported" ColumnName="ACPExported" />
+          <ScalarProperty Name="InternalId" ColumnName="InternalId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="MasterId" ColumnName="MasterId" />
+          <ScalarProperty Name="AgencyId" ColumnName="AgencyId" />
+          <ScalarProperty Name="NationalId" ColumnName="NationalId" />
+          <ScalarProperty Name="NationalIdTypeId" ColumnName="NationalIdTypeId" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="Phone" ColumnName="Phone" />
+          <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="StateId" ColumnName="StateId" />
+          <ScalarProperty Name="ZIP" ColumnName="ZIP" />
+          <ScalarProperty Name="JoinDate" ColumnName="JoinDate" />
+          <ScalarProperty Name="LeaveDate" ColumnName="LeaveDate" />
+          <ScalarProperty Name="LeaveReasonId" ColumnName="LeaveReasonId" />
+          <ScalarProperty Name="LeaveRemarks" ColumnName="LeaveRemarks" />
+          <ScalarProperty Name="DeceasedDate" ColumnName="DeceasedDate" />
+          <ScalarProperty Name="ApprovalStatusId" ColumnName="ApprovalStatusId" />
+          <ScalarProperty Name="FundStatusId" ColumnName="FundStatusId" />
+          <ScalarProperty Name="IncomeCriteriaComplied" ColumnName="IncomeCriteriaComplied" />
+          <ScalarProperty Name="IncomeVerificationRequired" ColumnName="IncomeVerificationRequired" />
+          <ScalarProperty Name="NaziPersecutionDetails" ColumnName="NaziPersecutionDetails" />
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+          <ScalarProperty Name="PobCity" ColumnName="PobCity" />
+          <ScalarProperty Name="EmigrationDate" ColumnName="EmigrationDate" />
+          <ScalarProperty Name="PrevFirstName" ColumnName="PrevFirstName" />
+          <ScalarProperty Name="PrevLastName" ColumnName="PrevLastName" />
+          <ScalarProperty Name="OtherFirstName" ColumnName="OtherFirstName" />
+          <ScalarProperty Name="OtherLastName" ColumnName="OtherLastName" />
+          <ScalarProperty Name="OtherDob" ColumnName="OtherDob" />
+          <ScalarProperty Name="OtherId" ColumnName="OtherId" />
+          <ScalarProperty Name="OtherIdTypeId" ColumnName="OtherIdTypeId" />
+          <ScalarProperty Name="OtherAddress" ColumnName="OtherAddress" />
+          <ScalarProperty Name="PreviousAddressInIsrael" ColumnName="PreviousAddressInIsrael" />
+          <ScalarProperty Name="CompensationProgramName" ColumnName="CompensationProgramName" />
+          <ScalarProperty Name="IsCeefRecipient" ColumnName="IsCeefRecipient" />
+          <ScalarProperty Name="CeefId" ColumnName="CeefId" />
+          <ScalarProperty Name="AddCompName" ColumnName="AddCompName" />
+          <ScalarProperty Name="AddCompId" ColumnName="AddCompId" />
+          <ScalarProperty Name="ExceptionalHours" ColumnName="ExceptionalHours" />
+          <ScalarProperty Name="UpdatedById" ColumnName="UpdatedById" />
+          <ScalarProperty Name="UpdatedAt" ColumnName="UpdatedAt" />
+          <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+          <ScalarProperty Name="MatchFlag" ColumnName="MatchFlag" />
+          <ScalarProperty Name="New_Client" ColumnName="New_Client" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Imports">
+      <EntityTypeMapping TypeName="ccModel.Import">
+        <MappingFragment StoreEntitySet="Imports">
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="TargetId" ColumnName="TargetId" />
+          <ScalarProperty Name="StartedAt" ColumnName="StartedAt" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CriBases">
+      <EntityTypeMapping TypeName="ccModel.Cri" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <MappingFragment StoreEntitySet="ImportClientReports">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <Condition ColumnName="ReportTypeId" Value="2" />
+        </MappingFragment>
+      </EntityTypeMapping>
+      <EntityTypeMapping TypeName="ccModel.CriClientNamesAndCosts" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <MappingFragment StoreEntitySet="ImportClientReports">
+          <ScalarProperty Name="UniqueCircumstances" ColumnName="UniqueCircumstances" />
+          <ScalarProperty Name="Errors" ColumnName="Errors" />
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+          <ScalarProperty Name="SubReportId" ColumnName="SubReportId" />
+          <ScalarProperty Name="ClientReportId" ColumnName="ClientReportId" />
+          <ScalarProperty Name="RowIndex" ColumnName="RowIndex" />
+          <ScalarProperty Name="ImportId" ColumnName="ImportId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
+          <Condition ColumnName="ReportTypeId" Value="1" />
+        </MappingFragment>
+      </EntityTypeMapping>
+      <EntityTypeMapping TypeName="IsTypeOf(ccModel.CriClientUnit)" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <MappingFragment StoreEntitySet="ImportClientReports">
+          <ScalarProperty Name="UniqueCircumstances" ColumnName="UniqueCircumstances" />
+          <ScalarProperty Name="Errors" ColumnName="Errors" />
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+          <ScalarProperty Name="SubReportId" ColumnName="SubReportId" />
+          <ScalarProperty Name="ClientReportId" ColumnName="ClientReportId" />
+          <ScalarProperty Name="RowIndex" ColumnName="RowIndex" />
+          <ScalarProperty Name="ImportId" ColumnName="ImportId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+          <Condition ColumnName="ReportTypeId" Value="8" />
+        </MappingFragment>
+      </EntityTypeMapping>
+      <EntityTypeMapping TypeName="IsTypeOf(ccModel.CriAmountDate)" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <MappingFragment StoreEntitySet="ImportClientReports">
+          <ScalarProperty Name="UniqueCircumstances" ColumnName="UniqueCircumstances" />
+          <ScalarProperty Name="Errors" ColumnName="Errors" />
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+          <ScalarProperty Name="SubReportId" ColumnName="SubReportId" />
+          <ScalarProperty Name="ClientReportId" ColumnName="ClientReportId" />
+          <ScalarProperty Name="RowIndex" ColumnName="RowIndex" />
+          <ScalarProperty Name="ImportId" ColumnName="ImportId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <Condition ColumnName="ReportTypeId" Value="333" />
+        </MappingFragment>
+      </EntityTypeMapping>
+      <EntityTypeMapping TypeName="ccModel.CriQuantiyAmount" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <MappingFragment StoreEntitySet="ImportClientReports">
+          <ScalarProperty Name="UniqueCircumstances" ColumnName="UniqueCircumstances" />
+          <ScalarProperty Name="Errors" ColumnName="Errors" />
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+          <ScalarProperty Name="SubReportId" ColumnName="SubReportId" />
+          <ScalarProperty Name="ClientReportId" ColumnName="ClientReportId" />
+          <ScalarProperty Name="RowIndex" ColumnName="RowIndex" />
+          <ScalarProperty Name="ImportId" ColumnName="ImportId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
+          <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+          <Condition ColumnName="ReportTypeId" Value="9" />
+        </MappingFragment>
+      </EntityTypeMapping>
+      <EntityTypeMapping TypeName="IsTypeOf(ccModel.CriHc)" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <MappingFragment StoreEntitySet="ImportClientReports">
+          <ScalarProperty Name="UniqueCircumstances" ColumnName="UniqueCircumstances" />
+          <ScalarProperty Name="Errors" ColumnName="Errors" />
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+          <ScalarProperty Name="SubReportId" ColumnName="SubReportId" />
+          <ScalarProperty Name="ClientReportId" ColumnName="ClientReportId" />
+          <ScalarProperty Name="RowIndex" ColumnName="RowIndex" />
+          <ScalarProperty Name="ImportId" ColumnName="ImportId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
+          <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+          <ScalarProperty Name="Rate" ColumnName="Rate" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <Condition ColumnName="ReportTypeId" Value="5" />
+        </MappingFragment>
+      </EntityTypeMapping>
+      <EntityTypeMapping TypeName="ccModel.CriMhm" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <MappingFragment StoreEntitySet="ImportClientReports">
+          <ScalarProperty Name="UniqueCircumstances" ColumnName="UniqueCircumstances" />
+          <ScalarProperty Name="Errors" ColumnName="Errors" />
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+          <ScalarProperty Name="SubReportId" ColumnName="SubReportId" />
+          <ScalarProperty Name="ClientReportId" ColumnName="ClientReportId" />
+          <ScalarProperty Name="RowIndex" ColumnName="RowIndex" />
+          <ScalarProperty Name="ImportId" ColumnName="ImportId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="TypeId" ColumnName="TypeId" />
+          <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
+          <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+          <Condition ColumnName="ReportTypeId" Value="11" />
+        </MappingFragment>
+      </EntityTypeMapping>
+      <EntityTypeMapping TypeName="IsTypeOf(ccModel.CriEmergency)" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <MappingFragment StoreEntitySet="ImportClientReports">
+          <ScalarProperty Name="UniqueCircumstances" ColumnName="UniqueCircumstances" />
+          <ScalarProperty Name="Errors" ColumnName="Errors" />
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+          <ScalarProperty Name="SubReportId" ColumnName="SubReportId" />
+          <ScalarProperty Name="ClientReportId" ColumnName="ClientReportId" />
+          <ScalarProperty Name="RowIndex" ColumnName="RowIndex" />
+          <ScalarProperty Name="ImportId" ColumnName="ImportId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="TypeId" ColumnName="TypeId" />
+          <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
+          <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+          <ScalarProperty Name="Discretionary" ColumnName="Discretionary" />
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <Condition ColumnName="ReportTypeId" Value="6" />
+        </MappingFragment>
+      </EntityTypeMapping>
+      <EntityTypeMapping TypeName="IsTypeOf(ccModel.CriMe)" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <MappingFragment StoreEntitySet="ImportClientReports">
+          <ScalarProperty Name="UniqueCircumstances" ColumnName="UniqueCircumstances" />
+          <ScalarProperty Name="Errors" ColumnName="Errors" />
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+          <ScalarProperty Name="SubReportId" ColumnName="SubReportId" />
+          <ScalarProperty Name="ClientReportId" ColumnName="ClientReportId" />
+          <ScalarProperty Name="RowIndex" ColumnName="RowIndex" />
+          <ScalarProperty Name="ImportId" ColumnName="ImportId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="TypeId" ColumnName="TypeId" />
+          <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
+          <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+          <Condition ColumnName="ReportTypeId" Value="10" />
+        </MappingFragment>
+      </EntityTypeMapping>
+      <EntityTypeMapping TypeName="IsTypeOf(ccModel.CriBase)">
+        <MappingFragment StoreEntitySet="ImportClientReports">
+          <ScalarProperty Name="UniqueCircumstances" ColumnName="UniqueCircumstances" />
+          <ScalarProperty Name="Errors" ColumnName="Errors" />
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+          <ScalarProperty Name="SubReportId" ColumnName="SubReportId" />
+          <ScalarProperty Name="ClientReportId" ColumnName="ClientReportId" />
+          <ScalarProperty Name="RowIndex" ColumnName="RowIndex" />
+          <ScalarProperty Name="ImportId" ColumnName="ImportId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+      <EntityTypeMapping TypeName="IsTypeOf(ccModel.CriSupportiveCommunities)" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <MappingFragment StoreEntitySet="ImportClientReports">
+          <ScalarProperty Name="MonthsCount" ColumnName="TotalCount" />
+          <ScalarProperty Name="HoursHoldCost" ColumnName="HoursHoldCost" />
+          <ScalarProperty Name="ImportId" ColumnName="ImportId" />
+          <ScalarProperty Name="RowIndex" ColumnName="RowIndex" />
+          <ScalarProperty Name="ClientReportId" ColumnName="ClientReportId" />
+          <ScalarProperty Name="SubReportId" ColumnName="SubReportId" />
+          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+          <ScalarProperty Name="Errors" ColumnName="Errors" />
+          <ScalarProperty Name="UniqueCircumstances" ColumnName="UniqueCircumstances" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <Condition ColumnName="ReportTypeId" Value="12" />
+        </MappingFragment>
+      </EntityTypeMapping>
+      <EntityTypeMapping TypeName="IsTypeOf(ccModel.CriSoupKitchens)">
+        <MappingFragment StoreEntitySet="ImportClientReports">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="ImportId" ColumnName="ImportId" />
+          <ScalarProperty Name="RowIndex" ColumnName="RowIndex" />
+          <ScalarProperty Name="ClientReportId" ColumnName="ClientReportId" />
+          <ScalarProperty Name="SubReportId" ColumnName="SubReportId" />
+          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+          <ScalarProperty Name="Errors" ColumnName="Errors" />
+          <ScalarProperty Name="UniqueCircumstances" ColumnName="UniqueCircumstances" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <Condition ColumnName="ReportTypeId" Value="15" />
+        </MappingFragment>
+      </EntityTypeMapping>
+      <EntityTypeMapping TypeName="IsTypeOf(ccModel.CriClientEventsCount)">
+        <MappingFragment StoreEntitySet="ImportClientReports">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="EventDate" ColumnName="Date" />
+          <ScalarProperty Name="ImportId" ColumnName="ImportId" />
+          <ScalarProperty Name="RowIndex" ColumnName="RowIndex" />
+          <ScalarProperty Name="ClientReportId" ColumnName="ClientReportId" />
+          <ScalarProperty Name="SubReportId" ColumnName="SubReportId" />
+          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+          <ScalarProperty Name="Errors" ColumnName="Errors" />
+          <ScalarProperty Name="UniqueCircumstances" ColumnName="UniqueCircumstances" />
+          <ScalarProperty Name="TotalCount" ColumnName="TotalCount" />
+          <ScalarProperty Name="JNVCount" ColumnName="JNVCount" />
+          <Condition ColumnName="ReportTypeId" Value="16" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Logs">
+      <EntityTypeMapping TypeName="ccModel.Log">
+        <MappingFragment StoreEntitySet="Log">
+          <ScalarProperty Name="Exception" ColumnName="Exception" />
+          <ScalarProperty Name="Message" ColumnName="Message" />
+          <ScalarProperty Name="Logger" ColumnName="Logger" />
+          <ScalarProperty Name="Level" ColumnName="Level" />
+          <ScalarProperty Name="Thread" ColumnName="Thread" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ImportFunctionalityScores">
+      <EntityTypeMapping TypeName="ccModel.ImportFunctionalityScore">
+        <MappingFragment StoreEntitySet="ImportFunctionalityScores">
+          <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+          <ScalarProperty Name="UpdatedAt" ColumnName="UpdatedAt" />
+          <ScalarProperty Name="FunctionalityLevelId" ColumnName="FunctionalityLevelId" />
+          <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+          <ScalarProperty Name="DiagnosticScore" ColumnName="DiagnosticScore" />
+          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="RowIndex" ColumnName="RowIndex" />
+          <ScalarProperty Name="ImportId" ColumnName="ImportId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ImportHceps">
+      <EntityTypeMapping TypeName="ccModel.ImportHcep">
+        <MappingFragment StoreEntitySet="ImportHcep">
+          <ScalarProperty Name="CfsApproved" ColumnName="CfsApproved" />
+          <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+          <ScalarProperty Name="UpdatedAt" ColumnName="UpdatedAt" />
+          <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+          <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="RowIndex" ColumnName="RowIndex" />
+          <ScalarProperty Name="ImportId" ColumnName="ImportId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ImportClients">
+      <EntityTypeMapping TypeName="ccModel.ImportClient">
+        <MappingFragment StoreEntitySet="ImportClients">
+          <ScalarProperty Name="HAS2Date" ColumnName="HAS2Date" />
+          <ScalarProperty Name="UnableToSign" ColumnName="UnableToSign" />
+          <ScalarProperty Name="MAF105Date" ColumnName="MAF105Date" />
+          <ScalarProperty Name="MAFDate" ColumnName="MAFDate" />
+          <ScalarProperty Name="CareReceivedId" ColumnName="CareReceivedId" />
+          <ScalarProperty Name="CommPrefsId" ColumnName="CommPrefsId" />
+          <ScalarProperty Name="OtherServicesWaitlist" ColumnName="OtherServicesWaitlist" />
+          <ScalarProperty Name="HomecareWaitlist" ColumnName="HomecareWaitlist" />
+          <ScalarProperty Name="CountryId" ColumnName="CountryId" />
+          <ScalarProperty Name="BirthCountryId" ColumnName="BirthCountryId" />
+          <ScalarProperty Name="Gender" ColumnName="Gender" />
+          <ScalarProperty Name="InternalId" ColumnName="InternalId" />
+          <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+          <ScalarProperty Name="UpdatedAt" ColumnName="UpdatedAt" />
+          <ScalarProperty Name="UpdatedById" ColumnName="UpdatedById" />
+          <ScalarProperty Name="New_Client" ColumnName="New_Client" />
+          <ScalarProperty Name="MatchFlag" ColumnName="MatchFlag" />
+          <ScalarProperty Name="ExceptionalHours" ColumnName="ExceptionalHours" />
+          <ScalarProperty Name="AddCompId" ColumnName="AddCompId" />
+          <ScalarProperty Name="AddCompName" ColumnName="AddCompName" />
+          <ScalarProperty Name="CeefId" ColumnName="CeefId" />
+          <ScalarProperty Name="IsCeefRecipient" ColumnName="IsCeefRecipient" />
+          <ScalarProperty Name="CompensationProgramName" ColumnName="CompensationProgramName" />
+          <ScalarProperty Name="PreviousAddressInIsrael" ColumnName="PreviousAddressInIsrael" />
+          <ScalarProperty Name="OtherAddress" ColumnName="OtherAddress" />
+          <ScalarProperty Name="OtherIdTypeId" ColumnName="OtherIdTypeId" />
+          <ScalarProperty Name="OtherId" ColumnName="OtherId" />
+          <ScalarProperty Name="OtherDob" ColumnName="OtherDob" />
+          <ScalarProperty Name="OtherLastName" ColumnName="OtherLastName" />
+          <ScalarProperty Name="OtherFirstName" ColumnName="OtherFirstName" />
+          <ScalarProperty Name="PrevLastName" ColumnName="PrevLastName" />
+          <ScalarProperty Name="PrevFirstName" ColumnName="PrevFirstName" />
+          <ScalarProperty Name="PobCity" ColumnName="PobCity" />
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+          <ScalarProperty Name="NaziPersecutionDetails" ColumnName="NaziPersecutionDetails" />
+          <ScalarProperty Name="IncomeVerificationRequired" ColumnName="IncomeVerificationRequired" />
+          <ScalarProperty Name="IncomeCriteriaComplied" ColumnName="IncomeCriteriaComplied" />
+          <ScalarProperty Name="FundStatusId" ColumnName="FundStatusId" />
+          <ScalarProperty Name="ApprovalStatusId" ColumnName="ApprovalStatusId" />
+          <ScalarProperty Name="DeceasedDate" ColumnName="DeceasedDate" />
+          <ScalarProperty Name="LeaveRemarks" ColumnName="LeaveRemarks" />
+          <ScalarProperty Name="LeaveReasonId" ColumnName="LeaveReasonId" />
+          <ScalarProperty Name="LeaveDate" ColumnName="LeaveDate" />
+          <ScalarProperty Name="JoinDate" ColumnName="JoinDate" />
+          <ScalarProperty Name="ZIP" ColumnName="ZIP" />
+          <ScalarProperty Name="StateId" ColumnName="StateId" />
+          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
+          <ScalarProperty Name="Phone" ColumnName="Phone" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="NationalIdTypeId" ColumnName="NationalIdTypeId" />
+          <ScalarProperty Name="NationalId" ColumnName="NationalId" />
+          <ScalarProperty Name="AgencyId" ColumnName="AgencyId" />
+          <ScalarProperty Name="MasterId" ColumnName="MasterId" />
+          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="RowIndex" ColumnName="RowIndex" />
+          <ScalarProperty Name="ImportId" ColumnName="ImportId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserAgreementAudits">
+      <EntityTypeMapping TypeName="ccModel.UserAgreementAudit">
+        <MappingFragment StoreEntitySet="UserAgreementAudits">
+          <ScalarProperty Name="IP" ColumnName="IP" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="UserAgreementId" ColumnName="UserAgreementId" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserAgreements">
+      <EntityTypeMapping TypeName="ccModel.UserAgreement">
+        <MappingFragment StoreEntitySet="UserAgreements">
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="Text" ColumnName="Text" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="GovHcHours">
+      <EntityTypeMapping TypeName="ccModel.GovHcHour">
+        <MappingFragment StoreEntitySet="GovHcHours">
+          <ScalarProperty Name="Value" ColumnName="Value" />
+          <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ImportGovHcHours">
+      <EntityTypeMapping TypeName="ccModel.ImportGovHcHour">
+        <MappingFragment StoreEntitySet="ImportGovHcHours">
+          <ScalarProperty Name="RowIndex" ColumnName="RowIndex" />
+          <ScalarProperty Name="Value" ColumnName="Value" />
+          <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+          <ScalarProperty Name="ImportId" ColumnName="ImportId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="UserAgencyGroups" TypeName="ccModel.UserAgencyGroups" StoreEntitySet="UserAgencyGroups">
+      <EndProperty Name="User">
+        <ScalarProperty Name="Id" ColumnName="UserId" />
+      </EndProperty>
+      <EndProperty Name="AgencyGroup">
+        <ScalarProperty Name="Id" ColumnName="AgencyGroupId" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <EntitySetMapping Name="AppExchangeRates">
+      <EntityTypeMapping TypeName="ccModel.AppExchangeRate">
+        <MappingFragment StoreEntitySet="AppExchangeRates">
+          <ScalarProperty Name="Value" ColumnName="Value" />
+          <ScalarProperty Name="CurId" ColumnName="CurId" />
+          <ScalarProperty Name="AppId" ColumnName="AppId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="FundExchangeRates">
+      <EntityTypeMapping TypeName="ccModel.FundExchangeRate">
+        <MappingFragment StoreEntitySet="FundExchangeRates">
+          <ScalarProperty Name="Value" ColumnName="Value" />
+          <ScalarProperty Name="CurId" ColumnName="CurId" />
+          <ScalarProperty Name="FundId" ColumnName="FundId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ServiceConstraints">
+      <EntityTypeMapping TypeName="ccModel.ServiceConstraint">
+        <MappingFragment StoreEntitySet="ServiceConstraints">
+          <ScalarProperty Name="Fatal" ColumnName="Fatal" />
+          <ScalarProperty Name="MaxExpPercentage" ColumnName="MaxExpPercentage" />
+          <ScalarProperty Name="MinExpPercentage" ColumnName="MinExpPercentage" />
+          <ScalarProperty Name="FundId" ColumnName="FundId" />
+          <ScalarProperty Name="ServiceTypeId" ColumnName="ServiceTypeId" />
+          <ScalarProperty Name="ServiceId" ColumnName="ServiceId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="viewGgQuarterlyHcFls">
+      <EntityTypeMapping TypeName="ccModel.viewGgQuarterlyHcFl">
+        <MappingFragment StoreEntitySet="viewGgQuarterlyHcFls">
+          <ScalarProperty Name="RelatedLevelId" ColumnName="RelatedLevelId" />
+          <ScalarProperty Name="AgencyGroupId" ColumnName="AgencyGroupId" />
+          <ScalarProperty Name="FundId" ColumnName="FundId" />
+          <ScalarProperty Name="RepQuarter" ColumnName="RepQuarter" />
+          <ScalarProperty Name="RepYear" ColumnName="RepYear" />
+          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="HcCapsTableRaws">
+      <EntityTypeMapping TypeName="ccModel.HcCapsTableRaw">
+        <MappingFragment StoreEntitySet="HcCapsTableRaw">
+          <ScalarProperty Name="Maf105" ColumnName="Maf105" />
+          <ScalarProperty Name="Maf" ColumnName="Maf" />
+          <ScalarProperty Name="Has2" ColumnName="Has2" />
+          <ScalarProperty Name="gfhours" ColumnName="gfhours" />
+          <ScalarProperty Name="FunctionalityLevelId" ColumnName="FunctionalityLevelId" />
+          <ScalarProperty Name="HasStatusId" ColumnName="HasStatusId" />
+          <ScalarProperty Name="HospiceCareCap" ColumnName="HospiceCareCap" />
+          <ScalarProperty Name="GovHcHours" ColumnName="GovHcHours" />
+          <ScalarProperty Name="DeceasedDate" ColumnName="DeceasedDate" />
+          <ScalarProperty Name="AgencyGroupId" ColumnName="AgencyGroupId" />
+          <ScalarProperty Name="LeaveDate" ColumnName="LeaveDate" />
+          <ScalarProperty Name="JoinDate" ColumnName="JoinDate" />
+          <ScalarProperty Name="HcCap" ColumnName="HcCap" />
+          <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+          <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="MainReportInternalComments" TypeName="ccModel.MainReportInternalComments" StoreEntitySet="MainReportInternalComments">
+      <EndProperty Name="MainReport">
+        <ScalarProperty Name="Id" ColumnName="MainReportId" />
+      </EndProperty>
+      <EndProperty Name="Comment">
+        <ScalarProperty Name="Id" ColumnName="CommentId" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <EntitySetMapping Name="AppsImports">
+      <EntityTypeMapping TypeName="ccModel.AppsImport">
+        <MappingFragment StoreEntitySet="AppsImport">
+          <ScalarProperty Name="AvgReimbursementCost" ColumnName="AvgReimbursementCost" />
+          <ScalarProperty Name="HistoricalExpenditureAmount" ColumnName="HistoricalExpenditureAmount" />
+          <ScalarProperty Name="MaxAdminAmount" ColumnName="MaxAdminAmount" />
+          <ScalarProperty Name="MaxNonHcAmount" ColumnName="MaxNonHcAmount" />
+          <ScalarProperty Name="InterlineTransfer" ColumnName="InterlineTransfer" />
+          <ScalarProperty Name="EndOfYearValidationOnly" ColumnName="EndOfYearValidationOnly" />
+          <ScalarProperty Name="EURRate" ColumnName="EURRate" />
+          <ScalarProperty Name="ILSRate" ColumnName="ILSRate" />
+          <ScalarProperty Name="USDRate" ColumnName="USDRate" />
+          <ScalarProperty Name="CurrencyId" ColumnName="CurrencyId" />
+          <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+          <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+          <ScalarProperty Name="RequiredMatch" ColumnName="RequiredMatch" />
+          <ScalarProperty Name="CcGrant" ColumnName="CcGrant" />
+          <ScalarProperty Name="AgencyContribution" ColumnName="AgencyContribution" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="AgencyGroupId" ColumnName="AgencyGroupId" />
+          <ScalarProperty Name="FundId" ColumnName="FundId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="RowId" ColumnName="RowId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="viewClientReportsEsts">
+      <EntityTypeMapping TypeName="ccModel.viewClientReportsEst">
+        <MappingFragment StoreEntitySet="viewClientReportsEst">
+          <ScalarProperty Name="EstReportDate" ColumnName="EstReportDate" />
+          <ScalarProperty Name="EstAmount" ColumnName="EstAmount" />
+          <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
+          <ScalarProperty Name="Discretionary" ColumnName="Discretionary" />
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="ReportDate" ColumnName="ReportDate" />
+          <ScalarProperty Name="Rate" ColumnName="Rate" />
+          <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+          <ScalarProperty Name="PurposeOfGrant" ColumnName="PurposeOfGrant" />
+          <ScalarProperty Name="TypeName" ColumnName="TypeName" />
+          <ScalarProperty Name="TypeId" ColumnName="TypeId" />
+          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+          <ScalarProperty Name="SubReportId" ColumnName="SubReportId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ClientContacts">
+      <EntityTypeMapping TypeName="ccModel.ClientContact">
+        <MappingFragment StoreEntitySet="ClientContacts">
+          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+          <ScalarProperty Name="Filename" ColumnName="Filename" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="EntryDate" ColumnName="EntryDate" />
+          <ScalarProperty Name="ResponseRecievedDate" ColumnName="ResponseRecievedDate" />
+          <ScalarProperty Name="ReasonForContact" ColumnName="ReasonForContact" />
+          <ScalarProperty Name="CcStaffContact" ColumnName="CcStaffContact" />
+          <ScalarProperty Name="Contacted" ColumnName="Contacted" />
+          <ScalarProperty Name="ContactedUsing" ColumnName="ContactedUsing" />
+          <ScalarProperty Name="ContactDate" ColumnName="ContactDate" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="viewDatesHistories">
+      <EntityTypeMapping TypeName="ccModel.viewDatesHistory">
+        <MappingFragment StoreEntitySet="viewDatesHistory">
+          <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+          <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+          <ScalarProperty Name="NewValue" ColumnName="NewValue" />
+          <ScalarProperty Name="OldValue" ColumnName="OldValue" />
+          <ScalarProperty Name="FieldName" ColumnName="FieldName" />
+          <ScalarProperty Name="TableName" ColumnName="TableName" />
+          <ScalarProperty Name="ReferenceId" ColumnName="ReferenceId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="viewAppExchangeRates">
+      <EntityTypeMapping TypeName="ccModel.viewAppExchangeRate">
+        <MappingFragment StoreEntitySet="viewAppExchangeRates">
+          <ScalarProperty Name="Value" ColumnName="Value" />
+          <ScalarProperty Name="ToCur" ColumnName="ToCur" />
+          <ScalarProperty Name="AppId" ColumnName="AppId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="HcCaps">
+      <EntityTypeMapping TypeName="ccModel.HcCap">
+        <MappingFragment StoreEntitySet="HcCaps">
+          <ScalarProperty Name="DailyCap" ColumnName="DailyCap" />
+          <ScalarProperty Name="MonthlyCap" ColumnName="MonthlyCap" />
+          <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+          <ScalarProperty Name="ReportDate" ColumnName="ReportDate" />
+          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ValidClientViews">
+      <EntityTypeMapping TypeName="ccModel.ValidClientView">
+        <MappingFragment StoreEntitySet="ValidClientView">
+          <ScalarProperty Name="HAS2Date" ColumnName="HAS2Date" />
+          <ScalarProperty Name="UnableToSign" ColumnName="UnableToSign" />
+          <ScalarProperty Name="MAF105Date" ColumnName="MAF105Date" />
+          <ScalarProperty Name="MAFDate" ColumnName="MAFDate" />
+          <ScalarProperty Name="CareReceivedId" ColumnName="CareReceivedId" />
+          <ScalarProperty Name="CommPrefsId" ColumnName="CommPrefsId" />
+          <ScalarProperty Name="OtherServicesWaitlist" ColumnName="OtherServicesWaitlist" />
+          <ScalarProperty Name="HomecareWaitlist" ColumnName="HomecareWaitlist" />
+          <ScalarProperty Name="CountryId" ColumnName="CountryId" />
+          <ScalarProperty Name="BirthCountryId" ColumnName="BirthCountryId" />
+          <ScalarProperty Name="Gender" ColumnName="Gender" />
+          <ScalarProperty Name="RegionId" ColumnName="RegionId" />
+          <ScalarProperty Name="AgencyGroupId" ColumnName="AgencyGroupId" />
+          <ScalarProperty Name="InternalId" ColumnName="InternalId" />
+          <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+          <ScalarProperty Name="UpdatedAt" ColumnName="UpdatedAt" />
+          <ScalarProperty Name="UpdatedById" ColumnName="UpdatedById" />
+          <ScalarProperty Name="New_Client" ColumnName="New_Client" />
+          <ScalarProperty Name="MatchFlag" ColumnName="MatchFlag" />
+          <ScalarProperty Name="ExceptionalHours" ColumnName="ExceptionalHours" />
+          <ScalarProperty Name="AddCompId" ColumnName="AddCompId" />
+          <ScalarProperty Name="AddCompName" ColumnName="AddCompName" />
+          <ScalarProperty Name="CeefId" ColumnName="CeefId" />
+          <ScalarProperty Name="IsCeefRecipient" ColumnName="IsCeefRecipient" />
+          <ScalarProperty Name="CompensationProgramName" ColumnName="CompensationProgramName" />
+          <ScalarProperty Name="PreviousAddressInIsrael" ColumnName="PreviousAddressInIsrael" />
+          <ScalarProperty Name="OtherAddress" ColumnName="OtherAddress" />
+          <ScalarProperty Name="OtherIdTypeId" ColumnName="OtherIdTypeId" />
+          <ScalarProperty Name="OtherId" ColumnName="OtherId" />
+          <ScalarProperty Name="OtherDob" ColumnName="OtherDob" />
+          <ScalarProperty Name="OtherLastName" ColumnName="OtherLastName" />
+          <ScalarProperty Name="OtherFirstName" ColumnName="OtherFirstName" />
+          <ScalarProperty Name="PrevLastName" ColumnName="PrevLastName" />
+          <ScalarProperty Name="PrevFirstName" ColumnName="PrevFirstName" />
+          <ScalarProperty Name="PobCity" ColumnName="PobCity" />
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+          <ScalarProperty Name="NaziPersecutionDetails" ColumnName="NaziPersecutionDetails" />
+          <ScalarProperty Name="IncomeVerificationRequired" ColumnName="IncomeVerificationRequired" />
+          <ScalarProperty Name="IncomeCriteriaComplied" ColumnName="IncomeCriteriaComplied" />
+          <ScalarProperty Name="FundStatusId" ColumnName="FundStatusId" />
+          <ScalarProperty Name="ApprovalStatusId" ColumnName="ApprovalStatusId" />
+          <ScalarProperty Name="DeceasedDate" ColumnName="DeceasedDate" />
+          <ScalarProperty Name="LeaveRemarks" ColumnName="LeaveRemarks" />
+          <ScalarProperty Name="LeaveReasonId" ColumnName="LeaveReasonId" />
+          <ScalarProperty Name="LeaveDate" ColumnName="LeaveDate" />
+          <ScalarProperty Name="JoinDate" ColumnName="JoinDate" />
+          <ScalarProperty Name="ZIP" ColumnName="ZIP" />
+          <ScalarProperty Name="StateId" ColumnName="StateId" />
+          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
+          <ScalarProperty Name="Phone" ColumnName="Phone" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="NationalIdTypeId" ColumnName="NationalIdTypeId" />
+          <ScalarProperty Name="NationalId" ColumnName="NationalId" />
+          <ScalarProperty Name="AgencyId" ColumnName="AgencyId" />
+          <ScalarProperty Name="MasterId" ColumnName="MasterId" />
+          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="RowIndex" ColumnName="RowIndex" />
+          <ScalarProperty Name="ImportId" ColumnName="ImportId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="viewHcs">
+      <EntityTypeMapping TypeName="ccModel.viewHc">
+        <MappingFragment StoreEntitySet="viewHc">
+          <ScalarProperty Name="quantity" ColumnName="quantity" />
+          <ScalarProperty Name="repyear" ColumnName="repyear" />
+          <ScalarProperty Name="mrend" ColumnName="mrend" />
+          <ScalarProperty Name="mrstart" ColumnName="mrstart" />
+          <ScalarProperty Name="reportdate" ColumnName="reportdate" />
+          <ScalarProperty Name="clientid" ColumnName="clientid" />
+          <ScalarProperty Name="mrstatus" ColumnName="mrstatus" />
+          <ScalarProperty Name="mrid" ColumnName="mrid" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="viewMonths">
+      <EntityTypeMapping TypeName="ccModel.viewMonth">
+        <MappingFragment StoreEntitySet="viewMonths">
+          <ScalarProperty Name="m" ColumnName="m" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="viewHcPlus">
+      <EntityTypeMapping TypeName="ccModel.viewHcPlu">
+        <MappingFragment StoreEntitySet="viewHcPlus">
+          <ScalarProperty Name="WC" ColumnName="WC" />
+          <ScalarProperty Name="q" ColumnName="q" />
+          <ScalarProperty Name="C" ColumnName="C" />
+          <ScalarProperty Name="MrId" ColumnName="MrId" />
+          <ScalarProperty Name="ReportDate" ColumnName="ReportDate" />
+          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="viewFinancialSummary_Details">
+      <EntityTypeMapping TypeName="ccModel.viewFinancialSummary_Details">
+        <MappingFragment StoreEntitySet="viewFinancialSummary_Details">
+          <ScalarProperty Name="ReportingMethodId" ColumnName="ReportingMethodId" />
+          <ScalarProperty Name="IsSubmitted" ColumnName="IsSubmitted" />
+          <ScalarProperty Name="appId" ColumnName="appId" />
+          <ScalarProperty Name="FundId" ColumnName="FundId" />
+          <ScalarProperty Name="MasterFundId" ColumnName="MasterFundId" />
+          <ScalarProperty Name="ServiceId" ColumnName="ServiceId" />
+          <ScalarProperty Name="ServiceTypeId" ColumnName="ServiceTypeId" />
+          <ScalarProperty Name="AgencyId" ColumnName="AgencyId" />
+          <ScalarProperty Name="AppCur" ColumnName="AppCur" />
+          <ScalarProperty Name="CcGrant" ColumnName="CcGrant" />
+          <ScalarProperty Name="EstAmount" ColumnName="EstAmount" />
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+          <ScalarProperty Name="AppName" ColumnName="AppName" />
+          <ScalarProperty Name="ReportEnd" ColumnName="ReportEnd" />
+          <ScalarProperty Name="ReportStart" ColumnName="ReportStart" />
+          <ScalarProperty Name="ServiceName" ColumnName="ServiceName" />
+          <ScalarProperty Name="ServiceTypeName" ColumnName="ServiceTypeName" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+          <ScalarProperty Name="SubReportId" ColumnName="SubReportId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="QRTZ_BLOB_TRIGGERS">
+      <EntityTypeMapping TypeName="ccModel.QRTZ_BLOB_TRIGGERS">
+        <MappingFragment StoreEntitySet="QRTZ_BLOB_TRIGGERS">
+          <ScalarProperty Name="BLOB_DATA" ColumnName="BLOB_DATA" />
+          <ScalarProperty Name="TRIGGER_GROUP" ColumnName="TRIGGER_GROUP" />
+          <ScalarProperty Name="TRIGGER_NAME" ColumnName="TRIGGER_NAME" />
+          <ScalarProperty Name="SCHED_NAME" ColumnName="SCHED_NAME" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="QRTZ_CALENDARS">
+      <EntityTypeMapping TypeName="ccModel.QRTZ_CALENDARS">
+        <MappingFragment StoreEntitySet="QRTZ_CALENDARS">
+          <ScalarProperty Name="CALENDAR" ColumnName="CALENDAR" />
+          <ScalarProperty Name="CALENDAR_NAME" ColumnName="CALENDAR_NAME" />
+          <ScalarProperty Name="SCHED_NAME" ColumnName="SCHED_NAME" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="QRTZ_CRON_TRIGGERS">
+      <EntityTypeMapping TypeName="ccModel.QRTZ_CRON_TRIGGERS">
+        <MappingFragment StoreEntitySet="QRTZ_CRON_TRIGGERS">
+          <ScalarProperty Name="TIME_ZONE_ID" ColumnName="TIME_ZONE_ID" />
+          <ScalarProperty Name="CRON_EXPRESSION" ColumnName="CRON_EXPRESSION" />
+          <ScalarProperty Name="TRIGGER_GROUP" ColumnName="TRIGGER_GROUP" />
+          <ScalarProperty Name="TRIGGER_NAME" ColumnName="TRIGGER_NAME" />
+          <ScalarProperty Name="SCHED_NAME" ColumnName="SCHED_NAME" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="QRTZ_FIRED_TRIGGERS">
+      <EntityTypeMapping TypeName="ccModel.QRTZ_FIRED_TRIGGERS">
+        <MappingFragment StoreEntitySet="QRTZ_FIRED_TRIGGERS">
+          <ScalarProperty Name="REQUESTS_RECOVERY" ColumnName="REQUESTS_RECOVERY" />
+          <ScalarProperty Name="IS_NONCONCURRENT" ColumnName="IS_NONCONCURRENT" />
+          <ScalarProperty Name="JOB_GROUP" ColumnName="JOB_GROUP" />
+          <ScalarProperty Name="JOB_NAME" ColumnName="JOB_NAME" />
+          <ScalarProperty Name="STATE" ColumnName="STATE" />
+          <ScalarProperty Name="PRIORITY" ColumnName="PRIORITY" />
+          <ScalarProperty Name="SCHED_TIME" ColumnName="SCHED_TIME" />
+          <ScalarProperty Name="FIRED_TIME" ColumnName="FIRED_TIME" />
+          <ScalarProperty Name="INSTANCE_NAME" ColumnName="INSTANCE_NAME" />
+          <ScalarProperty Name="TRIGGER_GROUP" ColumnName="TRIGGER_GROUP" />
+          <ScalarProperty Name="TRIGGER_NAME" ColumnName="TRIGGER_NAME" />
+          <ScalarProperty Name="ENTRY_ID" ColumnName="ENTRY_ID" />
+          <ScalarProperty Name="SCHED_NAME" ColumnName="SCHED_NAME" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="QRTZ_JOB_DETAILS">
+      <EntityTypeMapping TypeName="ccModel.QRTZ_JOB_DETAILS">
+        <MappingFragment StoreEntitySet="QRTZ_JOB_DETAILS">
+          <ScalarProperty Name="JOB_DATA" ColumnName="JOB_DATA" />
+          <ScalarProperty Name="REQUESTS_RECOVERY" ColumnName="REQUESTS_RECOVERY" />
+          <ScalarProperty Name="IS_UPDATE_DATA" ColumnName="IS_UPDATE_DATA" />
+          <ScalarProperty Name="IS_NONCONCURRENT" ColumnName="IS_NONCONCURRENT" />
+          <ScalarProperty Name="IS_DURABLE" ColumnName="IS_DURABLE" />
+          <ScalarProperty Name="JOB_CLASS_NAME" ColumnName="JOB_CLASS_NAME" />
+          <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+          <ScalarProperty Name="JOB_GROUP" ColumnName="JOB_GROUP" />
+          <ScalarProperty Name="JOB_NAME" ColumnName="JOB_NAME" />
+          <ScalarProperty Name="SCHED_NAME" ColumnName="SCHED_NAME" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="QRTZ_LOCKS">
+      <EntityTypeMapping TypeName="ccModel.QRTZ_LOCKS">
+        <MappingFragment StoreEntitySet="QRTZ_LOCKS">
+          <ScalarProperty Name="LOCK_NAME" ColumnName="LOCK_NAME" />
+          <ScalarProperty Name="SCHED_NAME" ColumnName="SCHED_NAME" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="QRTZ_PAUSED_TRIGGER_GRPS">
+      <EntityTypeMapping TypeName="ccModel.QRTZ_PAUSED_TRIGGER_GRPS">
+        <MappingFragment StoreEntitySet="QRTZ_PAUSED_TRIGGER_GRPS">
+          <ScalarProperty Name="TRIGGER_GROUP" ColumnName="TRIGGER_GROUP" />
+          <ScalarProperty Name="SCHED_NAME" ColumnName="SCHED_NAME" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="QRTZ_SCHEDULER_STATE">
+      <EntityTypeMapping TypeName="ccModel.QRTZ_SCHEDULER_STATE">
+        <MappingFragment StoreEntitySet="QRTZ_SCHEDULER_STATE">
+          <ScalarProperty Name="CHECKIN_INTERVAL" ColumnName="CHECKIN_INTERVAL" />
+          <ScalarProperty Name="LAST_CHECKIN_TIME" ColumnName="LAST_CHECKIN_TIME" />
+          <ScalarProperty Name="INSTANCE_NAME" ColumnName="INSTANCE_NAME" />
+          <ScalarProperty Name="SCHED_NAME" ColumnName="SCHED_NAME" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="QRTZ_SIMPLE_TRIGGERS">
+      <EntityTypeMapping TypeName="ccModel.QRTZ_SIMPLE_TRIGGERS">
+        <MappingFragment StoreEntitySet="QRTZ_SIMPLE_TRIGGERS">
+          <ScalarProperty Name="TIMES_TRIGGERED" ColumnName="TIMES_TRIGGERED" />
+          <ScalarProperty Name="REPEAT_INTERVAL" ColumnName="REPEAT_INTERVAL" />
+          <ScalarProperty Name="REPEAT_COUNT" ColumnName="REPEAT_COUNT" />
+          <ScalarProperty Name="TRIGGER_GROUP" ColumnName="TRIGGER_GROUP" />
+          <ScalarProperty Name="TRIGGER_NAME" ColumnName="TRIGGER_NAME" />
+          <ScalarProperty Name="SCHED_NAME" ColumnName="SCHED_NAME" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="QRTZ_SIMPROP_TRIGGERS">
+      <EntityTypeMapping TypeName="ccModel.QRTZ_SIMPROP_TRIGGERS">
+        <MappingFragment StoreEntitySet="QRTZ_SIMPROP_TRIGGERS">
+          <ScalarProperty Name="BOOL_PROP_2" ColumnName="BOOL_PROP_2" />
+          <ScalarProperty Name="BOOL_PROP_1" ColumnName="BOOL_PROP_1" />
+          <ScalarProperty Name="DEC_PROP_2" ColumnName="DEC_PROP_2" />
+          <ScalarProperty Name="DEC_PROP_1" ColumnName="DEC_PROP_1" />
+          <ScalarProperty Name="LONG_PROP_2" ColumnName="LONG_PROP_2" />
+          <ScalarProperty Name="LONG_PROP_1" ColumnName="LONG_PROP_1" />
+          <ScalarProperty Name="INT_PROP_2" ColumnName="INT_PROP_2" />
+          <ScalarProperty Name="INT_PROP_1" ColumnName="INT_PROP_1" />
+          <ScalarProperty Name="STR_PROP_3" ColumnName="STR_PROP_3" />
+          <ScalarProperty Name="STR_PROP_2" ColumnName="STR_PROP_2" />
+          <ScalarProperty Name="STR_PROP_1" ColumnName="STR_PROP_1" />
+          <ScalarProperty Name="TRIGGER_GROUP" ColumnName="TRIGGER_GROUP" />
+          <ScalarProperty Name="TRIGGER_NAME" ColumnName="TRIGGER_NAME" />
+          <ScalarProperty Name="SCHED_NAME" ColumnName="SCHED_NAME" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="QRTZ_TRIGGERS">
+      <EntityTypeMapping TypeName="ccModel.QRTZ_TRIGGERS">
+        <MappingFragment StoreEntitySet="QRTZ_TRIGGERS">
+          <ScalarProperty Name="JOB_DATA" ColumnName="JOB_DATA" />
+          <ScalarProperty Name="MISFIRE_INSTR" ColumnName="MISFIRE_INSTR" />
+          <ScalarProperty Name="CALENDAR_NAME" ColumnName="CALENDAR_NAME" />
+          <ScalarProperty Name="END_TIME" ColumnName="END_TIME" />
+          <ScalarProperty Name="START_TIME" ColumnName="START_TIME" />
+          <ScalarProperty Name="TRIGGER_TYPE" ColumnName="TRIGGER_TYPE" />
+          <ScalarProperty Name="TRIGGER_STATE" ColumnName="TRIGGER_STATE" />
+          <ScalarProperty Name="PRIORITY" ColumnName="PRIORITY" />
+          <ScalarProperty Name="PREV_FIRE_TIME" ColumnName="PREV_FIRE_TIME" />
+          <ScalarProperty Name="NEXT_FIRE_TIME" ColumnName="NEXT_FIRE_TIME" />
+          <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+          <ScalarProperty Name="JOB_GROUP" ColumnName="JOB_GROUP" />
+          <ScalarProperty Name="JOB_NAME" ColumnName="JOB_NAME" />
+          <ScalarProperty Name="TRIGGER_GROUP" ColumnName="TRIGGER_GROUP" />
+          <ScalarProperty Name="TRIGGER_NAME" ColumnName="TRIGGER_NAME" />
+          <ScalarProperty Name="SCHED_NAME" ColumnName="SCHED_NAME" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ApprovedAppBudgetServices">
+      <EntityTypeMapping TypeName="ccModel.ApprovedAppBudgetService">
+        <MappingFragment StoreEntitySet="ApprovedAppBudgetServices">
+          <ScalarProperty Name="RecordDate" ColumnName="RecordDate" />
+          <ScalarProperty Name="AgencyContribution" ColumnName="AgencyContribution" />
+          <ScalarProperty Name="RequiredMatch" ColumnName="RequiredMatch" />
+          <ScalarProperty Name="CcGrant" ColumnName="CcGrant" />
+          <ScalarProperty Name="AgencyId" ColumnName="AgencyId" />
+          <ScalarProperty Name="ServiceId" ColumnName="ServiceId" />
+          <ScalarProperty Name="AppBudgetId" ColumnName="AppBudgetId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="BirthCountries">
+      <EntityTypeMapping TypeName="ccModel.BirthCountry">
+        <MappingFragment StoreEntitySet="BirthCountries">
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ServiceTypes">
+      <EntityTypeMapping TypeName="ccModel.ServiceType">
+        <MappingFragment StoreEntitySet="ServiceTypes">
+          <ScalarProperty Name="ServiceTypeImportId" ColumnName="ServiceTypeImportId" />
+          <ScalarProperty Name="DoNotReportInUnmetNeedsOther" ColumnName="DoNotReportInUnmetNeedsOther" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UnmetNeeds">
+      <EntityTypeMapping TypeName="ccModel.UnmetNeed">
+        <MappingFragment StoreEntitySet="UnmetNeeds">
+          <ScalarProperty Name="WeeklyHours" ColumnName="WeeklyHours" />
+          <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ImportUnmetNeeds">
+      <EntityTypeMapping TypeName="ccModel.ImportUnmetNeed">
+        <MappingFragment StoreEntitySet="ImportUnmetNeeds">
+          <ScalarProperty Name="WeeklyHours" ColumnName="WeeklyHours" />
+          <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+          <ScalarProperty Name="RowIndex" ColumnName="RowIndex" />
+          <ScalarProperty Name="ImportId" ColumnName="ImportId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Globals">
+      <EntityTypeMapping TypeName="ccModel.Global">
+        <MappingFragment StoreEntitySet="Global">
+          <ScalarProperty Name="Message" ColumnName="Message" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AutomatedReports">
+      <EntityTypeMapping TypeName="ccModel.AutomatedReport">
+        <MappingFragment StoreEntitySet="AutomatedReports">
+          <ScalarProperty Name="ReportViewName" ColumnName="ReportViewName" />
+          <ScalarProperty Name="ReportName" ColumnName="ReportName" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="viewFinancialReportApprovalStatusReports">
+      <EntityTypeMapping TypeName="ccModel.viewFinancialReportApprovalStatusReport">
+        <MappingFragment StoreEntitySet="viewFinancialReportApprovalStatusReport">
+          <ScalarProperty Name="OldStatusId" ColumnName="OldStatusId" />
+          <ScalarProperty Name="NewStatusId" ColumnName="NewStatusId" />
+          <ScalarProperty Name="StatusChangeDate" ColumnName="StatusChangeDate" />
+          <ScalarProperty Name="AgencyName" ColumnName="AgencyName" />
+          <ScalarProperty Name="End" ColumnName="End" />
+          <ScalarProperty Name="Start" ColumnName="Start" />
+          <ScalarProperty Name="AppName" ColumnName="AppName" />
+          <ScalarProperty Name="AgencyGroupId" ColumnName="AgencyGroupId" />
+          <ScalarProperty Name="CountryId" ColumnName="CountryId" />
+          <ScalarProperty Name="RegionId" ColumnName="RegionId" />
+          <ScalarProperty Name="MainReportId" ColumnName="MainReportId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="viewDeceasedDateEntryReports">
+      <EntityTypeMapping TypeName="ccModel.viewDeceasedDateEntryReport">
+        <MappingFragment StoreEntitySet="viewDeceasedDateEntryReport">
+          <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+          <ScalarProperty Name="DeceasedDate" ColumnName="DeceasedDate" />
+          <ScalarProperty Name="AgencyName" ColumnName="AgencyName" />
+          <ScalarProperty Name="AgencyGroupId" ColumnName="AgencyGroupId" />
+          <ScalarProperty Name="CountryId" ColumnName="CountryId" />
+          <ScalarProperty Name="RegionId" ColumnName="RegionId" />
+          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="viewFunctionalityScoreChangeReports">
+      <EntityTypeMapping TypeName="ccModel.viewFunctionalityScoreChangeReport">
+        <MappingFragment StoreEntitySet="viewFunctionalityScoreChangeReport">
+          <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+          <ScalarProperty Name="UpdatedAt" ColumnName="UpdatedAt" />
+          <ScalarProperty Name="DiagnosticScore" ColumnName="DiagnosticScore" />
+          <ScalarProperty Name="AgencyName" ColumnName="AgencyName" />
+          <ScalarProperty Name="AgencyGroupId" ColumnName="AgencyGroupId" />
+          <ScalarProperty Name="CountryId" ColumnName="CountryId" />
+          <ScalarProperty Name="RegionId" ColumnName="RegionId" />
+          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SupportiveCommunitiesReports">
+      <EntityTypeMapping TypeName="ccModel.SupportiveCommunitiesReport">
+        <MappingFragment StoreEntitySet="SupportiveCommunitiesReports">
+          <ScalarProperty Name="MonthsCount" ColumnName="MonthsCount" />
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="HoursHoldCost" ColumnName="HoursHoldCost" />
+          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+          <ScalarProperty Name="SubReportId" ColumnName="SubReportId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DccSubsides">
+      <EntityTypeMapping TypeName="ccModel.DccSubside">
+        <MappingFragment StoreEntitySet="DccSubside">
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DaysCentersReports">
+      <EntityTypeMapping TypeName="ccModel.DaysCentersReport">
+        <MappingFragment StoreEntitySet="DaysCentersReports">
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="VisitsCount" ColumnName="VisitsCount" />
+          <ScalarProperty Name="VisitCost" ColumnName="VisitCost" />
+          <ScalarProperty Name="SubsidesByDcc" ColumnName="SubsidesByDcc" />
+          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+          <ScalarProperty Name="SubReportId" ColumnName="SubReportId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DccMemberVisits">
+      <EntityTypeMapping TypeName="ccModel.DccMemberVisit">
+        <MappingFragment StoreEntitySet="DccMemberVisits">
+          <ScalarProperty Name="ReportDate" ColumnName="ReportDate" />
+          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+          <ScalarProperty Name="SubReportId" ColumnName="SubReportId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ScSubsidyAmounts">
+      <EntityTypeMapping TypeName="ccModel.ScSubsidyAmount">
+        <MappingFragment StoreEntitySet="ScSubsidyAmounts">
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+          <ScalarProperty Name="FullSubsidy" ColumnName="FullSubsidy" />
+          <ScalarProperty Name="LevelId" ColumnName="LevelId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ScSubsidyLevels">
+      <EntityTypeMapping TypeName="ccModel.ScSubsidyLevel">
+        <MappingFragment StoreEntitySet="ScSubsidyLevels">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ViewClientReports">
+      <EntityTypeMapping TypeName="ccModel.ViewClientReport">
+        <MappingFragment StoreEntitySet="ViewClientReports">
+          <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
+          <ScalarProperty Name="Discretionary" ColumnName="Discretionary" />
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="ReportDate" ColumnName="ReportDate" />
+          <ScalarProperty Name="Rate" ColumnName="Rate" />
+          <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+          <ScalarProperty Name="PurposeOfGrant" ColumnName="PurposeOfGrant" />
+          <ScalarProperty Name="TypeName" ColumnName="TypeName" />
+          <ScalarProperty Name="TypeId" ColumnName="TypeId" />
+          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+          <ScalarProperty Name="SubReportId" ColumnName="SubReportId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="viewScRepSources">
+      <EntityTypeMapping TypeName="ccModel.viewScRepSource">
+        <MappingFragment StoreEntitySet="viewScRepSource">
+          <ScalarProperty Name="MrStatusId" ColumnName="MrStatusId" />
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="MonthsCount" ColumnName="MonthsCount" />
+          <ScalarProperty Name="HoursHoldCost" ColumnName="HoursHoldCost" />
+          <ScalarProperty Name="clientid" ColumnName="clientid" />
+          <ScalarProperty Name="subreportid" ColumnName="subreportid" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ViewClientsServiceDate_New">
+      <EntityTypeMapping TypeName="ccModel.ViewClientsServiceDate_New">
+        <MappingFragment StoreEntitySet="ViewClientsServiceDate_New">
+          <ScalarProperty Name="IsHomecare" ColumnName="IsHomecare" />
+          <ScalarProperty Name="LastDate" ColumnName="LastDate" />
+          <ScalarProperty Name="MasterId" ColumnName="MasterId" />
+          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DafDeleteds">
+      <EntityTypeMapping TypeName="ccModel.DafDeleted">
+        <MappingFragment StoreEntitySet="DafDeleted">
+          <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="ReviewedBy" ColumnName="ReviewedBy" />
+          <ScalarProperty Name="ReviewedAt" ColumnName="ReviewedAt" />
+          <ScalarProperty Name="SignedBy" ColumnName="SignedBy" />
+          <ScalarProperty Name="SignedAt" ColumnName="SignedAt" />
+          <ScalarProperty Name="EvaluatorPosition" ColumnName="EvaluatorPosition" />
+          <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+          <ScalarProperty Name="UpdatedAt" ColumnName="UpdatedAt" />
+          <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+          <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
+          <ScalarProperty Name="DeletedAt" ColumnName="DeletedAt" />
+          <ScalarProperty Name="Comments" ColumnName="Comments" />
+          <ScalarProperty Name="ExceptionalHours" ColumnName="ExceptionalHours" />
+          <ScalarProperty Name="GovernmentHours" ColumnName="GovernmentHours" />
+          <ScalarProperty Name="Xml" ColumnName="Xml" />
+          <ScalarProperty Name="EffectiveDate" ColumnName="EffectiveDate" />
+          <ScalarProperty Name="AssessmentDate" ColumnName="AssessmentDate" />
+          <ScalarProperty Name="EvaluatorId" ColumnName="EvaluatorId" />
+          <ScalarProperty Name="AgencyId" ColumnName="AgencyId" />
+          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Dafs">
+      <EntityTypeMapping TypeName="ccModel.Daf">
+        <MappingFragment StoreEntitySet="Daf">
+          <ScalarProperty Name="UserConsentObtainedAt" ColumnName="UserConsentObtainedAt" />
+          <ScalarProperty Name="Disclaimer" ColumnName="Disclaimer" />
+          <ScalarProperty Name="FileName" ColumnName="FileName" />
+          <ScalarProperty Name="UploadedTo" ColumnName="UploadedTo" />
+          <ScalarProperty Name="UploadedBy" ColumnName="UploadedBy" />
+          <ScalarProperty Name="UploadedAt" ColumnName="UploadedAt" />
+          <ScalarProperty Name="DownloadedTo" ColumnName="DownloadedTo" />
+          <ScalarProperty Name="DownloadedBy" ColumnName="DownloadedBy" />
+          <ScalarProperty Name="DownloadedAt" ColumnName="DownloadedAt" />
+          <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+          <ScalarProperty Name="Rowversion" ColumnName="Rowversion" />
+          <ScalarProperty Name="Xml" ColumnName="Xml" />
+          <ScalarProperty Name="TotlaScore" ColumnName="TotlaScore" />
+          <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+          <ScalarProperty Name="FunctionalityScoreId" ColumnName="FunctionalityScoreId" />
+          <ScalarProperty Name="EffectiveDate" ColumnName="EffectiveDate" />
+          <ScalarProperty Name="ReviewedAt" ColumnName="ReviewedAt" />
+          <ScalarProperty Name="ReviewedBy" ColumnName="ReviewedBy" />
+          <ScalarProperty Name="SignedBy" ColumnName="SignedBy" />
+          <ScalarProperty Name="SignedAt" ColumnName="SignedAt" />
+          <ScalarProperty Name="EvaluatorPosition" ColumnName="EvaluatorPosition" />
+          <ScalarProperty Name="AdditionalComments" ColumnName="AdditionalComments" />
+          <ScalarProperty Name="ExceptionalHours" ColumnName="ExceptionalHours" />
+          <ScalarProperty Name="GovernmentHours" ColumnName="GovernmentHours" />
+          <ScalarProperty Name="AssessmentDate" ColumnName="AssessmentDate" />
+          <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+          <ScalarProperty Name="UpdateAt" ColumnName="UpdateAt" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+          <ScalarProperty Name="EvaluatorId" ColumnName="EvaluatorId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ClientHcStatuses">
+      <EntityTypeMapping TypeName="ccModel.ClientHcStatus">
+        <MappingFragment StoreEntitySet="ClientHcStatuses">
+          <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+          <ScalarProperty Name="BirthCountryId" ColumnName="BirthCountryId" />
+          <ScalarProperty Name="CountryId" ColumnName="CountryId" />
+          <ScalarProperty Name="Notify" ColumnName="Notify" />
+          <ScalarProperty Name="FundStatusId" ColumnName="FundStatusId" />
+          <ScalarProperty Name="ApprovalStatusId" ColumnName="ApprovalStatusId" />
+          <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+          <ScalarProperty Name="HcStatusId" ColumnName="HcStatusId" />
+          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Resources">
+      <EntityTypeMapping TypeName="ccModel.Resource">
+        <MappingFragment StoreEntitySet="Resources">
+          <ScalarProperty Name="Value" ColumnName="Value" />
+          <ScalarProperty Name="Key" ColumnName="Key" />
+          <ScalarProperty Name="Culture" ColumnName="Culture" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Languages">
+      <EntityTypeMapping TypeName="ccModel.Language">
+        <MappingFragment StoreEntitySet="Languages">
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="HcStatuses">
+      <EntityTypeMapping TypeName="ccModel.HcStatus">
+        <MappingFragment StoreEntitySet="HcStatuses">
+          <ScalarProperty Name="Cap" ColumnName="Cap" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AgencyApps">
+      <EntityTypeMapping TypeName="ccModel.AgencyApp">
+        <MappingFragment StoreEntitySet="AgencyApps">
+          <ScalarProperty Name="WeekStartDay" ColumnName="WeekStartDay" />
+          <ScalarProperty Name="AppId" ColumnName="AppId" />
+          <ScalarProperty Name="AgencyId" ColumnName="AgencyId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SKMembersVisits">
+      <EntityTypeMapping TypeName="ccModel.SKMembersVisit">
+        <MappingFragment StoreEntitySet="SKMembersVisits">
+          <ScalarProperty Name="ReportDate" ColumnName="ReportDate" />
+          <ScalarProperty Name="SKReportId" ColumnName="SKReportId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SoupKitchensReports">
+      <EntityTypeMapping TypeName="ccModel.SoupKitchensReport">
+        <MappingFragment StoreEntitySet="SoupKitchensReport">
+          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+          <ScalarProperty Name="SubReportId" ColumnName="SubReportId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ImportUnmetNeedsOthers">
+      <EntityTypeMapping TypeName="ccModel.ImportUnmetNeedsOther">
+        <MappingFragment StoreEntitySet="ImportUnmetNeedsOther">
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="ServiceTypeImportId" ColumnName="ServiceTypeImportId" />
+          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+          <ScalarProperty Name="RowIndex" ColumnName="RowIndex" />
+          <ScalarProperty Name="ImportId" ColumnName="ImportId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UnmetNeedsOthers">
+      <EntityTypeMapping TypeName="ccModel.UnmetNeedsOther">
+        <MappingFragment StoreEntitySet="UnmetNeedsOther">
+          <ScalarProperty Name="CurrencyId" ColumnName="CurrencyId" />
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="ServiceTypeId" ColumnName="ServiceTypeId" />
+          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="HcCapsMonthlyTableRaws">
+      <EntityTypeMapping TypeName="ccModel.HcCapsMonthlyTableRaw">
+        <MappingFragment StoreEntitySet="HcCapsMonthlyTableRaw">
+          <ScalarProperty Name="GovHcHours" ColumnName="GovHcHours" />
+          <ScalarProperty Name="HcCap" ColumnName="HcCap" />
+          <ScalarProperty Name="DeceasedDate" ColumnName="DeceasedDate" />
+          <ScalarProperty Name="LeaveDate" ColumnName="LeaveDate" />
+          <ScalarProperty Name="JoinDate" ColumnName="JoinDate" />
+          <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+          <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+          <ScalarProperty Name="AgencyGroupId" ColumnName="AgencyGroupId" />
+          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="GrandfatherHours">
+      <EntityTypeMapping TypeName="ccModel.GrandfatherHour">
+        <MappingFragment StoreEntitySet="GrandfatherHours">
+          <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+          <ScalarProperty Name="UpdatedAt" ColumnName="UpdatedAt" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="Value" ColumnName="Value" />
+          <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="viewSubreportAmounts">
+      <EntityTypeMapping TypeName="IsTypeOf(ccModel.viewSubreportAmount)">
+        <MappingFragment StoreEntitySet="viewSubreportAmounts">
+          <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+          <ScalarProperty Name="EstAmountPerClient" ColumnName="EstAmountPerClient" />
+          <ScalarProperty Name="ClientReportsCount" ColumnName="ClientReportsCount" />
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="AgencyContribution" ColumnName="AgencyContribution" />
+          <ScalarProperty Name="MatchingSum" ColumnName="MatchingSum" />
+          <ScalarProperty Name="AppBudgetServiceId" ColumnName="AppBudgetServiceId" />
+          <ScalarProperty Name="MainReportId" ColumnName="MainReportId" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="spFinancialSummarySummary" FunctionName="ccModel.Store.spFinancialSummarySummary">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="ccModel.spFinancialSummarySummary_Result">
+          <ScalarProperty Name="ServiceType" ColumnName="ServiceType" />
+          <ScalarProperty Name="Service" ColumnName="Service" />
+          <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="ClientsCount" ColumnName="ClientsCount" />
+          <ScalarProperty Name="AverageCostPerClient" ColumnName="AverageCostPerClient" />
+          <ScalarProperty Name="AverageCostPerUnit" ColumnName="AverageCostPerUnit" />
+          <ScalarProperty Name="Cur" ColumnName="Cur" />
+          <ScalarProperty Name="App" ColumnName="App" />
+          <ScalarProperty Name="Fund" ColumnName="Fund" />
+          <ScalarProperty Name="MasterFund" ColumnName="MasterFund" />
+          <ScalarProperty Name="CcGrant" ColumnName="CcGrant" />
+          <ScalarProperty Name="ServiceId" ColumnName="ServiceId" />
+          <ScalarProperty Name="AppId" ColumnName="AppId" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <EntitySetMapping Name="MhmCaps">
+      <EntityTypeMapping TypeName="ccModel.MhmCap">
+        <MappingFragment StoreEntitySet="MhmCaps">
+          <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+          <ScalarProperty Name="UpdatedAt" ColumnName="UpdatedAt" />
+          <ScalarProperty Name="Active" ColumnName="Active" />
+          <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+          <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+          <ScalarProperty Name="CurrencyId" ColumnName="CurrencyId" />
+          <ScalarProperty Name="CapPerPerson" ColumnName="CapPerPerson" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="MhmCapCountries" TypeName="ccModel.MhmCapCountries" StoreEntitySet="MhmCapCountries">
+      <EndProperty Name="MhmCap">
+        <ScalarProperty Name="Id" ColumnName="MhmCapId" />
+      </EndProperty>
+      <EndProperty Name="Country">
+        <ScalarProperty Name="Id" ColumnName="CountryId" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="MhmCapFunds" TypeName="ccModel.MhmCapFunds" StoreEntitySet="MhmCapFunds">
+      <EndProperty Name="MhmCap">
+        <ScalarProperty Name="Id" ColumnName="MhmCapId" />
+      </EndProperty>
+      <EndProperty Name="Fund">
+        <ScalarProperty Name="Id" ColumnName="FundId" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <EntitySetMapping Name="HCWeeklyCaps">
+      <EntityTypeMapping TypeName="ccModel.HCWeeklyCap">
+        <MappingFragment StoreEntitySet="HCWeeklyCaps">
+          <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+          <ScalarProperty Name="UpdatedAt" ColumnName="UpdatedAt" />
+          <ScalarProperty Name="Active" ColumnName="Active" />
+          <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+          <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+          <ScalarProperty Name="CurrencyId" ColumnName="CurrencyId" />
+          <ScalarProperty Name="CapPerPerson" ColumnName="CapPerPerson" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="HCWeeklyCapCountries" TypeName="ccModel.HCWeeklyCapCountries" StoreEntitySet="HCWeeklyCapCountries">
+      <EndProperty Name="HCWeeklyCap">
+        <ScalarProperty Name="Id" ColumnName="HCWeeklyCapId" />
+      </EndProperty>
+      <EndProperty Name="Country">
+        <ScalarProperty Name="Id" ColumnName="CountryId" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="HCWeeklyCapFunds" TypeName="ccModel.HCWeeklyCapFunds" StoreEntitySet="HCWeeklyCapFunds">
+      <EndProperty Name="HCWeeklyCap">
+        <ScalarProperty Name="Id" ColumnName="HCWeeklyCapId" />
+      </EndProperty>
+      <EndProperty Name="Fund">
+        <ScalarProperty Name="Id" ColumnName="FundId" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <FunctionImportMapping FunctionImportName="spFinancialSummaryOverview" FunctionName="ccModel.Store.spFinancialSummaryOverview">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="ccModel.spFinancialSummaryOverview_Result">
+          <ScalarProperty Name="AgencyId" ColumnName="AgencyId" />
+          <ScalarProperty Name="AgencyName" ColumnName="AgencyName" />
+          <ScalarProperty Name="ServiceId" ColumnName="ServiceId" />
+          <ScalarProperty Name="ServiceName" ColumnName="ServiceName" />
+          <ScalarProperty Name="ServiceTypeName" ColumnName="ServiceTypeName" />
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="ClientsCount" ColumnName="ClientsCount" />
+          <ScalarProperty Name="UniqueClientsCount" ColumnName="UniqueClientsCount" />
+          <ScalarProperty Name="FundsCount" ColumnName="FundsCount" />
+          <ScalarProperty Name="MasterFundName" ColumnName="MasterFundName" />
+          <ScalarProperty Name="CcGrant" ColumnName="CcGrant" />
+          <ScalarProperty Name="AverageCostPerUnduplicatedClient" ColumnName="AverageCostPerUnduplicatedClient" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <EntitySetMapping Name="viewFinSumDets">
+      <EntityTypeMapping TypeName="ccModel.viewFinSumDet">
+        <MappingFragment StoreEntitySet="viewFinSumDet">
+          <ScalarProperty Name="MasterId" ColumnName="MasterId" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="ExcludeFromReports" ColumnName="ExcludeFromReports" />
+          <ScalarProperty Name="RegionId" ColumnName="RegionId" />
+          <ScalarProperty Name="CountryId" ColumnName="CountryId" />
+          <ScalarProperty Name="StateId" ColumnName="StateId" />
+          <ScalarProperty Name="IsEstimated" ColumnName="IsEstimated" />
+          <ScalarProperty Name="MainReportStatusId" ColumnName="MainReportStatusId" />
+          <ScalarProperty Name="FundName" ColumnName="FundName" />
+          <ScalarProperty Name="MasterFundId" ColumnName="MasterFundId" />
+          <ScalarProperty Name="FundId" ColumnName="FundId" />
+          <ScalarProperty Name="AppCur" ColumnName="AppCur" />
+          <ScalarProperty Name="CcGrant" ColumnName="CcGrant" />
+          <ScalarProperty Name="AgencyGroupName" ColumnName="AgencyGroupName" />
+          <ScalarProperty Name="AgencyGroupId" ColumnName="AgencyGroupId" />
+          <ScalarProperty Name="AgencyName" ColumnName="AgencyName" />
+          <ScalarProperty Name="AgencyId" ColumnName="AgencyId" />
+          <ScalarProperty Name="appName" ColumnName="appName" />
+          <ScalarProperty Name="AppId" ColumnName="AppId" />
+          <ScalarProperty Name="ReportEnd" ColumnName="ReportEnd" />
+          <ScalarProperty Name="ReportStart" ColumnName="ReportStart" />
+          <ScalarProperty Name="ServiceTypeName" ColumnName="ServiceTypeName" />
+          <ScalarProperty Name="ServiceTypeId" ColumnName="ServiceTypeId" />
+          <ScalarProperty Name="ReportingMethodId" ColumnName="ReportingMethodId" />
+          <ScalarProperty Name="ServiceName" ColumnName="ServiceName" />
+          <ScalarProperty Name="ServiceId" ColumnName="ServiceId" />
+          <ScalarProperty Name="MainReportId" ColumnName="MainReportId" />
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+          <ScalarProperty Name="SubReportId" ColumnName="SubReportId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="viewClientDetails">
+      <EntityTypeMapping TypeName="ccModel.viewClientDetail">
+        <MappingFragment StoreEntitySet="viewClientDetails">
+          <ScalarProperty Name="Has2Date" ColumnName="Has2Date" />
+          <ScalarProperty Name="UnableToSign" ColumnName="UnableToSign" />
+          <ScalarProperty Name="CareReceivedId" ColumnName="CareReceivedId" />
+          <ScalarProperty Name="CareReceivedVia" ColumnName="CareReceivedVia" />
+          <ScalarProperty Name="CommPrefsId" ColumnName="CommPrefsId" />
+          <ScalarProperty Name="CommPrefs" ColumnName="CommPrefs" />
+          <ScalarProperty Name="MAF105Date" ColumnName="MAF105Date" />
+          <ScalarProperty Name="MAFDate" ColumnName="MAFDate" />
+          <ScalarProperty Name="OtherServicesWaitlist" ColumnName="OtherServicesWaitlist" />
+          <ScalarProperty Name="HomecareWaitlist" ColumnName="HomecareWaitlist" />
+          <ScalarProperty Name="AppearedAtLeastOnce" ColumnName="AppearedAtLeastOnce" />
+          <ScalarProperty Name="RegionId" ColumnName="RegionId" />
+          <ScalarProperty Name="ApprovalStatusId" ColumnName="ApprovalStatusId" />
+          <ScalarProperty Name="AgencyGroupId" ColumnName="AgencyGroupId" />
+          <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+          <ScalarProperty Name="GGReportedCount" ColumnName="GGReportedCount" />
+          <ScalarProperty Name="DCC_Client" ColumnName="DCC_Client" />
+          <ScalarProperty Name="SC_Client" ColumnName="SC_Client" />
+          <ScalarProperty Name="AgencyId" ColumnName="AgencyId" />
+          <ScalarProperty Name="HcHours" ColumnName="HcHours" />
+          <ScalarProperty Name="CeefId" ColumnName="CeefId" />
+          <ScalarProperty Name="IsCeefRecipient" ColumnName="IsCeefRecipient" />
+          <ScalarProperty Name="HomecareApprovalStatusName" ColumnName="HomecareApprovalStatusName" />
+          <ScalarProperty Name="UnmetNeedsValue" ColumnName="UnmetNeedsValue" />
+          <ScalarProperty Name="UnmetNeedsStartDate" ColumnName="UnmetNeedsStartDate" />
+          <ScalarProperty Name="GGReportedOnly" ColumnName="GGReportedOnly" />
+          <ScalarProperty Name="RomanianEligible" ColumnName="RomanianEligible" />
+          <ScalarProperty Name="AustrianEligible" ColumnName="AustrianEligible" />
+          <ScalarProperty Name="Phone" ColumnName="Phone" />
+          <ScalarProperty Name="PreviousaddressinIsrael" ColumnName="PreviousaddressinIsrael" />
+          <ScalarProperty Name="Otheraddress" ColumnName="Otheraddress" />
+          <ScalarProperty Name="HighestStartDateofDiagnosticScore" ColumnName="HighestStartDateofDiagnosticScore" />
+          <ScalarProperty Name="DiagnosticScore" ColumnName="DiagnosticScore" />
+          <ScalarProperty Name="GovtHChoursStartDate" ColumnName="GovtHChoursStartDate" />
+          <ScalarProperty Name="GovtHChours" ColumnName="GovtHChours" />
+          <ScalarProperty Name="HomecareEligibilityEndDate" ColumnName="HomecareEligibilityEndDate" />
+          <ScalarProperty Name="HomecareEligibilityStartDate" ColumnName="HomecareEligibilityStartDate" />
+          <ScalarProperty Name="CompensationProgram" ColumnName="CompensationProgram" />
+          <ScalarProperty Name="NaziPersecutionDetails" ColumnName="NaziPersecutionDetails" />
+          <ScalarProperty Name="ApprovalStatus" ColumnName="ApprovalStatus" />
+          <ScalarProperty Name="GFType" ColumnName="GFType" />
+          <ScalarProperty Name="GFStartDate" ColumnName="GFStartDate" />
+          <ScalarProperty Name="GrandfatheredHours" ColumnName="GrandfatheredHours" />
+          <ScalarProperty Name="FunctionalityLevelName" ColumnName="FunctionalityLevelName" />
+          <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+          <ScalarProperty Name="MasterId" ColumnName="MasterId" />
+          <ScalarProperty Name="CCID" ColumnName="CCID" />
+          <ScalarProperty Name="Gender" ColumnName="Gender" />
+          <ScalarProperty Name="IncomeCriteriaComplied" ColumnName="IncomeCriteriaComplied" />
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+          <ScalarProperty Name="LeaveReason" ColumnName="LeaveReason" />
+          <ScalarProperty Name="JoinDate" ColumnName="JoinDate" />
+          <ScalarProperty Name="LeaveDate" ColumnName="LeaveDate" />
+          <ScalarProperty Name="DeceasedDate" ColumnName="DeceasedDate" />
+          <ScalarProperty Name="GovernmentIssuedID" ColumnName="GovernmentIssuedID" />
+          <ScalarProperty Name="OtherIDtype" ColumnName="OtherIDtype" />
+          <ScalarProperty Name="OtherIDcard" ColumnName="OtherIDcard" />
+          <ScalarProperty Name="IDType" ColumnName="IDType" />
+          <ScalarProperty Name="BirthCountry" ColumnName="BirthCountry" />
+          <ScalarProperty Name="BirthCity" ColumnName="BirthCity" />
+          <ScalarProperty Name="Otherdateofbirth" ColumnName="Otherdateofbirth" />
+          <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
+          <ScalarProperty Name="CountryName" ColumnName="CountryName" />
+          <ScalarProperty Name="State" ColumnName="State" />
+          <ScalarProperty Name="ZIP" ColumnName="ZIP" />
+          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="PreviousLastName" ColumnName="PreviousLastName" />
+          <ScalarProperty Name="PreviousFirstName" ColumnName="PreviousFirstName" />
+          <ScalarProperty Name="OtherLastName" ColumnName="OtherLastName" />
+          <ScalarProperty Name="OtherFirstName" ColumnName="OtherFirstName" />
+          <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="Agency" ColumnName="Agency" />
+          <ScalarProperty Name="ORGID" ColumnName="ORGID" />
+          <ScalarProperty Name="InternalAgencyID" ColumnName="InternalAgencyID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ClientEventsCountReports">
+      <EntityTypeMapping TypeName="ccModel.ClientEventsCountReport">
+        <MappingFragment StoreEntitySet="ClientEventsCountReport">
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+          <ScalarProperty Name="TotalCount" ColumnName="TotalCount" />
+          <ScalarProperty Name="JNVCount" ColumnName="JNVCount" />
+          <ScalarProperty Name="EventDate" ColumnName="EventDate" />
+          <ScalarProperty Name="SubReportId" ColumnName="SubReportId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="GlobalStrings">
+      <EntityTypeMapping TypeName="ccModel.GlobalString">
+        <MappingFragment StoreEntitySet="GlobalStrings">
+          <ScalarProperty Name="Value" ColumnName="Value" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CommunicationsPreferences">
+      <EntityTypeMapping TypeName="ccModel.CommunicationsPreference">
+        <MappingFragment StoreEntitySet="CommunicationsPreference">
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CareReceivingOptions">
+      <EntityTypeMapping TypeName="ccModel.CareReceivingOption">
+        <MappingFragment StoreEntitySet="CareReceivingOptions">
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AgencyOverRideReasons">
+      <EntityTypeMapping TypeName="ccModel.AgencyOverRideReason">
+        <MappingFragment StoreEntitySet="AgencyOverRideReasons">
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CfsEndDateReasons">
+      <EntityTypeMapping TypeName="ccModel.CfsEndDateReason">
+        <MappingFragment StoreEntitySet="CfsEndDateReasons">
+          <ScalarProperty Name="Show" ColumnName="Show" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CfsRows">
+      <EntityTypeMapping TypeName="ccModel.CfsRow">
+        <MappingFragment StoreEntitySet="CfsRows">
+          <ScalarProperty Name="OverrideAgencyTitle" ColumnName="OverrideAgencyTitle" />
+          <ScalarProperty Name="OverrideAgencyLastName" ColumnName="OverrideAgencyLastName" />
+          <ScalarProperty Name="OverrideAgencyFirstName" ColumnName="OverrideAgencyFirstName" />
+          <ScalarProperty Name="UpdatedById" ColumnName="UpdatedById" />
+          <ScalarProperty Name="CreatedById" ColumnName="CreatedById" />
+          <ScalarProperty Name="AgencyRequestorLastName" ColumnName="AgencyRequestorLastName" />
+          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+          <ScalarProperty Name="CfsAdminLastUpdate" ColumnName="CfsAdminLastUpdate" />
+          <ScalarProperty Name="CfsAdminInternalRemarks" ColumnName="CfsAdminInternalRemarks" />
+          <ScalarProperty Name="CfsAdminRejected" ColumnName="CfsAdminRejected" />
+          <ScalarProperty Name="CfsAdminRemarks" ColumnName="CfsAdminRemarks" />
+          <ScalarProperty Name="EndRequestDate" ColumnName="EndRequestDate" />
+          <ScalarProperty Name="AgencyRequestorTitle" ColumnName="AgencyRequestorTitle" />
+          <ScalarProperty Name="AgencyRequestorFirstName" ColumnName="AgencyRequestorFirstName" />
+          <ScalarProperty Name="CfsApproved" ColumnName="CfsApproved" />
+          <ScalarProperty Name="OverRideDetails" ColumnName="OverRideDetails" />
+          <ScalarProperty Name="AgencyOverRide" ColumnName="AgencyOverRide" />
+          <ScalarProperty Name="ClientResponseIsYes" ColumnName="ClientResponseIsYes" />
+          <ScalarProperty Name="EndDateReasonId" ColumnName="EndDateReasonId" />
+          <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+          <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+          <ScalarProperty Name="UpdatedAt" ColumnName="UpdatedAt" />
+          <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="CfsOverRideReason" TypeName="ccModel.CfsOverRideReason" StoreEntitySet="CfsOverRideReason">
+      <EndProperty Name="CfsRow">
+        <ScalarProperty Name="Id" ColumnName="CfsId" />
+      </EndProperty>
+      <EndProperty Name="AgencyOverRideReason">
+        <ScalarProperty Name="Id" ColumnName="AgencyOverRideReasonId" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <EntitySetMapping Name="CfsAmounts">
+      <EntityTypeMapping TypeName="ccModel.CfsAmount">
+        <MappingFragment StoreEntitySet="CfsAmounts">
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="Level" ColumnName="Level" />
+          <ScalarProperty Name="CurrencyId" ColumnName="CurrencyId" />
+          <ScalarProperty Name="Year" ColumnName="Year" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Files">
+      <EntityTypeMapping TypeName="ccModel.File">
+        <MappingFragment StoreEntitySet="Files">
+          <ScalarProperty Name="Order" ColumnName="Order" />
+          <ScalarProperty Name="FileEnding" ColumnName="FileEnding" />
+          <ScalarProperty Name="IsLandingPage" ColumnName="IsLandingPage" />
+          <ScalarProperty Name="UploadDate" ColumnName="UploadDate" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="CfsAmountCountries" TypeName="ccModel.CfsAmountCountries" StoreEntitySet="CfsAmountCountries">
+      <EndProperty Name="Country">
+        <ScalarProperty Name="Id" ColumnName="CountryId" />
+      </EndProperty>
+      <EndProperty Name="CfsAmount">
+        <ScalarProperty Name="Id" ColumnName="CfsAmountId" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="MainReportPostApprovalComments" TypeName="ccModel.MainReportPostApprovalComments" StoreEntitySet="MainReportPostApprovalComments">
+      <EndProperty Name="MainReport">
+        <ScalarProperty Name="Id" ColumnName="MainReportId" />
+      </EndProperty>
+      <EndProperty Name="Comment">
+        <ScalarProperty Name="Id" ColumnName="CommentId" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <EntitySetMapping Name="MainReportStatuses">
+      <EntityTypeMapping TypeName="ccModel.MainReportStatuses">
+        <MappingFragment StoreEntitySet="MainReportStatuses">
+          <ScalarProperty Name="FluxxStatusName" ColumnName="FluxxStatusName" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ValidExistingClientsView">
+      <EntityTypeMapping TypeName="ccModel.ValidExistingClientsView">
+        <MappingFragment StoreEntitySet="ValidExistingClientsView">
+          <ScalarProperty Name="UnableToSign" ColumnName="UnableToSign" />
+          <ScalarProperty Name="HAS2Date" ColumnName="HAS2Date" />
+          <ScalarProperty Name="MAF105Date" ColumnName="MAF105Date" />
+          <ScalarProperty Name="MAFDate" ColumnName="MAFDate" />
+          <ScalarProperty Name="CareReceivedId" ColumnName="CareReceivedId" />
+          <ScalarProperty Name="CommPrefsId" ColumnName="CommPrefsId" />
+          <ScalarProperty Name="OtherServicesWaitlist" ColumnName="OtherServicesWaitlist" />
+          <ScalarProperty Name="HomecareWaitlist" ColumnName="HomecareWaitlist" />
+          <ScalarProperty Name="RegionId" ColumnName="RegionId" />
+          <ScalarProperty Name="AgencyGroupId" ColumnName="AgencyGroupId" />
+          <ScalarProperty Name="Gender" ColumnName="Gender" />
+          <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+          <ScalarProperty Name="UpdatedAt" ColumnName="UpdatedAt" />
+          <ScalarProperty Name="UpdatedById" ColumnName="UpdatedById" />
+          <ScalarProperty Name="New_Client" ColumnName="New_Client" />
+          <ScalarProperty Name="MatchFlag" ColumnName="MatchFlag" />
+          <ScalarProperty Name="ExceptionalHours" ColumnName="ExceptionalHours" />
+          <ScalarProperty Name="AddCompId" ColumnName="AddCompId" />
+          <ScalarProperty Name="AddCompName" ColumnName="AddCompName" />
+          <ScalarProperty Name="CeefId" ColumnName="CeefId" />
+          <ScalarProperty Name="IsCeefRecipient" ColumnName="IsCeefRecipient" />
+          <ScalarProperty Name="CompensationProgramName" ColumnName="CompensationProgramName" />
+          <ScalarProperty Name="PreviousAddressInIsrael" ColumnName="PreviousAddressInIsrael" />
+          <ScalarProperty Name="OtherAddress" ColumnName="OtherAddress" />
+          <ScalarProperty Name="OtherIdTypeId" ColumnName="OtherIdTypeId" />
+          <ScalarProperty Name="OtherId" ColumnName="OtherId" />
+          <ScalarProperty Name="OtherDob" ColumnName="OtherDob" />
+          <ScalarProperty Name="OtherLastName" ColumnName="OtherLastName" />
+          <ScalarProperty Name="OtherFirstName" ColumnName="OtherFirstName" />
+          <ScalarProperty Name="PrevLastName" ColumnName="PrevLastName" />
+          <ScalarProperty Name="PrevFirstName" ColumnName="PrevFirstName" />
+          <ScalarProperty Name="CountryId" ColumnName="CountryId" />
+          <ScalarProperty Name="BirthCountryId" ColumnName="BirthCountryId" />
+          <ScalarProperty Name="PobCity" ColumnName="PobCity" />
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+          <ScalarProperty Name="NaziPersecutionDetails" ColumnName="NaziPersecutionDetails" />
+          <ScalarProperty Name="IncomeVerificationRequired" ColumnName="IncomeVerificationRequired" />
+          <ScalarProperty Name="IncomeCriteriaComplied" ColumnName="IncomeCriteriaComplied" />
+          <ScalarProperty Name="FundStatusId" ColumnName="FundStatusId" />
+          <ScalarProperty Name="ApprovalStatusId" ColumnName="ApprovalStatusId" />
+          <ScalarProperty Name="DeceasedDate" ColumnName="DeceasedDate" />
+          <ScalarProperty Name="LeaveRemarks" ColumnName="LeaveRemarks" />
+          <ScalarProperty Name="LeaveReasonId" ColumnName="LeaveReasonId" />
+          <ScalarProperty Name="LeaveDate" ColumnName="LeaveDate" />
+          <ScalarProperty Name="JoinDate" ColumnName="JoinDate" />
+          <ScalarProperty Name="ZIP" ColumnName="ZIP" />
+          <ScalarProperty Name="StateId" ColumnName="StateId" />
+          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
+          <ScalarProperty Name="Phone" ColumnName="Phone" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="NationalIdTypeId" ColumnName="NationalIdTypeId" />
+          <ScalarProperty Name="NationalId" ColumnName="NationalId" />
+          <ScalarProperty Name="AgencyId" ColumnName="AgencyId" />
+          <ScalarProperty Name="MasterId" ColumnName="MasterId" />
+          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+          <ScalarProperty Name="InternalId" ColumnName="InternalId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="RowIndex" ColumnName="RowIndex" />
+          <ScalarProperty Name="ImportId" ColumnName="ImportId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="ccModel.Store.sp_alterdiagram" />
+    <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="ccModel.Store.sp_creatediagram" />
+    <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="ccModel.Store.sp_dropdiagram" />
+    <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="ccModel.Store.sp_helpdiagramdefinition">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="ccModel.sp_helpdiagramdefinition_Result">
+          <ScalarProperty Name="version" ColumnName="version" />
+          <ScalarProperty Name="definition" ColumnName="definition" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="ccModel.Store.sp_helpdiagrams">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="ccModel.sp_helpdiagrams_Result">
+          <ScalarProperty Name="Database" ColumnName="Database" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Owner" ColumnName="Owner" />
+          <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="ccModel.Store.sp_renamediagram" />
+    <FunctionImportMapping FunctionImportName="spSrHcDetailsWeekly" FunctionName="ccModel.Store.spSrHcDetailsWeekly">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="ccModel.spSrHcDetailsWeekly_Result">
+          <ScalarProperty Name="ClientReportId" ColumnName="ClientReportId" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="ApprovalStatusId" ColumnName="ApprovalStatusId" />
+          <ScalarProperty Name="ApprovalStatusName" ColumnName="ApprovalStatusName" />
+          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+          <ScalarProperty Name="HASId" ColumnName="HASId" />
+          <ScalarProperty Name="HASName" ColumnName="HASName" />
+          <ScalarProperty Name="Rate" ColumnName="Rate" />
+          <ScalarProperty Name="W1" ColumnName="W1" />
+          <ScalarProperty Name="W2" ColumnName="W2" />
+          <ScalarProperty Name="W3" ColumnName="W3" />
+          <ScalarProperty Name="W4" ColumnName="W4" />
+          <ScalarProperty Name="W5" ColumnName="W5" />
+          <ScalarProperty Name="W6" ColumnName="W6" />
+          <ScalarProperty Name="W7" ColumnName="W7" />
+          <ScalarProperty Name="W8" ColumnName="W8" />
+          <ScalarProperty Name="W9" ColumnName="W9" />
+          <ScalarProperty Name="W10" ColumnName="W10" />
+          <ScalarProperty Name="W11" ColumnName="W11" />
+          <ScalarProperty Name="W12" ColumnName="W12" />
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+          <ScalarProperty Name="Cfs" ColumnName="Cfs" />
+          <ScalarProperty Name="W13" ColumnName="W13" />
+          <ScalarProperty Name="W14" ColumnName="W14" />
+          <ScalarProperty Name="W15" ColumnName="W15" />
+          <ScalarProperty Name="LeaveDate" ColumnName="LeaveDate" />
+          <ScalarProperty Name="MasterIdClcd" ColumnName="MasterIdClcd" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="spHcCapsTableRaw" FunctionName="ccModel.Store.spHcCapsTableRaw">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="ccModel.spHcCapsTableRaw_Result">
+          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+          <ScalarProperty Name="AgencyGroupId" ColumnName="AgencyGroupId" />
+          <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+          <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+          <ScalarProperty Name="JoinDate" ColumnName="JoinDate" />
+          <ScalarProperty Name="LeaveDate" ColumnName="LeaveDate" />
+          <ScalarProperty Name="DeceasedDate" ColumnName="DeceasedDate" />
+          <ScalarProperty Name="HcCap" ColumnName="HcCap" />
+          <ScalarProperty Name="GovHcHours" ColumnName="GovHcHours" />
+          <ScalarProperty Name="HospiceCareCap" ColumnName="HospiceCareCap" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="spValidateMrHc" FunctionName="ccModel.Store.spValidateMrHc">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="ccModel.spValidateMrHc_Result">
+          <ScalarProperty Name="clientid" ColumnName="clientid" />
+          <ScalarProperty Name="reportdate" ColumnName="reportdate" />
+          <ScalarProperty Name="q" ColumnName="q" />
+          <ScalarProperty Name="c" ColumnName="c" />
+          <ScalarProperty Name="co" ColumnName="co" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="spValidateMrHcD" FunctionName="ccModel.Store.spValidateMrHcD">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="ccModel.spValidateMrHcD_Result">
+          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+          <ScalarProperty Name="ServiceName" ColumnName="ServiceName" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="ImportNewClientsProc" FunctionName="ccModel.Store.ImportNewClientsProc">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="ccModel.ImportNewClientsProc_Result">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="NationalId" ColumnName="NationalId" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="ImportMasterIds" FunctionName="ccModel.Store.ImportMasterIds" />
+    <FunctionImportMapping FunctionImportName="ImportClientFundStatusProc" FunctionName="ccModel.Store.ImportClientFundStatusProc">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="ccModel.ImportClientFundStatusProc_Result">
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="OldApprovalStatusId" ColumnName="OldApprovalStatusId" />
+          <ScalarProperty Name="NewApprovalStatusId" ColumnName="NewApprovalStatusId" />
+          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+          <ScalarProperty Name="AgencyGroupId" ColumnName="AgencyGroupId" />
+          <ScalarProperty Name="NationalId" ColumnName="NationalId" />
+          <ScalarProperty Name="LeaveReasonId" ColumnName="LeaveReasonId" />
+          <ScalarProperty Name="HcStatusName" ColumnName="HcStatusName" />
+          <ScalarProperty Name="OldHcStatusId" ColumnName="OldHcStatusId" />
+          <ScalarProperty Name="NewHcStatusId" ColumnName="NewHcStatusId" />
+          <ScalarProperty Name="CountryName" ColumnName="CountryName" />
+          <ScalarProperty Name="BirthCountryName" ColumnName="BirthCountryName" />
+          <ScalarProperty Name="AgencyId" ColumnName="AgencyId" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="ImportExistingClientsProc" FunctionName="ccModel.Store.ImportExistingClientsProc">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="ccModel.ImportExistingClientsProc_Result">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="NationalId" ColumnName="NationalId" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="ImportFS" FunctionName="ccModel.Store.ImportFS" />
+    <FunctionImportMapping FunctionImportName="ImportHcepProc" FunctionName="ccModel.Store.ImportHcepProc" />
+    <FunctionImportMapping FunctionImportName="CfsLevelChangesInGivenMonth" FunctionName="ccModel.Store.CfsLevelChangesInGivenMonth">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="ccModel.CfsLevelChangesInGivenMonth_Result">
+          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+          <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+          <ScalarProperty Name="CfsLevel" ColumnName="CfsLevel" />
+          <ScalarProperty Name="CfsStartDate" ColumnName="CfsStartDate" />
+          <ScalarProperty Name="AgencyId" ColumnName="AgencyId" />
+          <ScalarProperty Name="AgencyName" ColumnName="AgencyName" />
+          <ScalarProperty Name="JoinDate" ColumnName="JoinDate" />
+          <ScalarProperty Name="EiligibilityStartDate" ColumnName="EiligibilityStartDate" />
+          <ScalarProperty Name="DafStartDate" ColumnName="DafStartDate" />
+          <ScalarProperty Name="DafScore" ColumnName="DafScore" />
+          <ScalarProperty Name="DafLevel" ColumnName="DafLevel" />
+          <ScalarProperty Name="GovhStartDate" ColumnName="GovhStartDate" />
+          <ScalarProperty Name="GovhHours" ColumnName="GovhHours" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="CopySubReport" FunctionName="ccModel.Store.CopySubReport" />
+    <FunctionImportMapping FunctionImportName="CriHcImport" FunctionName="ccModel.Store.CriHcImport" />
+    <FunctionImportMapping FunctionImportName="DeleteClientReport" FunctionName="ccModel.Store.DeleteClientReport" />
+    <FunctionImportMapping FunctionImportName="DeleteDCCReport" FunctionName="ccModel.Store.DeleteDCCReport" />
+    <FunctionImportMapping FunctionImportName="DeleteEmergencyReport" FunctionName="ccModel.Store.DeleteEmergencyReport" />
+    <FunctionImportMapping FunctionImportName="DeleteMedicalEquipmentReport" FunctionName="ccModel.Store.DeleteMedicalEquipmentReport" />
+    <FunctionImportMapping FunctionImportName="DeleteMhmReport" FunctionName="ccModel.Store.DeleteMhmReport" />
+    <FunctionImportMapping FunctionImportName="DeleteProgramCostsReport" FunctionName="ccModel.Store.DeleteProgramCostsReport" />
+    <FunctionImportMapping FunctionImportName="DeleteSCReport" FunctionName="ccModel.Store.DeleteSCReport" />
+    <FunctionImportMapping FunctionImportName="DeleteSKReport" FunctionName="ccModel.Store.DeleteSKReport" />
+    <FunctionImportMapping FunctionImportName="ImportApps" FunctionName="ccModel.Store.ImportApps" />
+    <FunctionImportMapping FunctionImportName="ImportCfsProc" FunctionName="ccModel.Store.ImportCfsProc" />
+    <FunctionImportMapping FunctionImportName="ImportCri" FunctionName="ccModel.Store.ImportCri" />
+    <FunctionImportMapping FunctionImportName="ImportCriClientEventsCount" FunctionName="ccModel.Store.ImportCriClientEventsCount" />
+    <FunctionImportMapping FunctionImportName="ImportCriEmergency" FunctionName="ccModel.Store.ImportCriEmergency" />
+    <FunctionImportMapping FunctionImportName="ImportCriSoupKitchens" FunctionName="ccModel.Store.ImportCriSoupKitchens" />
+    <FunctionImportMapping FunctionImportName="ImportGovHcHoursCancelProc" FunctionName="ccModel.Store.ImportGovHcHoursCancelProc" />
+    <FunctionImportMapping FunctionImportName="ImportUnmetNeedsCancelProc" FunctionName="ccModel.Store.ImportUnmetNeedsCancelProc" />
+    <FunctionImportMapping FunctionImportName="ImportUnmetNeedsOtherCancelProc" FunctionName="ccModel.Store.ImportUnmetNeedsOtherCancelProc" />
+    <FunctionImportMapping FunctionImportName="ImportCriSupportiveCommunities" FunctionName="ccModel.Store.ImportCriSupportiveCommunities" />
+    <FunctionImportMapping FunctionImportName="ImportGovHcHoursProc" FunctionName="ccModel.Store.ImportGovHcHoursProc" />
+    <FunctionImportMapping FunctionImportName="ImportUnmetNeedsOtherNewProc" FunctionName="ccModel.Store.ImportUnmetNeedsOtherNewProc" />
+    <FunctionImportMapping FunctionImportName="ImportUnmetNeedsOtherProc" FunctionName="ccModel.Store.ImportUnmetNeedsOtherProc" />
+    <FunctionImportMapping FunctionImportName="ImportUnmetNeedsProc" FunctionName="ccModel.Store.ImportUnmetNeedsProc" />
+    <FunctionImportMapping FunctionImportName="InsertClient" FunctionName="ccModel.Store.InsertClient">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="ccModel.InsertClient_Result">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="MasterId" ColumnName="MasterId" />
+          <ScalarProperty Name="MasterIdClcd" ColumnName="MasterIdClcd" />
+          <ScalarProperty Name="InternalId" ColumnName="InternalId" />
+          <ScalarProperty Name="AgencyId" ColumnName="AgencyId" />
+          <ScalarProperty Name="NationalId" ColumnName="NationalId" />
+          <ScalarProperty Name="NationalIdTypeId" ColumnName="NationalIdTypeId" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="Phone" ColumnName="Phone" />
+          <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="StateId" ColumnName="StateId" />
+          <ScalarProperty Name="ZIP" ColumnName="ZIP" />
+          <ScalarProperty Name="JoinDate" ColumnName="JoinDate" />
+          <ScalarProperty Name="LeaveDate" ColumnName="LeaveDate" />
+          <ScalarProperty Name="LeaveReasonId" ColumnName="LeaveReasonId" />
+          <ScalarProperty Name="LeaveRemarks" ColumnName="LeaveRemarks" />
+          <ScalarProperty Name="DeceasedDate" ColumnName="DeceasedDate" />
+          <ScalarProperty Name="ApprovalStatusId" ColumnName="ApprovalStatusId" />
+          <ScalarProperty Name="FundStatusId" ColumnName="FundStatusId" />
+          <ScalarProperty Name="IncomeCriteriaComplied" ColumnName="IncomeCriteriaComplied" />
+          <ScalarProperty Name="IncomeVerificationRequired" ColumnName="IncomeVerificationRequired" />
+          <ScalarProperty Name="NaziPersecutionDetails" ColumnName="NaziPersecutionDetails" />
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+          <ScalarProperty Name="PobCity" ColumnName="PobCity" />
+          <ScalarProperty Name="BirthCountryId" ColumnName="BirthCountryId" />
+          <ScalarProperty Name="EmigrationDate" ColumnName="EmigrationDate" />
+          <ScalarProperty Name="PrevFirstName" ColumnName="PrevFirstName" />
+          <ScalarProperty Name="PrevLastName" ColumnName="PrevLastName" />
+          <ScalarProperty Name="OtherFirstName" ColumnName="OtherFirstName" />
+          <ScalarProperty Name="OtherLastName" ColumnName="OtherLastName" />
+          <ScalarProperty Name="OtherDob" ColumnName="OtherDob" />
+          <ScalarProperty Name="OtherId" ColumnName="OtherId" />
+          <ScalarProperty Name="OtherIdTypeId" ColumnName="OtherIdTypeId" />
+          <ScalarProperty Name="OtherAddress" ColumnName="OtherAddress" />
+          <ScalarProperty Name="PreviousAddressInIsrael" ColumnName="PreviousAddressInIsrael" />
+          <ScalarProperty Name="CompensationProgramName" ColumnName="CompensationProgramName" />
+          <ScalarProperty Name="IsCeefRecipient" ColumnName="IsCeefRecipient" />
+          <ScalarProperty Name="CeefId" ColumnName="CeefId" />
+          <ScalarProperty Name="AddCompName" ColumnName="AddCompName" />
+          <ScalarProperty Name="AddCompId" ColumnName="AddCompId" />
+          <ScalarProperty Name="ExceptionalHours" ColumnName="ExceptionalHours" />
+          <ScalarProperty Name="MatchFlag" ColumnName="MatchFlag" />
+          <ScalarProperty Name="New_Client" ColumnName="New_Client" />
+          <ScalarProperty Name="ACPExported" ColumnName="ACPExported" />
+          <ScalarProperty Name="Gender" ColumnName="Gender" />
+          <ScalarProperty Name="UpdatedById" ColumnName="UpdatedById" />
+          <ScalarProperty Name="UpdatedAt" ColumnName="UpdatedAt" />
+          <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+          <ScalarProperty Name="AdministrativeLeave" ColumnName="AdministrativeLeave" />
+          <ScalarProperty Name="AustrianEligible" ColumnName="AustrianEligible" />
+          <ScalarProperty Name="GGReportedCount" ColumnName="GGReportedCount" />
+          <ScalarProperty Name="ApprovalStatusUpdated" ColumnName="ApprovalStatusUpdated" />
+          <ScalarProperty Name="RomanianEligible" ColumnName="RomanianEligible" />
+          <ScalarProperty Name="CountryId" ColumnName="CountryId" />
+          <ScalarProperty Name="DCC_Subside" ColumnName="DCC_Subside" />
+          <ScalarProperty Name="DCC_VisitCost" ColumnName="DCC_VisitCost" />
+          <ScalarProperty Name="SC_MonthlyCost" ColumnName="SC_MonthlyCost" />
+          <ScalarProperty Name="DCC_Client" ColumnName="DCC_Client" />
+          <ScalarProperty Name="SC_Client" ColumnName="SC_Client" />
+          <ScalarProperty Name="AutoLeaveOverride" ColumnName="AutoLeaveOverride" />
+          <ScalarProperty Name="MAFDate" ColumnName="MAFDate" />
+          <ScalarProperty Name="HomecareWaitlist" ColumnName="HomecareWaitlist" />
+          <ScalarProperty Name="OtherServicesWaitlist" ColumnName="OtherServicesWaitlist" />
+          <ScalarProperty Name="CommPrefsId" ColumnName="CommPrefsId" />
+          <ScalarProperty Name="CareReceivedId" ColumnName="CareReceivedId" />
+          <ScalarProperty Name="MAF105Date" ColumnName="MAF105Date" />
+          <ScalarProperty Name="UnableToSign" ColumnName="UnableToSign" />
+          <ScalarProperty Name="HAS2Date" ColumnName="HAS2Date" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="NewClientsExport" FunctionName="ccModel.Store.NewClientsExport">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="ccModel.NewClientsExport_Result">
+          <ScalarProperty Name="CLIENT_ID" ColumnName="CLIENT_ID" />
+          <ScalarProperty Name="ORG_ID" ColumnName="ORG_ID" />
+          <ScalarProperty Name="LAST_NAME" ColumnName="LAST_NAME" />
+          <ScalarProperty Name="FIRST_NAME" ColumnName="FIRST_NAME" />
+          <ScalarProperty Name="MIDDLE_NAME" ColumnName="MIDDLE_NAME" />
+          <ScalarProperty Name="DOB" ColumnName="DOB" />
+          <ScalarProperty Name="ADDRESS" ColumnName="ADDRESS" />
+          <ScalarProperty Name="CITY" ColumnName="CITY" />
+          <ScalarProperty Name="ZIP" ColumnName="ZIP" />
+          <ScalarProperty Name="STATE_CODE" ColumnName="STATE_CODE" />
+          <ScalarProperty Name="COUNTRY_CODE" ColumnName="COUNTRY_CODE" />
+          <ScalarProperty Name="TYPE_OF_ID" ColumnName="TYPE_OF_ID" />
+          <ScalarProperty Name="SS" ColumnName="SS" />
+          <ScalarProperty Name="PHONE" ColumnName="PHONE" />
+          <ScalarProperty Name="CLIENT_COMP_PROGRAM" ColumnName="CLIENT_COMP_PROGRAM" />
+          <ScalarProperty Name="COMP_PROG_REG_NUM" ColumnName="COMP_PROG_REG_NUM" />
+          <ScalarProperty Name="AdditionalComp" ColumnName="AdditionalComp" />
+          <ScalarProperty Name="AdditionalCompNum" ColumnName="AdditionalCompNum" />
+          <ScalarProperty Name="Deceased" ColumnName="Deceased" />
+          <ScalarProperty Name="DOD" ColumnName="DOD" />
+          <ScalarProperty Name="New_Client" ColumnName="New_Client" />
+          <ScalarProperty Name="Place_of_Birth_City" ColumnName="Place_of_Birth_City" />
+          <ScalarProperty Name="Place_of_Birth_Country" ColumnName="Place_of_Birth_Country" />
+          <ScalarProperty Name="Previous_First_Name" ColumnName="Previous_First_Name" />
+          <ScalarProperty Name="Previous_Last_Name" ColumnName="Previous_Last_Name" />
+          <ScalarProperty Name="Upload_Date" ColumnName="Upload_Date" />
+          <ScalarProperty Name="MatchFlag" ColumnName="MatchFlag" />
+          <ScalarProperty Name="claim_status" ColumnName="claim_status" />
+          <ScalarProperty Name="CLIENT_MASTER_ID" ColumnName="CLIENT_MASTER_ID" />
+          <ScalarProperty Name="Internal_Client_ID" ColumnName="Internal_Client_ID" />
+          <ScalarProperty Name="Gender" ColumnName="Gender" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="Over105HcHours" FunctionName="ccModel.Store.Over105HcHours">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="ccModel.Over105HcHours_Result">
+          <ScalarProperty Name="AgencyGroupId" ColumnName="AgencyGroupId" />
+          <ScalarProperty Name="AgencyGroupName" ColumnName="AgencyGroupName" />
+          <ScalarProperty Name="Year" ColumnName="Year" />
+          <ScalarProperty Name="Month" ColumnName="Month" />
+          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+          <ScalarProperty Name="TotalHours" ColumnName="TotalHours" />
+          <ScalarProperty Name="RegionId" ColumnName="RegionId" />
+          <ScalarProperty Name="ReportDate" ColumnName="ReportDate" />
+          <ScalarProperty Name="Week" ColumnName="Week" />
+          <ScalarProperty Name="ReportedHours" ColumnName="ReportedHours" />
+          <ScalarProperty Name="GovHours" ColumnName="GovHours" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="PopulateScReport" FunctionName="ccModel.Store.PopulateScReport" />
+    <FunctionImportMapping FunctionImportName="ProcessNeedToApplyClients" FunctionName="ccModel.Store.ProcessNeedToApplyClients" />
+    <FunctionImportMapping FunctionImportName="ProcessNoContact" FunctionName="ccModel.Store.ProcessNoContact" />
+    <FunctionImportMapping FunctionImportName="ProcessRejectedClients" FunctionName="ccModel.Store.ProcessRejectedClients" />
+    <FunctionImportMapping FunctionImportName="sp_Reporting_HcHours" FunctionName="ccModel.Store.sp_Reporting_HcHours">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="ccModel.sp_Reporting_HcHours_Result">
+          <ScalarProperty Name="RegionName" ColumnName="RegionName" />
+          <ScalarProperty Name="CountryName" ColumnName="CountryName" />
+          <ScalarProperty Name="StateName" ColumnName="StateName" />
+          <ScalarProperty Name="AgencyGroupName" ColumnName="AgencyGroupName" />
+          <ScalarProperty Name="HcCapHours" ColumnName="HcCapHours" />
+          <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+          <ScalarProperty Name="UsdAmount" ColumnName="UsdAmount" />
+          <ScalarProperty Name="EurAmount" ColumnName="EurAmount" />
+          <ScalarProperty Name="AgencyGroupId" ColumnName="AgencyGroupId" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="spAgencyReportingHomecareDetails" FunctionName="ccModel.Store.spAgencyReportingHomecareDetails">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="ccModel.spAgencyReportingHomecareDetails_Result">
+          <ScalarProperty Name="AgencyId" ColumnName="AgencyId" />
+          <ScalarProperty Name="FundName" ColumnName="FundName" />
+          <ScalarProperty Name="AppName" ColumnName="AppName" />
+          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+          <ScalarProperty Name="ServiceName" ColumnName="ServiceName" />
+          <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+          <ScalarProperty Name="Rate" ColumnName="Rate" />
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="CurId" ColumnName="CurId" />
+          <ScalarProperty Name="SelectedDayOfWeek" ColumnName="SelectedDayOfWeek" />
+          <ScalarProperty Name="IsWeekly" ColumnName="IsWeekly" />
+          <ScalarProperty Name="MrStart" ColumnName="MrStart" />
+          <ScalarProperty Name="ReportDate" ColumnName="ReportDate" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="spHasNotificationResend" FunctionName="ccModel.Store.spHasNotificationResend">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="ccModel.spHasNotificationResend_Result">
+          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+          <ScalarProperty Name="NationalId" ColumnName="NationalId" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="NewApprovalStatusId" ColumnName="NewApprovalStatusId" />
+          <ScalarProperty Name="OldApprovalStatusId" ColumnName="OldApprovalStatusId" />
+          <ScalarProperty Name="AgencyId" ColumnName="AgencyId" />
+          <ScalarProperty Name="AgencyGroupId" ColumnName="AgencyGroupId" />
+          <ScalarProperty Name="LeaveReasonId" ColumnName="LeaveReasonId" />
+          <ScalarProperty Name="HcStatusName" ColumnName="HcStatusName" />
+          <ScalarProperty Name="OldHcStatusId" ColumnName="OldHcStatusId" />
+          <ScalarProperty Name="NewHcStatusId" ColumnName="NewHcStatusId" />
+          <ScalarProperty Name="CountryName" ColumnName="CountryName" />
+          <ScalarProperty Name="BirthCountryName" ColumnName="BirthCountryName" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="spSrHcDetails" FunctionName="ccModel.Store.spSrHcDetails">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="ccModel.spSrHcDetails_Result">
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="ApprovalStatusId" ColumnName="ApprovalStatusId" />
+          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+          <ScalarProperty Name="Rate" ColumnName="Rate" />
+          <ScalarProperty Name="Q1" ColumnName="Q1" />
+          <ScalarProperty Name="Q2" ColumnName="Q2" />
+          <ScalarProperty Name="Q3" ColumnName="Q3" />
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+          <ScalarProperty Name="ApprovalStatusName" ColumnName="ApprovalStatusName" />
+          <ScalarProperty Name="Cfs" ColumnName="Cfs" />
+          <ScalarProperty Name="ClientReportId" ColumnName="ClientReportId" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="spValidateCrHc" FunctionName="ccModel.Store.spValidateCrHc">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="ccModel.spValidateCrHc_Result">
+          <ScalarProperty Name="clientid" ColumnName="clientid" />
+          <ScalarProperty Name="reportdate" ColumnName="reportdate" />
+          <ScalarProperty Name="q" ColumnName="q" />
+          <ScalarProperty Name="c" ColumnName="c" />
+          <ScalarProperty Name="co" ColumnName="co" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="spValidateWeeklyHcCaps" FunctionName="ccModel.Store.spValidateWeeklyHcCaps">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="ccModel.spValidateWeeklyHcCaps_Result">
+          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="CapName" ColumnName="CapName" />
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="CurrencyId" ColumnName="CurrencyId" />
+          <ScalarProperty Name="CapPerPerson" ColumnName="CapPerPerson" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="UpdateClientApptovalStatus" FunctionName="ccModel.Store.UpdateClientApptovalStatus">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="ccModel.UpdateClientApptovalStatus_Result">
+          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+          <ScalarProperty Name="AgencyId" ColumnName="AgencyId" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="OldApprovalStatusId" ColumnName="OldApprovalStatusId" />
+          <ScalarProperty Name="NewApprovalStatusId" ColumnName="NewApprovalStatusId" />
+          <ScalarProperty Name="AgencyGroupId" ColumnName="AgencyGroupId" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="UpdateImportClientReportWeekly" FunctionName="ccModel.Store.UpdateImportClientReportWeekly" />
+    <FunctionImportMapping FunctionImportName="spFinancialSummaryDetails" FunctionName="ccModel.Store.spFinancialSummaryDetails">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="ccModel.spFinancialSummaryDetails_Result">
+          <ScalarProperty Name="SubReportId" ColumnName="SubReportId" />
+          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="AgencyId" ColumnName="AgencyId" />
+          <ScalarProperty Name="ServiceTypeName" ColumnName="ServiceTypeName" />
+          <ScalarProperty Name="ServiceName" ColumnName="ServiceName" />
+          <ScalarProperty Name="ReportStart" ColumnName="ReportStart" />
+          <ScalarProperty Name="ReportEnd" ColumnName="ReportEnd" />
+          <ScalarProperty Name="FundName" ColumnName="FundName" />
+          <ScalarProperty Name="AppName" ColumnName="AppName" />
+          <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="IsEstimated" ColumnName="IsEstimated" />
+          <ScalarProperty Name="CcGrant" ColumnName="CcGrant" />
+          <ScalarProperty Name="AppCur" ColumnName="AppCur" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+  </EntityContainerMapping>
+</Mapping>

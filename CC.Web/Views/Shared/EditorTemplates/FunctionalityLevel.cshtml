@@ -1,0 +1,10 @@
+﻿@model Nullable<int>
+           
+@{
+    object selVal=null;
+    
+    
+    //DropDownListFor did not pick up the selected value from the model without this
+    var fLevels = new SelectList((IEnumerable<SelectListItem>)ViewBag.FunctionalityLevels, "Value", "Text", selVal);
+}
+@Html.DropDownListFor(model => model, fLevels)

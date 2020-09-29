@@ -1,0 +1,45 @@
+﻿@model UserAgreementAudit
+@{
+	ViewBag.Title = "";
+	Layout = "~/Views/Shared/_LayoutNoMenu.cshtml";
+}
+
+
+<form method="post">
+
+@Html.HiddenFor(f => f.User.UniqueId)
+@Html.HiddenFor(f => f.UserAgreementId)
+@Html.HiddenFor(f => f.User.UserName)
+
+@Html.DisplayFor(f => f.UserAgreement.Text)
+
+<div>
+	<button type="button" onclick="window.print()">Print</button></div>
+<div>
+	<input type="checkbox" id="agree" name="agree" />
+	<label for="agree">I agree to the terms of the aforementioned agreement.</label>
+
+	<div id="submit">
+		<div>@Html.LabelFor(f => f.User.UserName):
+		@Html.DisplayFor(f => f.User.UserName)
+		</div>
+		<div>
+			<label for="password">Please confirm your password:</label>
+			<input type="password" id="password" name="password" class="required" />
+		</div>
+		<button type="submit">I Agree</button>
+	</div>
+</div>
+<script>
+	$(function () {
+		$('input#agree').change(function () {
+			if ($(this).filter(':checked').length == 0) {
+				$('div#submit').hide();
+			}
+			else {
+				$('div#submit').show();
+			}
+		}).change();
+	});
+</script>
+</form>

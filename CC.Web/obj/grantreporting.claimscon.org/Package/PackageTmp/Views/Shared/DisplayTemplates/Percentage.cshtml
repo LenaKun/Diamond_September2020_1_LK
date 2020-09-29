@@ -1,0 +1,5 @@
+﻿@model Nullable<decimal>
+
+<span class="stringdisplaytemplate">
+@(Model.HasValue? Model.Value.FormatPercentage() : "N/A" )
+</span>

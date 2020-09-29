@@ -1,0 +1,31 @@
+﻿@model SubReportDetailsModel.SubReportTotals
+@{
+	Layout = null;
+}
+
+<table class="horizontal">
+	<tr>
+        @if(!User.IsInRole("BMF"))
+        {
+		    <th>Totals:</th>
+		    <td>
+			    <div class="display-item">
+				    @Html.LabelFor(f => f.AppMatchingSum)
+				    @Html.DisplayFor(f => f.AppMatchingSum)
+			    </div>
+			    <div class="display-item">
+				    @Html.LabelFor(f => f.YtdMatchExp)
+				    @Html.DisplayFor(f => f.YtdMatchExp)
+			    </div>
+			    <div class="display-item">
+				    @Html.LabelFor(f => f.EstimatedMatchingSum)
+				    @Html.DisplayFor(f => f.EstimatedMatchingSum)
+			    </div>
+			    <div class="display-item">
+				    @Html.LabelFor(f => f.MatchingSumStatus)
+				    @Html.DisplayFor(f => f.MatchingSumStatus)
+			    </div>
+		    </td>
+        }
+	</tr>
+</table>

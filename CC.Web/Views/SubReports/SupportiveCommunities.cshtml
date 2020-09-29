@@ -1,0 +1,537 @@
+﻿@model SubReportDetailsModel
+@{
+	ViewBag.Title = "Detailed Report";
+}
+@section Header
+{
+<script>
+    var loadTotals = function () {
+        $('div#totals').load('@Url.Action("GetTotals", new { Id = Model.Id})' + '?IE=' + Math.random(), function () {
+            $('span.totalAmount').html($('div#totals span.totalAmount').html());
+        });
+    };
+</script>
+<script id="dt" type="text/javascript">
+	//simple datatable init
+	var editLink = '<button type="button" class="edit">Edit</button>';
+	var deleteLink = '<button type="button" class="delete">Delete</button>';
+	var addLink = '<button type="button" class="add">Add</button>';
+	var dataTable = null;
+
+	$(document).ready(function () {
+		dataTable = $('table.grid').dataTable({
+			"bServerSide": true,
+			"aaSorting": [[2, "asc"], [3, "asc"]],
+			"sAjaxSource": '@Url.Action("GetRows", new { Id = Model.Id })',
+			"aoColumnDefs": [
+
+              {
+              	"aTargets": [0],
+              	"bVisible": false
+              },
+			  {
+			  	"aTargets": [0, 1, 2, 6, 7, 8],
+			  	"bSortable": false
+			  },
+                {
+                	"aTargets": [1], "mRender": function (a) {
+                		return '<a href="@Url.Action("Details", "Clients")/' + a + '">' + a + '</a';
+                	}
+                },
+
+                { "aTargets": [2], "sName": "IsraelID" },
+
+
+                {
+                	"aTargets": [3, 4],
+                	"bSortable": true
+                },
+                { "aTargets": [5], "sName": "ApprovalStatus", "sTitle": "Approval Status" },
+                { "aTargets": [6], "sName": "JoinDate", "sTitle": "Join Date", "mRender": function (val) { return renderDate(val); } },
+
+
+                { "aTargets": [7], "sName": "HoursHoldCost", "sClass": "required number", "mRender": function (val) { return renderDecimal(val); } },
+                { "aTargets": [8], "sName": "MonthsReported", "sClass": "required number" },
+                { "aTargets": [9], "sName": "Amount", "sClass": "required number", "mRender": function (val) { return renderDecimal(val); } },
+				{ "aTargets": [10], "sName": "Reported", "mRender": function (val) { if (val) return 'True'; else return 'False'; } },
+
+            @if (Model.CanBeEdited)
+            {
+
+				<text>
+
+					{
+						//last colum with buttons
+						"aTargets": [-1],
+						"sWidth": "7em",
+						"mData": null,
+						"bSortable": false,
+						"sClass": 'control',
+						"mRender": function (val, type, full) {
+
+							var res = editLink;
+							if (full[0] && '@(User.IsInRole(FixedRoles.Admin.ToString()) || User.IsInRole(FixedRoles.Ser.ToString()) || User.IsInRole(FixedRoles.AgencyUser.ToString()) || User.IsInRole(FixedRoles.SerAndReviewer.ToString()) || User.IsInRole(FixedRoles.AgencyUserAndReviewer.ToString()))' == 'True') res += deleteLink;
+							else if(!full[0]) res = addLink;
+							return res;
+						}
+					},
+
+					{
+						"aTargets": ['edit'],
+						"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+							var nTh = $('table.grid thead tr:last th').get(iCol);
+
+							//copy the edit class and set data-val to the current value
+							$(nTd).addClass('edit').attr('data-val', sData);
+
+							//copy data-name attribute
+							if ($(nTh).attr('data-name')) {
+								$(nTd).attr('data-name', $(nTh).attr('data-name'));
+							}
+
+							//copy data-type attribute
+							if ($(nTh).attr('data-type')) {
+								$(nTd).attr('data-type', $(nTh).attr('data-type'));
+							}
+
+						}
+					},
+				</text>
+
+            }
+
+
+
+			],
+			"fnServerParams": function (aoData) {
+				aoData.push({ name: "IE", value: Math.random() });
+				aoData.push({ name: "AppBudgetServiceId", value: "@Model.AppBudgetServiceId" });
+				aoData.push({ name: "AgencyId", value: "@Model.AgencyId" });
+				aoData.push({ name: "@Html.FieldNameFor(f => f.Filter.ClientName)", value: $('#@Html.FieldIdFor(f => f.Filter.ClientName)').val() });
+				aoData.push({ name: "@Html.FieldNameFor(f => f.Filter.ClientId)", value: $('#@Html.FieldIdFor(f => f.Filter.ClientId)').val() });
+				aoData.push({ name: "@Html.FieldNameFor(f => f.Filter.ReportedOnly)", value: $('#@Html.FieldIdFor(f => f.Filter.ReportedOnly)').val() });
+				aoData.push({ name: "@Html.FieldNameFor(f => f.FilterForSC.SC_Only)", value: $('#@Html.FieldIdFor(f => f.FilterForSC.SC_Only)').val() });
+
+
+			}
+				, "fnRowCallback": function (nRow, aData, iDisplayIndex) {
+					/* set tr id. assume the id is in the first column of data */
+					$(nRow).attr("clientId", aData[5]);
+					$(nRow).attr("id", aData[1]);
+					$(nRow).attr("subReportId", '@Model.Id');
+
+					return nRow;
+				}
+		});
+		$('button.filter').click(function () {
+			dataTable.fnDraw();
+		});
+		$('button.reset').click(function () {
+			$(this).closest('table').find(':input').val('');
+			dataTable.fnDraw();
+		});
+
+	});
+</script>
+	@if (Model.CanBeEdited)
+ {
+<script>
+			$(document).ready(function () {
+				$('table.grid input').live('keypress', function (event) {
+					switch (event.keyCode) {
+						case 13:
+							$(this).closest('tr').find('button.update').click();
+							break;
+						case 27:
+							$(this).closest('tr').find('button.cancel').click();
+							break;
+					}
+				});
+				$('table.grid button.add').live('click', function () {
+					var $tr = $(this).closest('tr');
+					var idEmptyFlag = false; // requiere for refresh
+					var id = $tr.attr('id');
+					if (id == "")
+						idEmptyFlag = true;
+
+					var tr = $tr.get(0);
+					var data = dataTable.fnGetData(tr);
+
+					var $form = $tr.closest('form');
+
+					if (!$form.valid())
+						return;
+
+
+					var d = $form.serializeArray();
+
+					d.push({ name: "Id", value: data[0] });
+					d.push({ name: "ClientId", value: data[1] });
+					d.push({ name: "SubReportId", value: '@Model.Id' });
+					d.push({ name: "IE", value: Math.random() });
+					d.push({ name: "Amount", value: data[9] })
+					d.push({ name: "MonthsCount", value: data[8] })
+					var dd = {};
+					for (var i in d) {
+						dd[d[i].name] = d[i].value;
+					}
+					dd["MonthsCount"] = dd["MonthsReported"]
+					$('table.grid tbody tr').find(':input, button').attr('disabled', 'disabled');
+					var request = $.ajax({
+						url: '@Url.Action("AddSupportiveCommunitiesClient")',
+						type: 'POST',
+						dataType: "json",
+						data: dd
+					})
+					request.success(function (data, textStatus, jqXHR) {
+
+						if (data.success) {
+							loadTotals();
+							dataTable.fnUpdate(data.data, tr, undefined, false, false);
+							$('table.grid tbody tr').find(':input, button').removeAttr('disabled');
+							$tr.attr('id', data.data[0]);
+							if (idEmptyFlag)
+								$('table.grid').dataTable().fnDraw(false);
+						}
+						else {
+							showSuccess(data.errors);
+						}
+
+					});
+					request.done(function (msg) {
+
+					});
+					request.fail(function (jqXHR, textStatus) {
+					});
+
+				});
+				$('table.grid button.delete').live('click', function () {
+					var $tr = $(this).closest('tr');
+					var tr = $tr.get(0);
+					var dataTable = $('table.grid').dataTable();
+					var data = dataTable.fnGetData(tr);
+					var cr = {
+						Id: data[0],
+						ClientId: data[1],
+						SubReportId: '@Model.Id'
+					};
+					$.ajax({
+						url: '@Url.Action("DeleteSupportiveCommunitiesClient")',
+						type: 'POST',
+						dataType: 'json',
+						data: cr,
+					}).done(function (data) {
+						if (data.success) {
+							loadTotals();
+							$('table.grid').dataTable().fnDraw(false);
+						}
+						else {
+							var errstr = '<ul class="error"><li>' + data.errors.join('</li><li>') + '</li></ul>';
+							alert(errstr);
+						}
+					}).fail(function () {
+					    alert('The current client Row not contain data to delete');
+					});
+				});
+				$('table.grid button.edit').live('click', function () {
+					$('table.grid button.cancel').click();
+					var $tr = $(this).closest('tr');
+					var tr = $tr.get(0);
+					var dataTable = $('table.grid').dataTable();
+					var data = null;
+					data = dataTable.fnGetData(tr);
+					var settings = dataTable.fnSettings();
+					var columns = settings.aoColumns;
+
+
+					$tr.find('td.edit').each(function () {
+						var $td = $(this);
+						var td = $td.get(0);
+						var aPos = dataTable.fnGetPosition(td); //array of [row index, column index (visible), column index (all)]
+						var iRow = aPos[0];
+						var iCol = aPos[2];
+
+						var column = columns[iCol];
+						var editor = null;
+						var value = data[iCol];
+
+						var editor = null;
+
+						switch (iCol) {
+						
+							
+							default:
+								editor = $('<input/>');
+								editor.val(data[iCol]);
+								break;
+						}
+						editor.attr('name', column.sName);
+						editor.addClass(column.sClass);
+
+						$td.html('').append(editor);
+
+					});
+					$tr.addClass('selected');
+					$tr.find('td.control').html('<button type="button" class="update">Save</button>' + '<button type="button" class="cancel">Cancel</button>');
+					//first focus creates datepicker, second shows it
+					$tr.find('input:first').focus().focus();
+				});
+				$('table.grid button.cancel').live('click', function () {
+
+					var $tr = $(this).closest('tr');
+					var tr = $tr.get(0);
+					var dataTable = $('table.grid').dataTable();
+					var data = dataTable.fnGetData(tr);
+
+					dataTable.fnUpdate(data, tr, undefined, false, false);
+				});
+				$('table.grid button.update').live('click', function () {
+				    var $tr = $(this).closest('tr');
+				    var idEmptyFlag = false; // requiere for refresh
+				    var id = $tr.attr('id');
+				    if (id == "")
+				        idEmptyFlag = true;
+
+				    var tr = $tr.get(0);
+				    var data = dataTable.fnGetData(tr);
+
+					var $form = $tr.closest('form');
+
+					if (!$form.valid())
+						return;
+
+
+					var d = $form.serializeArray();
+
+					d.push({ name: "Id", value: data[0] });
+					d.push({ name: "ClientId", value: data[1] });
+					d.push({ name: "SubReportId", value: '@Model.Id' });
+				    d.push({ name: "IE", value: Math.random() });
+				    d.push({ name: "Amount", value: data[9] })
+				    d.push({ name: "MonthsCount", value: data[8] })
+					var dd = {};
+					for (var i in d) {
+						dd[d[i].name] = d[i].value;
+					}
+					dd["MonthsCount"] = dd["MonthsReported"]
+					$('table.grid tbody tr').find(':input, button').attr('disabled', 'disabled');
+					var request = $.ajax({
+						url: $form.attr('action'),
+						type: 'POST',
+						dataType: "json",
+						data: dd
+					})
+					request.success(function (data, textStatus, jqXHR) {
+
+						if (data.success) {
+							loadTotals();
+							dataTable.fnUpdate(data.data, tr, undefined, false, false);
+							$('table.grid tbody tr').find(':input, button').removeAttr('disabled');
+							$tr.attr('id', data.data[0]);
+							if(idEmptyFlag)
+							    $('table.grid').dataTable().fnDraw(false);
+						}
+						else {
+							showSuccess(data.errors);
+						}
+
+					});
+					request.done(function (msg) {
+
+					});
+					request.fail(function (jqXHR, textStatus) {
+					});
+				});
+			});
+
+			function showSuccess(errors) {
+
+				var errstr = '<ul class="error"><li>' + errors.join('</li><li>') + '</li></ul>';
+				$(errstr).dialog({
+					modal: true,
+					buttons: {
+						Ok: function () {
+							$(this).dialog("close");
+							$(this).dialog("destroy");
+							$('table.grid tbody').find(':input, button').removeAttr('disabled');
+						},
+						Cancel: function () {
+							$(this).dialog("close");
+							$(this).dialog("destroy");
+							$('table.grid').dataTable().fnDraw(false);
+						}
+					}
+				});
+
+
+			}
+</script>
+ }
+}
+<h2>
+    Detailed Report
+</h2>
+@Html.ValidationSummary()
+<p>
+    <a href="@Url.Action("details", "MainReports" , new { id=Model.MainReportId })" class="button">Go to Financial Report</a>
+    @if (Model.CanBeEdited)
+    { <a href="@Url.Action("create", "SubReports" , new { id=Model.Id, appbudgetserviceid=Model.AppBudgetServiceId, mainreportid=Model.MainReportId })" class="button">Import</a>}
+</p>
+@Html.Partial("Header", Model.DetailsHeader)
+
+<table class="filter horizontal">
+    <tr>
+        <th style="white-space: nowrap">
+            Filter By:
+        </th>
+        <td style="width: 100%">
+            <div class="display-item">
+                @Html.LabelFor(f => f.Filter.ClientName)
+                @Html.EditorFor(f => f.Filter.ClientName)
+            </div>
+            <div class="display-item">
+                @Html.LabelFor(f => f.Filter.ClientId)
+                @Html.EditorFor(f => f.Filter.ClientId)
+            </div>
+            
+            <div class="display-item">
+                @Html.LabelFor(f => f.Filter.ReportedOnly)
+                @Html.DropDownListFor(f => f.Filter.ReportedOnly, Model.Filter.ReportedOnlySelectList)
+            </div>
+
+            <div class="display-item">
+                @Html.LabelFor(f => f.FilterForSC.SC_Only)
+                @Html.DropDownListFor(f => f.FilterForSC.SC_Only, Model.FilterForSC.selList)
+            </div>
+
+            <div class="display-item">
+                <button type="button" class="filter">
+                    Go
+                </button>
+                <button type="button" class="reset">
+                    Reset
+                </button>
+            </div>
+        </td>
+    </tr>
+</table>
+@using (Html.BeginForm("SaveSupportiveCommunitiesReport", "SubReports"))
+{
+<table class="grid">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>CC ID</th>
+
+            <th>
+                Israel ID
+            </th>
+            <th>
+                Client First Name
+            </th>
+            <th>
+                Client Last Name
+            </th>
+            <th>
+                Approval Status
+            </th>
+            <th>
+                Join Date
+            </th>
+            @if (User.IsInRole(FixedRoles.Admin))
+            {
+                <!--<th class="edit decimal" data-name="HouseHoldMonthlyCost" data-type="decimal">-->
+                <th  data-name="HouseHoldMonthlyCost" data-type="decimal">
+                    CC Subsidy
+                </th>
+            }
+            else
+            {
+                <th data-name="HouseHoldMonthlyCost" data-type="decimal">
+                    CC Subsidy
+                </th>
+            }
+            @if (User.IsInRole(FixedRoles.Admin) || User.IsInRole(FixedRoles.AgencyUser) || User.IsInRole(FixedRoles.Ser) || User.IsInRole(FixedRoles.AgencyUserAndReviewer) || User.IsInRole(FixedRoles.SerAndReviewer))
+            {
+                <th class="edit" data-name="MonthReported" data-type="int">
+                    Months reported
+                </th>
+            }
+            else
+            {
+                <th data-name="MonthReported" data-type="int">
+                    Months reported
+                </th>
+            }
+            <th data-name="TotalPaydByCC" data-type="decimal">
+                Total paid by CC
+            </th>
+            <th>
+                Reported
+            </th>
+            @if (Model.CanBeEdited)
+            {
+                <th></th>
+            }
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+}
+<div id="totals">
+    @Html.Partial(Model.Totals.ViewName, Model.Totals)
+</div>
+<div>
+    <a href="@Url.Action("Export", new { id=Model.Id })" class="button">Export</a>
+</div>
+<p>
+    <a href="@Url.Action("details", "MainReports" , new { id=Model.MainReportId })" class="button">Go to Financial Report </a>
+    @if (Model.CanBeEdited)
+    { <a href="@Url.Action("create", "SubReports" , new { id=Model.Id, appbudgetserviceid=Model.AppBudgetServiceId, mainreportid=Model.MainReportId })" class="button">Import</a>}
+    @if (Model.CanBeEdited)
+    {
+    <button type="button" class="button" onclick="setToDef()">
+        Set To Default
+    </button>
+    <script>
+            function setToDef() {
+                dalert(function () {
+                    var d = {
+                        Id: '@Model.Id'
+                    };
+                    $.ajax({
+                        type: 'POST',
+                        url: '@Url.Action("DeleteChildReportRows")',
+                        data: d,
+                        success: function (data) {
+                        	location.reload();
+                        },
+                        error: function () {
+                            alert('error');
+                        }
+                    });
+
+                })
+            }
+            function dalert(yesCallback) {
+                $('<div></div>').html('All Sub Report Record will be deleted, continue ?').dialog({
+                    modal: true,
+                    buttons: {
+                        "Yes": function () {
+                            $(this).dialog("close");
+                            $(this).dialog("destroy");
+                            yesCallback();
+                        },
+                        "No": function () {
+                            $(this).dialog("close");
+                            $(this).dialog("destroy");
+
+                        }
+                    }
+
+                });
+            }
+    </script>
+
+    }
+</p>

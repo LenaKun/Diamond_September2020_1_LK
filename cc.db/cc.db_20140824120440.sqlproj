@@ -1,0 +1,564 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <SSDTExists Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets')">True</SSDTExists>
+    <VisualStudioVersion Condition="'$(SSDTExists)' == ''">10.0</VisualStudioVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <PostConversionRemoveFromScc>
+    </PostConversionRemoveFromScc>
+    <PostConversionAddToScc>
+    </PostConversionAddToScc>
+    <TargetDatabaseSet>True</TargetDatabaseSet>
+  </PropertyGroup>
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Name>cc.db</Name>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectVersion>4.0</ProjectVersion>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql100DatabaseSchemaProvider</DSP>
+    <GenerateDac>True</GenerateDac>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <ShowWizard>False</ShowWizard>
+    <OutputType>Database</OutputType>
+    <RootPath>
+    </RootPath>
+    <IncludeSchemaNameInFileName>False</IncludeSchemaNameInFileName>
+    <ModelCollation>1033,CI</ModelCollation>
+    <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
+    <DacApplicationName>cc</DacApplicationName>
+    <DacVersion>2.1.0.0</DacVersion>
+    <DacDescription>
+    </DacDescription>
+    <RootNamespace>cc.db</RootNamespace>
+    <DefaultSchema>dbo</DefaultSchema>
+    <PreviousProjectVersion>4.0</PreviousProjectVersion>
+    <DacApplicationGuid>{67cbc824-a49e-4e9b-a947-360f3dfe65c3}</DacApplicationGuid>
+    <ValidateCasingOnIdentifiers>False</ValidateCasingOnIdentifiers>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{67cbc824-a49e-4e9b-a947-360f3dfe65c3}</ProjectGuid>
+    <GenerateDatabaseFile>False</GenerateDatabaseFile>
+    <GenerateCreateScript>False</GenerateCreateScript>
+    <SqlServerVerification>False</SqlServerVerification>
+    <TargetLanguage>CS</TargetLanguage>
+    <DefaultCollation>SQL_Latin1_General_CP1_CI_AS</DefaultCollation>
+    <AnsiNullDefault>True</AnsiNullDefault>
+    <AnsiNulls>True</AnsiNulls>
+    <AnsiPadding>True</AnsiPadding>
+    <AnsiWarnings>True</AnsiWarnings>
+    <ArithAbort>True</ArithAbort>
+    <ConcatNullYieldsNull>True</ConcatNullYieldsNull>
+    <QuotedIdentifier>True</QuotedIdentifier>
+    <NumericRoundAbort>False</NumericRoundAbort>
+    <RecursiveTriggersEnabled>False</RecursiveTriggersEnabled>
+    <DatabaseState>ONLINE</DatabaseState>
+    <UpdateOptions>READ_WRITE</UpdateOptions>
+    <CloseCursorOnCommitEnabled>False</CloseCursorOnCommitEnabled>
+    <DefaultCursor>LOCAL</DefaultCursor>
+    <AutoClose>False</AutoClose>
+    <AutoCreateStatistics>True</AutoCreateStatistics>
+    <AutoShrink>False</AutoShrink>
+    <AutoUpdateStatistics>True</AutoUpdateStatistics>
+    <TornPageDetection>False</TornPageDetection>
+    <DatabaseAccess>MULTI_USER</DatabaseAccess>
+    <Recovery>FULL</Recovery>
+    <EnableFullTextSearch>True</EnableFullTextSearch>
+    <DatabaseChaining>False</DatabaseChaining>
+    <DefaultFilegroup>PRIMARY</DefaultFilegroup>
+    <Trustworthy>False</Trustworthy>
+    <AutoUpdateStatisticsAsynchronously>False</AutoUpdateStatisticsAsynchronously>
+    <PageVerify>NONE</PageVerify>
+    <ServiceBrokerOption>DisableBroker</ServiceBrokerOption>
+    <DateCorrelationOptimizationOn>False</DateCorrelationOptimizationOn>
+    <Parameterization>SIMPLE</Parameterization>
+    <AllowSnapshotIsolation>False</AllowSnapshotIsolation>
+    <ReadCommittedSnapshot>False</ReadCommittedSnapshot>
+    <VardecimalStorageFormatOn>True</VardecimalStorageFormatOn>
+    <DefaultFileStreamFilegroup />
+    <IsChangeTrackingOn>False</IsChangeTrackingOn>
+    <IsChangeTrackingAutoCleanupOn>True</IsChangeTrackingAutoCleanupOn>
+    <ChangeTrackingRetentionPeriod>2</ChangeTrackingRetentionPeriod>
+    <ChangeTrackingRetentionUnit>Days</ChangeTrackingRetentionUnit>
+    <IsEncryptionOn>False</IsEncryptionOn>
+    <IsBrokerPriorityHonored>False</IsBrokerPriorityHonored>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TargetDatabase>master</TargetDatabase>
+    <TreatTSqlWarningsAsErrors>False</TreatTSqlWarningsAsErrors>
+    <SuppressTSqlWarnings />
+    <DacDatabaseCollation>SQL_Latin1_General_CP1_CI_AS</DacDatabaseCollation>
+    <ValidatePolicy>True</ValidatePolicy>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>.\sql\debug\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TargetDatabase>master</TargetDatabase>
+    <TreatTSqlWarningsAsErrors>False</TreatTSqlWarningsAsErrors>
+    <SuppressTSqlWarnings>04151</SuppressTSqlWarnings>
+    <DacDatabaseCollation>SQL_Latin1_General_CP1_CI_AS</DacDatabaseCollation>
+    <ValidatePolicy>True</ValidatePolicy>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'p4b|AnyCPU' ">
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TargetDatabase>master</TargetDatabase>
+    <TreatTSqlWarningsAsErrors>False</TreatTSqlWarningsAsErrors>
+    <SuppressTSqlWarnings />
+    <DacDatabaseCollation>SQL_Latin1_General_CP1_CI_AS</DacDatabaseCollation>
+    <ValidatePolicy>True</ValidatePolicy>
+    <OutputPath>.\sql\p4b\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'devcc.p4b.co.il|AnyCPU' ">
+    <OutputPath>.\sql\devcc.p4b.co.il\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TargetDatabase>master</TargetDatabase>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'ccdev.p4b.co.il|AnyCPU' ">
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TargetDatabase>master</TargetDatabase>
+    <TreatTSqlWarningsAsErrors>False</TreatTSqlWarningsAsErrors>
+    <SuppressTSqlWarnings />
+    <DacDatabaseCollation>SQL_Latin1_General_CP1_CI_AS</DacDatabaseCollation>
+    <ValidatePolicy>True</ValidatePolicy>
+    <OutputPath>.\sql\ccdev.p4b.co.il\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'grantreporting.claimscon.org|AnyCPU' ">
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TargetDatabase>master</TargetDatabase>
+    <TreatTSqlWarningsAsErrors>False</TreatTSqlWarningsAsErrors>
+    <SuppressTSqlWarnings />
+    <DacDatabaseCollation>SQL_Latin1_General_CP1_CI_AS</DacDatabaseCollation>
+    <ValidatePolicy>True</ValidatePolicy>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'GRTest.claimscon.org|AnyCPU' ">
+    <OutputPath>.\sql\release\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TargetDatabase>master</TargetDatabase>
+    <TreatTSqlWarningsAsErrors>False</TreatTSqlWarningsAsErrors>
+    <SuppressTSqlWarnings />
+    <DacDatabaseCollation>SQL_Latin1_General_CP1_CI_AS</DacDatabaseCollation>
+    <ValidatePolicy>True</ValidatePolicy>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'ser|AnyCPU' ">
+    <OutputPath>bin\ser\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'grtest-dbprod.claimscon.org|AnyCPU' ">
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TargetDatabase>master</TargetDatabase>
+    <TreatTSqlWarningsAsErrors>False</TreatTSqlWarningsAsErrors>
+    <SuppressTSqlWarnings />
+    <DacDatabaseCollation>SQL_Latin1_General_CP1_CI_AS</DacDatabaseCollation>
+    <ValidatePolicy>True</ValidatePolicy>
+    <OutputPath>.\sql\release</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'grdev|AnyCPU' ">
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TargetDatabase>master</TargetDatabase>
+    <TreatTSqlWarningsAsErrors>False</TreatTSqlWarningsAsErrors>
+    <SuppressTSqlWarnings />
+    <DacDatabaseCollation>SQL_Latin1_General_CP1_CI_AS</DacDatabaseCollation>
+    <ValidatePolicy>True</ValidatePolicy>
+    <OutputPath>.\sql\release</OutputPath>
+  </PropertyGroup>
+  <!--Import the settings-->
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <ItemGroup>
+    <Folder Include="Scripts" />
+    <Folder Include="Scripts\Pre-Deployment" />
+    <Folder Include="Scripts\Post-Deployment" />
+    <Folder Include="Data Generation Plans" />
+    <Folder Include="Schema Comparisons" />
+    <Folder Include="Properties\" />
+    <Folder Include="Schema Objects\" />
+    <Folder Include="Schema Objects\Schemas\" />
+    <Folder Include="Schema Objects\Schemas\dbo\" />
+    <Folder Include="Schema Objects\Schemas\dbo\Programmability\" />
+    <Folder Include="Schema Objects\Schemas\dbo\Programmability\Defaults\" />
+    <Folder Include="Schema Objects\Schemas\dbo\Programmability\Functions\" />
+    <Folder Include="Schema Objects\Schemas\dbo\Programmability\Rules\" />
+    <Folder Include="Schema Objects\Schemas\dbo\Programmability\Stored Procedures\" />
+    <Folder Include="Schema Objects\Schemas\dbo\Programmability\Types\" />
+    <Folder Include="Schema Objects\Schemas\dbo\Programmability\Types\User Defined Data Types\" />
+    <Folder Include="Schema Objects\Schemas\dbo\Programmability\Types\User Defined Types CLR\" />
+    <Folder Include="Schema Objects\Schemas\dbo\Programmability\Types\User Defined Table Types\" />
+    <Folder Include="Schema Objects\Schemas\dbo\Programmability\Types\XML Schema Collections\" />
+    <Folder Include="Schema Objects\Schemas\dbo\Service Broker\" />
+    <Folder Include="Schema Objects\Schemas\dbo\Service Broker\Queues\" />
+    <Folder Include="Schema Objects\Schemas\dbo\Synonyms\" />
+    <Folder Include="Schema Objects\Schemas\dbo\Tables\" />
+    <Folder Include="Schema Objects\Schemas\dbo\Tables\Constraints\" />
+    <Folder Include="Schema Objects\Schemas\dbo\Tables\Indexes\" />
+    <Folder Include="Schema Objects\Schemas\dbo\Tables\Keys\" />
+    <Folder Include="Schema Objects\Schemas\dbo\Tables\Triggers\" />
+    <Folder Include="Schema Objects\Schemas\dbo\Tables\Statistics\" />
+    <Folder Include="Schema Objects\Schemas\dbo\Views\" />
+    <Folder Include="Schema Objects\Schemas\dbo\Views\Indexes\" />
+    <Folder Include="Schema Objects\Schemas\dbo\Views\Triggers\" />
+    <Folder Include="Schema Objects\Schemas\dbo\Views\Statistics\" />
+    <Folder Include="Schema Objects\Server Level Objects\" />
+    <Folder Include="Schema Objects\Server Level Objects\Linked Servers\" />
+    <Folder Include="Schema Objects\Server Level Objects\Linked Server Logins\" />
+    <Folder Include="Schema Objects\Server Level Objects\Error Messages\" />
+    <Folder Include="Schema Objects\Server Level Objects\Security\" />
+    <Folder Include="Schema Objects\Server Level Objects\Security\Credentials\" />
+    <Folder Include="Schema Objects\Server Level Objects\Security\Cryptographic Providers\" />
+    <Folder Include="Schema Objects\Server Level Objects\Security\Event Sessions\" />
+    <Folder Include="Schema Objects\Server Level Objects\Security\Server Audit\" />
+    <Folder Include="Schema Objects\Server Level Objects\Security\Server Audit Specification\" />
+    <Folder Include="Schema Objects\Server Level Objects\Security\Logins\" />
+    <Folder Include="Schema Objects\Server Level Objects\Service Broker\" />
+    <Folder Include="Schema Objects\Server Level Objects\Service Broker\Endpoints\" />
+    <Folder Include="Schema Objects\Server Level Objects\Programmability\" />
+    <Folder Include="Schema Objects\Server Level Objects\Programmability\Server Triggers\" />
+    <Folder Include="Schema Objects\Database Level Objects\" />
+    <Folder Include="Schema Objects\Database Level Objects\Assemblies\" />
+    <Folder Include="Schema Objects\Database Level Objects\Database Triggers\" />
+    <Folder Include="Schema Objects\Database Level Objects\Security\" />
+    <Folder Include="Schema Objects\Database Level Objects\Security\Schemas\" />
+    <Folder Include="Schema Objects\Database Level Objects\Security\Users\" />
+    <Folder Include="Schema Objects\Database Level Objects\Security\Certificates\" />
+    <Folder Include="Schema Objects\Database Level Objects\Security\Asymmetric Keys\" />
+    <Folder Include="Schema Objects\Database Level Objects\Security\Master Keys\" />
+    <Folder Include="Schema Objects\Database Level Objects\Security\Signatures\" />
+    <Folder Include="Schema Objects\Database Level Objects\Security\Symmetric Keys\" />
+    <Folder Include="Schema Objects\Database Level Objects\Security\Database Encryption Keys\" />
+    <Folder Include="Schema Objects\Database Level Objects\Security\Database Audit Specification\" />
+    <Folder Include="Schema Objects\Database Level Objects\Security\Roles\" />
+    <Folder Include="Schema Objects\Database Level Objects\Security\Roles\Application Roles\" />
+    <Folder Include="Schema Objects\Database Level Objects\Security\Roles\Database Roles\" />
+    <Folder Include="Schema Objects\Database Level Objects\Service Broker\" />
+    <Folder Include="Schema Objects\Database Level Objects\Service Broker\Broker Priorities\" />
+    <Folder Include="Schema Objects\Database Level Objects\Service Broker\Contracts\" />
+    <Folder Include="Schema Objects\Database Level Objects\Service Broker\Event Notifications\" />
+    <Folder Include="Schema Objects\Database Level Objects\Service Broker\Message Types\" />
+    <Folder Include="Schema Objects\Database Level Objects\Service Broker\Remote Service Binding\" />
+    <Folder Include="Schema Objects\Database Level Objects\Service Broker\Routes\" />
+    <Folder Include="Schema Objects\Database Level Objects\Service Broker\Services\" />
+    <Folder Include="Schema Objects\Database Level Objects\Storage\" />
+    <Folder Include="Schema Objects\Database Level Objects\Storage\Full Text Stoplists\" />
+    <Folder Include="Schema Objects\Database Level Objects\Storage\Filegroups\" />
+    <Folder Include="Schema Objects\Database Level Objects\Storage\Files\" />
+    <Folder Include="Schema Objects\Database Level Objects\Storage\Full Text Catalogs\" />
+    <Folder Include="Schema Objects\Database Level Objects\Storage\Partition Functions\" />
+    <Folder Include="Schema Objects\Database Level Objects\Storage\Partition Schemes\" />
+    <Folder Include="Scripts\Post-Deployment\Init" />
+    <Folder Include="Snapshots" />
+    <Folder Include="Scripts\Import" />
+    <Folder Include="Scripts\Post-Deployment\fix" />
+  </ItemGroup>
+  <ItemGroup>
+    <BuildContributorArgument Include="OutDir=$(OutDir)" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="Schema Objects\Schemas\dbo\Tables\dbo.Clients.table.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\dbo\Tables\dbo.Countries.table.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\dbo\Tables\dbo.Users.table.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\dbo\Tables\dbo.Roles.table.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\dbo\Tables\dbo.Agencies.table.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\dbo\Tables\dbo.MainReports.table.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\dbo\Tables\dbo.Services.table.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\dbo\Tables\dbo.Funds.table.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\dbo\Tables\Indexes\Clients.Clients_AgencyId.index.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\dbo\Tables\Indexes\SomeTableOrView.Index1.index.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\dbo\Programmability\Types\User Defined Data Types\ShortString.uddt.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\dbo\Programmability\Types\User Defined Data Types\mediumString.uddt.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\dbo\Programmability\Types\User Defined Data Types\longString.uddt.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\dbo\Tables\dbo.History.table.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\dbo\Tables\dbo.MasterFunds.table.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\dbo\Tables\dbo.Membership.table.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\dbo\Tables\dbo.States.table.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\dbo\Tables\dbo.NationalIdTypes.table.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\dbo\Tables\dbo.LeaveReasons.table.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\dbo\Tables\dbo.FunctionalityLevels.table.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\dbo\Tables\dbo.Regions.table.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\dbo\Tables\dbo.AgencyGroups.table.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\dbo\Programmability\Types\User Defined Data Types\dbo.shortDec.uddt.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\dbo\Tables\dbo.ApprovalStatuses.table.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\dbo\Tables\dbo.HomeCareEntitledPeriod.table.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\dbo\Tables\dbo.FunctionalityScores.table.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\dbo\Tables\dbo.FunctionalityRelatedLevels.table.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\dbo\Tables\dbo.FundStatuses.table.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\dbo\Tables\dbo.Currencies.table.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\dbo\Tables\dbo.AppBudgets.table.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\dbo\Tables\dbo.Apps.table.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\dbo\Tables\dbo.AppServices.table.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\dbo\Programmability\Types\User Defined Data Types\maxString.uddt.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\dbo\Tables\dbo.ServiceTypes.table.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\dbo\Tables\dbo.AppBudgetServices.table.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\dbo\Tables\dbo.Log.table.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\dbo\Tables\dbo.Comments.table.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\dbo\Tables\dbo.MainReportAgencyComments.table.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\dbo\Tables\dbo.MainReportPoComments.table.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\dbo\Tables\dbo.ClientReports.table.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\dbo\Tables\dbo.SubReports.table.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\dbo\Tables\dbo.ClientAmountReport.table.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\dbo\Tables\dbo.MainReportStatusAudits.table.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\dbo\Tables\Triggers\dbo.MainReportStatusAudits.trigger.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\dbo\Tables\dbo.EmergencyCaps.table.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\dbo\Tables\dbo.EmergencyCapFunds.table.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\dbo\Tables\dbo.EmergencyCapCountries.table.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\dbo\Tables\PersonnelReports.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Tables\ProgramCosts.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Tables\ProgramCostTypes.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Tables\MedicalEquipmentReports.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Tables\MedicalEquipmentTypes.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Tables\MhmTypes.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Tables\MhmReports.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Tables\AppBudgetServiceAudit.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Tables\Triggers\Trigger1.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Tables\Triggers\PersonnelReportsTableTrigger.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Tables\DeletedClients.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Tables\Triggers\ClientsDeleteTrigger.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Tables\EmergencyReportTypes.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Tables\ClientReportBase.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Programmability\Stored Procedures\InsertClient.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Tables\ImportClientReports.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Tables\Imports.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Programmability\Stored Procedures\ImportCri.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Programmability\Stored Procedures\CriHcImport.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Programmability\Stored Procedures\ImportCriEmergency.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Tables\ImportFunctionalityScores.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Programmability\Stored Procedures\ImportFS.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Tables\ImportClients.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Tables\ImportHcep.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Programmability\Stored Procedures\ImportHcep.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Programmability\Stored Procedures\ImportNewClientsProc.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Tables\UserAgreement.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Tables\UserAgreementAudits.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Views\ValidClientView.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Programmability\Stored Procedures\ImportExistingClientsProc.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Views\ValidExistingClientsView.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Programmability\Stored Procedures\ImportClientFundStatusProc.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Programmability\NewClientsExport.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Views\viewSubreportAmounts.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Programmability\Stored Procedures\UpdateClientApptovalStatus.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Programmability\Stored Procedures\CopySubReport.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Programmability\Stored Procedures\DeleteClientReport.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Programmability\Stored Procedures\DeleteEmergencyReport.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Programmability\Stored Procedures\DeleteMedicalEquipmentReport.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Programmability\Stored Procedures\DeleteMhmReport.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Programmability\Stored Procedures\DeleteProgramCostsReport.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Programmability\ImportMasterIds.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Views\ViewClientReports.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Tables\GovHcHours.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Views\viewHc.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Programmability\Functions\Sequence.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Tables\ImportGovHcHours.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Programmability\Stored Procedures\ImportGovHcHoursProc.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Programmability\Functions\AllowedClients.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Tables\UserAgencyGroups.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Programmability\Stored Procedures\ImportGovHcHoursCancelProc.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Tables\FundExchangeRates.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Tables\AppExchangeRates.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Programmability\Functions\fnRepDateValid.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Tables\ServiceConstraints.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Views\viewGgQuarterlyHcFls.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Programmability\Functions\AllowedAgencies.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Programmability\Stored Procedures\ProcessNeedToApplyClients.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Tables\MainReportInternalComments.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Tables\AppsImport.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Programmability\Stored Procedures\ImportApps.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Views\viewClientReportsEst.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Tables\ClientContacts.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Views\viewDatesHistory.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Views\viewAppExchangeRates.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Programmability\Stored Procedures\spRepHcHours.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Programmability\Functions\fsHcSubmittedWithCaps.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Tables\HcCaps.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Programmability\Functions\fnHcCap.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Views\HcCapsTableRaw.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Programmability\Functions\fnMainReportSubmitted.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Views\viewMonths.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Programmability\Stored Procedures\spValidateMrHc.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Programmability\Functions\HcCap.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Programmability\Functions\HcCapsTable.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Programmability\Stored Procedures\spValidateCrHc.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Views\viewHcPlus.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Views\viewHcD.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Programmability\Stored Procedures\spValidateMrHcD.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Views\viewFinancialSummary_Details.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Tables\EmergencyReports.sql" />
+    <None Include="Scripts\ScriptsIgnoredOnImport.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Tables\QRTZ_BLOB_TRIGGERS.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Tables\QRTZ_CRON_TRIGGERS.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Tables\QRTZ_CALENDARS.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Tables\QRTZ_FIRED_TRIGGERS.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Tables\QRTZ_JOB_DETAILS.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Tables\QRTZ_LOCKS.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Tables\QRTZ_PAUSED_TRIGGER_GRPS.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Tables\QRTZ_SCHEDULER_STATE.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Tables\QRTZ_SIMPLE_TRIGGERS.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Tables\QRTZ_SIMPROP_TRIGGERS.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Tables\QRTZ_TRIGGERS.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Scripts\Post-Deployment\Init\Misc.sql">
+      <SubType>NotInBuild</SubType>
+    </None>
+    <None Include="Scripts\Post-Deployment\Init\agencies.sql">
+      <SubType>NotInBuild</SubType>
+    </None>
+    <None Include="Scripts\Post-Deployment\Init\Clients.sql">
+      <SubType>NotInBuild</SubType>
+    </None>
+    <None Include="Scripts\Post-Deployment\Init\FunctionalityLevels.sql">
+      <SubType>NotInBuild</SubType>
+    </None>
+    <None Include="Scripts\Post-Deployment\Init\UpdateAgencyRegion.sql">
+      <SubType>NotInBuild</SubType>
+    </None>
+    <None Include="Scripts\Post-Deployment\Init\Services.sql">
+      <SubType>NotInBuild</SubType>
+    </None>
+    <None Include="Scripts\Pre-Deployment\BackUp.sql">
+      <SubType>NotInBuild</SubType>
+    </None>
+    <None Include="PreBuild.ps1">
+      <SubType>NotInBuild</SubType>
+    </None>
+    <None Include="Snapshots\cc.db_20121205_05-16-40.dacpac" />
+    <None Include="cc.db.publish.xml" />
+    <None Include="cc_1.db.publish.xml" />
+    <None Include="ccdev.db.publish.xml" />
+    <None Include="localhost.cc.db.publish.xml" />
+    <None Include="Scripts\Post-Deployment\Services_ClientAmountUnit_ReportingMethod.sql" />
+    <None Include="Scripts\Post-Deployment\Init\MedicalEquipmentTypes.sql" />
+    <None Include="Scripts\Post-Deployment\Init\ServicesReportingMethod.sql" />
+    <None Include="Scripts\Post-Deployment\Init\MedicalEquipmentTypes_1.sql" />
+    <None Include="grtest.xml" />
+    <None Include="grantreporting.db.publish.xml" />
+    <None Include="Scripts\Post-Deployment\fix\fix_users_roles.sql" />
+    <None Include="ser.cc.db.publish.xml" />
+    <None Include="cc_2.db.publish.xml" />
+    <None Include="grtest-dbprod.db.publish.xml" />
+    <None Include="cc.dblocal.publish.xml" />
+    <None Include="cc.ser180214.db.publish.xml" />
+    <None Include="grtest.db.publish.xml" />
+    <None Include="grDEV.db.publish.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="p4b.publish.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <PreDeploy Include="Scripts\Pre-Deployment\Script.PreDeployment.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <PostDeploy Include="Scripts\Post-Deployment\Script.PostDeployment.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="cc.db.refactorlog" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Schema Objects\Schemas\dbo\Programmability\Functions\regex_ismatch.cs" />
+    <Compile Include="Schema Objects\Schemas\dbo\Programmability\Functions\tz_check.cs" />
+    <Compile Include="Schema Objects\Schemas\dbo\Programmability\Functions\string_concat.cs" />
+    <Compile Include="Schema Objects\Schemas\dbo\Tables\Triggers\SqlTrigger1.cs" />
+  </ItemGroup>
+</Project>

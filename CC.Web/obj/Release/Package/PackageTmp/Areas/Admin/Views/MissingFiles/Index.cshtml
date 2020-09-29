@@ -1,0 +1,28 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Missing Files</h2>
+
+<script type="text/javascript">
+	$(function () {
+		var oTable =	$('table.grid').dataTable({
+			"bJQueryUI": true,
+			"bServerSide": true,
+			"sPaginationType": "full_numbers",
+			"aaSorting": [[0, "asc"], [1, "asc"]],
+			"sAjaxSource": "@Url.Action("IndexData")",
+			"aoColumns": [{
+				sTitle: "Main Report Id",
+				mData: "MainReportId"
+			}, {
+				sTitle: "File Name",
+				mData: "FileName"
+			}, {
+				sTitle: "File Type",
+				mData: "FileType"
+			}]
+		});
+	});
+</script>
+<table class="grid"></table>

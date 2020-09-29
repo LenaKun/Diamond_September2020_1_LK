@@ -1,0 +1,230 @@
+﻿@model Tuple<int, bool>
+@{
+	Layout = null;
+	var personnelTableId = "personnelTable_" + Model.Item1.ToString();
+}
+
+<table id="@personnelTableId" data-id="@Model.Item1">
+	<thead>
+		<tr>
+			<th>Position </th>
+			<th>Currency</th>
+			<th>CC Grant</th>
+			<th>% of time spent on CC program</th>
+			<th>Agency Portion of Salary</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+	</tbody>
+	@if (Model.Item2)
+	{
+		<tfoot>
+			<tr class="insert">
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td>
+					<button type="button" class="add">Add</button>
+				</td>
+			</tr>
+		</tfoot>
+	}
+</table>
+
+<p>
+    <button class="button" onclick="location.href='@Url.Action("ExportPersonnelToExcel", new { id = Model.Item1 })';return false;">
+		Export to Excel</button>
+</p>
+
+<script>
+	$(function () {
+		var pDataTable = $('#@personnelTableId');
+
+		if ($.fn.DataTable.fnIsDataTable(pDataTable)) { pDataTable.dataTable().fnDraw(); }
+		else
+		{
+			pDataTable.dataTable({
+				"bJQueryUI": true,
+				"sPaginationType": "full_numbers",
+				"aaSorting": [[1, "asc"], [2, "asc"], [3, "asc"]],
+				"bServerSide": true,
+				"sAjaxSource": '@Url.Action("PersonnelData", new { Id = Model.Item1 })',
+				"fnServerParams": function (aoData) {
+					aoData.push({ name: "IE", value: Math.random() });
+				},
+				"fnRowCallback": function (nRow, aData, iDisplayIndex) { $(nRow).attr("data-id", aData[5]); return nRow; },
+				"aoColumnDefs": [
+					{
+						"aTargets": [-1], "sWidth": "1em", "sClass": "nowrap", "mValue": '10', "bSortable": false, "bVisible": '@Model.Item2' == 'True',
+						"mRender": function (data, type, full) {
+							return '<button type="button" class="edit">Edit</button><button type="button" class="delete">Delete</button>';
+						}
+					},
+					{ "aTargets": [2, 3, 4], "fnRender": function (o, val) { return renderDecimal(val); } }
+				]
+			});
+		}
+
+		pDataTable.find('button.edit').live('click', function () {
+			console.log('personnel edit button clicked');
+			var $tr = $(this).closest('tr');
+			var tr = $tr.get(0);
+			var data = pDataTable.fnGetData(tr);
+			makeEditable($tr, data);
+			$tr.find('td:last-child').html('<button type="button" class="update">Update</button>' + '<button type="button" class="cancel">Cancel</button>');
+		});
+		pDataTable.find('button.add').live('click', function () {
+			$tr = showInsertRow();
+			var data = ['', '', '', '', '', '', '', '', ''];
+			makeEditable($tr, data);
+		});
+		pDataTable.find('tr[id] button.cancel').live('click', function () {
+			var $tr = $(this).closest('tr');
+			var tr = $tr.get(0);
+			var data = pDataTable.fnGetData(tr);
+			closeEditable($tr, data);
+			$tr.find('td:last-child').html('<button type="button" class="edit">Edit</button>');
+		});
+		pDataTable.find('tfoot tr.insert button.cancel').live('click', function () {
+			var $tr = $(this).closest('tr');
+			$tr.find('td').html('');
+			$tr.find('td:last-child').html('<button type="button" class="add">Add</button>');
+		});
+		pDataTable.find('button.delete').live('click', function () {
+
+		    var $tr = $(this).closest('tr');
+		    var tr = $tr.get(0);
+		    var data = pDataTable.fnGetData(tr);
+		    delPersonnel($tr, data, function () {
+		       
+
+		    });
+
+			
+		});
+		pDataTable.find('button.update').live('click', function () {
+			var form = $(this).closest('form');
+			form.validate();
+			if (form.valid()) {
+				var $tr = $(this).closest('tr');
+				var tr = $tr.get(0);
+				var data = pDataTable.fnGetData(tr);
+				console.log(data);
+				data[0] = $tr.find('td:nth-child(1) :input').val();
+				data[2] = $tr.find('td:nth-child(3) :input').val();
+				data[3] = $tr.find('td:nth-child(4) :input').val();
+				data[4] = $tr.find('td:nth-child(5) :input').val();
+
+				updatePersonnel($tr, data, function () {
+					$tr.find('td:last-child').html('<button type="button" class="edit">Edit</button><button type="button" class="delete">Delete</button>');
+				});
+
+			}
+		});
+		pDataTable.find('button.insert').live('click', function () {
+			var form = $(this).closest('form');
+			form.validate();
+			if (form.valid()) {
+				var $tr = $(this).closest('tr');
+				var data = new Array(6);
+				data[0] = $tr.find('td:nth-child(1) :input').val();
+				data[2] = $tr.find('td:nth-child(3) :input').val();
+				data[3] = $tr.find('td:nth-child(4) :input').val();
+				data[4] = $tr.find('td:nth-child(5) :input').val();
+
+				updatePersonnel($tr, data, function () {
+					$tr.find('td').html('');
+					$tr.find('td:last-child').html('<button type="button" class="add">Add</button>');
+					pDataTable.fnDraw(false);
+
+				});
+			}
+		});
+
+		function updatePersonnel($tr, data, successCallback) {
+			var row = {
+				Position: data[0],
+				Salary: new String(data[2]).replace(",",""),
+				PartTimePercentage: new String(data[3]).replace(",",""),
+				ServicePercentage: new String(data[4]).replace(",", ""),
+				Id: data[5],
+				AppBudgetServiceId: pDataTable.attr('data-id'),
+				IE: Math.random()
+			};
+
+			$.ajax({
+				type: 'POST',
+				url: '@Url.Action("SavePersonnel")',
+				data: row
+			}).success(function () {
+				closeEditable($tr, data);
+				if (window.updateTotals) {
+					window.updateTotals();
+				}
+				window.updateCcGrant(@Model.Item1);
+				if (successCallback) {
+					successCallback();
+				}
+			}).error(function () {
+			}).complete(function () {
+			});
+
+
+
+		}
+
+	    function delPersonnel($tr, data, successCallback) {
+	        var row = {
+	            Id: data[5],
+	            AppBudgetServiceId: pDataTable.attr('data-id'),
+	            IE: Math.random()
+	        };
+
+	        $.ajax({
+	            type: 'POST',
+	            url: '@Url.Action("DeletePersonnel")',
+				data: row
+            }).success(function () {
+                pDataTable.fnDraw(false);
+                window.updateCcGrant(@Model.Item1);
+                window.updateTotals();
+            }).error(function () {
+            });
+
+	    }
+
+		function showInsertRow() {
+			var insertRow = pDataTable.find('tfoot tr.insert');
+			if (insertRow.length == 0) {
+				insertRow = $('<tr/>').addClass('insert');
+				pDataTable.find('tfoot').append(insertRow);
+			}
+			var tds = insertRow.find('td');
+			if (tds.length == 0) {
+				for (var i = 0; i < pDataTable.find('thead tr td').length; i++) {
+					insertRow.append('<td/>');
+				}
+			}
+
+			return insertRow;
+		}
+		function makeEditable($tr, data) {
+			$tr.find('td:nth-child(1)').html('').append($('<input type="text" name="Position"/>').addClass('required').val(data[0]));
+			$tr.find('td:nth-child(3)').html('').append($('<input type="text" name="Salary"/>').addClass('required').addClass('number').val(data[2]));
+			$tr.find('td:nth-child(4)').html('').append($('<input type="text" name="PartTimePercentage"/>').addClass('required').addClass('number').val(data[3]));
+			$tr.find('td:nth-child(5)').html('').append($('<input type="text" name="ServicePercentage"/>').addClass('required').addClass('number').val(data[4]));
+			$tr.find('td:last-child').html('<button type="button" class="insert">Insert</button><button type="button" class="cancel">Cancel</button>');
+		}
+		function closeEditable($tr, data) {
+
+			$tr.find('td:nth-child(1)').html(data[0]);
+			$tr.find('td:nth-child(3)').html(data[2]);
+			$tr.find('td:nth-child(4)').html(data[3]);
+			$tr.find('td:nth-child(5)').html(data[4]);
+			$tr.find('td:nth-child(6)').html(data[5]);
+		}
+	});
+</script>

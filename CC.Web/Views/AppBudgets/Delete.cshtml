@@ -1,0 +1,68 @@
+﻿@model CC.Data.AppBudget
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<fieldset>
+    <legend>Budget</legend>
+
+    <div class="display-label">Remarks</div>
+    <div class="display-field">
+    </div>
+
+    <div class="display-label">UpdatedAt</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.UpdatedAt)
+    </div>
+
+    <div class="display-label">User</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.User.UserName)
+    </div>
+
+    <div class="display-label">Agency</div>
+    <div class="display-field">
+    </div>
+
+    <div class="display-label">App</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.App.Name)
+    </div>
+
+    <div class="display-label">Fund</div>
+
+    <div class="display-label">ValidUntill</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.ValidUntill)
+    </div>
+
+    <div class="display-label">ValidRemarks</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.ValidRemarks)
+    </div>
+
+    <div class="display-label">StatusId</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.StatusId)
+    </div>
+
+    <div class="display-label">TotalCcGrant</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.TotalCcGrant)
+    </div>
+
+    <div class="display-label">RequiredMatch</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.RequiredMatch)
+    </div>
+</fieldset>
+@using (Html.BeginForm()) {
+    <p>
+        <input type="submit" value="Delete" /> |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+}

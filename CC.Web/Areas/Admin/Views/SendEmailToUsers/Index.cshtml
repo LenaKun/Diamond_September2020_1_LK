@@ -1,0 +1,418 @@
+﻿@model CC.Web.Areas.Admin.Models.UsersListModel
+@{
+	ViewBag.Title = "Index";
+}
+
+<h2>Send Email To Users</h2>
+
+<fieldset>
+	<legend>Filter</legend>
+	<div class="editor-item">
+		@Html.LabelFor(f => f.SelectedRegionId)
+		@Html.EditorFor(f => f.SelectedRegionId)
+	</div>
+	<div class="editor-item">
+		@Html.LabelFor(f => f.SelectedCountryId)
+		@Html.EditorFor(f => f.SelectedCountryId)
+	</div>
+	<div class="editor-item">
+		@Html.LabelFor(f => f.SelectedAgencyGroupId)
+		@Html.EditorFor(f => f.SelectedAgencyGroupId)
+	</div>
+	<div class="editor-item">
+		@Html.LabelFor(f => f.SelectedAgencyId)
+		@Html.EditorFor(f => f.SelectedAgencyId)
+	</div>
+	<div class="editor-item">
+		<button type="button" class="submit">
+			Filter
+		</button>
+		<button type="reset" class="reset">
+			Reset
+		</button>
+		<script type="text/javascript">
+			$(function () {
+				$('button.reset').click(function () {
+					window.location.reload();
+				});
+			});
+		</script>
+	</div>
+</fieldset>
+@if (ViewData.ModelState["Success"] != null && ViewData.ModelState["success"].Errors.Count > 0)
+{
+	@Html.ValidationSummary(true, ViewData.ModelState["Success"].Errors[0].ErrorMessage, new { @class = "validation-summary-success" })
+}
+else
+{
+	@Html.ValidationSummary()
+}
+<table id="data"></table>
+
+<fieldset>
+	<div class="editor-item">
+		<button type="button" id="AddToBcc">
+			Add Selected as BCC
+		</button>
+		<button type="button" id="AddToCc">
+			Add Selected as CC
+		</button>
+	</div>
+</fieldset>
+<fieldset>
+	<div class="editor-item">
+		<button id="sendEmailToUsersBtn" class="button">
+			Send Email
+		</button>
+		<p>Please mind that sending over 100 emails may cause your email to bounce back or to be considered as SPAM.</p>
+		<p>Please consult your IT for further details and restrictions about sending emails to many recipients.</p>
+	</div>
+</fieldset>
+
+<div id="modalSendEmailToUsers" style="display: none">
+	<fieldset>
+		<legend>Email Details</legend>
+		@using (Html.BeginForm("SendEmail", "SendEmailToUsers", FormMethod.Post, new { id = "SendEmailForm" }))
+		{
+			@Html.ValidationSummary()
+			<div class="editor-label">
+				@Html.LabelFor(model => model.EmailTo)
+			</div>
+			<div class="editor-field">
+				@Html.EditorFor(model => model.EmailTo)
+			</div>
+			<div class="editor-label">
+				@Html.LabelFor(model => model.EmailCc)
+			</div>
+			<div class="editor-field">
+				@Html.EditorFor(model => model.EmailCc)
+			</div>
+			<div class="editor-label">
+				@Html.LabelFor(model => model.EmailBcc)
+			</div>
+			<div class="editor-field">
+				@Html.EditorFor(model => model.EmailBcc)
+			</div>
+			<div class="editor-label">
+				@Html.LabelFor(model => model.Subject)
+			</div>
+			<div class="editor-field">
+				@Html.EditorFor(model => model.Subject)
+			</div>
+			<div class="editor-label">
+				@Html.LabelFor(model => model.Body)
+			</div>
+			<div class="editor-field">
+				@Html.TextAreaFor(model => model.Body)
+			</div>
+		}
+	</fieldset>
+</div>
+
+<script>
+	$(document).ready(function () {
+		$('#AddToBcc').click(function () {			
+			$('#@Html.FieldIdFor(f => f.EmailBcc)').val(collectEmails());
+			$('#@Html.FieldIdFor(f => f.EmailCc)').val('');
+			$('#@Html.FieldIdFor(f => f.EmailTo)').val('');
+		});
+		$('#AddToCc').click(function () {
+			$('#@Html.FieldIdFor(f => f.EmailBcc)').val('');
+			$('#@Html.FieldIdFor(f => f.EmailCc)').val(collectEmails());
+			$('#@Html.FieldIdFor(f => f.EmailTo)').val('');
+		});
+	});
+
+	$(function () {
+		var oTable = $('table#data').dataTable({
+			"aaSorting": [[1, "asc"]],
+
+			"bServerSide": true,
+			"sAjaxSource": '@Url.Action("IndexData")',
+			"fnServerParams": function (aoData) {
+				aoData.push({ name: "RegionId", value: $('#@Html.FieldIdFor(f => f.SelectedRegionId)').val() });
+				aoData.push({ name: "CountryId", value: $('#@Html.FieldIdFor(f => f.SelectedCountryId)').val() });
+				aoData.push({ name: "AgencyGroupId", value: $('#@Html.FieldIdFor(f => f.SelectedAgencyGroupId)').val() });
+				aoData.push({ name: "AgencyId", value: $('#@Html.FieldIdFor(f => f.SelectedAgencyId)').val() });
+			},
+			"fnDrawCallback": function () {
+				triggerSelectAllCheck();
+			},
+			"aoColumns": [
+				{
+					"mData": "Id", "bSortable": false, "sTitle": '<input type="checkbox" class="selectAll" title="Only visible rows are selected" />',
+					"fnRender": function (o, val) {
+						return '<input type="checkbox" name="@Html.FieldNameFor(model => model.SelectedUserIds)" class="userCheck" value="' + o.aData["Id"] + '" data-email="' + o.aData["Email"] + '" />';
+					}
+				},
+				{ "mData": "Username", "sTitle": "Username" },
+				{ "mData": "FirstName", "sTitle": "FirstName" },
+				{ "mData": "LastName", "sTitle": "LastName" },
+				{ "mData": "Email", "sTitle": "Email" },
+				{ "mData": "Role", "sTitle": "Role" },
+				{ "mData": "RoleEnd", "sTitle": "" }
+			]
+		});
+
+		$('button.submit').click(function () {
+			oTable.fnDraw();
+		});
+
+		$('.selectAll').click(function () {
+			triggerSelectAllCheck();
+		});
+
+		function triggerSelectAllCheck() {
+			if ($('.selectAll').is(':checked')) {
+				$('.userCheck').attr('checked', 'checked');
+				$('#@Html.FieldIdFor(f => f.EmailBcc)').val('');
+				$('#@Html.FieldIdFor(f => f.EmailCc)').val('');
+				$('#@Html.FieldIdFor(f => f.EmailTo)').val(collectEmails());
+			}
+			else {
+				$('.userCheck').removeAttr('checked');
+				$('#@Html.FieldIdFor(f => f.EmailBcc)').val('');
+				$('#@Html.FieldIdFor(f => f.EmailCc)').val('');
+				$('#@Html.FieldIdFor(f => f.EmailTo)').val('');
+			}
+		}
+	});
+
+	var region = $('#@Html.FieldIdFor(model => model.SelectedRegionId)').select2({
+		width: 300,
+		allowClear: true,
+		placeholder: "All Regions",
+		initSelection: function (element, callback) {
+			var id = $(element).val();
+			if (id !== "") {
+				$.ajax('@Url.Content("~/data/dataservice.svc/Regions")' + '(' + id + ')', {
+					dataType: "json",
+				}).done(function (data) {
+					var a = data.d;
+					callback({ id: a.Id, text: a.Name });
+				}).fail(function () {
+					callback(null);
+				});
+			}
+		},
+		ajax: {
+			url: '@Url.Content("~/data/dataservice.svc/Regions")',
+			dataType: "json",
+			data: function (term) {
+				var filters = [];
+				if (term) {
+					filters.push("substringof('" + escape(term) + "', Name) eq true");
+				}
+				return {
+					"$filter": filters.join(" and "),
+					"$select": "Id,Name",
+					"$orderby": "Name"
+				};
+			},
+			results: function (data) {
+				return {
+					results: $.map(data.d, function (a) { return { id: a.Id, text: a.Name } })
+				};
+			}
+		}
+	});
+	var country = $('#@Html.FieldIdFor(f => f.SelectedCountryId)').select2({
+		width: 300,
+		allowClear: true,
+		placeholder: "All Countries",
+		initSelection: function (element, callback) {
+			var id = $(element).val();
+			var q = {};
+			if (id !== "") {
+				$.ajax('@Url.Content("~/data/dataservice.svc/Countries")' + '(' + id + ')', {
+					dataType: "json",
+					data: q
+				}).done(function (data) {
+					var a = data.d;
+					callback({ id: a.Id, text: a.Name });
+				}).fail(function () {
+					callback(null);
+				});
+			}
+		},
+		ajax: {
+			url: '@Url.Content("~/data/dataservice.svc/Countries")',
+			dataType: "json",
+			data: function (term) {
+				var filters = [];
+				if (region.val()) {
+					filters.push("RegionId eq " + region.val());
+				}
+				if (term) {
+					filters.push("substringof('" + escape(term) + "', Name) eq true");
+				}
+				return {
+					"$filter": filters.join(" and "),
+					"$select": "Id,Name",
+					"$orderby": "Name"
+				};
+			},
+			results: function (data) {
+				return {
+					results: $.map(data.d, function (a) { return { id: a.Id, text: a.Name } })
+				};
+			}
+		}
+	});
+	var agencyGroup = $('#@Html.FieldIdFor(model => model.SelectedAgencyGroupId)').select2({
+		width: 300,
+		allowClear: true,
+		placeholder: "All Agency Groups",
+		initSelection: function (element, callback) {
+			var id = $(element).val();
+			if (id !== "") {
+				$.ajax('@Url.Content("~/data/dataservice.svc/AgencyGroups")' + '(' + id + ')', {
+					dataType: "json",
+				}).done(function (data) {
+					var a = data.d;
+					callback({ id: a.Id, text: a.Name });
+				}).fail(function () {
+					callback(null);
+				});
+			}
+		},
+		ajax: {
+			url: '@Url.Content("~/data/dataservice.svc/AgencyGroups")',
+			dataType: "json",
+			data: function (term) {
+				var filters = [];
+				if (region.val()) {
+					filters.push("Country/RegionId eq " + region.val());
+				}
+				if (country.val()) {
+					filters.push("CountryId eq " + country.val());
+				}
+				if (term) {
+					filters.push("substringof('" + escape(term) + "', Name) eq true");
+				}
+				return {
+					"$filter": filters.join(" and "),
+					"$select": "Id,Name",
+					"$orderby": "Name"
+				};
+			},
+			results: function (data) {
+				return {
+					results: $.map(data.d, function (a) { return { id: a.Id, text: a.Name } })
+				};
+			}
+		}
+	});
+
+	var agency = $('#@Html.FieldIdFor(model => model.SelectedAgencyId)').select2({
+		width: 300,
+		allowClear: true,
+		placeholder: "All Agency Groups",
+		initSelection: function (element, callback) {
+			var id = $(element).val();
+			if (id !== "") {
+				$.ajax('@Url.Content("~/data/dataservice.svc/Agencies")' + '(' + id + ')', {
+					dataType: "json",
+				}).done(function (data) {
+					var a = data.d;
+					callback({ id: a.Id, text: a.Name });
+				}).fail(function () {
+					callback(null);
+				});
+			}
+		},
+		ajax: {
+			url: '@Url.Content("~/data/dataservice.svc/Agencies")',
+			dataType: "json",
+			data: function (term) {
+				var filters = [];
+				if (region.val()) {
+					filters.push("AgencyGroup/Country/RegionId eq " + region.val());
+				}
+				if (country.val()) {
+					filters.push("AgencyGroup/CountryId eq " + country.val());
+				}
+				if (agencyGroup.val()) {
+					filters.push("GroupId eq " + agencyGroup.val());
+				}
+				if (term) {
+					filters.push("substringof('" + escape(term) + "', Name) eq true");
+				}
+				return {
+					"$filter": filters.join(" and "),
+					"$select": "Id,Name",
+					"$orderby": "Name"
+				};
+			},
+			results: function (data) {
+				return {
+					results: $.map(data.d, function (a) { return { id: a.Id, text: a.Name } })
+				};
+			}
+		}
+	});
+	region.change(function () {
+		country.select2('val', '');
+		agencyGroup.select2('val', '');
+		agency.select2('val', '');
+	});
+	country.change(function () {
+		agencyGroup.select2('val', '');
+		agency.select2('val', '');
+	});
+	agencyGroup.change(function () {
+		agency.select2('val', '');
+	});
+
+
+	$("#modalSendEmailToUsers").dialog({
+		autoOpen: false,
+		height: 'auto',
+		width: 'auto',
+		buttons: {},
+		modal: true,
+		buttons:
+		{
+			"Send": function () {
+				if (typeof tinyMCE !== "undefined") {
+					tinyMCE.triggerSave();
+				}
+				$("#SendEmailForm").validate();
+				if ($("#SendEmailForm").valid()) { $("#SendEmailForm").submit(); }
+			},
+			"Cancel": function () { $(this).dialog('close'); }
+		},
+		close: function () {
+			$(this).find(':input').val('');
+
+			$(this).find('.field-validation-error')
+					.removeClass('field-validation-error')
+					.addClass('field-validation-valid');
+
+			$(this).find('.input-validation-error')
+				.removeClass('input-validation-error')
+				.addClass('valid');
+		}
+	});
+	$("#sendEmailToUsersBtn").click(function () {
+		var bcc = $('#@Html.FieldIdFor(f => f.EmailBcc)').val();
+		var cc = $('#@Html.FieldIdFor(f => f.EmailCc)').val();
+		var to = $('#@Html.FieldIdFor(f => f.EmailTo)').val();
+		if (!bcc && !cc && !to) {
+			$('#@Html.FieldIdFor(f => f.EmailTo)').val(collectEmails());
+		}
+		$("#modalSendEmailToUsers").dialog("open");
+	});
+
+	function collectEmails() {
+		var emails = [];
+		var count = $('.userCheck:checkbox:checked').length;
+		$.each($('.userCheck:checkbox:checked'), function (index, val) {
+			var email = $(val).attr("data-email");
+			if (email && email != "null") {
+				emails.push(email);
+			}
+		});
+		return emails.join(",");
+	}
+</script>

@@ -1,0 +1,84 @@
+﻿@model CC.Data.MhmCap
+
+@{
+	ViewBag.Title += "MHM Cap";
+}
+<h2>@ViewBag.Title</h2>
+
+@section Header{
+	<style>
+		.MhmCapsFloat {
+			float: left;
+			margin-right: 2em;
+		}
+	</style>
+}
+@using (Html.BeginForm())
+{
+	<table>
+		<tr>
+			<th>
+				@Html.LabelFor(f => f.Id)
+			</th>
+			<td>
+				@Html.DisplayFor(f => f.Id)
+				@Html.HiddenFor(f => f.Id)
+			</td>
+		</tr>
+		<tr>
+			<th>
+				@Html.LabelFor(f => f.Name)
+			</th>
+			<td>
+				@Html.DisplayFor(f => f.Name)
+			</td>
+		</tr>
+		<tr>
+			<th>
+				@Html.LabelFor(f => f.StartDate)
+			</th>
+			<td>
+				@Html.DisplayFor(f => f.StartDate)
+			</td>
+		</tr>
+		<tr>
+			<th>
+				@Html.LabelFor(f => f.EndDateDisplay)
+			</th>
+			<td>
+				@Html.DisplayFor(f => f.EndDateDisplay)
+			</td>
+		</tr>
+		<tr>
+			<th>
+				@Html.LabelFor(f => f.Active)
+			</th>
+			<td>
+				@Html.DisplayFor(f => f.Active)
+			</td>
+		</tr>
+		<tr>
+			<th>
+				@Html.LabelFor(f => f.CapPerPerson)
+			</th>
+			<td>
+				@Html.DisplayFor(f => f.CapPerPerson)
+				@Html.DisplayFor(f => f.CurrencyId)
+			</td>
+		</tr>
+		<tr>
+			<th>Countries</th>
+			<td>
+				@string.Join(", ", Model.Countries.Select(f => f.Name))
+			</td>
+		</tr>
+		<tr>
+			<th>Funds</th>
+			<td>
+				@string.Join(", ", Model.Funds.Select(f => f.Name))
+			</td>
+		</tr>
+	</table>
+
+
+}

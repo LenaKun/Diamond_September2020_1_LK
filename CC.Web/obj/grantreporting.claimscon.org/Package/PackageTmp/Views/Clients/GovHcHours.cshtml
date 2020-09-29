@@ -1,0 +1,129 @@
+﻿@model NewGovHcEntryModel
+@{
+	Layout = null;
+	var dialogId = Guid.NewGuid();
+	var dtId = Guid.NewGuid();
+}
+
+<table id="@dtId"></table>
+
+@if ((ViewBag.Permissions as CC.Data.Services.IPermissionsBase).CanUpdateExistingClient)
+{
+    <button class="addnewGovHc">Add New</button>
+}
+<script>
+	$(function () {
+		var oTable = $('table#@dtId').dataTable({
+			"aaSorting": [[0, "desc"]],
+			"bProcessing": true,
+			"bFilter": false,
+			"bServerSide": true,
+			"bJQueryUI": true,
+			"cache": false,
+
+			"bLengthChange": false,
+			"sPaginationType": "full_numbers",
+			"sAjaxSource": '@Url.Action("GovHcHoursData")',
+			"fnServerParams": function (aoData) {
+				aoData.push({ name: "ClientId", value: '@Model.ClientId' });
+			},
+			"aoColumns": [
+				{ "mData": "StartDate", "sTitle": "Start Date" },
+				{ "mData": "Value", "sTitle": "Value" },
+				{
+					"mData": null,
+					"bSortable": false,
+					"bVisible": "@Model.Permissions.User.RoleId" == "@((int)FixedRoles.Admin)",
+					"mRender": function (a, b, c) {
+						return '<button class="delete" data-startdate="' + escape(c.IsoStartDate) + '">Delete</button>';
+					}
+				}
+			]
+		});
+		$('table#@dtId button.delete').live('click', function () {
+			oTable.find(':input, button').attr('disabled', 'disabled');
+			$.ajax({
+				url: '@Url.Action("DeleteGovHcHoursEntry")',
+				method: 'POST',
+				dataType: "json",
+				data: {
+					"ClientId": "@Model.ClientId",
+					"StartDate": unescape($(this).attr('data-startdate'))
+				}
+			}).done(function (data) {
+				oTable.fnDraw(false);
+			}).fail(function () {
+				oTable.find(':input, button').removeAttr('disabled');
+			});
+		});
+		
+		
+		var dialog = $('div#@dialogId').dialog({
+			autoOpen: false,
+			modal: true,
+			width: 'auto',
+			height: 'auto',
+			open: function (event, ui) {
+				dialog.find(':input').val('');
+				dialog.find(':input').removeAttr('disabled');
+				dialog.find('#@Html.FieldIdFor(f => f.GovHcStartDate)').datepicker().trigger('focus');
+			},
+			buttons: {
+				"Submit": function () {
+					if (dialog.find('form').valid()) {
+						dialog.find(':input').attr('disabled', 'disabled');
+						$.ajax({
+							url: '@Url.Action("AddNewGovHcHoursEntry")',
+							method: 'POST',
+							dataType: "json",
+							data: {
+								clientId: parseInt('@Model.ClientId'),
+								GovHcStartDate: dialog.find('#@Html.FieldIdFor(f => f.GovHcStartDate)').val(),
+								Value: dialog.find('#@Html.FieldIdFor(f => f.Value)').val()
+							}
+						}).done(function (data) {
+							dialog.find(':input').removeAttr('disabled');
+							if (data && data.errors) {
+								$('ul.govhchourstaberrors').html('<li>' + data.errors.join('</li><li>') + '</li>');
+							}
+							else {
+								oTable.fnDraw(false);
+
+								dialog.dialog('close');
+							}
+						}).fail(function () {
+							dialog.find(':input').removeAttr('disabled');
+						});
+					}
+				},
+				"Cancel": function () {
+					dialog.find(':input').val('');
+					dialog.dialog('close');
+				}
+			}
+		});
+		$('.addnewGovHc').click(function () {
+			dialog.dialog('open');
+		});
+
+	});
+</script>
+
+<div id="@dialogId">
+	@using (Html.BeginForm("AddNewGovHcHoursEntry"))
+	{
+	 @Html.ValidationSummary()
+		<ul class="error govhchourstaberrors"></ul>
+		<div class="editor-item-block">
+			@Html.LabelFor(f => f.Value)
+			@Html.EditorFor(f => f.Value)
+			@Html.ValidationMessageFor(f=>f.Value)
+		</div>
+		<div class="editor-item-block">
+			@Html.LabelFor(f => f.GovHcStartDate)
+			@Html.EditorFor(f => f.GovHcStartDate)
+			@Html.ValidationMessageFor(f=>f.GovHcStartDate)
+		</div>
+	}
+</div>
+

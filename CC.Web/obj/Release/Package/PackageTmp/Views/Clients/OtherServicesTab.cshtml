@@ -1,0 +1,105 @@
+﻿@model ClientOtherServicesTabModel
+@{
+    Layout = null;
+}
+
+<div id="OtherServicesTabFilter">
+    @Html.LabelFor(f => f.StartDate)
+    @Html.EditorFor(f => f.StartDate, new {prefix="ost", @class = "ostStartDate" })
+    @Html.LabelFor(f => f.EndDate)
+    @Html.EditorFor(f => f.EndDate, new {prefix="ost", @class = "ostEndDate" })
+    @Html.LabelFor(f => f.ServiceId)
+    @Html.DropDownListFor(f => f.ServiceId, Model.ServicesSelectList, string.Empty, new { @class = "ostServiceId" })
+	@if (!User.IsInRole("BMF")) {
+		@Html.LabelFor(f => f.GGOnly)
+		@Html.EditorFor(f => f.GGOnly, new { prefix = "ost", @class = "ostGGOnly" })
+	}
+    <button class="filter">Go</button>
+    <button class="reset">Reset</button>
+</div>
+
+<table id="ostable"></table>
+<script>
+    $(function () {
+        var oTable = $('table#ostable').dataTable({
+            "aaSorting": [[0, "asc"]],
+
+            "bServerSide": true,
+            "sAjaxSource": '@Url.Action("OtherServicesTabData")',
+            "fnServerParams": function (aoData) {
+                aoData.push({ "name": "ClientId", "value": "@Model.ClientId" });
+                aoData.push({ "name": "StartDate", "value": $('#OtherServicesTabFilter .ostStartDate').val() });
+                aoData.push({ "name": "EndDate", "value": $('#OtherServicesTabFilter .ostEndDate').val() });
+                aoData.push({ "name": "ServiceId", "value": $('#OtherServicesTabFilter .ostServiceId').val() });
+                aoData.push({ "name": "GGOnly", "value": $('#OtherServicesTabFilter [name="GGOnly"]').is(':checked') });
+            },
+            "aoColumns": [
+                    {
+                        "mData": "MrStart", "sTitle": "Date", "mRender": function (a, b, c) {
+                            var s = parseDate(c.MrStart);
+                            var e = parseDate(c.MrEnd);
+                            if (s.getMonth() == e.getMonth() && s.getYear() == e.getYear()) {
+                                return $.datepicker.formatDate("M yy", e);
+                            }
+                            else {
+                                return $.datepicker.formatDate("M", s) + " - " + $.datepicker.formatDate("M yy", e);
+                            }
+                        }
+                    },
+                    { "mData": "ServiceTypeName", "sTitle": "Service Type" },
+                    {
+                        "mData": "ServiceName", "sTitle": "Service", "mRender": function (a, b, c) {
+                            if (c.SubReportId)
+                                return '<a href="@Url.Action("Details", "SubReports")/' + c.SubReportId + '">' + a + '</a>';
+                            else
+                                return a;
+                        }
+                    },
+                    {
+                        "mData": "Quantity", "sTitle": "Units", "mRender": function (val) {
+                            if (val == null) return "N/A";
+                            else return val;
+                        }
+                    },
+                    {
+                        "mData": "Amount", "sTitle": "Amount", "mRender": function (a) {
+                            if (a == null) return "N/A";
+                            else return renderDecimal(a);
+                        }
+                    },
+                    {
+                        "mData": "EstAmount", "sTitle": "EstCosts", "mRender": function (a, b, c) {
+                            if (c.Amount !== null) { return "N/A"; }
+                            else { return renderDecimal(a); }
+                        }
+                    },
+                    { "mData": "Cur", "sTitle": "CUR" },
+                    { "mData": "FundName", "sTitle": "Fund" },
+                    { "mData": "MasterFundName", "sTitle": "Master Fund" },
+                    { "mData": "AppName", "sTitle": "App" }
+
+            ]
+        });
+        $('#OtherServicesTabFilter button.filter').click(function () {
+            oTable.fnDraw();
+        });
+        $('#OtherServicesTabFilter button.reset').click(function () {
+            $('#OtherServicesTabFilter :input').val(null);
+            IsBmf();
+            oTable.fnDraw();
+        });
+    });
+
+    $(document).ready(IsBmf());
+
+    function IsBmf() {
+        if ('@User.IsInRole("BMF")' == 'True') {
+            $('#OtherServicesTabFilter [name="GGOnly"]').prop('checked', true);
+            $('#OtherServicesTabFilter [name="GGOnly"]').prop('disabled', true);
+        }
+        else {
+            $('#OtherServicesTabFilter [name="GGOnly"]').prop('checked', false);
+            $('#OtherServicesTabFilter [name="GGOnly"]').prop('disabled', false);
+        }
+    }
+</script>

@@ -1,0 +1,19 @@
+﻿@model Nullable<Daf.Statuses>
+@{
+	Layout = null;
+
+	var statuses = EnumHelper.GetSelectList(typeof(Daf.Statuses))
+		.Select(f => new { id = f.Value, text = f.Text });
+}
+
+
+
+@Html.TextBox("", (int?)Model)
+<script>
+	$('#@Html.FieldIdFor(f=>f)').select2({
+		placeholder: "@Resources.Resource.SelectAnOption",
+		allowClear: true,
+		width: 200,
+		data: @Html.Raw(Json.Encode(statuses)),
+	});
+</script>

@@ -1,0 +1,749 @@
+﻿using System;
+using System.Text;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using CC.Data;
+
+namespace CC.Web.Tests
+{
+
+	[TestClass]
+	public class HcCapsUnitTest
+	{
+		private Func<ccEntities.hci, HcCap> sharedFunc = ccEntities.hcShared.Compile();
+
+		[TestMethod()]
+		public void HcCap_Test_Example()
+		{
+			var hci = Simple();
+
+			//the reporting period is inside a functionality score and eligibility
+			var res = sharedFunc(hci);
+			var expectedCap = 100 * (decimal)ccEntities.DiffDays(hci.Start, hci.End) / 7;
+			//Assert.IsTrue(Math.Abs(res.Cap - expectedCap) < 0.001M, "actual: {0}, expected: {1}", res.Cap, expectedCap);
+			CompareCaps(res.Cap, expectedCap);
+
+			//now the client became eligible 2 weeks before the reporting period ends
+			hci.Client.FunctionalityScores.First().StartDate = hci.End.AddDays(-14);
+			res = sharedFunc(hci);
+			expectedCap = 100 * 14 / 7;
+			CompareCaps(res.Cap, expectedCap);
+		}
+
+		/// <summary>
+		/// 1) if a client is eligible for homecare in a specific date, but doesn't have a functionality score entered for that date - 
+		/// his maximum homcare hours is unlimited and there's no alert on him in the submission proccess.  
+		/// see client http://cc.p4b.co.il/Clients/Details/283 and try to submit a report with 9999 hours on jan 11. on that client.
+		/// </summary>
+		/// <returns></returns>
+		[TestMethod]
+		public void Ep_Without_Fs()
+		{
+			var hci = Simple();
+			hci.Client.FunctionalityScores.Clear();
+			var cap = sharedFunc(hci);
+			var expected = 0M;
+			var actual = cap.Cap;
+			CompareCaps(actual, expected);
+		}
+
+		[TestMethod]
+		public void Fs_Starts_Late()
+		{
+			var hci = Simple();
+			hci.Client.FunctionalityScores.First().StartDate = hci.End.AddMonths(1);
+			var cap = sharedFunc(hci);
+			var expected = 0M;
+			var actual = cap.Cap;
+			CompareCaps(actual, expected);
+		}
+
+
+		#region VS tests
+		//tests from Amir document 'test 2 - HC Reporting (client base)'
+
+
+		/// <summary>
+		/// client died in middle of JoinDate to LeaveDate
+		/// </summary>
+		[TestMethod]
+		public void doc_row_1()
+		{
+			var rnd = new Random();
+			var client = new Client()
+			{
+				Id = rnd.Next(),
+				JoinDate = new DateTime(2012, 1, 1),
+				LeaveDate = new DateTime(2012, 1, 15),
+				DeceasedDate = new DateTime(2012, 1, 10)
+			};
+
+			var hci = new ccEntities.hci()
+			{
+				Client = client,
+				Start = new DateTime(2012, 1, 1),
+				End = new DateTime(2012, 2, 1)
+			};
+
+			hci.Client.IncomeCriteriaComplied = true;
+			hci.Client.ApprovalStatusEnum = ApprovalStatusEnum.Pending;
+
+			hci.Client.HomeCareEntitledPeriods.Clear();
+			hci.Client.HomeCareEntitledPeriods.Add(new HomeCareEntitledPeriod()
+				{
+					StartDate = new DateTime(2011, 11, 1),
+					EndDate = new DateTime(2012, 1, 15)
+				});
+			hci.Client.FunctionalityScores.Clear();
+			hci.Client.FunctionalityScores.Add(
+				new FunctionalityScore()
+				{
+					StartDate = new DateTime(2012, 1, 1),
+					Client = hci.Client,
+					FunctionalityLevel = new FunctionalityLevel()
+					{
+						HcHoursLimit = 4
+					}
+				});
+
+			//r:	01-01
+			//c:	01-10
+			//ep:	01-15
+			//fs:	01-01:4
+
+
+			//res:	01-10:4
+			var cap = sharedFunc(hci);
+			var expected = 4 * 9 / 7M;
+			var actual = cap.Cap;
+			CompareCaps(actual, expected);
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		[TestMethod]
+		public void doc_row_2() //error test
+		{
+
+			var rnd = new Random();
+			var client = new Client()
+			{
+				Id = rnd.Next(),
+				JoinDate = new DateTime(2012, 1, 1),
+				LeaveDate = new DateTime(2013, 1, 1),
+				DeceasedDate = new DateTime(2013, 1, 1),
+			};
+
+			var hci = new ccEntities.hci()
+			{
+				Client = client,
+				Start = new DateTime(2012, 1, 1),
+				End = new DateTime(2012, 2, 1)
+			};
+
+			hci.Client.IncomeCriteriaComplied = true;
+			hci.Client.ApprovalStatusEnum = ApprovalStatusEnum.Pending;
+			hci.Client.ExceptionalHours = 5;
+
+			//eligibility
+			hci.Client.HomeCareEntitledPeriods.Add(new HomeCareEntitledPeriod()
+			{
+				StartDate = new DateTime(2012, 1, 1),
+				EndDate = new DateTime(2012, 1, 15)
+			});
+			//functionality
+			hci.Client.FunctionalityScores.Add(
+				new FunctionalityScore()
+				{
+					StartDate = new DateTime(2012, 1, 1),
+					Client = hci.Client,
+					FunctionalityLevel = new FunctionalityLevel()
+					{
+						HcHoursLimit = 4
+					}
+				});
+			var cap = sharedFunc(hci);
+			var expected = (decimal)4 * (decimal)14 / (decimal)7;
+			var actual = cap.Cap;
+			CompareCaps(actual, expected);
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		[TestMethod]
+		public void doc_row_2_2()
+		{
+
+			var rnd = new Random();
+			var client = new Client()
+			{
+				Id = rnd.Next(),
+				JoinDate = new DateTime(2012, 1, 1),
+				LeaveDate = new DateTime(2013, 1, 1),
+				DeceasedDate = new DateTime(2013, 1, 1)
+			};
+
+			var hci = new ccEntities.hci()
+			{
+				Client = client,
+				Start = new DateTime(2012, 1, 1),
+				End = new DateTime(2012, 2, 1)
+			};
+
+			hci.Client.IncomeCriteriaComplied = true;
+			hci.Client.ApprovalStatusEnum = ApprovalStatusEnum.Pending;
+			hci.Client.ExceptionalHours = 5;
+
+			//eligibility
+			hci.Client.HomeCareEntitledPeriods.Add(new HomeCareEntitledPeriod()
+			{
+				StartDate = new DateTime(2012, 1, 1),
+				EndDate = new DateTime(2012, 1, 15)
+			});
+			hci.Client.HomeCareEntitledPeriods.Add(new HomeCareEntitledPeriod()
+			{
+				StartDate = new DateTime(2012, 1, 28),
+				EndDate = new DateTime(2012, 4, 15)
+			});
+
+			//functionality
+			hci.Client.FunctionalityScores.Add(
+			new FunctionalityScore()
+			{
+				StartDate = new DateTime(2012, 1, 1),
+				Client = hci.Client,
+				FunctionalityLevel = new FunctionalityLevel()
+				{
+					HcHoursLimit = 4
+				}
+			});
+			hci.Client.FunctionalityScores.Add(
+			new FunctionalityScore()
+			{
+				StartDate = new DateTime(2012, 1, 29),
+				Client = hci.Client,
+				FunctionalityLevel = new FunctionalityLevel()
+				{
+					HcHoursLimit = 9
+				}
+			});
+
+			var cap = sharedFunc(hci);
+			var expected = (decimal)4 * (decimal)14 / (decimal)7 +
+							(decimal)4 * (decimal)1 / (decimal)7 +      //1 pass //2 not pass
+							(decimal)9 * (decimal)3 / (decimal)7;       //3 pass //3 not pass
+			var actual = cap.Cap;
+			CompareCaps(actual, expected);
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		[TestMethod]
+		public void doc_row_3()
+		{
+
+			var rnd = new Random();
+			var client = new Client()
+			{
+				Id = rnd.Next(),
+				JoinDate = new DateTime(2011, 5, 1),
+			};
+
+			var hci = new ccEntities.hci()
+			{
+				Client = client,
+				Start = new DateTime(2012, 1, 1),
+				End = new DateTime(2012, 2, 1)
+			};
+
+			hci.Client.IncomeCriteriaComplied = true;
+			hci.Client.ApprovalStatusEnum = ApprovalStatusEnum.Pending;
+
+			//eligibility
+			hci.Client.HomeCareEntitledPeriods.Add(new HomeCareEntitledPeriod()
+			{
+				StartDate = new DateTime(2011, 12, 1),
+				EndDate = new DateTime(2012, 1, 15)
+			});
+
+			//functionality
+			hci.Client.FunctionalityScores.Add(
+				new FunctionalityScore()
+				{
+					StartDate = new DateTime(2012, 1, 10),
+					Client = hci.Client,
+					FunctionalityLevel = new FunctionalityLevel()
+					{
+						HcHoursLimit = 4
+					}
+				});
+			hci.Client.FunctionalityScores.Add(
+						   new FunctionalityScore()
+						   {
+							   StartDate = new DateTime(2012, 1, 29),
+							   Client = hci.Client,
+							   FunctionalityLevel = new FunctionalityLevel()
+							   {
+								   HcHoursLimit = 9
+							   }
+						   });
+
+			var cap = sharedFunc(hci);
+<<<<<<< HEAD
+			var expected = (decimal)4 * (decimal)6 / (decimal)7 + // test fails actual value = 4*5 /7 for days from 
+							(decimal)9 * (decimal)0 / (decimal)7; // 10/1 till 15/1 - considered 5 days of HomeCare ?
+=======
+			var expected = (decimal)4 * (decimal)5 / (decimal)7 +
+							(decimal)9 * (decimal)0 / (decimal)7;
+>>>>>>> e9c23cc9ae08475a888dce89843d2336c35f61ca
+			var actual = cap.Cap;
+			CompareCaps(actual, expected);
+		}
+
+
+		/// <summary>
+		/// client not have join and leave date --> sharedFunc(hci) return negative number
+		/// </summary>
+		[TestMethod]
+		public void doc_row_4()
+		{
+
+			var rnd = new Random();
+			var client = new Client()
+			{
+				Id = rnd.Next(),
+			};
+
+			var hci = new ccEntities.hci()
+			{
+				Client = client,
+				Start = new DateTime(2012, 1, 1),
+				End = new DateTime(2012, 2, 1)
+			};
+
+			hci.Client.IncomeCriteriaComplied = true;
+			hci.Client.ApprovalStatusEnum = ApprovalStatusEnum.Approved;
+			hci.Client.ExceptionalHours = 5;
+			hci.Client.GfHours = 9;
+
+			//eligibility
+			hci.Client.HomeCareEntitledPeriods.Add(new HomeCareEntitledPeriod()
+			{
+				StartDate = new DateTime(2011, 6, 1),
+
+			});
+			hci.Client.HomeCareEntitledPeriods.Add(new HomeCareEntitledPeriod()
+			{
+				StartDate = new DateTime(2012, 1, 28),
+				EndDate = new DateTime(2012, 4, 15)
+			});
+			//functionality
+			hci.Client.FunctionalityScores.Add(
+				new FunctionalityScore()
+				{
+					StartDate = new DateTime(2012, 1, 1),
+					Client = hci.Client,
+					FunctionalityLevel = new FunctionalityLevel()
+					{
+						HcHoursLimit = 4
+					}
+				});
+			hci.Client.FunctionalityScores.Add(
+						   new FunctionalityScore()
+						   {
+							   StartDate = new DateTime(2012, 1, 29),
+							   Client = hci.Client,
+							   FunctionalityLevel = new FunctionalityLevel()
+							   {
+								   HcHoursLimit = 9
+							   }
+						   });
+
+			var cap = sharedFunc(hci);
+			var expected = 0;
+			//var expected = (decimal)4 * (decimal)29 / (decimal)7 + (decimal)9 * (decimal)3 / (decimal)7;
+			var actual = cap.Cap;
+			CompareCaps(actual, expected);
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		[TestMethod]
+		public void doc_row_5()
+		{
+
+			var rnd = new Random();
+			var client = new Client()
+			{
+				Id = rnd.Next(),
+				JoinDate = new DateTime(2011, 1, 1)
+			};
+
+			var hci = new ccEntities.hci()
+			{
+				Client = client,
+				Start = new DateTime(2012, 1, 1),
+				End = new DateTime(2012, 2, 1)
+			};
+
+			hci.Client.IncomeCriteriaComplied = true;
+			hci.Client.ApprovalStatusEnum = ApprovalStatusEnum.Approved;
+			hci.Client.GfHours = 9;
+
+			//eligibility
+			hci.Client.HomeCareEntitledPeriods.Add(new HomeCareEntitledPeriod()
+			{
+				StartDate = new DateTime(2011, 11, 1),
+				EndDate = new DateTime(2012, 1, 15)
+			});
+			//functionality
+			hci.Client.FunctionalityScores.Add(
+				new FunctionalityScore()
+				{
+					StartDate = new DateTime(2012, 1, 1),
+					Client = hci.Client,
+					FunctionalityLevel = new FunctionalityLevel()
+					{
+						HcHoursLimit = 4
+					}
+				});
+
+			var cap = sharedFunc(hci);
+<<<<<<< HEAD
+			var expected = (decimal)4 * (decimal)15 / (decimal)7;
+			var actual = cap.Cap; // actual = 18 ?? wtf 31.5 days ?
+			CompareCaps(actual, expected);
+=======
+			var expected = (decimal)9 * (decimal)14 / (decimal)7;
+			var actual = cap.Cap;
+			Assert.AreEqual((double)expected, (double)actual, 1e-9);
+>>>>>>> e9c23cc9ae08475a888dce89843d2336c35f61ca
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		[TestMethod]
+		public void doc_row_6()
+		{
+
+			var rnd = new Random();
+			var client = new Client()
+			{
+				Id = rnd.Next(),
+				JoinDate = new DateTime(2012, 1, 1),
+				LeaveDate = new DateTime(2012, 1, 15)
+			};
+
+			var hci = new ccEntities.hci()
+			{
+				Client = client,
+				Start = new DateTime(2012, 1, 1),
+				End = new DateTime(2012, 2, 1)
+			};
+
+			hci.Client.IncomeCriteriaComplied = true;
+			hci.Client.ApprovalStatusEnum = ApprovalStatusEnum.Approved;
+
+			//eligibility
+			hci.Client.HomeCareEntitledPeriods.Add(new HomeCareEntitledPeriod()
+			{
+				StartDate = new DateTime(2011, 11, 1),
+				EndDate = new DateTime(2012, 1, 15)
+			});
+			//functionality
+			hci.Client.FunctionalityScores.Add(
+				new FunctionalityScore()
+				{
+					StartDate = new DateTime(2012, 1, 1),
+					Client = hci.Client,
+					FunctionalityLevel = new FunctionalityLevel()
+					{
+						HcHoursLimit = 4
+					}
+				});
+
+			var cap = sharedFunc(hci);
+			var expected = (decimal)4 * (decimal)14 / (decimal)7;
+			var actual = cap.Cap;
+			CompareCaps(actual, expected);
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		[TestMethod]
+		public void doc_row_7()
+		{
+
+			var rnd = new Random();
+			var client = new Client()
+			{
+				Id = rnd.Next(),
+				LeaveDate = new DateTime(2012, 1, 20),
+				JoinDate = new DateTime(2012, 1, 01)
+			};
+
+			var hci = new ccEntities.hci()
+			{
+				Client = client,
+				Start = new DateTime(2012, 1, 1),
+				End = new DateTime(2012, 2, 1)
+			};
+
+			hci.Client.IncomeCriteriaComplied = true;
+			hci.Client.ApprovalStatusEnum = ApprovalStatusEnum.Approved;
+
+			//eligibility
+			hci.Client.HomeCareEntitledPeriods.Add(new HomeCareEntitledPeriod()
+			{
+				StartDate = new DateTime(2011, 1, 1),
+				EndDate = new DateTime(2012, 1, 15)
+			});
+			hci.Client.HomeCareEntitledPeriods.Add(new HomeCareEntitledPeriod()
+			{
+				StartDate = new DateTime(2012, 1, 18),
+				EndDate = new DateTime(2012, 1, 25)
+			});
+			//functionality
+			hci.Client.FunctionalityScores.Add(
+				new FunctionalityScore()
+				{
+					StartDate = new DateTime(2012, 1, 1),
+					Client = hci.Client,
+					FunctionalityLevel = new FunctionalityLevel()
+					{
+						HcHoursLimit = 7
+					}
+				});
+			hci.Client.FunctionalityScores.Add(
+			   new FunctionalityScore()
+			   {
+				   StartDate = new DateTime(2012, 1, 29),
+				   Client = hci.Client,
+				   FunctionalityLevel = new FunctionalityLevel()
+				   {
+					   HcHoursLimit = 14
+				   }
+			   });
+
+			var cap = sharedFunc(hci);
+
+			//c:	01-20
+			//ep:	01-15
+			//ep:	18-25
+			//fs:	01-29:7
+			//fs:	29-01:14
+
+			//		01-15:7
+			//		18-20:7
+
+			var expected = 14 * 7 / 7 + 2 * 7 / 7;
+			var actual = cap.Cap;
+			CompareCaps(actual, expected);
+		}
+
+		/// <summary>
+		/// border check - one last day
+		/// </summary>
+		[TestMethod]
+		public void doc_row_8()
+		{
+
+			var rnd = new Random();
+			var client = new Client()
+			{
+				Id = rnd.Next(),
+				JoinDate = new DateTime(2012, 1, 1),
+				LeaveDate = new DateTime(2012, 1, 29)
+			};
+
+			var hci = new ccEntities.hci()
+			{
+				Client = client,
+				Start = new DateTime(2012, 1, 1),
+				End = new DateTime(2012, 2, 1)
+			};
+
+			hci.Client.IncomeCriteriaComplied = true;
+			hci.Client.ApprovalStatusEnum = ApprovalStatusEnum.Approved;
+
+			//eligibility
+			hci.Client.HomeCareEntitledPeriods.Add(new HomeCareEntitledPeriod()
+			{
+				StartDate = new DateTime(2012, 1, 1),
+				EndDate = new DateTime(2012, 1, 30)
+			});
+			//functionality
+			hci.Client.FunctionalityScores.Add(
+				new FunctionalityScore()
+				{
+					StartDate = new DateTime(2012, 1, 25),
+					Client = hci.Client,
+					FunctionalityLevel = new FunctionalityLevel()
+					{
+						HcHoursLimit = 4
+					}
+				});
+			hci.Client.FunctionalityScores.Add(
+			   new FunctionalityScore()
+			   {
+				   StartDate = new DateTime(2012, 1, 29),
+				   Client = hci.Client,
+				   FunctionalityLevel = new FunctionalityLevel()
+				   {
+					   HcHoursLimit = 9
+				   }
+			   });
+
+			//rep:		01 - 01
+			//c:			01 - 29 : 0
+			//ep:		01 - 01
+			//fs:		25 - 29 : 4
+			//fs:		29 - 31 : 9
+
+			var cap = sharedFunc(hci);
+			var expected = 4 * 4 / 7M;
+			var actual = cap.Cap;
+			CompareCaps(actual, expected);
+		}
+
+
+		/// <summary>
+		/// border check - one last day
+		/// </summary>
+		[TestMethod]
+		public void doc_row_9()
+		{
+			var rnd = new Random();
+			var client = new Client()
+			{
+				Id = rnd.Next(),
+				JoinDate = new DateTime(2012, 1, 1),
+				LeaveDate = new DateTime(2012, 1, 27),
+				DeceasedDate = new DateTime(2012, 1, 28)
+			};
+
+			var hci = new ccEntities.hci()
+			{
+				Client = client,
+				Start = new DateTime(2012, 1, 1),
+				End = new DateTime(2012, 2, 1)
+			};
+
+			hci.Client.IncomeCriteriaComplied = true;
+			hci.Client.ApprovalStatusEnum = ApprovalStatusEnum.Approved;
+
+			//eligibility
+			hci.Client.HomeCareEntitledPeriods.Add(new HomeCareEntitledPeriod()
+			{
+				StartDate = new DateTime(2012, 1, 1),
+				EndDate = new DateTime(2012, 1, 30)
+			});
+			//functionality
+			hci.Client.FunctionalityScores.Add(
+				new FunctionalityScore()
+				{
+					StartDate = new DateTime(2012, 1, 25),
+					Client = hci.Client,
+					FunctionalityLevel = new FunctionalityLevel()
+					{
+						HcHoursLimit = 4
+					}
+				});
+			hci.Client.FunctionalityScores.Add(
+			   new FunctionalityScore()
+			   {
+				   StartDate = new DateTime(2012, 1, 29),
+				   Client = hci.Client,
+				   FunctionalityLevel = new FunctionalityLevel()
+				   {
+					   HcHoursLimit = 9
+				   }
+			   });
+
+
+			var cap = sharedFunc(hci);
+
+			//r:	01-01
+			//c:	01-27
+			//ep:	01-30
+			//fs:	25-29:4
+			//fs:	29-01:9
+
+			// 25-27:4
+			var expected = 4 * 2 / 7M;
+			var actual = cap.Cap;
+			CompareCaps(actual, expected);
+		}
+
+
+		#endregion
+
+		/// <summary>
+		/// the actual and expected may differ on the last digit after decimal point.
+		/// Here we assume that the difference less than 1 minute per month is insugnificant.
+		/// </summary>
+		/// <param name="actual"></param>
+		/// <param name="expected"></param>
+		private void CompareCaps(decimal actual, decimal expected)
+		{
+			Assert.IsTrue(Math.Abs(actual - expected) < 0.001M, "actual: {0}, expected: {1}", actual, expected);
+		}
+
+		private static ccEntities.hci Simple()
+		{
+			var start = new DateTime(2000, 1, 1);
+			var end = new DateTime(2000, 2, 1);
+			var rnd = new Random();
+
+
+			var client = new Client()
+			{
+				Id = rnd.Next(),
+				JoinDate = start.AddYears(-1),
+				LeaveDate = start.AddYears(1),
+				DeceasedDate = start.AddYears(1),
+			};
+
+			var fs = new List<FunctionalityScore>(){
+				new FunctionalityScore()
+				{
+					StartDate = start.AddMonths(-1),
+					Client = client,
+					FunctionalityLevel = new FunctionalityLevel()
+					{
+						HcHoursLimit = 100
+					}
+				}
+				
+			};
+			fs.ForEach(f => client.FunctionalityScores.Add(f));
+
+			var ep = new List<HomeCareEntitledPeriod>()
+			{
+				new HomeCareEntitledPeriod()
+				{
+					StartDate = start.AddMonths(-1),
+					EndDate = end.AddMonths(1)
+				}
+			};
+			ep.ForEach(a => client.HomeCareEntitledPeriods.Add(a));
+
+			var hci = new ccEntities.hci()
+			{
+				Client = client,
+
+				Start = start,
+				End = end
+			};
+			return hci;
+		}
+
+	}
+}

@@ -1,0 +1,757 @@
+﻿@model SubReportDetailsModel
+@{
+	ViewBag.Title = "Soup Kitchens Client Visits";
+}
+@section Header
+{
+	<style>
+		.selCol {
+			border-right: solid 2px black;
+		}
+
+		.notselCol {
+			border-right: solid 1px black;
+		}
+	</style>
+
+
+
+	<script id="dt" type="text/javascript">
+    //simple datatable init
+
+
+    function getDayOfWeek(d)
+    {
+
+
+
+        var weekday = new Array(7);
+        weekday[0] = "Sun";
+        weekday[1] = "Mon";
+        weekday[2] = "Tue";
+        weekday[3] = "Wed";
+        weekday[4] = "Thu";
+        weekday[5] = "Fri";
+        weekday[6] = "Sat";
+
+        var n = weekday[d.getDay()];
+
+        return n;
+
+
+    }
+
+    function restoreDefault()
+    {
+
+
+        for (var i=5;i<=36;i++)
+        {
+            dataTable.fnSetColumnVis( i, true );
+        }
+
+        setSaturdayStyle(false);
+
+    }
+
+    function hideColumns() {
+
+        var m=parseInt($('.month').val()); //selected from combo Month
+        var d=new Date(@Model.FilterByMonth.SelYear,m-1);
+
+        var mrs = new Date(@Model.MainReportStart.Year,@Model.MainReportStart.Month-1, @Model.MainReportStart.Day);
+    	var monthStart = new Date(mrs.getTime());
+    	monthStart.setMonth(m - 1);
+    	var monthEnd =   new Date(monthStart.getTime());
+    	monthEnd.setMonth(monthStart.getMonth() + 1);
+    	var monthLength = Math.round((monthEnd - monthStart) / (1000 * 60 * 60 * 24))
+
+
+
+
+
+        var weekDays=new Array();
+        for (var i=0;i<monthLength;i++)
+        {
+            var dw=getDayOfWeek(d);
+            weekDays.push(dw);
+
+
+            d.setDate(d.getDate() + 1);
+
+
+        }
+
+        //show all columns
+
+        restoreDefault();
+
+        $( ".weekday" ).each(function( index ) {
+            $( this ).html(weekDays[index])
+
+        	//no days
+            if (index>=monthLength) {
+
+                dataTable.fnSetColumnVis( index+5, false );
+            }
+
+            $( this ).html(weekDays[index])
+
+        });
+
+
+
+
+
+
+    }
+
+
+
+    function setSaturdayStyle(add)
+    {
+        $("table.grid th:contains('Sat')").each(function(  )
+        {
+            if ($( this )!=null)
+            {
+                if (add)
+                {
+                    columnTh = $(this); // Find the heading with the text Saturday
+                    columnIndex = columnTh.index() + 1; // Get the index & increment by 1 to match nth-child indexing
+                    $('table.grid tr td:nth-child(' + columnIndex + ')').addClass('selCol'); // Set all the elements with that index in a tr
+                    $('table.grid tr th:nth-child(' + columnIndex + ')').addClass('selCol'); // Set all the elements with that index in a tr
+                    columnTh.addClass('selCol'); //set the header too
+                }
+                else
+                {
+                	columnTh = $(this); // Find the heading with the text Saturday
+                    columnIndex = columnTh.index() + 1; // Get the index & increment by 1 to match nth-child indexing
+                    $('table.grid tr td:nth-child(' + columnIndex + ')').removeClass('selCol'); // Set all the elements with that index in a tr
+                    $('table.grid tr th:nth-child(' + columnIndex + ')').removeClass('selCol'); // Set all the elements with that index in a tr
+                    columnTh.removeClass('selCol'); //set the header too
+                }
+            }
+        });
+    }
+
+
+    var editLink = '<button type="button" class="edit">Edit</button>';
+    var deleteLink = '<button type="button" class="delete">Delete</button>';
+
+    var dataTable = null;
+
+
+
+
+    $(document).ready(function () {
+        dataTable = $('table.grid').dataTable({
+            "bServerSide": true,
+            "aaSorting": [[1, "asc"]],
+            "defaultContent": "?",
+            "fnInitComplete": function() { hideColumns(); setSaturdayStyle(true); },
+            "fnDrawCallback": function( oSettings ) {  setSaturdayStyle(true); },
+
+            "fnHeaderCallback": function( nHead, aData, iStart, iEnd, aiDisplay ) {
+
+            },
+
+
+            "sAjaxSource": '@Url.Action("GetCalendarSaturdaysRows", new { Id = Model.Id })',
+            "aoColumnDefs": [
+
+              {
+                  "aTargets": [0],
+                  "bVisible": false
+              },
+				{
+					"aTargets": [1],
+					"bVisible": false
+				},
+                {
+                    "aTargets": [2], "mRender": function(data, type, full){
+                        var a=full[0];
+                        var x=full[36];
+                        var b=full[2];
+                        return '<a href="@Url.Action("Details", "Clients")/'+ a+'">'+b+'</a>';
+
+                    }
+				},
+				{
+                    "aTargets": [3], "mRender": function(data, type, full){
+                        var a=full[0];
+                        var x=full[36];
+                        var b=full[3];
+                        return '<a href="@Url.Action("Details", "Clients")/'+ a+'">'+b+' ('+ x +') </a>';
+
+                    }
+                },
+                {
+                    "aTargets": [4]
+                },
+
+               {
+                   "aTargets": [5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35], "bSortable": false, "mRender": function (a) {
+
+                       return (a === true) ? 'Yes' : '' //No
+                   }
+               },
+
+
+
+                {
+                    "aTargets": [36], //Visit Count
+                    "bSortable": false,
+                },
+
+            @if (Model.CanBeEdited)
+            {
+
+						<text>
+
+						{
+						    //last colum with buttons
+						    "aTargets": [-1],
+						    "sWidth": "7em",
+						    "mData": null,
+						    "bSortable": false,
+						    "sClass": 'control',
+						    "mRender": function (val, type, full) {
+
+						    	var res = editLink;
+						    	res += deleteLink;
+						        return res;
+						    }
+						},
+
+        {
+            "aTargets": ['edit'],
+            "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                var nTh = $('table.grid thead tr:last th').get(iCol);
+
+                //copy the edit class and set data-val to the current value
+                $(nTd).addClass('edit').attr('data-val', sData);
+
+                //copy data-name attribute
+                if ($(nTh).attr('data-name')) {
+                    $(nTd).attr('data-name', $(nTh).attr('data-name'));
+                }
+
+                //copy data-type attribute
+                if ($(nTh).attr('data-type')) {
+                    $(nTd).attr('data-type', $(nTh).attr('data-type'));
+                }
+
+            }
+        }
+						</text>
+            }
+
+
+
+            ],
+            "fnServerParams": function (aoData) {
+                aoData.push({ name: "IE", value: Math.random() });
+                aoData.push({ name: "AppBudgetServiceId", value: "@Model.AppBudgetServiceId" });
+                aoData.push({ name: "AgencyId", value: "@Model.AgencyId" });
+                aoData.push({ name: "@Html.FieldNameFor(f => f.Filter.ClientName)", value: $('#@Html.FieldIdFor(f => f.Filter.ClientName)').val() });
+                aoData.push({ name: "@Html.FieldNameFor(f => f.Filter.ClientId)", value: $('#@Html.FieldIdFor(f => f.Filter.ClientId)').val() });
+                aoData.push({ name: "@Html.FieldNameFor(f => f.Filter.ReportedOnly)", value: $('#@Html.FieldIdFor(f => f.Filter.ReportedOnly)').val() });
+                aoData.push({ name: "@Html.FieldNameFor(f => f.FilterByMonth.SelMonth)", value: $('#@Html.FieldIdFor(f => f.FilterByMonth.SelMonth)').val() });
+
+            }
+				, "fnRowCallback": function (nRow, aData, iDisplayIndex) {
+				    /* set tr id. assume the id is in the first column of data */
+				    $(nRow).attr("clientId", aData[5]);
+				    $(nRow).attr("id", aData[1]);
+				    $(nRow).attr("subReportId", '@Model.Id');
+
+				    return nRow;
+				}
+        });
+        $('button.filter').click(function () {
+            dataTable.fnDraw(); hideColumns();
+        });
+        $('button.reset').click(function () {
+            $(this).closest('table').find(':input').val('');
+            dataTable.fnDraw(); hideColumns();
+        });
+
+    });
+	</script>
+
+	<script>
+		var loadTotals = function () {
+			$('div#totals').load('@Url.Action("GetTotals", new { Id = Model.Id })' + '?totalYtdSk=' + @Model.Totals.TotalYTDVisitCountExceptThisSr + '&IE=' + Math.random(), function () {
+				$('span.totalAmount').html($('div#totals span.totalAmount').html());
+			});
+		};
+	</script>
+
+
+
+	@if (Model.CanBeEdited)
+	{
+		<script>
+	$(document).ready(function () {
+		$('table.grid input').live('keypress', function (event) {
+			switch (event.keyCode) {
+				case 13:
+					$(this).closest('tr').find('button.update').click();
+					break;
+				case 27:
+					$(this).closest('tr').find('button.cancel').click();
+					break;
+			}
+		});
+		$('table.grid button.delete').live('click', function () {
+			var $tr = $(this).closest('tr');
+			var tr = $tr.get(0);
+			var dataTable = $('table.grid').dataTable();
+			var data = dataTable.fnGetData(tr);
+			var cr = {
+				Id: data[37],
+				ClientId: data[0],
+				SubReportId: '@Model.Id',
+        		selMonth: $('#@Html.FieldIdFor(f => f.FilterByMonth.SelMonth)').val()
+        	};
+        	$.ajax({
+        		url: '@Url.Action("DeleteSoupKitchensClient")',
+				type: 'POST',
+				dataType: 'json',
+				data: cr,
+			}).done(function (data) {
+				if (data.success) {
+					loadTotals();
+					$('table.grid').dataTable().fnDraw(false);
+				}
+				else {
+					var errstr = '<ul class="error"><li>' + data.errors.join('</li><li>') + '</li></ul>';
+					alert(errstr);
+				}
+			}).fail(function () {
+				alert('The current client Row not contain data to delete');
+			});
+		});
+		$('table.grid button.edit').live('click', function () {
+			$('table.grid button.cancel').click();
+			var $tr = $(this).closest('tr');
+			var tr = $tr.get(0);
+			var dataTable = $('table.grid').dataTable();
+			var data = null;
+			if ($tr.hasClass('add')) {
+				data = $tr.data('data');
+			}
+			else {
+				data = dataTable.fnGetData(tr);
+			}
+			var settings = dataTable.fnSettings();
+			var columns = settings.aoColumns;
+
+
+			$tr.find('td.edit').each(function () {
+				var $td = $(this);
+				var td = $td.get(0);
+				var aPos = dataTable.fnGetPosition(td); //array of [row index, column index (visible), column index (all)]
+				var iRow = aPos[0];
+				var iCol = aPos[2];
+
+				var column = columns[iCol];
+				var editor = null;
+				var value = data[iCol];
+
+				var editor = null;
+				switch (iCol) {
+					case 2:
+						var a=data[iCol];
+						var id=data[0];
+						var href='<a id="cl_name" href="@Url.Action("Details", "Clients")/'+ id+'">'+a+'</a>';
+						        
+						editor=$(href);
+						        
+						break;
+					case 3:
+						var a=data[iCol];
+						var x=data[36];
+						var id=data[0];
+						var href='<a id="cl_name" href="@Url.Action("Details", "Clients")/'+ id+'">'+a+' ('+ x +') </a>';
+						        
+						editor=$(href);
+						        
+						break;
+					case 4:
+						var x = data[4];
+						editor = x;
+						break;
+					case 36:
+
+						var x=data[36];
+						editor=$('<input id="cl_count" disabled="disabled" size=5 value='+x+'/>');
+						editor.val(x);
+
+						break;
+					default:
+						var i=iCol-4;
+						editor = $('<input class="chk_dlist" id="dlist' + i + '" type="checkbox" />');
+						editor.val(data[iCol]);
+						editor.prop( "checked", data[iCol] );
+						break;
+				}
+				if (column.sName!="")  editor.attr('name', column.sName);
+				if (column.sClass!="") editor.addClass(column.sClass);
+
+				$td.html('').append(editor);
+
+			});
+			$tr.addClass('selected');
+			$tr.find('td.control').html('<button type="button" class="update">Save</button>' + '<button type="button" class="cancel">Cancel</button>');
+			//first focus creates datepicker, second shows it
+			$tr.find('input:first').focus().focus();
+		});
+		$('table.grid button.cancel').live('click', function () {
+
+			var $tr = $(this).closest('tr');
+			var tr = $tr.get(0);
+			var dataTable = $('table.grid').dataTable();
+			var data = dataTable.fnGetData(tr);
+
+			dataTable.fnUpdate(data, tr, undefined, false, false);
+		});
+		$('table.grid button.update').live('click', function () {
+
+			var $tr = $(this).closest('tr');
+			var idEmptyFlag = false; // requiere for refresh
+			var id = $tr.attr('id');
+			if (id == "")
+				idEmptyFlag = true;
+
+			var tr = $tr.get(0);
+			var data = dataTable.fnGetData(tr);
+
+			var $form = $tr.closest('form');
+
+			if (!$form.valid())
+				return;
+
+
+			var d = $form.serializeArray();
+
+			d.push({ name: "Id", value: data[38] });
+			d.push({ name: "ClientId", value: data[0] });
+			d.push({ name: "SubReportId", value: '@Model.Id' });
+
+			for (var i=1;i<=31;i++)
+			{
+				var b=$('#dlist'+i).is(':checked');
+				d.push ({ name: 'dlist'+i, value: b  })
+			}
+
+
+			d.push({ name: "IE", value: Math.random() });
+			d.push({ name: "selMonth", value: $('.month').val()})
+
+			var dd = {};
+			for (var i in d) {
+				dd[d[i].name] = d[i].value;
+			}
+			$('table.grid tbody tr').find(':input, button').attr('disabled', 'disabled');
+			var request = $.ajax({
+				url: $form.attr('action'),
+				type: 'POST',
+				dataType: "json",
+				data: dd
+			})
+			request.success(function (data, textStatus, jqXHR) {
+
+				if (data.success) {
+					loadTotals();
+					dataTable.fnUpdate(data.data, tr, undefined, false, false);
+					$('table.grid tbody tr').find(':input, button').removeAttr('disabled');
+					$tr.attr('id', data.data[0]);
+					if(idEmptyFlag)
+						$('table.grid').dataTable().fnDraw(false);
+				}
+				else {
+					showSuccess(data.errors);
+				}
+
+			});
+			request.done(function (msg) {
+
+			});
+			request.fail(function (jqXHR, textStatus) {
+			});
+		});
+	});
+
+	function showSuccess(errors) {
+		console.log("errors", errors);
+		if(errors) {
+			errors.join('</li><li>');
+		}
+		else {
+			errors = "";
+		}
+
+		var errstr = '<ul class="error"><li>' + errors + '</li></ul>';
+		$(errstr).dialog({
+			modal: true,
+			dialogClass: "hideCloseButton",
+			buttons: {
+				Ok: function () {
+					$(this).dialog("close");
+					$(this).dialog("destroy");
+					$('table.grid tbody').find(':input, button').removeAttr('disabled');
+				},
+				Cancel: function () {
+					$(this).dialog("close");
+					$(this).dialog("destroy");
+					$('table.grid').dataTable().fnDraw(false);
+				}
+			}
+		});
+
+
+	}
+		</script>
+	}
+}
+<h2>
+	Detailed Report
+</h2>
+@Html.ValidationSummary()
+<p>
+	<a href="@Url.Action("details", "MainReports" , new { id=Model.MainReportId })" class="button">Go to Financial Report</a>
+	@if (Model.CanBeEdited)
+	{
+		<a href="@Url.Action("create", "SubReports" , new { id=Model.Id, appbudgetserviceid=Model.AppBudgetServiceId, mainreportid=Model.MainReportId })" class="button">Import</a>
+	}
+</p>
+@Html.Partial("Header", Model.DetailsHeader)
+
+<table class="filter horizontal">
+	<tr>
+		<th style="white-space: nowrap">
+			Filter By:
+		</th>
+		<td style="width: 100%">
+			<div class="display-item">
+				@Html.LabelFor(f => f.Filter.ClientName)
+				@Html.EditorFor(f => f.Filter.ClientName)
+			</div>
+			<div class="display-item">
+				@Html.LabelFor(f => f.Filter.ClientId)
+				@Html.EditorFor(f => f.Filter.ClientId)
+			</div>
+
+			<div class="display-item">
+				@Html.LabelFor(f => f.Filter.ReportedOnly)
+				@Html.DropDownListFor(f => f.Filter.ReportedOnly, Model.Filter.ReportedOnlySelectList)
+			</div>
+
+
+
+			<div class="display-item">
+				<button type="button" class="filter">
+					Go
+				</button>
+				<button type="button" class="reset">
+					Reset
+				</button>
+			</div>
+
+
+
+		</td>
+	</tr>
+</table>
+<table class="filter horizontal">
+	<tr>
+		<th style="white-space: nowrap">
+			@Html.LabelFor(f => f.FilterByMonth.SelMonth)
+			&nbsp;&nbsp;&nbsp;&nbsp;
+		</th>
+		<td style="width: 100%">
+
+			<div class="display-item">
+
+				@Html.DropDownListFor(f => f.FilterByMonth.SelMonth, Model.FilterByMonth.MonthsSelectList, new { @class = "month", @onchange = " dataTable.fnDraw(); hideColumns();  " })
+				@Model.FilterByMonth.SelYear
+			</div>
+
+
+		</td>
+	</tr>
+</table>
+@using (Html.BeginForm("SaveSoupKitchensReport", "SubReports"))
+{
+
+
+	<table class="grid">
+		<thead>
+			<tr>
+			<tr>
+				<th name="id" class="ui-state-default">&nbsp;</th>
+
+				<th name="cl_name" class="ui-state-default">&nbsp;</th>
+				<th name="cl_lastname" class="ui-state-default">&nbsp;</th>
+				<th name="cl_firtsname" class="ui-state-default">&nbsp;</th>
+				<th name="cl_approval_status" class="ui-state-default">&nbsp;</th>
+
+				<th name="1" class="weekday ui-state-default">&nbsp;&nbsp;&nbsp;</th>
+				<th name="2" class="weekday ui-state-default">&nbsp;&nbsp;&nbsp;</th>
+				<th name="3" class="weekday ui-state-default">&nbsp;&nbsp;&nbsp;</th>
+				<th name="4" class="weekday ui-state-default">&nbsp;&nbsp;&nbsp;</th>
+				<th name="5" class="weekday ui-state-default">&nbsp;&nbsp;&nbsp;</th>
+				<th name="6" class="weekday ui-state-default">&nbsp;&nbsp;&nbsp;</th>
+				<th name="7" class="weekday ui-state-default">&nbsp;&nbsp;&nbsp;</th>
+				<th name="8" class="weekday ui-state-default">&nbsp;&nbsp;&nbsp;</th>
+				<th name="9" class="weekday ui-state-default">&nbsp;&nbsp;&nbsp;</th>
+				<th name="10" class="weekday ui-state-default">&nbsp;&nbsp;&nbsp;</th>
+				<th name="11" class="weekday ui-state-default">&nbsp;&nbsp;&nbsp;</th>
+				<th name="12" class="weekday ui-state-default">&nbsp;&nbsp;&nbsp;</th>
+				<th name="13" class="weekday ui-state-default">&nbsp;&nbsp;&nbsp;</th>
+				<th name="14" class="weekday ui-state-default">&nbsp;&nbsp;&nbsp;</th>
+				<th name="15" class="weekday ui-state-default">&nbsp;&nbsp;&nbsp;</th>
+				<th name="16" class="weekday ui-state-default">&nbsp;&nbsp;&nbsp;</th>
+				<th name="17" class="weekday ui-state-default">&nbsp;&nbsp;&nbsp;</th>
+				<th name="18" class="weekday ui-state-default">&nbsp;&nbsp;&nbsp;</th>
+				<th name="19" class="weekday ui-state-default">&nbsp;&nbsp;&nbsp;</th>
+				<th name="20" class="weekday ui-state-default">&nbsp;&nbsp;&nbsp;</th>
+				<th name="21" class="weekday ui-state-default">&nbsp;&nbsp;&nbsp;</th>
+				<th name="22" class="weekday ui-state-default">&nbsp;&nbsp;&nbsp;</th>
+				<th name="23" class="weekday ui-state-default">&nbsp;&nbsp;&nbsp;</th>
+				<th name="24" class="weekday ui-state-default">&nbsp;&nbsp;&nbsp;</th>
+				<th name="25" class="weekday ui-state-default">&nbsp;&nbsp;&nbsp;</th>
+				<th name="26" class="weekday ui-state-default">&nbsp;&nbsp;&nbsp;</th>
+				<th name="27" class="weekday ui-state-default">&nbsp;&nbsp;&nbsp;</th>
+				<th name="28" class="weekday ui-state-default">&nbsp;&nbsp;&nbsp;</th>
+				<th name="29" class="weekday ui-state-default">&nbsp;&nbsp;&nbsp;</th>
+				<th name="30" class="weekday ui-state-default">&nbsp;&nbsp;&nbsp;</th>
+				<th name="31" class="weekday ui-state-default">&nbsp;&nbsp;&nbsp;</th>
+
+				<th name="visit_count" class="ui-state-default">&nbsp;</th>
+
+				@if (Model.CanBeEdited)
+				{
+					<th ui-state-default>&nbsp;&nbsp;&nbsp;</th>
+				}
+			</tr>
+
+
+			<tr>
+
+				<th>ID</th>
+
+				<th dataname="name_count" datatype="string" class="edit string">
+					Client Name
+				</th>
+				<th dataname="last_name_count" datatype="string" class="edit string">
+					Client Last Name
+				</th>
+				<th dataname="first_name_count" datatype="string" class="edit string">
+					Client First Name
+				</th>
+				<th dataname="approval_status_count" datatype="string" class="edit string">
+					Client Approval Status
+				</th>
+				<th dataname="dlist1" datatype="bool" class="edit bool">1</th>
+				<th dataname="dlist2" datatype="bool" class="edit bool">2</th>
+				<th dataname="dlist3" datatype="bool" class="edit bool">3</th>
+				<th dataname="dlist4" datatype="bool" class="edit bool">4</th>
+				<th dataname="dlist5" datatype="bool" class="edit bool">5</th>
+				<th dataname="dlist6" datatype="bool" class="edit bool">6</th>
+				<th dataname="dlist7" datatype="bool" class="edit bool">7</th>
+				<th dataname="dlist8" datatype="bool" class="edit bool">8</th>
+				<th dataname="dlist9" datatype="bool" class="edit bool">9</th>
+				<th dataname="dlist10" datatype="bool" class="edit bool">10</th>
+				<th dataname="dlist11" datatype="bool" class="edit bool">11</th>
+				<th dataname="dlist12" datatype="bool" class="edit bool">12</th>
+				<th dataname="dlist13" datatype="bool" class="edit bool">13</th>
+				<th dataname="dlist14" datatype="bool" class="edit bool">14</th>
+				<th dataname="dlist15" datatype="bool" class="edit bool">15</th>
+				<th dataname="dlist16" datatype="bool" class="edit bool">16</th>
+				<th dataname="dlist17" datatype="bool" class="edit bool">17</th>
+				<th dataname="dlist18" datatype="bool" class="edit bool">18</th>
+				<th dataname="dlist19" datatype="bool" class="edit bool">19</th>
+				<th dataname="dlist20" datatype="bool" class="edit bool">20</th>
+				<th dataname="dlist21" datatype="bool" class="edit bool">21</th>
+				<th dataname="dlist22" datatype="bool" class="edit bool">22</th>
+				<th dataname="dlist23" datatype="bool" class="edit bool">23</th>
+				<th dataname="dlist24" datatype="bool" class="edit bool">24</th>
+				<th dataname="dlist25" datatype="bool" class="edit bool">25</th>
+				<th dataname="dlist26" datatype="bool" class="edit bool">26</th>
+				<th dataname="dlist27" datatype="bool" class="edit bool">27</th>
+				<th dataname="dlist28" datatype="bool" class="edit bool">28</th>
+				<th dataname="dlist29" datatype="bool" class="edit bool">29</th>
+				<th dataname="dlist30" datatype="bool" class="edit bool">30</th>
+				<th dataname="dlist31" datatype="bool" class="edit bool">31</th>
+
+				<th dataname="visit_count" datatype="int" class="edit int">
+					Meal Count
+				</th>
+
+				@if (Model.CanBeEdited)
+				{
+					<th>&nbsp;</th>
+				}
+			</tr>
+		</thead>
+		<tbody></tbody>
+	</table>
+}
+<div id="totals">
+	@Html.Partial(Model.Totals.ViewName, Model.Totals)
+</div>
+<p>
+	<a href="@Url.Action("details", "MainReports" , new { id=Model.MainReportId })" class="button">Go to Financial Report </a>
+	@if (Model.CanBeEdited)
+	{
+		<a href="@Url.Action("create", "SubReports" , new { id=Model.Id, appbudgetserviceid=Model.AppBudgetServiceId, mainreportid=Model.MainReportId })" class="button">Import</a>
+	}
+	@if (Model.CanBeEdited)
+	{
+		<button type="button" class="button" onclick="setToDef()">
+			Set To Default
+		</button>
+		<script>
+                function setToDef() {
+                    dalert(function () {
+                        var d = {
+                            Id: '@Model.Id'
+                        };
+                        $.ajax({
+                            type: 'POST',
+                            url: '@Url.Action("DeleteChildReportRows")',
+                            data: d,
+                            success: function (data) {
+                                location.reload();
+                            },
+                            error: function () {
+                                alert('error');
+                            }
+                        });
+
+                    })
+                }
+                function dalert(yesCallback) {
+                    $('<div></div>').html('All Sub Report Record will be deleted, continue ?').dialog({
+                        modal: true,
+                        buttons: {
+                            "Yes": function () {
+                                $(this).dialog("close");
+                                $(this).dialog("destroy");
+                                yesCallback();
+                            },
+                            "No": function () {
+                                $(this).dialog("close");
+                                $(this).dialog("destroy");
+
+                            }
+                        }
+
+                    });
+                }
+		</script>
+
+	}
+</p>

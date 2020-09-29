@@ -1,0 +1,96 @@
+﻿@model AgencyClientPickerModel
+@{
+    
+    var id = Guid.NewGuid();
+}
+<script type="text/javascript">
+    var agencyFieldId = '#@Html.FieldIdFor(model => model.AgencyId)';
+    var agencyGroupFieldId = '#@Html.FieldIdFor(model => model.AgencyGroupId)';
+    var clientFieldId = '#@Html.FieldIdFor(model => model.ClientId)';
+
+    var originalValues = {
+        ClientId: '@Model.ClientId',
+        AgencyId: '@Model.AgencyId',
+        AgencyGroupId: '@Model.AgencyGroupId'
+    };
+
+    $(function () {
+
+        $(agencyFieldId).change(function () {
+            getClients($(this).val());
+        });
+
+        $(agencyGroupFieldId).change(function () {
+            getAgencies($(this).val());
+        });
+
+
+        $(clientFieldId).change(function () {
+            $('#@id').button('option', 'disabled', !$(this).val());
+        }).change();
+
+
+        $('#@id').click(function () {
+            var baseUrl = '@Url.Content("~/Clients/Details/")';
+            window.location.href = baseUrl + $(clientFieldId).val();
+        });
+    });
+
+    function getClients(agencyId) {
+        var url = '@Url.Content("~/Data/DataService.svc/Clients?")';
+        url += "$select=Id,FirstName,LastName";
+        url += "&$filter=AgencyId eq " + agencyId;
+        $( clientFieldId).html('<oprion value="">...</option>');
+        $.ajax({
+            url: url,
+            dataType: 'json',
+            success: function (data, textStatus, jqXHR) {
+                var options = ["<option></option>"];
+                $(clientFieldId).html('');
+                for (var i = 0; i < data.d.length; i++) {
+                    var a = data.d[i];
+                    var option = "<option value=" + a.Id + ">" + a.FirstName + " " + a.LastName + " (ccid:" + a.Id + ")</option>";
+                    $(clientFieldId).append(option);
+
+                }
+                $(clientFieldId).change();
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+            }
+        });
+    }
+    function getAgencies(agencyGroupId) {
+        var url = '@Url.Content("~/Data/DataService.svc/Agencies?")';
+        url += "$select=Id,Name";
+        if (agencyGroupId)
+        { url += "&$filter=GroupId eq " + agencyGroupId; }
+        $(agencyFieldId).html('<oprion value="">...</option>');
+        $.ajax({
+            url: url,
+            dataType: 'json',
+            success: function (data, textStatus, jqXHR) {
+                var options = [];
+                $(agencyFieldId).html('');
+                for (var i = 0; i < data.d.length; i++) {
+                    var a = data.d[i];
+                    var option = "<option value=" + a.Id + ">" + a.Name + " (ccid:" + a.Id + ")</option>";
+                    $(agencyFieldId).append(option);
+
+                }
+                $(agencyFieldId).change();
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+            }
+        });
+    }
+</script>
+
+<div class="hidden">
+    Agency Group:
+    @Html.DropDownListFor(model => model.AgencyGroupId, new SelectList((IEnumerable<SelectListItem>)ViewBag.AgencyGroups, "Value", "Text", Model.AgencyGroupId), " ")</div>
+
+Agency:
+@Html.DropDownListFor(model => model.AgencyId, new SelectList((IEnumerable<SelectListItem>)ViewBag.Agencies, "Value", "Text", Model.AgencyId), " ")
+Client:
+@Html.DropDownListFor(model => model.ClientId, new SelectListItem[]{})
+<button id="@id">Go</button>

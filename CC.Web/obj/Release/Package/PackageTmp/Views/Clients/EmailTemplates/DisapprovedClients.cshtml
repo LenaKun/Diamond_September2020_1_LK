@@ -1,0 +1,12 @@
+﻿@model DisapprovedClientsEmailModel
+@{
+	Layout = "~/Views/Shared/LayoutForEmail.cshtml";
+}
+
+<p>Clients being marked as "not approved":</p>
+<ul>
+	@foreach (var item in Model.Clients)
+	{
+		<li>@item.Name <a href="@Url.AbsoluteAction("Details", "Clients", new { id = item.Id })">Details</a> disapproved at: @item.Date</li>
+	}
+</ul>

@@ -1,0 +1,12 @@
+﻿@model AppBudget
+@{
+	Layout = "~/Views/Shared/LayoutForEmail.cshtml";
+}
+
+
+<p>
+	We are pleased to inform you, that your budget App approval for <a href="@Url.AbsoluteAction("Details", "AppBudgets", new { id = Model.Id })">@Model.App.Name
+		(id: @Model.Id)</a> has been approved.
+</p>
+<p>
+	You may now proceed to creating reports under this App.</p>

@@ -1,0 +1,257 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Text;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+
+namespace CC.Data
+{
+	[MetadataType(typeof(CC.Data.MetaData.AppBudgetMetaData))]
+	public partial class AppBudget : IValidatableObject
+	{
+		public AppBudget()
+		{
+			this.ApprovalStatus = AppBudgetApprovalStatuses.New;
+		}
+
+
+		#region misc
+
+		public bool IsRequiredMatchOk()
+		{
+			if (this.App == null)
+			{
+				return false;
+			}
+			else if (this.App.RequiredMatch > 0)
+			{
+				var actual = this.AppBudgetServices.Sum(f => f.RequiredMatch);
+				return actual >= this.App.RequiredMatch; //WAS == corrected
+			}
+			else
+			{
+				return true;
+			}
+		}
+
+
+		public virtual string StatusName
+		{
+			get
+			{
+				return this.ApprovalStatus.ToString().SplitCapitalizedWords();
+			}
+		}
+
+
+		public bool IsConditional()
+		{
+			return this.ValidUntill.HasValue;
+		}
+
+		public IEnumerable<string> AdditionalStatuses
+		{
+			get
+			{
+				if (this.IsConditional())
+					yield return "Conditional";
+				if (this.Revised)
+					yield return " *Revised";
+			}
+		}
+
+		[UIHint("Enum")]
+		public AppBudgetApprovalStatuses ApprovalStatus { get { return (AppBudgetApprovalStatuses)this.StatusId; } set { this.StatusId = (int)value; } }
+
+		public string StatusDisplay { get { return this.ApprovalStatus.ToString() + " (" + string.Join(", ", this.AdditionalStatuses) + ")"; } }
+
+		public Func<AppBudget, bool> CanSubmitReport
+		{
+			get
+			{
+
+				Func<AppBudget, bool> f = (a) =>
+				{
+					return (a.ApprovalStatus == AppBudgetApprovalStatuses.Approved);
+					//&& fund period is valid
+					//&& conditional approved untill is valid)
+
+				};
+
+
+				return f;
+			}
+		}
+
+		public IEnumerable<KeyValuePair<int?, string>> ApprovalStatuses
+		{
+			get
+			{
+				return EnumExtensions.EnumToDictionary<AppBudgetApprovalStatuses>();
+			}
+		}
+
+		public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+		{
+			var instance = validationContext.ObjectInstance as AppBudget;
+
+
+
+			//if (!instance.IsRequiredMatchOk())
+			//{
+			//    yield return new ValidationResult("The sum of the Required Match is less than required.");
+			//}
+
+
+
+			if (instance.ValidUntill.HasValue)
+			{
+				if (instance.ValidUntill.Value == instance.App.StartDate || instance.ValidUntill.Value == instance.App.EndDate)
+				{
+					yield return new ValidationResult("Valid Untill date can not be equal to app start date or app end date");
+				}
+				else if (instance.ValidUntill.Value <= instance.App.StartDate || instance.App.EndDate <= instance.ValidUntill.Value)
+				{
+					var message = string.Format("Valid Untill date must be between app start date ({0}) and app end date ({1}).", instance.App.StartDate, instance.App.EndDate);
+					yield return new ValidationResult(message, new string[] { instance.GetPropertyInfo((AppBudget f) => f.ValidUntill).Name });
+				}
+			}
+
+			if (this.Id != default(int) && (this.StatusId == (int)AppBudgetApprovalStatuses.New || this.StatusId == (int)AppBudgetApprovalStatuses.ReturnedToAgency))
+			{
+				//validate total cc grant
+				using (var db = new ccEntities())
+				{
+<<<<<<< HEAD
+					var ccGrant = db.AppBudgetServices.Where(f => f.AppBudgetId == this.Id).Sum(f => (decimal?)f.CcGrant);
+                    if (ccGrant.HasValue)
+                    {
+                        var appgrant = db.AppBudgets.Where(f => f.Id == this.Id).Select(f => f.App.CcGrant).SingleOrDefault();
+                        if (new CcMoneyComparer().Compare(ccGrant.Value, appgrant) > 0)
+                        {
+                            yield return new ValidationResult("Total CC Grant requested exceeded CC Grant for this budget.");
+                        }
+                    }
+=======
+					var ccGrant = db.AppBudgetServices.Where(f => f.AppBudgetId == this.Id).Sum(f => f.CcGrant);
+					var appgrant = db.AppBudgets.Where(f => f.Id == this.Id).Select(f => f.App.CcGrant).SingleOrDefault();
+					if (CCDecimals.Truncate(ccGrant - appgrant, CCDecimals.CompareDigits) > 0)
+					{
+						yield return new ValidationResult("Total CC Grant requested exceeded CC Grant for this budget.");
+					}
+>>>>>>> dicimal comparison
+				}				
+
+				using (var db = new ccEntities())
+				{
+					var appbs = db.AppBudgetServices.Where(f => f.AppBudgetId == this.Id);
+
+					var totalAmount = appbs.Sum(f => (decimal?)f.CcGrant);
+
+					var q = from c in Queries.GetServiceConstraints(db, this.AppId)
+							join s in db.Services on c.ServiceId equals s.Id
+							join a in
+								(from appbudgetService in appbs
+								 group appbudgetService by appbudgetService.ServiceId into appBudgetServiceGroup
+								 select new
+								 {
+									 ServiceTypeId = appBudgetServiceGroup.Key,
+									 Amount = (decimal?)appBudgetServiceGroup.Sum(f => f.CcGrant) ?? 0
+								 }) on c.ServiceId equals a.ServiceTypeId into ag
+							from a in ag.DefaultIfEmpty()
+							select new
+							{
+								ServiceId = c.ServiceId,
+								Name = s.Name,
+								Max = c.MaxExpPercentage,
+								Min = c.MinExpPercentage,
+								Amount = (decimal?)a.Amount ?? 0
+							};
+					foreach (var item in q.Where(f => CCDecimals.Truncate(f.Amount - totalAmount * f.Max, CCDecimals.CompareDigits) > 0))
+					{
+						yield return new ValidationResult(string.Format("CC Grant requested for \"{0}\" service exceeded maximum {1} of total CC Grant for this budget.",
+							item.Name,
+							(item.Max ?? 0).ToString("p")));
+					}
+					foreach (var item in q.Where(f => CCDecimals.Truncate(f.Amount - totalAmount * f.Min, CCDecimals.CompareDigits) < 0))
+					{
+						yield return new ValidationResult(string.Format("{0} minimum percentage ({1}) is not met", item.Name, (item.Min ?? 0).ToString("p")));
+					}
+
+					var stcs = from c in Queries.GetServiceTypeConstraints(db, this.AppId)
+							   join s in db.ServiceTypes on c.ServiceTypeId equals s.Id
+							   join a in
+								   (from appbudgetService in appbs
+									group appbudgetService by appbudgetService.Service.TypeId into appBudgetServiceGroup
+									select new
+									{
+										ServiceTypeId = appBudgetServiceGroup.Key,
+										Amount = (decimal?)appBudgetServiceGroup.Sum(f => f.CcGrant) ?? 0
+									}) on c.ServiceTypeId equals a.ServiceTypeId into ag
+							   from a in ag.DefaultIfEmpty()
+
+							   select new
+							   {
+								   ServiceId = c.ServiceTypeId,
+								   Name = s.Name,
+								   Max = c.MaxExpPercentage,
+								   Min = c.MinExpPercentage,
+								   Amount = (decimal?)a.Amount ?? 0
+							   };
+
+					foreach (var item in stcs.Where(f => CCDecimals.Truncate(f.Amount - totalAmount * f.Max, CCDecimals.CompareDigits) > 0))
+					{
+						yield return new ValidationResult(string.Format("CC Grant requested for \"{0}\" services exceeded maximum {1} of total CC Grant for this budget.",
+							item.Name,
+							(item.Max ?? 0).ToString("p")));
+					}
+					foreach (var item in stcs.Where(f => CCDecimals.Truncate(f.Amount - totalAmount * f.Min, CCDecimals.CompareDigits) < 0))
+					{
+						yield return new ValidationResult(string.Format("{0} minimum percentage ({1}) is not met", item.Name, (item.Min ?? 0).ToString("p")));
+					}
+
+				}
+			}
+		}
+
+		public IEnumerable<ValidationResult> GetWarnings(ValidationContext validationContext)
+		{
+			var instance = validationContext.ObjectInstance as AppBudget;
+			if (instance.App != null && instance.AppBudgetServices != null)
+			{
+				if (CCDecimals.Truncate(instance.App.CcGrant - instance.AppBudgetServices.Sum(f => f.CcGrant), CCDecimals.CompareDigits) < 0)
+				{
+					yield return new ValidationResult("\"Total Grant as specified by agency\" must be equal-or-lower than \"Total CC Grant\"");
+				}
+				if (instance.App.RequiredMatch > 0)
+				{
+					if (CCDecimals.Truncate(instance.App.RequiredMatch - instance.AppBudgetServices.Sum(f => f.RequiredMatch), CCDecimals.CompareDigits) > 0)
+					{
+						yield return new ValidationResult("\"Total Required Match as specified by agency\" must be equal-or-greater than \"Total Required match\"");
+					}
+				}
+				if (instance.App.AgencyContribution)
+				{
+					if (instance.AppBudgetServices.Sum(f => f.AgencyContribution) <= 0)
+					{
+						yield return new ValidationResult("\"The total Agency’s Contribution is 0, Are you sure?");
+					}
+
+				}
+			}
+		}
+
+		#endregion
+
+
+		#region Statics
+
+		public static IEnumerable<AppBudgetApprovalStatuses> ValidStatuses { get { return new List<AppBudgetApprovalStatuses>() { AppBudgetApprovalStatuses.Approved }; } }
+		public static Func<AppBudget, bool> IsApproved { get { return f => f.StatusId == (int)AppBudgetApprovalStatuses.Approved; } }
+		public static Func<AppBudget, bool> IsEditable { get { return f => f.StatusId == (int)AppBudgetApprovalStatuses.New || f.StatusId == (int)AppBudgetApprovalStatuses.ReturnedToAgency; } }
+
+		#endregion
+	}
+}

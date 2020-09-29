@@ -1,0 +1,56 @@
+﻿@{
+	Layout = null;
+}
+
+<table id="ClientContactsTable"></table>
+
+<script>
+	$(function () {
+		var CanDelete = '@ViewBag.CanDelete' == 'True';
+		var oTable = $('#ClientContactsTable').dataTable({
+			"aaSorting": [[0, "desc"]],
+			"bServerSide": true,
+			"sAjaxSource": '@Url.Action("IndexData", "ClientContacts", new { ClientId = Model })',
+			"fnServerParams": function (aoData) {
+				aoData.push({ name: "ClientId", value: parseInt('@Model') });
+			},
+			"aoColumns": [
+				{ mData: "Id", sTitle: "Id" },
+				{ mData: "DateOfContact", sTitle: "Date Of Contact", mRender: function (a) { return renderDate(a); } },
+				{ mData: "Contacted", sTitle: "Contacted" },
+				{ mData: "ContactedUsing", sTitle: "Contacted Using" },
+				{ mData: "CcStaffContact", sTitle: "CC Staff Contact" },
+				{ mData: "ReasonForContact", sTitle: "Reason For Contact" },
+				{ mData: "ResponseRecievedDate", sTitle: "Response Recieved", mRender: function (a) { return renderDate(a); } },
+				{ mData: "EntryDate", sTitle: "Entry Date", mRender: function (a) { return renderDate(a); } },
+				{ mData: "UserName", sTitle: "Username" },
+				{
+					mData: "DocumentName",
+					sTitle: "Document Name",
+					mRender: function (a, b, c) {
+						if (a == null) {
+							return null;
+						}
+						else {
+							return '<a href="@Url.Action("Download")/' + c.Id + '">' + a + '</a>';
+						}
+					}
+				},
+				{
+					"mData": "Id",
+					sTitle: "",
+					"bSortable": false,
+					"mRender": function (a) {
+						var result = '<a href="@Url.Action("Edit")/' + a + '">Edit</a> | ';
+						result += '<a href="@Url.Action("Details")/' + a + '">Details</a>';
+						if (CanDelete) {
+							result += ' | <a href="@Url.Action("Delete")/' + a + '">Delete</a>';
+						}
+						return result;
+					}
+				}
+			]
+		});
+	});
+</script>
+<a href="@Url.Action("Create","ClientContacts", new{ClientId = Model})">Add New</a>

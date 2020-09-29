@@ -1,0 +1,218 @@
+﻿@model CC.Web.Models.AppBudgetEditModel
+@section Header{
+	<script>
+		window.updateTotals = function () {
+			$('div#totals').load('@Url.Action("Totals", new { id = Model.AppBudget.Id })' + '?IE=' + Math.random());
+		};
+		window.updateCcGrant = function (id) {
+			var xhr = $.get('@Url.Action("CCGrant")' + '/' + id, function (ccgrant) {
+				var dataTable = $('table.#@Html.FieldIdFor(f=>f.AppBudgetServices)').dataTable();
+				var $tr = $('table.#@Html.FieldIdFor(f=>f.AppBudgetServices) tr[id="' + id + '"]');
+				var tr = $tr.get(0);
+				dataTable.fnUpdate(ccgrant, tr, 4);
+			});
+		};
+	</script>
+}
+<h2>
+	Edit
+</h2>
+
+
+@using (Html.BeginForm())
+{
+	@Html.HiddenFor(f => f.AppBudget.Id);	
+	@Html.Partial("Header", Model.AppBudget)
+	
+	<form>
+	@Html.Grid(Model.AppBudgetServices).Attributes(new Dictionary<string,object>{ {"id",Html.FieldIdFor(f=>f.AppBudgetServices)}}).Columns(column =>
+	{
+		column.For(f => f.Id);
+		column.For(f => f.AgencyName).Named("Agency");
+		column.For(f => f.ServiceType).Named("Service Type");
+		column.For(f => f.ServiceName).Named("Service");
+		column.For(f => f.CCGrant.Format()).Named("CC Grant");
+		column.For(f => f.CurrencyCode).Named("CUR");
+		column.For(f => f.RequiredMatch.Format()).Named("Required Match");
+		column.For(f => f.CurrencyCode).Named("CUR");
+		column.For(f => f.AgencyContribution.Format()).Named("Agency Contribution");
+		column.For(f => f.CurrencyCode).Named("CUR");
+		column.For(f => f.Remarks).Named("Remarks");
+		column.For(f => string.Empty).Named(string.Empty);
+        column.For(f => f.ServicePersonnel);
+	})
+	</form>
+	
+									 if (Model.AppBudgetServices.Any())
+									 {
+	<script>
+		$(document).ready(function () {
+
+			var oTable = $('table.#@Html.FieldIdFor(f=>f.AppBudgetServices)').dataTable({
+				"bJQueryUI": true,
+				"sPaginationType": "full_numbers",
+				"aaSorting": [[1, "asc"], [2, "asc"], [3, "asc"]],
+				"fnRowCallback": function (nRow, aData, iDisplayIndex) { $(nRow).attr("id", aData[0]); return nRow; },
+				"aoColumnDefs": [
+					{
+						"aTargets": [0, 12], "bVisible": false
+					},
+					{
+						"aTargets": [4], "sClass": "ccgrant"
+					},
+					{
+						"aTargets": [11],
+						"mValue": '10',
+						"bSortable": false,
+						"mRender": function (data, type, full) {
+							var html = '<button type="button" class="edit">Edit</button>';
+							if (full[12] == "True") {
+								html += '<button type="button" class="personnel">Personnel</button>';
+							}
+							return html;
+						}
+					}
+				]
+			});
+
+			$('table.#@Html.FieldIdFor(f=>f.AppBudgetServices) > tbody > tr> td:last-child > button.edit').live('click', function () {
+				var $tr = $(this).closest('tr');
+				var tr = $tr.get(0);
+				var data = $('table.#@Html.FieldIdFor(f=>f.AppBudgetServices)').dataTable().fnGetData(tr);
+
+				//close all rows
+				$('table.#@Html.FieldIdFor(f=>f.AppBudgetServices)').not(tr).find('button.cancel').click();
+
+				makeEditable($tr, tr, data);
+
+				$tr.find('td:last-child').html('<button type="button" class="update">Update</button>' + '<button type="button" class="cancel">Cancel</button>');
+			});
+			function makeEditable($tr, tr, data) {
+				var servicePersonnel = data[12];
+				if (servicePersonnel != "True") {
+					$tr.find('td:nth-child(4)').html('<input type="text" class="required number" name="@Html.FieldNameFor(f => f.AppBudgetServices.First().CCGrant)" value="' + new String(data[4]).replace(',', '') + '"/>');
+				}
+				$tr.find('td:nth-child(6)').html('<input type="text" class="required number" name="@Html.FieldNameFor(f => f.AppBudgetServices.First().RequiredMatch)" value="' + new String(data[6]).replace(',', '') + '"/>');
+				$tr.find('td:nth-child(8)').html('<input type="text" class="required number" name="@Html.FieldNameFor(f => f.AppBudgetServices.First().AgencyContribution)" value="' + new String(data[8]).replace(',', '') + '"/>');
+				$tr.find('td:nth-child(10)').html('<input type="text" name="@Html.FieldNameFor(f => f.AppBudgetServices.First().Remarks)" value="' + data[10] + '"/>');
+			}
+			$('table.#@Html.FieldIdFor(f=>f.AppBudgetServices) > tbody > tr> td:last-child > button.cancel').live('click', function () {
+				var $tr = $(this).closest('tr');
+				var tr = $tr.get(0);
+				var dataTable = $('table.#@Html.FieldIdFor(f=>f.AppBudgetServices)').dataTable();
+				var data = dataTable.fnGetData(tr);
+
+				dataTable.fnUpdate(data, tr);
+
+			})
+			$('table.#@Html.FieldIdFor(f=>f.AppBudgetServices) > tbody > tr> td:last-child > button.update').live('click', function () {
+				var form = $(this).closest('form');
+				form.validate();
+				if (form.valid()) {
+					var $tr = $(this).closest('tr');
+					var tr = $tr.get(0);
+					var dataArray = $('table.#@Html.FieldIdFor(f=>f.AppBudgetServices)').dataTable().fnGetData(tr);
+					var d = {
+						appBudgetId: '@Model.AppBudget.Id',
+						Id: dataArray[0],
+						IE: Math.random()
+					};
+					$tr.find('input').each(function (index, Element) {
+						var el = $(Element);
+						d[el.attr('name')] = el.val();
+					});
+
+					$.ajax({
+						url: '@Url.Action("UpdateAppBudgetService")',
+						type: 'POST',
+						data: d,
+						success: function (data, textStatus, jqXHR) {
+
+							var dt = $('table.#@Html.FieldIdFor(f=>f.AppBudgetServices)').dataTable();
+							var originalData = dt.fnGetData(tr);
+
+							dt.fnUpdate(d.RequiredMatch, tr, 6, false);
+							dt.fnUpdate(d.AgencyContribution, tr, 8, false);
+							dt.fnUpdate(d.Remarks, tr, 10, false);
+
+
+							var servicePersonnel = dataArray[12];
+							var ccgrant = 0;
+							if (servicePersonnel != "True") {
+								ccgrant = d.CCGrant.parseDecimal().formatMoney();
+								dt.fnUpdate(ccgrant, tr, 4, false);
+								$tr.find('td:last-child').html('<button type="button" class="edit">Edit</button>');
+							}
+
+							//re-render the last cell
+							dt.fnUpdate(originalData[11], tr, 11, false);
+
+							//tr.find('input.cancel').click();
+							//not needed. but the html of the last cell does not change
+
+							window.updateTotals();
+
+						},
+						error: function (jqXHR, textStatus, errorThrown) {
+							alert(textStatus);
+						}
+					});
+					}
+			});
+			$('table.#@Html.FieldIdFor(f=>f.AppBudgetServices) > tbody > tr> td:last-child > button.personnel').live('click', function () {
+				var $tr = $(this).closest('tr');
+				var tr = $tr.get(0);
+				var dataArray = $('table.#@Html.FieldIdFor(f=>f.AppBudgetServices)').dataTable().fnGetData(tr);
+				var url = '@Url.Action("Personnel")' + '/' + dataArray[0] + '?edit=true';
+				var id = dataArray[0];
+
+				var dialog = $('div#p' + id);
+				if (dialog.length == 0) {
+					var dialog = $('<div></div>').attr('id', 'p' + id).append($('<form/>').load(url));
+					dialog.appendTo('body');
+				}
+
+
+				$(dialog).dialog({
+					modal: true,
+					open: function () {
+						$(this).find('table.dataTable').each(function () {
+							$this = $(this);
+							if ($.fn.DataTable.fnIsDataTable($this.get(0))) {
+								$this.dataTable().fnDraw();
+							};
+						});
+
+					},
+					close: function () {
+
+					},
+					height: 700,
+					width: 900,
+					title: 'Personnel  (Agency:' + dataArray[1] + ', Service:' + dataArray[1] + ')',
+					buttons: [{
+						text: "Close", click: function () {
+
+							$(this).dialog("close");
+
+
+						}
+					}]
+				});
+			});
+
+		});
+
+
+	</script>
+									 }
+
+}
+<div id="totals">
+	@Html.Action("Totals", new { id = Model.AppBudget.Id })
+</div>
+
+<p>
+	<a class="button submit" href="@Url.Action("Details", "AppBudgets", new { id = Model.AppBudget.Id })">Review Budget and Submit</a>
+</p>
+

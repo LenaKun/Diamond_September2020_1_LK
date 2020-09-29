@@ -1,0 +1,379 @@
+﻿using System.Web.Mvc;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Linq;
+using System.Reflection;
+using System.Linq.Expressions;
+using System.Data.Objects;
+using System.Collections.Generic;
+using Microsoft.VisualStudio.TestTools.UnitTesting.Web;
+using System.Web;
+using Moq;
+
+namespace CC.Data.Tests
+{
+    
+    
+    /// <summary>
+    ///This is a test class for CcAuthorizeAttributeTest and is intended
+    ///to contain all CcAuthorizeAttributeTest Unit Tests
+    ///</summary>
+    [TestClass()]
+    public class CcAuthorizeAttributeTest
+    {
+
+
+        private TestContext testContextInstance;
+
+        /// <summary>
+        ///Gets or sets the test context which provides
+        ///information about and functionality for the current test run.
+        ///</summary>
+        public TestContext TestContext
+        {
+            get
+            {
+                return testContextInstance;
+            }
+            set
+            {
+                testContextInstance = value;
+            }
+        }
+
+        #region Additional test attributes
+        // 
+        //You can use the following additional attributes as you write your tests:
+        //
+        //Use ClassInitialize to run code before running the first test in the class
+        //[ClassInitialize()]
+        //public static void MyClassInitialize(TestContext testContext)
+        //{
+        //}
+        //
+        //Use ClassCleanup to run code after all tests in a class have run
+        //[ClassCleanup()]
+        //public static void MyClassCleanup()
+        //{
+        //}
+        //
+        //Use TestInitialize to run code before running each test
+        //[TestInitialize()]
+        //public void MyTestInitialize()
+        //{
+        //}
+        //
+        //Use TestCleanup to run code after each test has run
+        //[TestCleanup()]
+        //public void MyTestCleanup()
+        //{
+        //}
+        //
+        #endregion
+
+
+<<<<<<< HEAD
+        public class myIdentity : System.Security.Principal.IIdentity //dummy identity
+        {
+            public bool IsAuthenticated
+            { get; set; }
+            public string Name
+            { get; set; }
+            public string AuthenticationType 
+            {get;set;}
+        }
+        
+        class myUser : System.Security.Principal.IPrincipal // dummy user
+        {
+            public FixedRoles role
+            { get; set; }
+            public bool IsInRole(string _role)
+            {
+                return role.ToString().Equals(_role);
+            }
+            public  System.Security.Principal.IIdentity Identity
+            { get { return (System.Security.Principal.IIdentity)id; } set { id = (myIdentity)value; } }
+            private myIdentity id;
+        }
+
+        class myHttpContext : HttpContextBase  // dummy context
+        {
+            public override System.Security.Principal.IPrincipal User
+            { get; set; }
+        }
+       /* class MockDB : ccEntities
+        {
+           // public MockDB() { MembershipUsers = new List<MembershipUser>(); }
+            public List<MembershipUser> MembershipUsers
+            {
+                get;
+                set;
+            }
+            private ObjectSet<MembershipUser> _membershipUsers;
+        }*/
+        /// <summary>
+        /// 
+        /// </summary>
+        [TestMethod()]
+        public void AuthorizeCoreTest()
+        {
+            CcAuthorizeAttribute_Accessor target = new CcAuthorizeAttribute_Accessor(FixedRoles.Admin); // TODO: Initialize to an appropriate value
+            target.CurrentUser = new User() ;
+            //HttpContextBase httpContext = null; // TODO: Initialize to an appropriate value
+            //Mock<HttpContextWrapper> mock = new Mock<HttpContextWrapper>(new object[1] {null});
+            myHttpContext httpContext = new myHttpContext();
+            httpContext.User = new myUser();
+            ccEntities db = initDB();
+
+
+
+
+            ////should deny an empty user
+            //Assert.IsFalse(target.AuthorizeCore(httpContext));
+
+            
+            httpContext.User = new myUser() { role = FixedRoles.AgencyOfficer, Identity = new myIdentity() { Name = "YosiAgencyOfficer", IsAuthenticated = false } };
+            ////should deny unauthorized user
+            Assert.IsFalse(target.Auth(httpContext,db));
+            
+            httpContext.User = new myUser() { role = FixedRoles.AgencyOfficer, Identity = new myIdentity() { Name = "YosiAgencyOfficer", IsAuthenticated = true } };
+            ////should deny user from different role
+            Assert.IsFalse(target.Auth(httpContext, db));
+            
+            httpContext.User = new myUser() { role = FixedRoles.Admin, Identity = new myIdentity() { Name = "YosiAdmin", IsAuthenticated = true } };
+            ((myUser)(httpContext.User)).role = FixedRoles.Admin;
+            ////should allow the same role
+            Assert.IsTrue(target.Auth(httpContext, db));
+ 
+            httpContext.User = new myUser() { role = FixedRoles.AgencyUser, Identity = new myIdentity() { Name = "YosiAgencyUser", IsAuthenticated = true } };
+            ((myUser)(httpContext.User)).role = FixedRoles.AgencyUser;
+            Assert.IsFalse(target.Auth(httpContext, db));
+
+            httpContext.User = new myUser() { role = FixedRoles.GlobalOfficer, Identity = new myIdentity() { Name = "YosiGlobalOfficer", IsAuthenticated = true } };
+            ((myUser)(httpContext.User)).role = FixedRoles.GlobalOfficer;
+            Assert.IsFalse(target.Auth(httpContext, db));
+
+            httpContext.User = new myUser() { role = FixedRoles.Ser, Identity = new myIdentity() { Name = "YosiSer", IsAuthenticated = true } };
+            ((myUser)(httpContext.User)).role = FixedRoles.Ser;
+            Assert.IsFalse(target.Auth(httpContext, db));
+
+            ////should deny an empty user
+            //Assert.IsFalse(target.AuthorizeCore(httpContext));
+
+            ////should deny user from different role
+            //target.CurrentUser.RoleId = (int)FixedRoles.AgencyOfficer;
+            //Assert.IsFalse(target.AuthorizeCore(httpContext));
+            
+            ////should allow the same role
+            //target.CurrentUser.RoleId = (int)FixedRoles.Admin;
+            //Assert.IsTrue(target.AuthorizeCore(httpContext));
+
+            ////should deny undefined role
+            //target.CurrentUser.RoleId = (int)(FixedRoles.AgencyOfficer|FixedRoles.Admin);
+            //Assert.IsFalse(target.AuthorizeCore(httpContext));
+        }
+
+        [TestMethod()]
+        public void AuthorizeCoreTest2()
+        {
+            CcAuthorizeAttribute_Accessor target = new CcAuthorizeAttribute_Accessor(new FixedRoles[] {FixedRoles.Ser , FixedRoles.AgencyUser});
+            myHttpContext httpContext = new myHttpContext();
+            httpContext.User = new myUser(); // is it possible that user is not initialized ?
+            // if it is this test should return false
+            //Assert.IsFalse(target.AuthorizeCore(httpContext));
+            ccEntities db = initDB();
+
+            httpContext.User = new myUser() { role = FixedRoles.AgencyOfficer, Identity = new myIdentity() { Name = "YosiAgencyOfficer", IsAuthenticated = false } };
+            ////should deny unauthorized user
+            Assert.IsFalse(target.Auth(httpContext,db));
+
+            httpContext.User = new myUser() { role = FixedRoles.AgencyOfficer, Identity = new myIdentity() { Name = "YosiAgencyOfficer", IsAuthenticated = true } };
+            ////should deny user from different role
+            Assert.IsFalse(target.Auth(httpContext, db));
+
+            httpContext.User = new myUser() { role = FixedRoles.Admin, Identity = new myIdentity() { Name = "YosiAdmin", IsAuthenticated = true } };
+            ((myUser)(httpContext.User)).role = FixedRoles.Admin;
+            ////should allow the same role
+            Assert.IsFalse(target.Auth(httpContext, db));
+
+            httpContext.User = new myUser() { role = FixedRoles.AgencyUser, Identity = new myIdentity() { Name = "YosiAgencyUser", IsAuthenticated = true } };
+            ((myUser)(httpContext.User)).role = FixedRoles.AgencyUser;
+            Assert.IsTrue(target.Auth(httpContext, db));
+
+            httpContext.User = new myUser() { role = FixedRoles.GlobalOfficer, Identity = new myIdentity() { Name = "YosiGlobalOfficer", IsAuthenticated = true } };
+            ((myUser)(httpContext.User)).role = FixedRoles.GlobalOfficer;
+            Assert.IsFalse(target.Auth(httpContext, db));
+
+            httpContext.User = new myUser() { role = FixedRoles.Ser, Identity = new myIdentity() { Name = "YosiSer", IsAuthenticated = true } };
+            ((myUser)(httpContext.User)).role = FixedRoles.Ser;
+            Assert.IsTrue(target.Auth(httpContext, db));
+
+        }
+        [TestMethod()]
+        public void AuthorizeAttTest3()
+        {
+            // Account Controller
+            Expression<System.Action> exp = (()=>(new CC.Web.Controllers.AccountController()).Register());
+            Assert.IsTrue(CcAuthorizeAttributeTest.MethodHasAuthorizeAttribute(exp, new List<FixedRoles>() { FixedRoles.Admin }));
+            exp = (() => (new CC.Web.Controllers.AccountController()).Register(default(Web.Models.RegisterModel)));
+            Assert.IsTrue(CcAuthorizeAttributeTest.MethodHasAuthorizeAttribute(exp, new List<FixedRoles>() { FixedRoles.Admin }));
+            
+            //AppBudgetsController
+            exp = (() => (new CC.Web.Controllers.AppBudgetsController()).Submit(default(int)));
+            Assert.IsTrue(CcAuthorizeAttributeTest.MethodHasAuthorizeAttribute(exp, new List<FixedRoles>() { FixedRoles.Ser,FixedRoles.Admin }));
+            exp = (() => (new CC.Web.Controllers.AppBudgetsController()).SubmitConditional(default(int), default(DateTime), default(string)));
+            Assert.IsTrue(CcAuthorizeAttributeTest.MethodHasAuthorizeAttribute(exp, new List<FixedRoles>() { FixedRoles.Ser, FixedRoles.Admin }));
+            exp = (() => (new CC.Web.Controllers.AppBudgetsController()).Revise(default(int), default(string)));
+            Assert.IsTrue(CcAuthorizeAttributeTest.MethodHasAuthorizeAttribute(exp, new List<FixedRoles>() { FixedRoles.Ser, FixedRoles.Admin }));
+
+            exp = (() => (new CC.Web.Controllers.AppBudgetsController()).ApproveByRpo(default(AppBudget)));
+            Assert.IsTrue(CcAuthorizeAttributeTest.MethodHasAuthorizeAttribute(exp, new List<FixedRoles>() { FixedRoles.RegionOfficer, FixedRoles.Admin }));
+            exp = (() => (new CC.Web.Controllers.AppBudgetsController()).RejectByRpo(default(int), default(string)));
+            Assert.IsTrue(CcAuthorizeAttributeTest.MethodHasAuthorizeAttribute(exp, new List<FixedRoles>() { FixedRoles.RegionOfficer, FixedRoles.Admin }));
+
+            exp = (() => (new CC.Web.Controllers.AppBudgetsController()).ApproveByGpo(default(int)));
+            Assert.IsTrue(CcAuthorizeAttributeTest.MethodHasAuthorizeAttribute(exp, new List<FixedRoles>() { FixedRoles.GlobalOfficer }));
+            exp = (() => (new CC.Web.Controllers.AppBudgetsController()).RejectByGpo(default(int), default(string)));
+            Assert.IsTrue(CcAuthorizeAttributeTest.MethodHasAuthorizeAttribute(exp, new List<FixedRoles>() { FixedRoles.GlobalOfficer }));
+
+            exp = (() => (new CC.Web.Controllers.AppBudgetsController()).UpdateStatus(default(Web.Models.AppBudgetDetailsModel)));
+            Assert.IsTrue(CcAuthorizeAttributeTest.MethodHasAuthorizeAttribute(exp, new List<FixedRoles>() { FixedRoles.Admin }));
+
+            //ClientsController
+            exp = (() => (new CC.Web.Controllers.ClientsController()).ImportExistingClients());
+            Assert.IsTrue(CcAuthorizeAttributeTest.MethodHasAuthorizeAttribute(exp, new List<FixedRoles>() { FixedRoles.Admin,FixedRoles.AgencyUser,FixedRoles.Ser }));
+            exp = (() => (new CC.Web.Controllers.ClientsController()).ImportExistingClients(default(Web.Models.ExistingClientsImportModel)));
+            Assert.IsTrue(CcAuthorizeAttributeTest.MethodHasAuthorizeAttribute(exp, new List<FixedRoles>() { FixedRoles.Admin, FixedRoles.AgencyUser, FixedRoles.Ser }));
+            exp = (() => (new CC.Web.Controllers.ClientsController()).ImportHome());
+            Assert.IsTrue(CcAuthorizeAttributeTest.MethodHasAuthorizeAttribute(exp, new List<FixedRoles>() { FixedRoles.Admin, FixedRoles.AgencyUser, FixedRoles.Ser }));
+            exp = (() => (new CC.Web.Controllers.ClientsController()).ImportNewClients());
+            Assert.IsTrue(CcAuthorizeAttributeTest.MethodHasAuthorizeAttribute(exp, new List<FixedRoles>() { FixedRoles.Admin, FixedRoles.AgencyUser, FixedRoles.Ser }));
+            exp = (() => (new CC.Web.Controllers.ClientsController()).ImportNewClients(default(Web.Models.NewClientsImportModel)));
+            Assert.IsTrue(CcAuthorizeAttributeTest.MethodHasAuthorizeAttribute(exp, new List<FixedRoles>() { FixedRoles.Admin, FixedRoles.AgencyUser, FixedRoles.Ser }));
+
+            //HomeCareEntitledPeriodsController
+            exp = (() => (new CC.Web.Controllers.HomeCareEntitledPeriodsController()).Delete(default(int)));
+            Assert.IsTrue(CcAuthorizeAttributeTest.MethodHasAuthorizeAttribute(exp, new List<FixedRoles>() { FixedRoles.Admin }));
+            exp = (() => (new CC.Web.Controllers.HomeCareEntitledPeriodsController()).Delete(default(int),default(FormCollection)));
+            Assert.IsTrue(CcAuthorizeAttributeTest.MethodHasAuthorizeAttribute(exp, new List<FixedRoles>() { FixedRoles.Admin }));
+
+            //MainReportsController
+            exp = (() => (new CC.Web.Controllers.MainReportsController()).Create(default(Web.Models.MainReportCreateModel))); // 2nd version of create is not attributed !!
+            Assert.IsTrue(CcAuthorizeAttributeTest.MethodHasAuthorizeAttribute(exp, new List<FixedRoles>() { FixedRoles.Admin , FixedRoles.Ser , FixedRoles.AgencyUser}));
+            exp = (() => (new CC.Web.Controllers.MainReportsController()).AgencyRemarks(default(Web.Models.MainReportAgencyCommentsModel)));
+            Assert.IsTrue(CcAuthorizeAttributeTest.MethodHasAuthorizeAttribute(exp, new List<FixedRoles>() { FixedRoles.Admin, FixedRoles.Ser, FixedRoles.AgencyUser }));
+            exp = (() => (new CC.Web.Controllers.MainReportsController()).PoRemarks(default(Web.Models.MainReportAgencyCommentsModel)));
+            Assert.IsTrue(CcAuthorizeAttributeTest.MethodHasAuthorizeAttribute(exp, new List<FixedRoles>() { FixedRoles.Admin, FixedRoles.RegionOfficer, FixedRoles.GlobalOfficer }));
+            exp = (() => (new CC.Web.Controllers.MainReportsController()).Submit(default(Web.Models.SubmissionDetails)));
+            Assert.IsTrue(CcAuthorizeAttributeTest.MethodHasAuthorizeAttribute(exp, new List<FixedRoles>() { FixedRoles.Admin, FixedRoles.Ser }));
+            exp = (() => (new CC.Web.Controllers.MainReportsController()).SetAdjusted(default(int)));
+            Assert.IsTrue(CcAuthorizeAttributeTest.MethodHasAuthorizeAttribute(exp, new List<FixedRoles>() { FixedRoles.Admin}));
+            exp = (() => (new CC.Web.Controllers.MainReportsController()).UnsetAdjusted(default(int)));
+            Assert.IsTrue(CcAuthorizeAttributeTest.MethodHasAuthorizeAttribute(exp, new List<FixedRoles>() { FixedRoles.Admin }));
+
+
+
+
+        }
+        #region privates
+        private ccEntities initDB()
+        {
+            MockDB db = new MockDB();
+            List<MembershipUser> mem = db.MemUsers;
+
+            mem.Add(new MembershipUser()
+            {
+                Id = 0,
+                User = new User()
+                {
+                    Id = 0,
+                    UserName = "YosiAgencyOfficer",
+                    RoleId = (int)FixedRoles.AgencyOfficer
+                },
+                LoweredUserName = "yosiagencyofficer"
+            });
+            mem.Add(new MembershipUser()
+            {
+                Id = 1,
+                User = new User()
+                {
+                    Id = 1,
+                    UserName = "YosiAdmin",
+                    RoleId = (int)FixedRoles.Admin
+                },
+                LoweredUserName = "yosiadmin"
+            });
+            mem.Add(new MembershipUser()
+            {
+                Id = 2,
+                User = new User()
+                {
+                    Id = 2,
+                    UserName = "YosiAgencyUser",
+                    RoleId = (int)FixedRoles.AgencyUser
+                },
+                LoweredUserName = "yosiagencyuser"
+            });
+            mem.Add(new MembershipUser()
+            {
+                Id = 3,
+                User = new User()
+                {
+                    Id = 3,
+                    UserName = "YosiGlobalOfficer",
+                    RoleId = (int)FixedRoles.GlobalOfficer
+                },
+                LoweredUserName = "yosiglobalofficer"
+            });
+            mem.Add(new MembershipUser()
+            {
+                Id = 4,
+                User = new User()
+                {
+                    Id = 4,
+                    UserName = "YosiRegionOfficer",
+                    RoleId = (int)FixedRoles.RegionOfficer
+                },
+                LoweredUserName = "yosiregionofficer"
+            });
+            mem.Add(new MembershipUser()
+            {
+                Id = 5,
+                User = new User()
+                {
+                    Id = 5,
+                    UserName = "YosiSer",
+                    RoleId = (int)FixedRoles.Ser
+                },
+                LoweredUserName = "yosiser"
+            });
+
+            return db;
+        }
+        private static bool MethodHasAuthorizeAttribute(Expression<System.Action> expression, List<FixedRoles> lst)
+        {
+            bool includeInherited = false;
+            var method = MethodOf(expression);
+            var att = method.GetCustomAttributes(typeof(CcAuthorizeAttribute), includeInherited);
+            if (!att.Any())
+                return false;
+            CcAuthorizeAttribute myAtt = (CcAuthorizeAttribute)att.First();
+            foreach (FixedRoles role in lst)
+                if (!myAtt.AllowedFixedRoles.Contains(role))
+                    return false;
+            return true;
+        }
+        public static MethodInfo MethodOf(Expression<System.Action> expression)
+        {
+            MethodCallExpression body = (MethodCallExpression)expression.Body;
+            return body.Method;
+        }
+        #endregion
+=======
+        
+>>>>>>> origin/dev
+    }
+
+}
+
+

@@ -1,0 +1,160 @@
+﻿@model CC.Data.Client
+<fieldset>
+    <legend>General Details</legend>
+    <div class="row floatContainer">
+        <div class="editor-item">
+            @Html.LabelFor(model => model.FirstName):
+            @Html.DisplayFor(model => model.FirstName)
+        </div>
+        <div class="editor-item">
+            @Html.LabelFor(model => model.LastName):
+            @Html.DisplayFor(model => model.LastName)
+        </div>
+        <div class="editor-item">
+            @Html.LabelFor(model => model.MiddleName):
+            @Html.DisplayFor(model => model.MiddleName)
+        </div>
+        <div class="editor-item">
+            @Html.LabelFor(model => model.Agency):
+            @Html.DisplayFor(model => model.Agency.Name)
+        </div>
+        <div class="editor-item">
+            @Html.LabelFor(model => model.Gender):
+            @Html.DisplayFor(model => model.Gender)
+        </div>
+    </div>
+    @*second row*@
+    <div class="row floatContainer">
+        <div class="editor-item">
+            @Html.LabelFor(model => model.Id):
+            @Html.DisplayFor(model => model.Id)
+        </div>
+        <div class="editor-item">
+            @Html.LabelFor(model => model.NationalId):
+            @Html.DisplayFor(model => model.NationalId)
+        </div>
+        <div class="editor-item">
+            @Html.LabelFor(model => model.NationalIdType):
+            @Html.DisplayFor(model => model.NationalIdType.Name)
+        </div>
+        <div class="editor-item">
+			@Html.LabelFor(model=>model.InternalId)
+			@Html.DisplayFor(model=>model.InternalId)
+		</div>
+    </div>
+    @*row 3*@
+    <div class="row floatContainer">
+        <div class="editor-item">
+            @Html.LabelFor(model => model.BirthDate):
+            @Html.DisplayFor(model => model.BirthDate)
+        </div>
+        <div class="editor-item">
+            @Html.LabelFor(model => model.Address):
+            @Html.DisplayFor(model => model.Address)
+        </div>
+        <div class="editor-item">
+            @Html.LabelFor(model => model.City):
+            @Html.DisplayFor(model => model.City)
+        </div>
+    </div>
+    @*row 4*@
+    <div class="row floatContainer">
+        <div class="editor-item">
+            @Html.LabelFor(model => model.Country, "Country of Residence"):
+            @Html.DisplayFor(model => model.Country.Name)
+        </div>
+        <div class="editor-item">
+            @Html.LabelFor(model => model.State):
+            @Html.DisplayFor(model => model.State.Name)
+        </div>
+        <div class="editor-item">
+            @Html.LabelFor(model => model.ZIP):
+            @Html.DisplayFor(model => model.ZIP)
+        </div>
+    </div>
+</fieldset>
+<fieldset>
+    <legend>Join / Leave Details</legend>
+    <div class="row floatContainer">
+        <div class="editor-item">
+            @Html.LabelFor(model => model.JoinDate):
+            @Html.DisplayFor(model => model.JoinDate)
+        </div>
+        <div class="editor-item">
+            @Html.LabelFor(model => model.LeaveDate):
+            @Html.DisplayFor(model => model.LeaveDate)
+        </div>
+        <div class="editor-item">
+            @Html.LabelFor(model => model.LeaveReason):
+            @Html.DisplayFor(model => model.LeaveReason.Name)
+        </div>
+		@if (User.IsInRole(FixedRoles.Admin) || User.IsInRole(FixedRoles.GlobalOfficer))
+		{
+			<div class="editor-item">
+				@Html.LabelFor(model => model.AutoLeaveOverride):
+				@Html.DisplayFor(model => model.AutoLeaveOverride)
+			</div>
+		}
+    </div>
+    <div class="row floatContainer">
+        <div class="editor-item">
+            @Html.LabelFor(model => model.LeaveRemarks):
+            @Html.DisplayFor(model => model.LeaveRemarks)
+        </div>
+        <div class="editor-item">
+            @Html.LabelFor(model => model.Deceased):
+            @Html.DisplayFor(model => model.Deceased)
+        </div>
+        <div class="editor-item">
+            @Html.LabelFor(model => model.DeceasedDate):
+            @Html.DisplayFor(model => model.DeceasedDate)
+        </div>
+    </div>
+</fieldset>
+<fieldset>
+    <legend>Other</legend>
+    <div class="row floatContainer">
+        <div> 
+            @Html.LabelFor(model => model.NaziPersecutionDetails):
+            @Html.DisplayFor(model => model.NaziPersecutionDetails)
+        </div>
+    </div>
+    <div class="row floatContainer">
+        <div>
+            @Html.LabelFor(model => model.Remarks):
+            @Html.DisplayFor(model => model.Remarks)
+        </div>
+    </div>
+    <div class="row floatContainer">
+        <div>
+            @if (ViewBag.isDccSubside==true)
+            {
+
+                @Html.LabelFor(model => model.DCC_Client)
+                @Html.CheckBoxFor(model => model.DCC_Client, new { @disabled = "disabled" })
+
+                if (Model.DCC_Client)
+                { 
+                
+                @Html.LabelFor(model => model.DCC_Subside)
+                @Html.DisplayFor(model => model.DccSubside.Name)
+
+                @Html.LabelFor(model => model.DCC_VisitCost)
+                @Html.DisplayFor(model => model.DCC_VisitCost)
+                }
+            }
+            @if (ViewBag.isSC == true)
+            {
+
+            @Html.LabelFor(model => model.SC_Client)
+            @Html.CheckBoxFor(model => model.SC_Client, new { @disabled = "disabled" })
+             if (Model.SC_Client)
+                {
+            @Html.LabelFor(model => model.SC_MonthlyCost)
+            @Html.DisplayFor(model => model.SC_MonthlyCost)
+             }
+            }
+        </div>
+    </div>
+
+</fieldset>

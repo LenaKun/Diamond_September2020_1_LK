@@ -1,0 +1,507 @@
+﻿@model SubReportDetailsModel
+@{
+    ViewBag.Title = "Detailed Report";
+}
+@section Header
+{
+    <script>
+        var loadTotals = function () {
+            $('div#totals').load('@Url.Action("GetTotals", new { Id = Model.Id })' + '?IE=' + Math.random(), function () {
+                $('span.totalAmount').html($('div#totals span.totalAmount').html());
+            });
+        };
+    </script>
+    <style>
+        input.decimal
+        {
+            width: 5em;
+        }
+
+        table.grid ul
+        {
+            padding: 0;
+        }
+
+        table.grid ul
+        {
+            list-style: none;
+        }
+    </style>
+    <script>
+		
+        $.fn.serializeObject = function()
+        {
+            var o = {};
+            var a = this.serializeArray();
+            $.each(a, function() {
+                if (o[this.name] !== undefined) {
+                    if (!o[this.name].push) {
+                        o[this.name] = [o[this.name]];
+                    }
+                    o[this.name].push(this.value || '');
+                } else {
+                    o[this.name] = this.value || '';
+                }
+            });
+            return o;
+        };
+		
+    </script>
+    <script id="dt" type="text/javascript">
+        //simple datatable init
+        var editLink = '<button type="button" class="edit">Edit</button><button type="button" class="add">Add</button>';
+        var dataTable = null;
+
+        $(document).ready(function () {
+
+        	var oTable= $('table.grid').dataTable({
+        		"bJQueryUI": true,
+        		"sPaginationType": "full_numbers",
+        		"bServerSide": true,
+        		"aaSorting": [[0, "asc"], [1, "asc"]],
+        		"sAjaxSource": '@Url.Action("ClientReportsList", new { Id = Model.Id })',
+        		"aoColumns": [
+					{ "mData": "FirstName", "sClass":"ClientFirstName", "sTitle": "First Name" },
+					{ "mData": "LastName", "sClass":"ClientLastName", "sTitle": "Last Name" },
+					{ "mData": "ApprovalStatus", "sClass":"ClientApprovalStatus", "sTitle": "Approval Status" },
+				
+				
+					{
+						"mData": "ClientId", "sClass": "ClientId", "sTitle": "CC ID",
+						"mRender": function (a) {
+							return '<a href="@Url.Action("Details","Clients")/' + a + '">' + a + '</a>';
+						}
+					},
+					{ "mData": "Rate", "sClass": "Rate", "sTitle": "Rate", "mRender": function (val,t,obj) { 
+						var result = renderDecimal(val);
+						if(t=="edit" || t=="insert")
+						{
+							if(val==null){
+								result=0;
+							}
+							result= '<input name="Rate" class="required decimal number" value="'+result +'"/>';
+						}
+						
+						return result;
+					}},
+					{ "mData": "Cur", "sClass":"Cur", "sTitle": "CUR" },
+					@for (var i = 1; i <= Model.Dates.Count; i++)
+     { 
+						<text>
+						{
+							"mData": "@string.Format("Q{0}", i)",
+							"sTitle": "@String.Format("{0:MMM-yyyy}", Model.MainReportStart.AddMonths(i-1))",
+							"sClass": "Quantity",
+							"mRender": function (val,t, obj) {
+								var strVal = renderDecimal(val);
+								if (t == "edit" || t == "insert") {
+									return '<input name="@string.Format("Q{0}", i)" class="decimal number" value="' + (val == null ? "" : strVal) + '"/>';
+								}
+								else {
+									return strVal;
+								}
+							}
+						},
+						</text>
+     }
+					{"mData":"Remarks","sTitle":"Unique Circumstances",
+						"mRender":function (val,t,obj) { 
+                            
+							if(t=="edit" || t=="insert")
+							{
+								if(val==null) val='';
+								return '<input name="Remarks" class="" value="'+val +'"/>';
+                                
+							}
+                            
+							return val;
+						}
+					},
+					{
+						"mData": null, "sClass": "TotalQuantity", "sTitle": "Total Hours",
+						"mRender": function (val, t, obj) {
+							return renderDecimal(obj.Q1 + obj.Q2 + obj.Q3);
+						}
+					},
+					{
+						"mData": "HcCaps", "sTitle": "Allowed Hours/week", "mRender": function (a) {
+						//collapse adjustent periods with same hccap
+						if (a == null) {
+							return 'N/A';
+						}
+						else {
+							for(var i = a.length-1; i>0; i--)
+							{
+								if(a[i].HcCap == a[i-1].HcCap && a[i].StartDate == a[i-1].EndDate)
+								{
+									a[i-1].EndDate = a[i].EndDate;
+									a.splice(i,1);
+								}
+							}
+						}
+
+						var result;
+						if(a.length==1) {
+							result = a[0].HcCap;
+						}
+						else if(a.length>1) {
+							result = '<ul>';
+							for(var i =0; i< a.length; i++)
+							{
+
+								result+='<li>'+renderDate(a[i].StartDate)+' - '+ renderDate(a[i].EndDate, null, -1)+' : '+a[i].HcCap +' </li>';
+							}
+							result += '</ul>';
+						}
+						else {
+							result= 'N/A';
+						}
+						return result;
+					}},
+
+					{
+					 	"mData": "Cfs", "sClass": "CFS", "sTitle": "CFS?", "bVisible": "@(Model.AgencyGroupId==System.Web.Configuration.WebConfigurationManager.AppSettings["IsraelKerenSerNumber"].Parse<int>())" == "True",
+					 	"mRender": function (val) {
+					 		if (val === true) {
+					 			return "Yes";
+					 		}
+					 		else if (val === false) {
+					 			return "No";
+					 		}
+					 		else {
+					 			return "N/A";
+					 		}
+					 	}
+					},
+				
+
+					{
+						"mData": null, "sTitle": "Edit", "bVisible": "@Model.CanBeEdited" =="True", "mRender": function (val, t, obj) {
+
+							var html = '';
+							switch(t)
+							{
+								case 'display':
+									html = '<button type="button" class="edit">Edit</button>';
+									if (obj.ClientReportId) {
+										html += '<button type="button" class="add">Add</button>';
+										html += '<button type="button" class="delete">Delete</button>';
+									}
+									break;
+								case 'insert':
+								case 'edit':
+									html = '<button type="button" class="update">Update</button><button type="button" class="cancel">Cancel</button>';
+									break;
+							}
+							return html
+						}
+					}
+
+				],
+                "aoColumnDefs": [
+					{
+					    "aTargets": [2,3,4,5,6,7,8,9,10,11],
+					    "bSortable": false
+					},
+                    {
+                        "aTargets": [0,1],
+                        "bSortable": true 
+                    }
+                ],
+                "fnServerParams": function (aoData) {
+					
+                    aoData.push({name: "IE", value: Math.random() });
+                    aoData.push({name: "AppBudgetServiceId", value: "@Model.AppBudgetServiceId" });
+			        aoData.push({name: "AgencyId", value: "@Model.AgencyId" });
+			        aoData.push({name: "@Html.FieldNameFor(f => f.Filter.ClientName)", value: $('#@Html.FieldIdFor(f => f.Filter.ClientName)').val() });
+			        aoData.push({name: "@Html.FieldNameFor(f => f.Filter.ClientId)", value: $('#@Html.FieldIdFor(f => f.Filter.ClientId)').val() });
+			        aoData.push({name: "@Html.FieldNameFor(f => f.Filter.ReportedOnly)", value: $('#@Html.FieldIdFor(f => f.Filter.ReportedOnly)').val() });
+			    }
+				,"fnRowCallback": function (nRow, aData, iDisplayIndex) {
+				    /* set tr id. assume the id is in the first column of data */
+
+				    return nRow;
+				}
+            });
+            $('button.filter').click(function(){
+                oTable.fnDraw();
+            });
+            $('button.reset').click(function(){
+                $(this).closest('table').find(':input').val('');
+                oTable.fnDraw();
+            });
+
+		
+
+
+			@if (Model.CanBeEdited)
+   {
+			<text>
+            $('table.grid button.edit').live('click', function () {
+                oTable.find('button.cancel').click();
+                var $tr = $(this).closest('tr');
+                var tr =$tr.get(0);
+                oTable.fnRefresh(tr,null,'edit');
+            });
+            $('table.grid button.cancel').live('click', function () {
+                var $tr = $(this).closest('tr');
+                var tr =$tr.get(0);
+                var oData  = oTable.fnGetData(tr);
+                if(tr["_DT_NewRow"]){
+                    oTable.fnDeleteRow(tr, null, false);
+                    $tr.remove();
+                }
+                else{
+                    oTable.fnRefresh(tr,null,'display');
+                }
+            });
+            $('table.grid button.add').live('click', function () {
+                var $tr = $(this).closest('tr');
+                var tr =$tr.get(0);
+                var oData  = oTable.fnGetData(tr);
+				
+                $.extend(oData,{
+                    ClientReportId:0,
+                    Rate:0,
+                    Remarks:'',
+                    Q1: 0,
+                    Q2: 0,
+                    Q3:0,
+                    TotalQuantity: 0
+                });
+				
+                tr = $(this).closest('tr');
+                var $n = tr.clone();
+				
+                $n.insertBefore(tr);
+			
+                var n = $n.get(0);
+                var aodata = oTable.fnAddData(oData,false);
+                n["_DT_RowIndex"] = aodata[0];
+                n["_DT_NewRow"] = true;
+			
+                oTable.fnRefresh(n,null,'insert');
+				
+				
+            });
+			
+            $('table.grid button.delete').live('click', function () {
+                oTable.find('button.cancel').click();
+                var $tr = $(this).closest('tr');
+                var tr =$tr.get(0);
+                var oData = oTable.fnGetData(tr);
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("DeleteClientReport")',
+		            dataType: 'json',
+		            data: {
+		                Id: oData.ClientReportId,
+		                IE: Math.random()
+		            }
+		        }) .done(function () { 
+		            oTable.fnDraw(false);
+		            location.reload();
+		        }).fail(function () { 
+		            alert("An error occured while deleting the report..."); 
+		        });
+					
+		    });
+            $('table.grid button.update').live('click', function () {
+				
+                var $tr = $(this).closest('tr');
+                var tr =$tr.get(0);
+                var oData = oTable.fnGetData(tr);
+
+                var $form = $tr.closest('form');
+                if (!$form.valid()) {
+                    return false;
+                }
+                var input = $form.serializeObject();
+
+                var quantity = [];
+
+                //3 months period
+                if ((input.Q1 || input.Q1 == "") && (input.Q2 || input.Q2 == "") && (input.Q3 || input.Q3 == "")) {
+                    quantity = [input.Q1.replace(",", ""), input.Q2.replace(",", ""), input.Q3.replace(",", "")];
+                }
+                //1 month period
+                else if(input.Q1 || input.Q1 == "") {
+                    quantity = [input.Q1.replace(",", "")];
+                }
+
+                var d = {
+                    Id: oData.ClientReportId,
+                    clientId: oData.ClientId,
+                    subReportId: '@Model.Id',
+		            rate: input.Rate,
+		            quantity: quantity,
+                    remarks: input.Remarks,
+		            IE: Math.random(),
+						
+		        };
+		        $('table.grid tbody tr').find('input, button').attr('disabled', 'disabled');
+					
+		        var request = $.ajax({
+		            url: '@Url.Action("Update")',
+			        type: 'POST',
+			        dataType: 'json',
+			        contentType: 'application/json; charset=utf-8',
+			        data:  JSON.stringify(d)
+			    }).done(function (data, textStatus, jqXHR) {
+			        if (data.errors) {
+			            $('#ErrorsDialog').html("<li>" + data.errors.join('</li><li>') + '</li>');
+			            $('#ErrorsDialog').dialog({
+			            	modal: true,
+			            	dialogClass: "hideCloseButton",
+			                buttons: {
+			                    Ok: function () {
+			                        $(this).dialog("close");
+			                        $('table.grid tbody').find('input, button').removeAttr('disabled');
+										
+			                    },
+			                    Cancel: function () {
+			                        $(this).dialog("close");
+			                        $('table.grid').dataTable().fnDraw(false);
+			                    },
+			                }
+			            });
+
+			        }
+			        else {
+			            $('table.grid').dataTable().fnDraw(false);
+			            loadTotals();
+			        }
+			    }).fail(function (jqXHR, textStatus) {
+			        $('#ErrorsDialog').html("an error occured ... ");
+			        $('#ErrorsDialog').dialog({
+			        	modal: true,
+			        	dialogClass: "hideCloseButton",
+			            buttons: {
+			                Ok: function () {
+			                    $(this).dialog("close");
+			                    $('table.grid tbody').find('input, button').removeAttr('disabled');
+			                }
+			            }
+			        });
+						
+			    });
+		    });
+			
+            </text>
+   }
+			
+        });
+    </script>
+}
+
+<h2>Detailed Report</h2>
+
+@Html.ValidationSummary()
+
+<p>
+
+    <a href="@Url.Action("Details", "MainReports", new { id = Model.MainReportId })" class="button">Go to Financial Report</a>
+    @if (Model.CanBeEdited)
+    { <a href="@Url.Action("Create", "SubReports", new { Id = Model.Id, AppBudgetServiceId = Model.AppBudgetServiceId, MainReportId = Model.MainReportId })" class="button">Import</a>}
+</p>
+
+@Html.Partial("Header", Model.DetailsHeader)
+
+<table class="filter horizontal">
+    <tr>
+        <th style="white-space: nowrap">
+            Filter By:
+        </th>
+        <td style="width: 100%">
+            <div class="display-item">
+                @Html.LabelFor(f => f.Filter.ClientName)
+                @Html.EditorFor(f => f.Filter.ClientName)
+            </div>
+            <div class="display-item">
+                @Html.LabelFor(f => f.Filter.ClientId)
+                @Html.EditorFor(f => f.Filter.ClientId)
+            </div>
+            <div class="display-item">
+                @Html.LabelFor(f => f.Filter.ReportedOnly)
+                @Html.DropDownListFor(f => f.Filter.ReportedOnly, Model.Filter.ReportedOnlySelectList)
+            </div>
+            <div class="display-item">
+                <button type="button" class="filter">
+                    Go</button>
+                <button type="button" class="reset">
+                    Reset</button>
+            </div>
+        </td>
+    </tr>
+</table>
+<form>
+<table class="grid">
+    <thead>
+        <tr>
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+
+</form>
+
+<div id="totals">
+    @Html.Partial(Model.Totals.ViewName, Model.Totals)
+</div>
+<div>
+	<a href="@Url.Action("Export", new { id = Model.Id })" class="button">Export</a>
+</div>
+<p>
+    <a href="@Url.Action("Details", "MainReports", new { id = Model.MainReportId })" class="button">Go to Financial Report
+    </a>
+
+    @if (Model.CanBeEdited)
+    { <a href="@Url.Action("Create", "SubReports", new { Id = Model.Id, AppBudgetServiceId = Model.AppBudgetServiceId, MainReportId = Model.MainReportId })" class="button">Import</a>}
+    @if (Model.CanBeEdited)
+    {
+        <button type="button" class="button" onclick="setToDef()">
+            Set To Default</button>
+        <script>
+            function setToDef() {
+                dalert(function () {
+                    var d = {
+                        Id: '@Model.Id'
+                    };
+                    $.ajax({
+                        type: 'POST',
+                        url: '@Url.Action("DeleteChildReportRows")',
+				        data: d,
+				        success: function (data) {
+				            location.reload();
+				        },
+				        error: function () {
+				            alert('error');
+				        }
+				    });
+
+                })
+            }
+            function dalert(yesCallback) {
+                $('<div></div>').html('All Sub Report Record will be deleted, continue ?').dialog({
+                    modal: true,
+                    buttons: {
+                        "Yes": function () {
+                            $(this).dialog("close");
+                            $(this).dialog("destroy");
+                            yesCallback();
+                        },
+                        "No": function () {
+                            $(this).dialog("close");
+                            $(this).dialog("destroy");
+
+                        }
+                    }
+
+                });
+            }
+        </script>
+		
+    }
+</p>
+<div id="ErrorsDialog"></div>

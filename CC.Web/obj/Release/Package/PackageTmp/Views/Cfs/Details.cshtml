@@ -1,0 +1,108 @@
+﻿@model CC.Data.CfsRow
+@{
+    ViewBag.Title = "CFS Details";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<fieldset>
+    <div class="display-label">@Html.LabelFor(model => model.CreatedAt)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.CreatedAt)
+    </div>
+    <div class="display-label">@Html.LabelFor(model => model.ClientResponseIsYes)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.ClientResponseIsYes)
+    </div>
+    <div class="display-label">@Html.LabelFor(model => model.AgencyOverRide)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.AgencyOverRide)
+    </div>
+    @if (Model.AgencyOverRide)
+    {
+        <div class="display-label">@Html.LabelFor(model => model.AgencyOverRideReasons, "Over-Ride Reasons")</div>
+        <div class="display-field">
+            @(string.Join(", ", Model.AgencyOverRideReasons.Select(f => f.Name)))
+        </div>
+        <div class="display-label">@Html.LabelFor(model => model.OverRideDetails)</div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.OverRideDetails)
+        </div>
+        <div class="display-label">@Html.LabelFor(model => model.OverrideAgencyFirstName)</div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.OverrideAgencyFirstName)
+        </div>
+        <div class="display-label">@Html.LabelFor(model => model.OverrideAgencyLastName)</div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.OverrideAgencyLastName)
+        </div>
+        <div class="display-label">@Html.LabelFor(model => model.OverrideAgencyTitle)</div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.OverrideAgencyTitle)
+        </div>
+    }
+
+    <h4>CC decision:</h4>
+    <div class="display-label">@Html.LabelFor(model => model.CfsApproved)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.CfsApproved)
+    </div>
+    <div class="display-label">@Html.LabelFor(model => model.StartDate)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.StartDate)
+    </div>
+    <div class="display-label">@Html.LabelFor(model => model.EndDate)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.EndDate)
+    </div>
+    @if (Model.EndDate.HasValue)
+    {
+        <div class="display-label">@Html.LabelFor(model => model.EndDateReasonId)</div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.CfsEndDateReason.Name)
+        </div>
+        <div class="display-label">@Html.LabelFor(model => model.AgencyRequestorFirstName)</div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.AgencyRequestorFirstName)
+        </div>
+        <div class="display-label">@Html.LabelFor(model => model.AgencyRequestorLastName)</div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.AgencyRequestorLastName)
+        </div>
+        <div class="display-label">@Html.LabelFor(model => model.AgencyRequestorTitle)</div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.AgencyRequestorTitle)
+        </div>
+        <div class="display-label">@Html.LabelFor(model => model.EndRequestDate)</div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.EndRequestDate)
+        </div>
+    }
+
+    <div class="display-label">@Html.LabelFor(model => model.CfsAdminRemarks)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.CfsAdminRemarks)
+    </div>
+    @if (User.IsInRole(FixedRoles.Admin) || User.IsInRole(FixedRoles.CfsAdmin))
+    {
+        <div class="display-label">@Html.LabelFor(model => model.CfsAdminRejected)</div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.CfsAdminRejected)
+        </div>
+        <div class="display-label">@Html.LabelFor(model => model.CfsAdminInternalRemarks)</div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.CfsAdminInternalRemarks)
+        </div>
+        <div class="display-label">@Html.LabelFor(model => model.CfsAdminLastUpdate)</div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.CfsAdminLastUpdate)
+        </div>
+    }
+</fieldset>
+
+@if (!Model.CfsApproved.HasValue || User.IsInRole(FixedRoles.Admin) || User.IsInRole(FixedRoles.CfsAdmin))
+{
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id })
+}
+
+@Html.ActionLink("Back to client details", "Details", "Clients", new { id = Model.ClientId }, new { })

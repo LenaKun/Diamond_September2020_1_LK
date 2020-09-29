@@ -1,0 +1,53 @@
+﻿@model IEnumerable<CC.Data.HCWeeklyCap>
+@{
+	ViewBag.Title = "Homecare Caps";
+}
+
+@section Header
+{
+	@if (Model.Any())
+	{
+		<script type="text/javascript">
+			$(document).ready(function () {
+				$('table.grid').dataTable({
+					"bJQueryUI": true,
+					"sPaginationType": "full_numbers",
+					"aaSorting": [[0, "asc"]], //cap name asc
+					"aoColumnDefs": [
+						{ "aTargets": [-1], "bSortable": false},//the column with links,
+
+					]
+				});
+			});
+		</script>
+	}
+}
+<h2>@ViewBag.Title</h2>
+@Html.Grid(Model).Columns(column =>
+{
+
+	column.For(f => f.Name).Named("Cap Name");
+	column.For(f => Html.DisplayFor(a => f.CapPerPerson)).Named("Cap per person");
+	column.For(f => f.CurrencyId).Format("{0:F}").Named("CUR");
+	column.For(f => string.Join(", ", f.CountryNames)).Named("Countries");
+	column.For(f => string.Join(", ", f.FundNames)).Named("Funds");
+	column.For(f => Html.DisplayFor(a => f.StartDate)).Named("Start Date");
+	column.For(f => Html.DisplayFor(a => f.EndDateDisplay)).Named("End Date");
+	column.For(f => f.Active);
+	column.For(f => Html.ActionLink("Details", "Details", new { id = f.Id }));
+	column.For(f => Html.ActionLink("Edit", "Edit", new { id = f.Id }));
+	column.For(f => Html.ActionLink("Delete", "Delete", new { id = f.Id }, new { onclick = "javascript: return confirm('Homecare Cap will be deleted');" }));
+})
+<p>
+	<a href="@Url.Action("Create")" class="button">Create new Homecare Cap</a>
+</p>
+<fieldset>
+	<div class="editor-item">
+		<button type="button" id="exportBtn">Export to Excel</button>
+	</div>
+</fieldset>
+<script>
+    $('#exportBtn').click(function () {
+        window.location.href = '@Url.Action("Export")';
+    });
+</script>

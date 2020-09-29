@@ -1,0 +1,89 @@
+﻿** Warnings
+     Procedure: [dbo].[ImportClientsProc] contains an unresolved reference to an object. Either the object does not exist or
+       the reference is ambiguous because it could refer to any of the following objects: [dbo].[clients].[approvalstatusid] or
+       [dbo].[ValidClientView].[approvalstatusid].
+     Procedure: [dbo].[ImportClientsProc] contains an unresolved reference to an object. Either the object does not exist or
+       the reference is ambiguous because it could refer to any of the following objects: [dbo].[clients].[agencyid] or
+       [dbo].[ValidClientView].[agencyid].
+     Procedure: [dbo].[ImportClientsProc] contains an unresolved reference to an object. Either the object does not exist or
+       the reference is ambiguous because it could refer to any of the following objects: [dbo].[clients].[firstname] or
+       [dbo].[ValidClientView].[firstname].
+     Procedure: [dbo].[ImportClientsProc] contains an unresolved reference to an object. Either the object does not exist or
+       the reference is ambiguous because it could refer to any of the following objects: [dbo].[clients].[lastname] or
+       [dbo].[ValidClientView].[lastname].
+     Procedure: [dbo].[ImportClientsProc] contains an unresolved reference to an object. Either the object does not exist or
+       the reference is ambiguous because it could refer to any of the following objects: [dbo].[clients].[middlename] or
+       [dbo].[ValidClientView].[middlename].
+     Procedure: [dbo].[ImportClientsProc] contains an unresolved reference to an object. Either the object does not exist or
+       the reference is ambiguous because it could refer to any of the following objects: [dbo].[clients].[prevfirstname] or
+       [dbo].[ValidClientView].[prevfirstname].
+     Procedure: [dbo].[ImportClientsProc] contains an unresolved reference to an object. Either the object does not exist or
+       the reference is ambiguous because it could refer to any of the following objects: [dbo].[clients].[prevlastname] or
+       [dbo].[ValidClientView].[prevlastname].
+     Procedure: [dbo].[ImportClientsProc] contains an unresolved reference to an object. Either the object does not exist or
+       the reference is ambiguous because it could refer to any of the following objects: [dbo].[clients].[address] or
+       [dbo].[ValidClientView].[address].
+     Procedure: [dbo].[ImportClientsProc] contains an unresolved reference to an object. Either the object does not exist or
+       the reference is ambiguous because it could refer to any of the following objects: [dbo].[clients].[city] or
+       [dbo].[ValidClientView].[city].
+     Procedure: [dbo].[ImportClientsProc] contains an unresolved reference to an object. Either the object does not exist or
+       the reference is ambiguous because it could refer to any of the following objects: [dbo].[clients].[stateid] or
+       [dbo].[ValidClientView].[stateid].
+     Procedure: [dbo].[ImportClientsProc] contains an unresolved reference to an object. Either the object does not exist or
+       the reference is ambiguous because it could refer to any of the following objects: [dbo].[clients].[birthdate] or
+       [dbo].[ValidClientView].[birthdate].
+     Procedure: [dbo].[ImportClientsProc] contains an unresolved reference to an object. Either the object does not exist or
+       the reference is ambiguous because it could refer to any of the following objects: [dbo].[clients].[pobcity] or
+       [dbo].[ValidClientView].[pobcity].
+     Procedure: [dbo].[ImportClientsProc] contains an unresolved reference to an object. Either the object does not exist or
+       the reference is ambiguous because it could refer to any of the following objects: [dbo].[clients].[pobcountry] or
+       [dbo].[ValidClientView].[pobcountry].
+     Procedure: [dbo].[ImportClientsProc] contains an unresolved reference to an object. Either the object does not exist or
+       the reference is ambiguous because it could refer to any of the following objects: [dbo].[clients].[nationalidtypeid] or
+       [dbo].[ValidClientView].[nationalidtypeid].
+     Procedure: [dbo].[ImportClientsProc] contains an unresolved reference to an object. Either the object does not exist or
+       the reference is ambiguous because it could refer to any of the following objects: [dbo].[clients].[nationalid] or
+       [dbo].[ValidClientView].[nationalid].
+     Procedure: [dbo].[ImportClientsProc] contains an unresolved reference to an object. Either the object does not exist or
+       the reference is ambiguous because it could refer to any of the following objects: [dbo].[clients].[emigrationdate] or
+       [dbo].[ValidClientView].[emigrationdate].
+     Procedure: [dbo].[ImportClientsProc] contains an unresolved reference to an object. Either the object does not exist or
+       the reference is ambiguous because it could refer to any of the following objects: [dbo].[clients].[deceaseddate] or
+       [dbo].[ValidClientView].[deceaseddate].
+     Procedure: [dbo].[ImportClientsProc] contains an unresolved reference to an object. Either the object does not exist or
+       the reference is ambiguous because it could refer to any of the following objects: [dbo].[clients].[joindate] or
+       [dbo].[ValidClientView].[joindate].
+     Procedure: [dbo].[ImportClientsProc] contains an unresolved reference to an object. Either the object does not exist or
+       the reference is ambiguous because it could refer to any of the following objects: [dbo].[clients].[govhchours] or
+       [dbo].[ValidClientView].[govhchours].
+     Procedure: [dbo].[ImportClientsProc] contains an unresolved reference to an object. Either the object does not exist or
+       the reference is ambiguous because it could refer to any of the following objects: [dbo].[clients].[updatedat] or
+       [dbo].[ValidClientView].[updatedat].
+     Procedure: [dbo].[ImportClientsProc] contains an unresolved reference to an object. Either the object does not exist or
+       the reference is ambiguous because it could refer to any of the following objects: [dbo].[clients].[createdat] or
+       [dbo].[ValidClientView].[createdat].
+     Procedure: [dbo].[ImportClientsProc] contains an unresolved reference to an object. Either the object does not exist or
+       the reference is ambiguous because it could refer to any of the following objects: [dbo].[clients].[updatedbyid] or
+       [dbo].[ValidClientView].[updatedbyid].
+
+** Highlights
+     Tables that will be rebuilt
+       None
+     Clustered indexes that will be dropped
+       None
+     Clustered indexes that will be created
+       None
+     Possible data issues
+       None
+
+** User actions
+     Drop
+       on [dbo].[Services] (Check Constraint)
+       on [dbo].[Services] (Check Constraint)
+     Alter
+       [dbo].[UserAgreementAudits] (Table)
+     Create
+       Check Constraint on [dbo].[Services].[MinExpPercentage] (Check Constraint)
+       Check Constraint on [dbo].[Services].[MaxExpPercentage] (Check Constraint)
+
+** Supporting actions

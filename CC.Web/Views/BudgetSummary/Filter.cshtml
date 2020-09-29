@@ -1,0 +1,207 @@
+﻿@model BudgetSummaryFilter
+<form>
+<fieldset>
+    <legend>Filter</legend>
+    <div>
+        @Html.LabelFor(f => f.AgencyId)
+        @Html.DropDownListFor(f => f.AgencyId, Model.AgenciesList, string.Empty)
+        <script>
+            $(function () {
+                $('select').select2({ width: 300 });
+            });
+        </script>
+        @Html.LabelFor(f => f.StartDate)
+        @Html.EditorFor(f => f.StartDate)
+        @Html.LabelFor(f => f.EndDate)
+        @Html.EditorFor(f => f.EndDate)
+    </div>
+    <div>
+        @Html.LabelFor(f => f.ServiceTypeId)
+        @Html.DropDownListFor(f => f.ServiceTypeId, Model.ServiceTypesList, string.Empty)
+        @Html.LabelFor(f => f.ServiceId)
+        @Html.DropDownListFor(f => f.ServiceId, Model.ServicesList, string.Empty)
+    </div>
+    <div>
+        @Html.LabelFor(f => f.MasterFundId)
+        @Html.TextBoxFor(f => f.MasterFundId)
+
+        @Html.LabelFor(f => f.FundId)
+        @Html.TextBoxFor(f => f.FundId)
+
+        @Html.LabelFor(f => f.AppId)
+        @Html.TextBoxFor(f => f.AppId)
+
+        <script>
+
+            $(function () {
+
+
+                var m = $('#@Html.FieldIdFor(f => f.MasterFundId)').select2({
+                    width: 300,
+                    placeholder: "All Master Funds",
+                    allowClear: true,
+                    initSelection: function (element, callback) {
+                        var id = $(element).val();
+                        if (id !== "") {
+                            $.getJSON('@Url.Content("~/data/dataservice.svc/MasterFunds")' + '(' + id + ')')
+                            .done(function (data) {
+                                var a = data.d;
+                                callback({ id: a.Id, text: a.Name });
+                            });
+                        }
+                    },
+                    ajax: {
+                        url: '@Url.Content("~/data/dataservice.svc/MasterFunds")',
+                        dataType: "json",
+                        data: function (term) {
+                            return {
+                                "$filter": "substringof('" + escape(term) + "', Name) eq true",
+                                "$orderby": "Name"
+                            };
+                        },
+                        results: function (data) {
+                            return {
+                                results: $.map(data.d, function (a) { return { id: a.Id, text: a.Name } })
+                            };
+                        }
+                    }
+                });
+                var f = $('#@Html.FieldIdFor(f => f.FundId)').select2({
+                    width: 300,
+                    allowClear: true,
+                    placeholder: "All Funds",
+                    initSelection: function (element, callback) {
+                        var id = $(element).val();
+                        var mid = m.select2('val');
+                        var data = {};
+                        if (mid) {
+                        	data["$filter"] = "MasterFundId eq " + m.val();
+                        }
+                        if (id !== "") {
+                            $.ajax('@Url.Content("~/data/dataservice.svc/Funds")' + '(' + id + ')', {
+                                dataType: "json",
+                                data: data
+                            }).done(function (data) {
+                                var a = data.d;
+                                callback({ id: a.Id, text: a.Name });
+                            }).fail(function () {
+                                callback(null);
+                            });
+                        }
+                    },
+                    ajax: {
+                        url: '@Url.Content("~/data/dataservice.svc/Funds")',
+                        dataType: "json",
+                        data: function (term) {
+                            var filters = [];
+                            if (m.val()) {
+                                filters.push("MasterFundId eq " + m.val());
+                            }
+                            if (term) {
+                                filters.push("substringof('" + escape(term) + "', Name) eq true");
+                            }
+                            return {
+                                "$filter": filters.join(" and "),
+                                "$orderby": "Name"
+                            };
+                        },
+                        results: function (data) {
+                            return {
+                                results: $.map(data.d, function (a) { return { id: a.Id, text: a.Name } })
+                            };
+                        }
+                    }
+
+                });
+                var a = $('#@Html.FieldIdFor(f => f.AppId)').select2({
+                    width:300,
+                    allowClear: true,
+                    placeholder: "All Apps",
+                    initSelection: function (element, callback) {
+                        var id = $(element).val();
+                        var mid = m.select2('val');
+                        var q = {};
+                        if (m.val()) {
+                        	q["$filter"] = "Fund/MasterFundId eq " + m.val();
+                        }
+
+                        if (id !== "") {
+                            $.ajax('@Url.Content("~/data/dataservice.svc/Apps")' + '(' + id + ')', {
+                                dataType: "json",
+                                data: q
+                            }).done(function (data) {
+                                var a = data.d;
+                                callback({ id: a.Id, text: a.Name });
+                            }).fail(function () {
+                                callback(null);
+                            });
+                        }
+                    },
+                    ajax: {
+                        url: '@Url.Content("~/data/dataservice.svc/Apps")',
+                        dataType: "json",
+                        data: function (term) {
+                            var filters = [];
+                            if (m.val()) {
+                                filters.push("Fund/MasterFundId eq " + m.val());
+                            }
+                            if (f.val()) {
+                                filters.push("FundId eq " + f.val());
+                            }
+                            if (term) {
+                                filters.push("substringof('" + escape(term) + "', Name) eq true");
+                            }
+                            return {
+                                "$filter": filters.join(" and "),
+                                "$orderby": "Name"
+                            };
+                        },
+                        results: function (data) {
+                            return {
+                                results: $.map(data.d, function (a) { return { id: a.Id, text: a.Name } })
+                            };
+                        }
+                    }
+                });
+                m.change(function () {
+                    f.change();
+                    a.select2('val', a.select2('val'));
+                });
+                f.change(function () {
+                    a.select2('val', a.select2('val'));
+                });
+            });
+        </script>
+    </div>
+    <div>
+        @Html.LabelFor(f => f.CurId)
+        @Html.DropDownListFor(f => f.CurId, Model.Currencies, string.Empty)
+        <button type="submit" class="submit">Go</button>
+        <a href="@Request.Url.GetLeftPart(UriPartial.Path)" class="button">Reset</a>
+        <button type="submit" class="export">Export to Excel</button>
+        <script>
+            function PushBudgetSummaryParameters(aoData) {
+                aoData.push({ name: '@Html.FieldNameFor(f => f.AgencyId)', value: $('#@Html.FieldIdFor(f => f.AgencyId)').val() });
+                aoData.push({ name: '@Html.FieldNameFor(f => f.ServiceTypeId)', value: $('#@Html.FieldIdFor(f => f.ServiceTypeId)').val() });
+                aoData.push({ name: '@Html.FieldNameFor(f => f.StartDate)', value: $('#@Html.FieldIdFor(f => f.StartDate)').val() });
+                aoData.push({ name: '@Html.FieldNameFor(f => f.EndDate)', value: $('#@Html.FieldIdFor(f => f.EndDate)').val() });
+                aoData.push({ name: '@Html.FieldNameFor(f => f.ServiceId)', value: $('#@Html.FieldIdFor(f => f.ServiceId)').val() });
+                aoData.push({ name: '@Html.FieldNameFor(f => f.MasterFundId)', value: $('#@Html.FieldIdFor(f => f.MasterFundId)').val() });
+                aoData.push({ name: '@Html.FieldNameFor(f => f.FundId)', value: $('#@Html.FieldIdFor(f => f.FundId)').val() });
+                aoData.push({ name: '@Html.FieldNameFor(f => f.AppId)', value: $('#@Html.FieldIdFor(f => f.AppId)').val() });
+                aoData.push({ name: '@Html.FieldNameFor(f => f.CurId)', value: $('#@Html.FieldIdFor(f => f.CurId)').val() });               
+            }
+
+            $('.export').click(function () {
+                var form = $(this).closest('form');
+                form.attr('action', '@Url.Action("Export")');
+            });
+			$('.submit').click(function () {
+				var form = $(this).closest('form');
+				form.attr('action', '@Url.Action("Index")');
+			});
+        </script>
+    </div>
+</fieldset>
+</form>
+

@@ -1,0 +1,71 @@
+﻿@model FinancialSummaryIndexModel
+@{
+    ViewBag.Title = "Summary";
+}
+
+<h2>@ViewBag.Title</h2>
+<div>
+    @Html.Partial("Filter", Model)
+
+    @if (ViewData.ModelState.IsValid)
+    {
+        <text>
+        <h3 id="error" class="error" hidden="hidden"></h3>
+        <table id="FinancialSummaryOverview"></table>
+        <script>
+            $(function () {
+                var oTable = $('#FinancialSummaryOverview').dataTable({
+                	"bSort": false,
+                	"sPaginationType": "two_button",
+                	"bServerSide": true,
+                	"bInfo": false,
+                    "sAjaxSource": '@Url.Action(Model.ActionName + "Data")',
+
+                    "fnServerParams": function (aoData) {
+                        PushFinancialSummaryParameters(aoData);
+                    },
+                    "fnDrawCallback": function (oSettings) {
+                    },
+                    "aoColumns": [
+                        { "mData": "ServiceTypeName", "sTitle": "Service Type" },
+                        { "mData": "ServiceName", "sTitle": "Service" },
+
+                        { "mData": "Quantity", "sTitle": "Quantity", "sClass":"dec", "mRender": function (a) { return renderDecimal(a); } },
+                        { "mData": "Amount", "sTitle": "Amount", "sClass":"dec", "mRender": function (a) { return renderDecimal(a); } },
+                        { "mData": "ClientsCount", "sTitle": "Clients", "sClass":"dec", "mRender": function (a) { return renderDecimal(a); } },
+                        { "mData": "AverageCostPerClient", "sTitle": "Average cost per client", "sClass":"dec", "mRender": function (a) { return renderDecimal(a); } },
+                        { "mData": "AverageCostPerUnit", "sTitle": "Average cost per unit", "sClass":"dec", "mRender": function (a) { return renderDecimal(a); } },
+                        { "mData": null, "sTitle": "CUR", "mRender": function () { return '@Model.CurId'; } },
+
+                        { "mData": "FundName", "sTitle": "Fund" },
+                        { "mData": "MasterFundName", "sTitle": "Master Fund" },
+                        { "mData": "AppName", "sTitle": "#App" },
+                        { "mData": "CcGrant", "sTitle": "CC Grant [Budget]", "sClass":"dec", "mRender": function (a) { return renderDecimal(a); } },
+
+                        {
+                            "mData": "ServiceId", "sTitle": null, "bSortable": false, "mRender": function (a, b, c) {
+                                var aoData = [];
+                                PushFinancialSummaryParameters(aoData);
+                                SetFinancialSummaryValue(aoData, { name: "ServiceId", value: c.ServiceId });
+                                SetFinancialSummaryValue(aoData, { name: "AppId", value: c.AppId });
+                                var qs = $.param(aoData);
+                                var result = '<a href="@Url.Action("Details")?';
+                                result += qs;
+                                result += '">Details</a>';
+                                return result;
+                            }
+                        }
+
+                    ]
+                });
+            });
+        </script>
+        </text>
+    }
+    else
+    {
+        <text>
+        @Html.ValidationSummary()
+        </text>
+    }
+</div>
