@@ -318,7 +318,7 @@ namespace CC.Web.Controllers
 					where item.Id == id
 					select a.AppBudgetService.Service;
 			var result = s.SingleOrDefault();
-
+            
 			if (result == null) { throw new InvalidOperationException("Import or subreport not found"); }
 			else
 			{
@@ -340,6 +340,7 @@ namespace CC.Web.Controllers
 			{
 				return subReport.AppBudgetService.Service;
 			}
+            
 		}
 
        
@@ -354,7 +355,8 @@ namespace CC.Web.Controllers
 
 				var appbudgetservice = _db.AppBudgetServices.Where(Permissions.AppBudgetServicesFilter).Single(f => f.Id == appBudgetServiceId);
 				if (appbudgetservice == null) { throw new Exception("Budget service id " + appBudgetServiceId + " not found."); }
-
+                
+                
 				subReport = new SubReport()
 				{
 					AppBudgetServiceId = appBudgetServiceId.Value,

@@ -638,9 +638,10 @@ Not Eligible: Clients are not eligible to receive CC funded services and must ce
 				{
 					var msg = new System.Net.Mail.MailMessage();
 					var groupId = g.FirstOrDefault().AgencyGroupId;
-					foreach (var user in serUsers.Where(f => f.AgencyGroupId == groupId))
-					{
-						try 
+                    //Lena Test Email
+                    foreach (var user in serUsers.Where(f => f.AgencyGroupId == groupId))
+                    {
+                        try
                         {
                             if (!user.AddToBcc)
                             {
@@ -651,8 +652,8 @@ Not Eligible: Clients are not eligible to receive CC funded services and must ce
                                 msg.Bcc.Add(new System.Net.Mail.MailAddress(user.Email, user.DisplayName));
                             }
                         }
-						catch (Exception ex) { _log.Info(ex.Message, ex); }
-					}
+                        catch (Exception ex) { _log.Info(ex.Message, ex); }
+                    }
 
                     foreach (var user in agencyUsers.Where(f => f.AgencyId == g.Key))
                     {
@@ -670,8 +671,8 @@ Not Eligible: Clients are not eligible to receive CC funded services and must ce
                         catch (Exception ex) { _log.Info(ex.Message, ex); }
                     }
 
-					foreach (var user in poUsers.Where(f => f.AgencyGroupId == groupId))
-					{
+                    foreach (var user in poUsers.Where(f => f.AgencyGroupId == groupId))
+                    {
                         try
                         {
                             if (!user.AddToBcc)
@@ -683,20 +684,21 @@ Not Eligible: Clients are not eligible to receive CC funded services and must ce
                                 msg.Bcc.Add(new System.Net.Mail.MailAddress(user.Email, user.DisplayName));
                             }
                         }
-						catch (Exception ex) { _log.Info(ex.Message, ex); }
-					}
+                        catch (Exception ex) { _log.Info(ex.Message, ex); }
+                    }
 
-					foreach (var user in gpos)
-					{
+                    foreach (var user in gpos)
+                    {
                         try
                         {
                             msg.Bcc.Add(new System.Net.Mail.MailAddress(user.Email, user.UserName));
                         }
-						catch (Exception ex) { _log.Info(ex.Message, ex); }
-					}
-                    msg.Bcc.Add("Lena.Kunisky@claimscon.org");
+                        catch (Exception ex) { _log.Info(ex.Message, ex); }
+                    }
+                    //Lena Test Email
+                    //msg.To.Add(new System.Net.Mail.MailAddress("Lena.Kunisky@claimscon.org", "Lena Kunisky"));
 
-					var groupClients = g.Select(f => f);
+                    var groupClients = g.Select(f => f);
 					var agencygroup = db.AgencyGroups.SingleOrDefault(f => f.Id == groupId);
 
 					msg.IsBodyHtml = true;

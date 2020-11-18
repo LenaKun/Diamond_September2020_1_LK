@@ -923,7 +923,7 @@
           <Property Name="UpdatedBy" Type="int" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'cc_qa.dbo.ImportGovHcHours' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'cc_dev.dbo.ImportGovHcHours' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ImportGovHcHours">
           <Key>
             <PropertyRef Name="ImportId" />
@@ -960,7 +960,7 @@ warning 6002: The table/view 'cc_qa.dbo.ImportGovHcHours' does not have a primar
           <Property Name="StartedAt" Type="datetime" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'cc_qa.dbo.ImportUnmetNeeds' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'cc_dev.dbo.ImportUnmetNeeds' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ImportUnmetNeeds">
           <Key>
             <PropertyRef Name="ImportId" />
@@ -974,7 +974,7 @@ warning 6002: The table/view 'cc_qa.dbo.ImportUnmetNeeds' does not have a primar
           <Property Name="WeeklyHours" Type="decimal" Precision="9" Scale="2" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'cc_qa.dbo.ImportUnmetNeedsOther' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'cc_dev.dbo.ImportUnmetNeedsOther' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ImportUnmetNeedsOther">
           <Key>
             <PropertyRef Name="ImportId" />
@@ -1594,7 +1594,7 @@ warning 6002: The table/view 'cc_qa.dbo.ImportUnmetNeedsOther' does not have a p
           <Property Name="Disabled" Type="bit" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'cc_qa.dbo.HcCapsMonthlyTableRaw' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'cc_dev.dbo.HcCapsMonthlyTableRaw' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="HcCapsMonthlyTableRaw">
           <Key>
             <PropertyRef Name="ClientId" />
@@ -1612,7 +1612,7 @@ warning 6002: The table/view 'cc_qa.dbo.HcCapsMonthlyTableRaw' does not have a p
           <Property Name="GovHcHours" Type="decimal" Precision="9" Scale="2" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'cc_qa.dbo.HcCapsTableRaw' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'cc_dev.dbo.HcCapsTableRaw' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="HcCapsTableRaw">
           <Key>
             <PropertyRef Name="ClientId" />
@@ -1642,7 +1642,35 @@ warning 6002: The table/view 'cc_qa.dbo.HcCapsTableRaw' does not have a primary 
           <Property Name="Maf105" Type="int" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'cc_qa.dbo.ValidClientView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'cc_dev.dbo.HcCapsTableRaw_Original' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="HcCapsTableRaw_Original">
+          <Key>
+            <PropertyRef Name="ClientId" />
+            <PropertyRef Name="AgencyGroupId" />
+            <PropertyRef Name="FunctionalityLevelId" />
+            <PropertyRef Name="Has2" />
+            <PropertyRef Name="Maf" />
+            <PropertyRef Name="Maf105" />
+          </Key>
+          <Property Name="ClientId" Type="int" Nullable="false" />
+          <Property Name="AgencyGroupId" Type="int" Nullable="false" />
+          <Property Name="StartDate" Type="date" />
+          <Property Name="EndDate" Type="date" />
+          <Property Name="JoinDate" Type="date" />
+          <Property Name="LeaveDate" Type="date" />
+          <Property Name="DeceasedDate" Type="date" />
+          <Property Name="HcCap" Type="decimal" Precision="13" Scale="2" />
+          <Property Name="HospiceCareCap" Type="decimal" Precision="14" Scale="2" />
+          <Property Name="GovHcHours" Type="decimal" Precision="9" Scale="2" />
+          <Property Name="HasStatusId" Type="int" />
+          <Property Name="FunctionalityLevelId" Type="int" Nullable="false" />
+          <Property Name="gfhours" Type="decimal" Precision="9" Scale="2" />
+          <Property Name="Has2" Type="int" Nullable="false" />
+          <Property Name="Maf" Type="int" Nullable="false" />
+          <Property Name="Maf105" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'cc_dev.dbo.ValidClientView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ValidClientView">
           <Key>
             <PropertyRef Name="ImportId" />
@@ -1720,7 +1748,7 @@ warning 6002: The table/view 'cc_qa.dbo.ValidClientView' does not have a primary
           <Property Name="UnableToSign" Type="bit" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'cc_qa.dbo.ValidExistingClientsView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'cc_dev.dbo.ValidExistingClientsView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ValidExistingClientsView">
           <Key>
             <PropertyRef Name="ImportId" />
@@ -1792,7 +1820,7 @@ warning 6002: The table/view 'cc_qa.dbo.ValidExistingClientsView' does not have 
           <Property Name="UnableToSign" Type="bit" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'cc_qa.dbo.viewAppExchangeRates' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'cc_dev.dbo.viewAppExchangeRates' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="viewAppExchangeRates">
           <Key>
             <PropertyRef Name="AppId" />
@@ -1803,7 +1831,7 @@ warning 6002: The table/view 'cc_qa.dbo.viewAppExchangeRates' does not have a pr
           <Property Name="Value" Type="decimal" Precision="38" Scale="19" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'cc_qa.dbo.viewClientDetails' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'cc_dev.dbo.viewClientDetails' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="viewClientDetails">
           <Key>
             
@@ -1907,7 +1935,7 @@ warning 6002: The table/view 'cc_qa.dbo.viewClientDetails' does not have a prima
           <Property Name="UnableToSign" Type="bit" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'cc_qa.dbo.ViewClientReports' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'cc_dev.dbo.ViewClientReports' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ViewClientReports">
           <Key>
             <PropertyRef Name="SubReportId" />
@@ -1926,7 +1954,7 @@ warning 6002: The table/view 'cc_qa.dbo.ViewClientReports' does not have a prima
           <Property Name="TotalAmount" Type="decimal" Precision="30" Scale="10" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'cc_qa.dbo.viewClientReportsEst' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'cc_dev.dbo.viewClientReportsEst' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="viewClientReportsEst">
           <Key>
             <PropertyRef Name="SubReportId" />
@@ -1947,7 +1975,7 @@ warning 6002: The table/view 'cc_qa.dbo.viewClientReportsEst' does not have a pr
           <Property Name="EstReportDate" Type="date" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'cc_qa.dbo.ViewClientsServiceDate_New' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'cc_dev.dbo.ViewClientsServiceDate_New' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ViewClientsServiceDate_New">
           <Key>
             <PropertyRef Name="ClientId" />
@@ -1958,7 +1986,7 @@ warning 6002: The table/view 'cc_qa.dbo.ViewClientsServiceDate_New' does not hav
           <Property Name="IsHomecare" Type="bit" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'cc_qa.dbo.viewDatesHistory' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'cc_dev.dbo.viewDatesHistory' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="viewDatesHistory">
           <Key>
             <PropertyRef Name="Id" />
@@ -1978,7 +2006,7 @@ warning 6002: The table/view 'cc_qa.dbo.viewDatesHistory' does not have a primar
           <Property Name="UpdateDate" Type="smalldatetime" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'cc_qa.dbo.viewDeceasedDateEntryReport' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'cc_dev.dbo.viewDeceasedDateEntryReport' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="viewDeceasedDateEntryReport">
           <Key>
             <PropertyRef Name="ClientId" />
@@ -1997,7 +2025,7 @@ warning 6002: The table/view 'cc_qa.dbo.viewDeceasedDateEntryReport' does not ha
           <Property Name="UpdateDate" Type="smalldatetime" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'cc_qa.dbo.viewFinancialReportApprovalStatusReport' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'cc_dev.dbo.viewFinancialReportApprovalStatusReport' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="viewFinancialReportApprovalStatusReport">
           <Key>
             <PropertyRef Name="MainReportId" />
@@ -2025,7 +2053,7 @@ warning 6002: The table/view 'cc_qa.dbo.viewFinancialReportApprovalStatusReport'
           <Property Name="OldStatusId" Type="int" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'cc_qa.dbo.viewFinancialSummary_Details' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'cc_dev.dbo.viewFinancialSummary_Details' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="viewFinancialSummary_Details">
           <Key>
             <PropertyRef Name="SubReportId" />
@@ -2071,7 +2099,7 @@ warning 6002: The table/view 'cc_qa.dbo.viewFinancialSummary_Details' does not h
           <Property Name="IsSubmitted" Type="bit" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'cc_qa.dbo.viewFunctionalityScoreChangeReport' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'cc_dev.dbo.viewFunctionalityScoreChangeReport' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="viewFunctionalityScoreChangeReport">
           <Key>
             <PropertyRef Name="ClientId" />
@@ -2093,7 +2121,7 @@ warning 6002: The table/view 'cc_qa.dbo.viewFunctionalityScoreChangeReport' does
           <Property Name="StartDate" Type="datetime" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'cc_qa.dbo.viewGgQuarterlyHcFls' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'cc_dev.dbo.viewGgQuarterlyHcFls' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="viewGgQuarterlyHcFls">
           <Key>
             <PropertyRef Name="FundId" />
@@ -2111,7 +2139,7 @@ warning 6002: The table/view 'cc_qa.dbo.viewGgQuarterlyHcFls' does not have a pr
           <Property Name="RepQuarter" Type="int" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'cc_qa.dbo.viewHc' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'cc_dev.dbo.viewHc' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="viewHc">
           <Key>
             <PropertyRef Name="mrid" />
@@ -2132,7 +2160,7 @@ warning 6002: The table/view 'cc_qa.dbo.viewHc' does not have a primary key defi
           <Property Name="quantity" Type="decimal" Precision="18" Scale="6" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'cc_qa.dbo.viewHcPlus' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'cc_dev.dbo.viewHcPlus' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="viewHcPlus">
           <Key>
             <PropertyRef Name="ClientId" />
@@ -2147,7 +2175,7 @@ warning 6002: The table/view 'cc_qa.dbo.viewHcPlus' does not have a primary key 
           <Property Name="WC" Type="decimal" Precision="38" Scale="6" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'cc_qa.dbo.viewMonths' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'cc_dev.dbo.viewMonths' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="viewMonths">
           <Key>
             <PropertyRef Name="m" />
@@ -2155,7 +2183,7 @@ warning 6002: The table/view 'cc_qa.dbo.viewMonths' does not have a primary key 
           <Property Name="m" Type="int" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'cc_qa.dbo.viewScRepSource' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'cc_dev.dbo.viewScRepSource' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="viewScRepSource">
           <Key>
             <PropertyRef Name="subreportid" />
@@ -2170,7 +2198,7 @@ warning 6002: The table/view 'cc_qa.dbo.viewScRepSource' does not have a primary
           <Property Name="Amount" Type="money" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'cc_qa.dbo.viewSubreportAmounts' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'cc_dev.dbo.viewSubreportAmounts' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="viewSubreportAmounts">
           <Key>
             <PropertyRef Name="id" />
@@ -2189,7 +2217,7 @@ warning 6002: The table/view 'cc_qa.dbo.viewSubreportAmounts' does not have a pr
           <Property Name="EstAmountPerClient" Type="money" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'cc_qa.rep.viewFinSumDet' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'cc_dev.rep.viewFinSumDet' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="viewFinSumDet">
           <Key>
             <PropertyRef Name="SubReportId" />
@@ -4583,6 +4611,11 @@ warning 6002: The table/view 'cc_qa.rep.viewFinSumDet' does not have a primary k
           <Parameter Name="checkPeriodStart" Type="date" Mode="In" />
           <Parameter Name="checkPeriodEnd" Type="date" Mode="In" />
         </Function>
+        <Function Name="spHcCapsTableRawBefore2021" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="clientid" Type="int" Mode="In" />
+          <Parameter Name="checkPeriodStart" Type="date" Mode="In" />
+          <Parameter Name="checkPeriodEnd" Type="date" Mode="In" />
+        </Function>
         <Function Name="spSrHcDetails" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="userId" Type="int" Mode="In" />
           <Parameter Name="subReportId" Type="int" Mode="In" />
@@ -4815,6 +4848,26 @@ FROM [dbo].[HcCapsMonthlyTableRaw] AS [HcCapsMonthlyTableRaw]</DefiningQuery>
 [HcCapsTableRaw].[Maf] AS [Maf], 
 [HcCapsTableRaw].[Maf105] AS [Maf105]
 FROM [dbo].[HcCapsTableRaw] AS [HcCapsTableRaw]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="HcCapsTableRaw_Original" EntityType="Self.HcCapsTableRaw_Original" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+[HcCapsTableRaw_Original].[ClientId] AS [ClientId], 
+[HcCapsTableRaw_Original].[AgencyGroupId] AS [AgencyGroupId], 
+[HcCapsTableRaw_Original].[StartDate] AS [StartDate], 
+[HcCapsTableRaw_Original].[EndDate] AS [EndDate], 
+[HcCapsTableRaw_Original].[JoinDate] AS [JoinDate], 
+[HcCapsTableRaw_Original].[LeaveDate] AS [LeaveDate], 
+[HcCapsTableRaw_Original].[DeceasedDate] AS [DeceasedDate], 
+[HcCapsTableRaw_Original].[HcCap] AS [HcCap], 
+[HcCapsTableRaw_Original].[HospiceCareCap] AS [HospiceCareCap], 
+[HcCapsTableRaw_Original].[GovHcHours] AS [GovHcHours], 
+[HcCapsTableRaw_Original].[HasStatusId] AS [HasStatusId], 
+[HcCapsTableRaw_Original].[FunctionalityLevelId] AS [FunctionalityLevelId], 
+[HcCapsTableRaw_Original].[gfhours] AS [gfhours], 
+[HcCapsTableRaw_Original].[Has2] AS [Has2], 
+[HcCapsTableRaw_Original].[Maf] AS [Maf], 
+[HcCapsTableRaw_Original].[Maf105] AS [Maf105]
+FROM [dbo].[HcCapsTableRaw_Original] AS [HcCapsTableRaw_Original]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="ValidClientView" EntityType="Self.ValidClientView" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -6988,6 +7041,12 @@ FROM [rep].[viewFinSumDet] AS [viewFinSumDet]</DefiningQuery>
             <Parameter Name="top" Mode="In" Type="Int32" />
             <Parameter Name="skip" Mode="In" Type="Int32" />
             <Parameter Name="userId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <EntitySet Name="HcCapsTableRaw_Original" EntityType="ccModel.HcCapsTableRaw_Original" />
+          <FunctionImport Name="spHcCapsTableRawBefore2021" ReturnType="Collection(ccModel.spHcCapsTableRawBefore2021_Result)">
+            <Parameter Name="clientid" Mode="In" Type="Int32" />
+            <Parameter Name="checkPeriodStart" Mode="In" Type="DateTime" />
+            <Parameter Name="checkPeriodEnd" Mode="In" Type="DateTime" />
           </FunctionImport>
           </EntityContainer>
 				<EntityType Name="ApprovalStatus">
@@ -11670,6 +11729,50 @@ FROM [rep].[viewFinSumDet] AS [viewFinSumDet]</DefiningQuery>
           <Property Type="Decimal" Name="CcGrant" Nullable="true" Precision="18" Scale="0" />
           <Property Type="String" Name="AppCur" Nullable="false" MaxLength="3" />
         </ComplexType>
+        <EntityType Name="HcCapsTableRaw_Original">
+          <Key>
+            <PropertyRef Name="ClientId" />
+            <PropertyRef Name="AgencyGroupId" />
+            <PropertyRef Name="FunctionalityLevelId" />
+            <PropertyRef Name="Has2" />
+            <PropertyRef Name="Maf" />
+            <PropertyRef Name="Maf105" />
+          </Key>
+          <Property Name="ClientId" Type="Int32" Nullable="false" />
+          <Property Name="AgencyGroupId" Type="Int32" Nullable="false" />
+          <Property Name="StartDate" Type="DateTime" Precision="0" />
+          <Property Name="EndDate" Type="DateTime" Precision="0" />
+          <Property Name="JoinDate" Type="DateTime" Precision="0" />
+          <Property Name="LeaveDate" Type="DateTime" Precision="0" />
+          <Property Name="DeceasedDate" Type="DateTime" Precision="0" />
+          <Property Name="HcCap" Type="Decimal" Precision="13" Scale="2" />
+          <Property Name="HospiceCareCap" Type="Decimal" Precision="14" Scale="2" />
+          <Property Name="GovHcHours" Type="Decimal" Precision="9" Scale="2" />
+          <Property Name="HasStatusId" Type="Int32" />
+          <Property Name="FunctionalityLevelId" Type="Int32" Nullable="false" />
+          <Property Name="gfhours" Type="Decimal" Precision="9" Scale="2" />
+          <Property Name="Has2" Type="Int32" Nullable="false" />
+          <Property Name="Maf" Type="Int32" Nullable="false" />
+          <Property Name="Maf105" Type="Int32" Nullable="false" />
+        </EntityType>
+        <ComplexType Name="spHcCapsTableRawBefore2021_Result">
+          <Property Type="Int32" Name="ClientId" Nullable="false" />
+          <Property Type="Int32" Name="AgencyGroupId" Nullable="false" />
+          <Property Type="DateTime" Name="StartDate" Nullable="true" />
+          <Property Type="DateTime" Name="EndDate" Nullable="true" />
+          <Property Type="DateTime" Name="JoinDate" Nullable="true" />
+          <Property Type="DateTime" Name="LeaveDate" Nullable="true" />
+          <Property Type="DateTime" Name="DeceasedDate" Nullable="true" />
+          <Property Type="Decimal" Name="HcCap" Nullable="true" Precision="13" Scale="2" />
+          <Property Type="Decimal" Name="HospiceCareCap" Nullable="true" Precision="14" Scale="2" />
+          <Property Type="Decimal" Name="GovHcHours" Nullable="true" Precision="9" Scale="2" />
+          <Property Type="Int32" Name="HasStatusId" Nullable="true" />
+          <Property Type="Int32" Name="FunctionalityLevelId" Nullable="false" />
+          <Property Type="Decimal" Name="gfhours" Nullable="true" Precision="9" Scale="2" />
+          <Property Type="Int32" Name="Has2" Nullable="false" />
+          <Property Type="Int32" Name="Maf" Nullable="false" />
+          <Property Type="Int32" Name="Maf105" Nullable="false" />
+        </ComplexType>
         </Schema>
 		</edmx:ConceptualModels>
 		<!-- C-S mapping content -->
@@ -14495,6 +14598,50 @@ FROM [rep].[viewFinSumDet] AS [viewFinSumDet]</DefiningQuery>
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <EntitySetMapping Name="HcCapsTableRaw_Original">
+            <EntityTypeMapping TypeName="ccModel.HcCapsTableRaw_Original">
+              <MappingFragment StoreEntitySet="HcCapsTableRaw_Original">
+                <ScalarProperty Name="Maf105" ColumnName="Maf105" />
+                <ScalarProperty Name="Maf" ColumnName="Maf" />
+                <ScalarProperty Name="Has2" ColumnName="Has2" />
+                <ScalarProperty Name="gfhours" ColumnName="gfhours" />
+                <ScalarProperty Name="FunctionalityLevelId" ColumnName="FunctionalityLevelId" />
+                <ScalarProperty Name="HasStatusId" ColumnName="HasStatusId" />
+                <ScalarProperty Name="GovHcHours" ColumnName="GovHcHours" />
+                <ScalarProperty Name="HospiceCareCap" ColumnName="HospiceCareCap" />
+                <ScalarProperty Name="HcCap" ColumnName="HcCap" />
+                <ScalarProperty Name="DeceasedDate" ColumnName="DeceasedDate" />
+                <ScalarProperty Name="LeaveDate" ColumnName="LeaveDate" />
+                <ScalarProperty Name="JoinDate" ColumnName="JoinDate" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="AgencyGroupId" ColumnName="AgencyGroupId" />
+                <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="spHcCapsTableRawBefore2021" FunctionName="ccModel.Store.spHcCapsTableRawBefore2021">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ccModel.spHcCapsTableRawBefore2021_Result">
+                <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+                <ScalarProperty Name="AgencyGroupId" ColumnName="AgencyGroupId" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="JoinDate" ColumnName="JoinDate" />
+                <ScalarProperty Name="LeaveDate" ColumnName="LeaveDate" />
+                <ScalarProperty Name="DeceasedDate" ColumnName="DeceasedDate" />
+                <ScalarProperty Name="HcCap" ColumnName="HcCap" />
+                <ScalarProperty Name="HospiceCareCap" ColumnName="HospiceCareCap" />
+                <ScalarProperty Name="GovHcHours" ColumnName="GovHcHours" />
+                <ScalarProperty Name="HasStatusId" ColumnName="HasStatusId" />
+                <ScalarProperty Name="FunctionalityLevelId" ColumnName="FunctionalityLevelId" />
+                <ScalarProperty Name="gfhours" ColumnName="gfhours" />
+                <ScalarProperty Name="Has2" ColumnName="Has2" />
+                <ScalarProperty Name="Maf" ColumnName="Maf" />
+                <ScalarProperty Name="Maf105" ColumnName="Maf105" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           </EntityContainerMapping>
 			</Mapping>
 		</edmx:Mappings>
@@ -14803,6 +14950,7 @@ FROM [rep].[viewFinSumDet] AS [viewFinSumDet]</DefiningQuery>
         <EntityTypeShape EntityType="ccModel.MainReportStatuses" Width="1.5" PointX="24.375" PointY="0.875" />
         <AssociationConnector Association="ccModel.FK_MainReports_Statuses" />
         <EntityTypeShape EntityType="ccModel.ValidExistingClientsView" Width="1.5" PointX="24.375" PointY="3.75" />
+        <EntityTypeShape EntityType="ccModel.HcCapsTableRaw_Original" Width="1.5" PointX="3.375" PointY="24.75" />
         </Diagram>
 			<Diagram DiagramId="4bb4e8ffb8d9479aae8d3b0e9377ae28" Name="Import" ZoomLevel="100" >
 				<EntityTypeShape EntityType="ccModel.Cri" Width="1.5" PointX="10.125" PointY="0.75" />

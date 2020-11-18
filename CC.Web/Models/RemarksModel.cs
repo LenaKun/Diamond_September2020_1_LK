@@ -60,7 +60,9 @@ namespace CC.Web.Models
 		public DateTime Date { get; set; }
 		public bool IsFile { get; set; }
 		public int Id { get; internal set; }
-	}
+        public int Link { get; set; }
+
+    }
 
 	public class MainReportAgencyCommentsModel : CommentsModelBase
 	{
@@ -79,7 +81,8 @@ namespace CC.Web.Models
 					Content = f.Content,
 					UserName = f.User.UserName,
 					Date = f.Date,
-					IsFile = f.IsFile
+					IsFile = f.IsFile,
+                    Link = 0
 				}).ToList();
 
             if ((FixedRoles)this.User.RoleId == FixedRoles.BMF)
@@ -93,6 +96,24 @@ namespace CC.Web.Models
                     }
                 }
             }
+            var count = 0;
+            for (var i = 0; i < commentsList.Count; i++)
+
+            {
+                //LenaPDF
+               
+                if (commentsList[i].Content.Contains("pdf"))
+                {
+                    // commentsList[i].Content = commentsList[i].Content + "Link";
+                    commentsList[i].Link = 7;
+                    count = count + 1;
+
+                    if (count == 2)
+                    { break; }
+                       
+                }
+            }
+
 
             this.Comments = commentsList;
 

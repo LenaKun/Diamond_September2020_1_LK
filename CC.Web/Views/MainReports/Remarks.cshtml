@@ -7,35 +7,58 @@
 @section Header{
 	@if(Model.Comments.Count() > 0)
 	{
-	<script type="text/javascript">
+<script type="text/javascript">
 		$(document).ready(function () {
-			$('table#@id').dataTable({
-				"bJQueryUI": true,
-				"sPaginationType": "full_numbers",
-				"aaSorting": [[2, "desc"]],
-				"aoColumnDefs": [
-					{
-						"aTargets": [0],
-						"sWidth": "70em",
-						"sClass": "comment compactRemark",
-						"mRender": function (data, vis, full) {
-							if (full[3] == "True") { // a file
-								if (data.indexOf("Program Overview") > -1) {
-									return '<a href="@Url.Action("ProgramOverviewFile", "MainReports", new { id = Model.Id })">' + data + '</a>';
-								}
-								else if (data.indexOf("Minutes") > -1) {
-									return '<a href="@Url.Action("MhsaFile", "MainReports", new { id = Model.Id })">' + data + '</a>';
-								}
-								else {
-									var commentId = parseInt(full[4]);
-									return '<a href="@Url.Action("PostApprovalCommentFile")/'+ full[4] +'">' + data + '</a>';
-								}
-							}
-							return data;
-						}
+            $('table#@id').dataTable({
+                "bJQueryUI": true,
+                "sPaginationType": "full_numbers",
+                "aaSorting": [[2, "desc"]],
+                "aoColumnDefs": [
+                    {
+                        "aTargets": [0],
+                        "sWidth": "70em",
+                        "sClass": "comment compactRemark",
+                        "mRender": function (data, vis, full) {
+                            if (full[3] == "True") // a file
+                            {
+                                if (data.indexOf("Program Overview") > -1)
+                                {
+                                    if (full[5] == 7) // Link
+
+                                    {
+                                        return '<a href="@Url.Action("ProgramOverviewFile", "MainReports", new { id = Model.Id })">' + data + '</a>';
+                                    }
+                                    else
+                                    {
+                                        return data;
+                                    }
+                                }
+                                else if (data.indexOf("Minutes") > -1) //Latest Minutes file 
+                                {
+                                  if (full[5] == 7) // Link
+
+                                    {
+                                        return '<a href="@Url.Action("MhsaFile", "MainReports", new { id = Model.Id })">' + data + '</a>';
+                                    }
+                                  else
+                                  {
+                                        return data;
+                                  }
+                                }
+                                else
+                                {
+                                    var commentId = parseInt(full[4]);
+                                    return '<a href="@Url.Action("PostApprovalCommentFile")/'+ full[4] +'">' + data + '</a>';
+                                }
+                            }
+                            return data;
+                        }
+
+                    
+                    
 					},
 					{
-						"aTargets": [3,4], "bVisible": false
+						"aTargets": [3,4,5], "bVisible": false
 					}
 				]
 			});
@@ -44,7 +67,7 @@
 				$(this).find('.comment').toggleClass('compactRemark');
 			});
 		});
-	</script>
+</script>
 	}
 	<style>
 		.comment > div

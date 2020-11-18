@@ -2819,5 +2819,49 @@
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>
+    <EntitySetMapping Name="HcCapsTableRaw_Original">
+      <EntityTypeMapping TypeName="ccModel.HcCapsTableRaw_Original">
+        <MappingFragment StoreEntitySet="HcCapsTableRaw_Original">
+          <ScalarProperty Name="Maf105" ColumnName="Maf105" />
+          <ScalarProperty Name="Maf" ColumnName="Maf" />
+          <ScalarProperty Name="Has2" ColumnName="Has2" />
+          <ScalarProperty Name="gfhours" ColumnName="gfhours" />
+          <ScalarProperty Name="FunctionalityLevelId" ColumnName="FunctionalityLevelId" />
+          <ScalarProperty Name="HasStatusId" ColumnName="HasStatusId" />
+          <ScalarProperty Name="GovHcHours" ColumnName="GovHcHours" />
+          <ScalarProperty Name="HospiceCareCap" ColumnName="HospiceCareCap" />
+          <ScalarProperty Name="HcCap" ColumnName="HcCap" />
+          <ScalarProperty Name="DeceasedDate" ColumnName="DeceasedDate" />
+          <ScalarProperty Name="LeaveDate" ColumnName="LeaveDate" />
+          <ScalarProperty Name="JoinDate" ColumnName="JoinDate" />
+          <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+          <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+          <ScalarProperty Name="AgencyGroupId" ColumnName="AgencyGroupId" />
+          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="spHcCapsTableRawBefore2021" FunctionName="ccModel.Store.spHcCapsTableRawBefore2021">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="ccModel.spHcCapsTableRawBefore2021_Result">
+          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+          <ScalarProperty Name="AgencyGroupId" ColumnName="AgencyGroupId" />
+          <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+          <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+          <ScalarProperty Name="JoinDate" ColumnName="JoinDate" />
+          <ScalarProperty Name="LeaveDate" ColumnName="LeaveDate" />
+          <ScalarProperty Name="DeceasedDate" ColumnName="DeceasedDate" />
+          <ScalarProperty Name="HcCap" ColumnName="HcCap" />
+          <ScalarProperty Name="HospiceCareCap" ColumnName="HospiceCareCap" />
+          <ScalarProperty Name="GovHcHours" ColumnName="GovHcHours" />
+          <ScalarProperty Name="HasStatusId" ColumnName="HasStatusId" />
+          <ScalarProperty Name="FunctionalityLevelId" ColumnName="FunctionalityLevelId" />
+          <ScalarProperty Name="gfhours" ColumnName="gfhours" />
+          <ScalarProperty Name="Has2" ColumnName="Has2" />
+          <ScalarProperty Name="Maf" ColumnName="Maf" />
+          <ScalarProperty Name="Maf105" ColumnName="Maf105" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
   </EntityContainerMapping>
 </Mapping>

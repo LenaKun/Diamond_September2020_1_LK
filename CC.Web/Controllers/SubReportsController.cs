@@ -438,94 +438,143 @@ namespace CC.Web.Controllers
 
 		}
 
-		/// <summary>
-		/// Home care subreport data
-		/// </summary>
-		/// <param name="model"></param>
-		/// <returns></returns>
-		[HttpGet]
-		public JsonResult ClientReportsListWeekly(SubReportDetailsJqDt model)
-		{
-			string sortColName;
-			bool sortAsc = model.sSortDir_0 == "asc";
-			switch (model.iSortCol_0)
-			{
-				default:
-				case 0: sortColName = "firstname"; break;
-				case 1: sortColName = "lastname"; break;
-			}
-			var sr = (from a in db.SubReports.Where(Permissions.SubReportsFilter)
-					  where a.Id == model.Id
-					  select new
-					  {
-						  a.Id,
-						  mrstart = a.MainReport.Start,
-						  mrend = a.MainReport.End,
+        /// <summary>
+        /// Home care subreport data
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public JsonResult ClientReportsListWeekly(SubReportDetailsJqDt model)
+        {
+            string sortColName;
+            bool sortAsc = model.sSortDir_0 == "asc";
+            switch (model.iSortCol_0)
+            {
+                default:
+                case 0: sortColName = "firstname"; break;
+                case 1: sortColName = "lastname"; break;
+            }
+            var sr = (from a in db.SubReports.Where(Permissions.SubReportsFilter)
+                      where a.Id == model.Id
+                      select new
+                      {
+                          a.Id,
+                          mrstart = a.MainReport.Start,
+                          mrend = a.MainReport.End,
                           a.AppBudgetService.Service.TypeId,
-						  ExceptionalHomeCareHours = a.AppBudgetService.Service.ExceptionalHomeCareHours,
-						  CoPGovHoursValidation = a.AppBudgetService.Service.CoPGovHoursValidation
-					  }).Single();
-			var appBudgetService = db.AppBudgetServices.Include(f => f.AppBudget).SingleOrDefault(f => f.Id == model.AppBudgetServiceId);
-			var c1p = new System.Data.Objects.ObjectParameter("displayCount", typeof(int));
-			var c2p = new System.Data.Objects.ObjectParameter("totalCount", typeof(int));
-			var curParamenter = new System.Data.Objects.ObjectParameter("Cur", typeof(string));
+                          ExceptionalHomeCareHours = a.AppBudgetService.Service.ExceptionalHomeCareHours,
+                          CoPGovHoursValidation = a.AppBudgetService.Service.CoPGovHoursValidation,
+                          FundStartDate = a.AppBudgetService.AppBudget.App.Fund.StartDate
+                      }).Single();
+            var appBudgetService = db.AppBudgetServices.Include(f => f.AppBudget).SingleOrDefault(f => f.Id == model.AppBudgetServiceId);
+            var c1p = new System.Data.Objects.ObjectParameter("displayCount", typeof(int));
+            var c2p = new System.Data.Objects.ObjectParameter("totalCount", typeof(int));
+            var curParamenter = new System.Data.Objects.ObjectParameter("Cur", typeof(string));
             db.CommandTimeout = 300;
             var objectReslut = db.spSrHcDetailsWeekly(
-				Permissions.User.Id,
-				model.Id,
-				model.Filter.ClientName,
-				model.Filter.ClientId,
-				model.Filter.ReportedOnly,
-				sortColName,
-				sortAsc,
-				model.sSearch,
-				model.iDisplayStart,
-				model.iDisplayLength,
-				c1p,
-				c2p,
-				curParamenter
-			);
-			var data = objectReslut.ToList();
-			return this.MyJsonResult(new jQueryDataTableResult<object>
-			{
-				aaData = from f in data
-						 select new
-						 {
-							 f.ClientReportId,
-							 f.ClientId,
-							 f.FirstName,
-							 f.LastName,
-							 HASName = f.HASName,
-							 f.Remarks,
-							 f.Cfs,
-							 f.Rate,
-							 f.W1,
-							 f.W2,
-							 f.W3,
-							 f.W4,
-							 f.W5,
-							 f.W6,
-							 f.W7,
-							 f.W8,
-							 f.W9,
-							 f.W10,
-							 f.W11,
-							 f.W12,
-							 f.W13,
-							 f.W14,
-							 f.W15,
-                            Cur = curParamenter.Value,
-							 SubReportId = model.Id,
-							 LeaveDate = f.LeaveDate,
-                             CfsDate = db.CfsRows.Where(c => c.Client.MasterIdClcd == f.MasterIdClcd && c.StartDate < sr.mrend && c.EndDate == null).OrderByDescending(c => c.StartDate).Select(c => c.StartDate).FirstOrDefault(),
-							 HcCaps = GetHcCaps(f.ClientId, sr.mrstart, sr.mrend, sr.ExceptionalHomeCareHours, sr.CoPGovHoursValidation, sr.TypeId),
-                            
-						 },
-				iTotalDisplayRecords = c1p.Value.As<int>(),
-				iTotalRecords = c2p.Value.As<int>(),
-				sEcho = model.sEcho
-			});
-		}
+                Permissions.User.Id,
+                model.Id,
+                model.Filter.ClientName,
+                model.Filter.ClientId,
+                model.Filter.ReportedOnly,
+                sortColName,
+                sortAsc,
+                model.sSearch,
+                model.iDisplayStart,
+                model.iDisplayLength,
+                c1p,
+                c2p,
+                curParamenter
+            );
+            var data = objectReslut.ToList();
+            if (sr.FundStartDate.Year >= 2021) //new calculations
+            {
+                return this.MyJsonResult(new jQueryDataTableResult<object>
+                { 
+                     aaData = from f in data
+                              select new
+                              {
+                                  f.ClientReportId,
+                                  f.ClientId,
+                                  f.FirstName,
+                                  f.LastName,
+                                  HASName = f.HASName,
+                                  f.Remarks,
+                                  f.Cfs,
+                                  f.Rate,
+                                  f.W1,
+                                  f.W2,
+                                  f.W3,
+                                  f.W4,
+                                  f.W5,
+                                  f.W6,
+                                  f.W7,
+                                  f.W8,
+                                  f.W9,
+                                  f.W10,
+                                  f.W11,
+                                  f.W12,
+                                  f.W13,
+                                  f.W14,
+                                  f.W15,
+                                  Cur = curParamenter.Value,
+                                  SubReportId = model.Id,
+                                  LeaveDate = f.LeaveDate,
+                                  CfsDate = db.CfsRows.Where(c => c.Client.MasterIdClcd == f.MasterIdClcd && c.StartDate < sr.mrend && c.EndDate == null).OrderByDescending(c => c.StartDate).Select(c => c.StartDate).FirstOrDefault(),
+                                  HcCaps = GetHcCaps(f.ClientId, sr.mrstart, sr.mrend, sr.ExceptionalHomeCareHours, sr.CoPGovHoursValidation, sr.TypeId)
+                              },
+                    iTotalDisplayRecords = c1p.Value.As<int>(),
+                    iTotalRecords = c2p.Value.As<int>(),
+                    sEcho = model.sEcho
+                });
+        }
+
+       else
+            {
+                return this.MyJsonResult(new jQueryDataTableResult<object>
+                {
+                    // if (sr.FundStartDate.Year >= 2021)
+                    // { }
+                    // else
+                    // {
+                    aaData = from f in data
+                             select new
+                             {
+                                 f.ClientReportId,
+                                 f.ClientId,
+                                 f.FirstName,
+                                 f.LastName,
+                                 HASName = f.HASName,
+                                 f.Remarks,
+                                 f.Cfs,
+                                 f.Rate,
+                                 f.W1,
+                                 f.W2,
+                                 f.W3,
+                                 f.W4,
+                                 f.W5,
+                                 f.W6,
+                                 f.W7,
+                                 f.W8,
+                                 f.W9,
+                                 f.W10,
+                                 f.W11,
+                                 f.W12,
+                                 f.W13,
+                                 f.W14,
+                                 f.W15,
+                                 Cur = curParamenter.Value,
+                                 SubReportId = model.Id,
+                                 LeaveDate = f.LeaveDate,
+                                 CfsDate = db.CfsRows.Where(c => c.Client.MasterIdClcd == f.MasterIdClcd && c.StartDate < sr.mrend && c.EndDate == null).OrderByDescending(c => c.StartDate).Select(c => c.StartDate).FirstOrDefault(),
+                                 HcCaps = GetHcCapsBefore2021(f.ClientId, sr.mrstart, sr.mrend, sr.ExceptionalHomeCareHours, sr.CoPGovHoursValidation, sr.TypeId)
+                             },
+                    iTotalDisplayRecords = c1p.Value.As<int>(),
+                    iTotalRecords = c2p.Value.As<int>(),
+                    sEcho = model.sEcho
+                });
+            }
+        }
 
         /// <summary>
         /// Retrieves data shown in "Hccaps" column on hc subreport details.
@@ -601,7 +650,69 @@ namespace CC.Web.Controllers
 
         }
 
-       
+        private object GetHcCapsBefore2021(int? ClientId
+            , DateTime mrstart
+            , DateTime mrend
+            , bool ExceptionalHomeCareHours
+            , bool CoPGovHoursValidation
+            , int serviceTypeId)
+
+        {
+            var q = (from a in db.spHcCapsTableRawBefore2021(ClientId, mrstart, mrend)
+                     where a.StartDate < mrend && (a.EndDate == null || a.EndDate > mrstart)
+                     orderby a.StartDate
+                     select a).ToList();
+            if (ExceptionalHomeCareHours && CoPGovHoursValidation)
+            {
+                return from a in q
+                       group a by new { a.ClientId, a.GovHcHours } into ag
+
+                       let minStartDate = ag.Min(c => c.StartDate)
+                       select new
+                       {
+                           ClientId = ag.Key.ClientId,
+                           HcCap = ag.Key.GovHcHours,
+                           StartDate = minStartDate,
+                           EndDate = ag.Any(c => c.EndDate == null) ? (DateTime?)null : ag.Max(c => c.EndDate),
+                           AfterReportStart = minStartDate > mrstart
+                       };
+            }
+            else if (serviceTypeId == (int)Service.ServiceTypes.HospiseCare)
+            {
+                return from a in q
+                       group a by new { a.ClientId, a.HospiceCareCap } into ag
+
+                       let minStartDate = ag.Min(c => c.StartDate)
+                       select new
+                       {
+                           ClientId = ag.Key.ClientId,
+                           HcCap = ag.Key.HospiceCareCap,
+                           StartDate = minStartDate,
+                           EndDate = ag.Any(c => c.EndDate == null) ? (DateTime?)null : ag.Max(c => c.EndDate),
+                           AfterReportStart = minStartDate > mrstart
+                       };
+
+            }
+            else
+            {
+                return from a in q
+                       group a by new { a.ClientId, a.HcCap } into ag
+
+                       let minStartDate = ag.Min(c => c.StartDate)
+                       select new
+                       {
+                           ClientId = ag.Key.ClientId,
+                           HcCap = ag.Key.HcCap,
+                           StartDate = minStartDate,
+                           EndDate = ag.Any(c => c.EndDate == null) ? (DateTime?)null : ag.Max(c => c.EndDate),
+                           AfterReportStart = minStartDate > mrstart
+                       };
+
+            }
+
+
+        }
+
         /// <summary>
         /// subreport data for all but personnel and homecare datatables
         /// </summary>
@@ -885,14 +996,18 @@ namespace CC.Web.Controllers
 					where c.AgencyId == model.AgencyId && c.ApprovalStatusId != 1024
                     join a in db.DaysCentersReports.Where(f => f.SubReportId == model.Id && f.VisitsCount !=0) on c.Id equals a.ClientId into ag
                     from a in ag.DefaultIfEmpty()
-                    join hce in db.HomeCareEntitledPeriods on c.Id equals hce.ClientId into hceg
+                    join hce in db.HomeCareEntitledPeriods.Where(f => f.StartDate >= myStartDate && (f.EndDate >= myStartDate || f.EndDate == null)) on c.Id equals hce.ClientId into hceg
                     from hce in hceg.DefaultIfEmpty()
-                    where (a != null) || // if reported - cliets will show does not matter what; if not reported below criterias  //(a != null || hce != null) || 
-                    ((hce.StartDate < myEndDate) &&                       //Eligibility start date in report range 
-                    (hce.EndDate >= myStartDate || hce.EndDate == null) && // Eligibility end date is open/null or in report range(later than report start date)/Was eligible whe n report starts
-                    (c.JoinDate < myEndDate) &&                              //Join Date in report range
-                    (c.LeaveDate == null || c.LeaveDate >= myStartDate) &&     //Leave Date null or in report range
-                    (c.DeceasedDate == null))
+                    where (a != null) ||
+                    (c.JoinDate <= myEndDate) &&                              //Join Date in report range
+                    (c.LeaveDate == null) &&//|| c.LeaveDate >= myStartDate) &&     //Leave Date null or in report range
+                    (c.DeceasedDate == null)
+                    // if reported - cliets will show does not matter what; if not reported below criterias  //(a != null || hce != null) || 
+                    // ((hce.StartDate < myEndDate) &&                       //Eligibility start date in report range 
+                    // (hce.EndDate >= myStartDate || hce.EndDate == null) && // Eligibility end date is open/null or in report range(later than report start date)/Was eligible whe n report starts
+                   // (c.JoinDate < myEndDate) &&                              //Join Date in report range
+                   // (c.LeaveDate == null || c.LeaveDate >= myStartDate) &&     //Leave Date null or in report range
+                   // (c.DeceasedDate == null))
                     //(a != null || hce != null) //||
                     // (hce.StartDate < myEndDate)
                     //( (c.JoinDate < myEndDate) && //
@@ -1188,14 +1303,15 @@ namespace CC.Web.Controllers
                     where c.AgencyId == model.AgencyId && c.ApprovalStatusId != 1024
                     join a in db.DaysCentersReports.Where(f => f.SubReportId == model.Id && f.VisitsCount != 0) on c.Id equals a.ClientId into ag
                     from a in ag.DefaultIfEmpty()
-                    join hce in db.HomeCareEntitledPeriods on c.Id equals hce.ClientId into hceg
+                    join hce in db.HomeCareEntitledPeriods.Where(f => f.StartDate <= myEndDate && (f.EndDate >= myStartDate || f.EndDate == null)) on c.Id equals hce.ClientId into hceg
+                    // join hce in db.HomeCareEntitledPeriods.Where(f => f.StartDate >= myStartDate && (f.EndDate >= myStartDate || f.EndDate == null)) on c.Id equals hce.ClientId into hceg
                     from hce in hceg.DefaultIfEmpty()
                     where (a != null) || // if reported - cliets will show does not matter what; if not reported below criterias  //(a != null || hce != null) || 
-                    ((hce.StartDate < myEndDate) &&                       //Eligibility start date in report range 
-                    (hce.EndDate >= myStartDate || hce.EndDate == null) && // Eligibility end date is open/null or in report range(later than report start date)/Was eligible whe n report starts
-                    (c.JoinDate < myEndDate) &&                              //Join Date in report range
-                    (c.LeaveDate == null || c.LeaveDate >= myStartDate) &&     //Leave Date null or in report range
-                    (c.DeceasedDate == null))
+                   // ((hce.StartDate <= myEndDate) &&                       //Eligibility start date in report range 
+                   // (hce.EndDate >= myStartDate || hce.EndDate == null) && // Eligibility end date is open/null or in report range(later than report start date)/Was eligible whe n report starts
+                    (c.JoinDate <= myEndDate) &&                              //Join Date in report range
+                    (c.LeaveDate == null) &&//|| c.LeaveDate >= myStartDate) &&     //Leave Date null or in report range
+                    (c.DeceasedDate == null)
 
                        
 
@@ -1219,15 +1335,17 @@ namespace CC.Web.Controllers
 						ClientFirstName = c.FirstName,
 						ClientLastName = c.LastName,
 						VisitCost = 0,
-						ApprovalStatus = c.ApprovalStatus.Name
-					};
+						ApprovalStatus = c.ApprovalStatus.Name,
+                        DCC_Client = c.DCC_Client
+                    };
 
 
 			var filtered = q;
 			if (!string.IsNullOrWhiteSpace(model.Filter.ClientName)) { filtered = filtered.Where(f => f.ClientName.Contains(model.Filter.ClientName)); }
 			if (model.Filter.ClientId.HasValue) { filtered = filtered.Where(f => f.ClientId == model.Filter.ClientId); }
 			if (model.Filter.ReportedOnly == true) { filtered = filtered.Where(f => f.Id != null); }
-			if (!string.IsNullOrWhiteSpace(model.sSearch))
+            if (model.FilterForDCC.DCC_Only == 1) { filtered = filtered.Where(f => f.DCC_Client == true); }
+            if (!string.IsNullOrWhiteSpace(model.sSearch))
 			{
 				foreach (var s in model.sSearch.Split(new char[] { ' ' }).Where(f => !string.IsNullOrWhiteSpace(f)))
 				{
@@ -1700,6 +1818,7 @@ namespace CC.Web.Controllers
                         }
 
                         db.SaveChanges();
+                        
 
                         DaysCentersReport dcr = new DaysCentersReport();
                         dcr.SubReport = subReport;

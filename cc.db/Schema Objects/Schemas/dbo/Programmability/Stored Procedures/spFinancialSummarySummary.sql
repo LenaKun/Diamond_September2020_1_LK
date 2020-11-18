@@ -58,16 +58,15 @@ begin
 		where ex.tocur = @local_cur
 	), p0 as (
 		select b.AppId, bs.ServiceId,
-			sum(CAST(t1.Amount as decimal(38,0))) as Amount,
+			sum(t1.Amount) as Amount,
 			sum(bs.CcGrant) as CcGrant
 		from AppBudgetServices as bs
 		join (
 			--Amount is fetched here from the subreports (precalculated)
-			select AppBudgetServiceId, 
-			sum(coalesce(sr.amount,0)) + sum(coalesce(fsd.Amount, 0)) as Amount
-			from SubReports as sr
+			select AppBudgetServiceId,
+			sum(coalesce(Amount, 0)) as Amount
+			from viewSubreportAmounts as sr
 			join mainreports as mr on sr.MainReportId = mr.Id
-			join rep.viewFinSumDet as fsd on sr.Id = fsd.SubReportId
 			where 
 				--deny reading the unsubmitted reports from the bmf users
 				--all the other rules will be checked later
@@ -181,16 +180,16 @@ begin
 		where ex.tocur = @local_cur
 	), p0 as (
 		select b.AppId, bs.ServiceId,
-			sum(CAST(t1.Amount as decimal(38,0))) as Amount,
+			--sum(CAST(t1.Amount as decimal(38,0))) as Amount,
+			sum(t1.Amount) as Amount,
 			sum(bs.CcGrant) as CcGrant
 		from AppBudgetServices as bs
 		join (
 			--Amount is fetched here from the subreports (precalculated)
 			select AppBudgetServiceId, 
-			sum(sr.amount) + sum(fsd.Amount) as Amount
-			from SubReports as sr
+			sum(coalesce(Amount, 0)) as Amount
+			from viewSubreportAmounts as sr
 			join mainreports as mr on sr.MainReportId = mr.Id
-			join rep.viewFinSumDet as fsd on sr.Id = fsd.SubReportId
 			where 
 				--deny reading the unsubmitted reports from the bmf users
 				--all the other rules will be checked later

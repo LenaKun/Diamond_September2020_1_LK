@@ -12,6 +12,7 @@ namespace CC.Web.Models
 		public IGenericRepository<MainReport> mainReportsRepository { get; set; }
 		public virtual void LoadData()
 		{
+           
 			var mainReport = mainReportsRepository.GetAll(this.Permissions.MainReportsFilter)
 				.Select(f => new MainReportDetailsBase()
 				{

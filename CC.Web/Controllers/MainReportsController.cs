@@ -1646,19 +1646,40 @@ namespace CC.Web.Controllers
                                     break;
                                 case Service.ReportingMethods.ClientUnitAmount:
                                     var dataClientUnitAmount = (SubReportDetailsJqDt)result.Data;
-                                    foreach (var d in dataClientUnitAmount.aaData)
+                                    if (model.ServiceName == "COVID Basket of Services")
                                     {
-                                        reportRow = new ReportsRow();
-                                        var datalist = d.ToList();
-                                        reportRow.Id = (int?)datalist[0];
-                                        reportRow.ClientFirstName = (string)datalist[1];
-                                        reportRow.ClientLastName = (string)datalist[2];
-                                        reportRow.ClientApprovalStatus = (string)datalist[3];
-                                        reportRow.ClientId = (int)datalist[4];
-                                        reportRow.Amount = (decimal?)datalist[5];
-                                        reportRow.Quantity = (decimal?)datalist[6];
-                                        reportRow.Remarks = (string)datalist[7];
-                                        clients.Add((object)reportRow);
+                                        foreach (var d in dataClientUnitAmount.aaData)
+                                        {
+                                            reportRow = new ReportsRow();
+                                            var datalist = d.ToList();
+                                            reportRow.Id = (int?)datalist[0];
+                                            reportRow.ClientFirstName = (string)datalist[1];
+                                            reportRow.ClientLastName = (string)datalist[2];
+                                            reportRow.ClientApprovalStatus = (string)datalist[3];
+                                            reportRow.ClientId = (int)datalist[4];
+                                            reportRow.Amount = (decimal?)datalist[6];
+                                            reportRow.Quantity = (decimal?)datalist[7];
+                                            reportRow.Remarks = (string)datalist[8];
+                                            clients.Add((object)reportRow);
+                                        }
+
+                                    }
+                                    else
+                                    {
+                                        foreach (var d in dataClientUnitAmount.aaData)
+                                        {
+                                            reportRow = new ReportsRow();
+                                            var datalist = d.ToList();
+                                            reportRow.Id = (int?)datalist[0];
+                                            reportRow.ClientFirstName = (string)datalist[1];
+                                            reportRow.ClientLastName = (string)datalist[2];
+                                            reportRow.ClientApprovalStatus = (string)datalist[3];
+                                            reportRow.ClientId = (int)datalist[4];
+                                            reportRow.Amount = (decimal?)datalist[5];
+                                            reportRow.Quantity = (decimal?)datalist[6];
+                                            reportRow.Remarks = (string)datalist[7];
+                                            clients.Add((object)reportRow);
+                                        }
                                     }
                                     break;
                                 case Service.ReportingMethods.Emergency:
@@ -3541,6 +3562,7 @@ namespace CC.Web.Controllers
 
             try
             {
+                db.CommandTimeout = 10000;
                 model.LoadData();
             }
             catch (Exception ex)
@@ -3561,7 +3583,7 @@ namespace CC.Web.Controllers
             var newStatus = MainReport.Statuses.AwaitingProgramAssistantApproval;
             var mainReport = db.MainReports.Where(Permissions.MainReportsFilter).Single(f => f.Id == input.Id);
             var model = new MainReportSubmissionScreenModel() { Id = input.Id, Ser = input };
-
+           
             model.mainReportsRepository = new GenericRepository<MainReport>(db);
             model.LoadData();
             var b = ModelState.IsValid;
@@ -3843,7 +3865,7 @@ namespace CC.Web.Controllers
                             {
                                 SaveMhsaFile(mainReport.Id, mhsaFile);
                             }
-                            db.CommandTimeout = 300;
+                            db.CommandTimeout = 10000;
                             var rowsUpdated = db.SaveChanges();
                             SendYTDHcExceeding(mainReport.Id, true);
                         }
@@ -4077,7 +4099,8 @@ namespace CC.Web.Controllers
         }
 
         [HttpPost]
-        [CcAuthorize(FixedRoles.Admin)]
+       
+        [CcAuthorize(FixedRoles.Admin, FixedRoles.RegionOfficer) ]
         public ActionResult UpdateLastReport(MainReportDetailsModel input)
         {
             var mainreport = db.MainReports.SingleOrDefault(f => f.Id == input.Id);
@@ -4380,7 +4403,9 @@ namespace CC.Web.Controllers
             {
                 if (System.IO.File.Exists(path))
                 {
-                    return this.File(path, "application/octet-stream", mhsa ? mainReport.MhsaFileName : mainReport.ProgramOverviewFileName);
+                    // return this.File(path, "application/octet-stream", mhsa ? mainReport.MhsaFileName : mainReport.ProgramOverviewFileName); LenaPDF
+                     return this.File(path, "application/octet-stream", mhsa ? mainReport.MhsaFileName : mainReport.ProgramOverviewFileName);
+                   //return this.File(path, "application/octet-stream", "GG 2nd Quarter 2020 HSAC - Meeting Minutes.pdf");
                 }
             }
 

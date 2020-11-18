@@ -1098,6 +1098,12 @@
       <Parameter Name="skip" Mode="In" Type="Int32" />
       <Parameter Name="userId" Mode="In" Type="Int32" />
     </FunctionImport>
+    <EntitySet Name="HcCapsTableRaw_Original" EntityType="ccModel.HcCapsTableRaw_Original" />
+    <FunctionImport Name="spHcCapsTableRawBefore2021" ReturnType="Collection(ccModel.spHcCapsTableRawBefore2021_Result)">
+      <Parameter Name="clientid" Mode="In" Type="Int32" />
+      <Parameter Name="checkPeriodStart" Mode="In" Type="DateTime" />
+      <Parameter Name="checkPeriodEnd" Mode="In" Type="DateTime" />
+    </FunctionImport>
   </EntityContainer>
   <EntityType Name="ApprovalStatus">
     <Key>
@@ -5778,5 +5784,49 @@
     <Property Type="Boolean" Name="IsEstimated" Nullable="true" />
     <Property Type="Decimal" Name="CcGrant" Nullable="true" Precision="18" Scale="0" />
     <Property Type="String" Name="AppCur" Nullable="false" MaxLength="3" />
+  </ComplexType>
+  <EntityType Name="HcCapsTableRaw_Original">
+    <Key>
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="AgencyGroupId" />
+      <PropertyRef Name="FunctionalityLevelId" />
+      <PropertyRef Name="Has2" />
+      <PropertyRef Name="Maf" />
+      <PropertyRef Name="Maf105" />
+    </Key>
+    <Property Name="ClientId" Type="Int32" Nullable="false" />
+    <Property Name="AgencyGroupId" Type="Int32" Nullable="false" />
+    <Property Name="StartDate" Type="DateTime" Precision="0" />
+    <Property Name="EndDate" Type="DateTime" Precision="0" />
+    <Property Name="JoinDate" Type="DateTime" Precision="0" />
+    <Property Name="LeaveDate" Type="DateTime" Precision="0" />
+    <Property Name="DeceasedDate" Type="DateTime" Precision="0" />
+    <Property Name="HcCap" Type="Decimal" Precision="13" Scale="2" />
+    <Property Name="HospiceCareCap" Type="Decimal" Precision="14" Scale="2" />
+    <Property Name="GovHcHours" Type="Decimal" Precision="9" Scale="2" />
+    <Property Name="HasStatusId" Type="Int32" />
+    <Property Name="FunctionalityLevelId" Type="Int32" Nullable="false" />
+    <Property Name="gfhours" Type="Decimal" Precision="9" Scale="2" />
+    <Property Name="Has2" Type="Int32" Nullable="false" />
+    <Property Name="Maf" Type="Int32" Nullable="false" />
+    <Property Name="Maf105" Type="Int32" Nullable="false" />
+  </EntityType>
+  <ComplexType Name="spHcCapsTableRawBefore2021_Result">
+    <Property Type="Int32" Name="ClientId" Nullable="false" />
+    <Property Type="Int32" Name="AgencyGroupId" Nullable="false" />
+    <Property Type="DateTime" Name="StartDate" Nullable="true" />
+    <Property Type="DateTime" Name="EndDate" Nullable="true" />
+    <Property Type="DateTime" Name="JoinDate" Nullable="true" />
+    <Property Type="DateTime" Name="LeaveDate" Nullable="true" />
+    <Property Type="DateTime" Name="DeceasedDate" Nullable="true" />
+    <Property Type="Decimal" Name="HcCap" Nullable="true" Precision="13" Scale="2" />
+    <Property Type="Decimal" Name="HospiceCareCap" Nullable="true" Precision="14" Scale="2" />
+    <Property Type="Decimal" Name="GovHcHours" Nullable="true" Precision="9" Scale="2" />
+    <Property Type="Int32" Name="HasStatusId" Nullable="true" />
+    <Property Type="Int32" Name="FunctionalityLevelId" Nullable="false" />
+    <Property Type="Decimal" Name="gfhours" Nullable="true" Precision="9" Scale="2" />
+    <Property Type="Int32" Name="Has2" Nullable="false" />
+    <Property Type="Int32" Name="Maf" Nullable="false" />
+    <Property Type="Int32" Name="Maf105" Nullable="false" />
   </ComplexType>
 </Schema>

@@ -34,12 +34,10 @@ RETURNS TABLE AS RETURN
 		from AppBudgetServices as bs
 		join (
 			--Amount is fetched here from the subreports (precalculated)
-			select AppBudgetServiceId, 
-			--sum(amount) as Amount
-			(sum(isnull(sr.Amount, 0)) + sum(isnull(cr.Amount, 0))) as Amount  --Lena
-			from SubReports as sr
+			select AppBudgetServiceId,
+			sum(amount) as Amount
+			from viewSubreportAmounts as sr
 			join mainreports as mr on sr.MainReportId = mr.Id
-			left outer join ClientReports as cr on sr.Id = cr.SubReportId
 			where 
 				--deny reading the unsubmitted reports from the bmf users
 				--all the other rules will be checked later

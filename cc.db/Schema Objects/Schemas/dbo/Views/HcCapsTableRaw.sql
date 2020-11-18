@@ -268,22 +268,28 @@ AS
                 --Functionality is dominant but capped at 40 hours, subtract government homecare hours
                 when HasStatusId = 1 and MAF = 0 and MAF105 = 0 then 
                     (select min([value]) from (select 40 as [value] union select FsHours) as maxt) - GovHours
+					
 				--when HasStatusId = 2 and FunctionalityLevelId  = 6 and maf105 = 1  and HAS2 = 1   then --by IZ
 				  when HasStatusId = 2 and FunctionalityLevelId  = 34   and HAS2 = 1   then --by LK
-                    (select min([value]) from (select 168 as [value] union select FsHours) as maxt) - iif(SubstractGovHours = 1,GovHours,0)
+                 (select min([value]) from (select 168 as [value] union select FsHours) as maxt) - iif(SubstractGovHours = 1,GovHours,0)
                            ----Mike code
                 ----#4     has: 2       fs: Any             maf: Yes or No             maf105: Yes or Not         gf: none
                 ----Functionality is dominant but capped at 40 hours, subtract government homecare hours
                 --when HasStatusId = 2 and isnull(gfhours,0) = 0 then
                            ----Elvira changed: took out #4 and added #4a and #4b
                            --#4a  has: 2       fs: Any             maf: No             maf105: No          gf: none
+						   --Functionality is dominant but capped at 40 hours, subtract government homecare hours LenaK 105
+                --when HasStatusId = 2 and FunctionalityLevelId  = 34 and isnull(gfhours,0) = 0 and MAF = 0 and MAF105 = 0  then
+				--(select min([value]) from (select 105 as [value] union select FsHours) as maxt) - iif(SubstractGovHours = 1,GovHours,0)
                 --Functionality is dominant but capped at 40 hours, subtract government homecare hours
                 when HasStatusId = 2 and isnull(gfhours,0) = 0 and MAF = 0 and MAF105 = 0  then
                                  (select min([value]) from (select 40 as [value] union select FsHours) as maxt) - iif(SubstractGovHours = 1,GovHours,0) --changed by Elvira from GovHours according to Ali
+								--Chanhged by LenaK 105
+								--28 -- (select min([value]) from (select 105 as [value] union select FsHours) as maxt) - iif(SubstractGovHours = 1,GovHours,0)
                            --#4b  has: 2       fs: Any             maf: Yes or             maf105: Yes         gf: none
                 --Functionality is dominant but capped at 40 hours, subtract government homecare hours
-                when HasStatusId = 2 and isnull(gfhours,0) = 0 and (MAF = 1 or MAF105 = 1) then-- what's changed:if maf and/or maf105 , then 56 according to Ali
-                    (select min([value]) from (select 56 as [value] union select FsHours) as maxt) - iif(SubstractGovHours = 1,GovHours,0) --changed by Elvira from GovHours according to Ali
+                when HasStatusId = 2 and isnull(gfhours,0) = 0 and (MAF = 1 or MAF105 = 1) then-- what's changed:if maf and/or maf105 , then 56 according to Ali; LenaK 105
+                    (select min([value]) from (select 105 as [value] union select FsHours) as maxt) - iif(SubstractGovHours = 1,GovHours,0) --changed by Elvira from GovHours according to Ali
                            ----Mike code
                 ----#5     has: 2       fs: any             maf: Yes or No             maf105: Yes or Not         gf: < 40
                 ----Functionality is dominant but capped at 40 hours, subtract government homecare hours
@@ -295,9 +301,9 @@ AS
                 when HasStatusId = 2 and gfhours < 40 then
                     (select min([value]) from (select 40 as [value] union select FsHours) as maxt) - iif(SubstractGovHours = 1,GovHours,0) --changed by Elvira from GovHours according to Ali
                            --#5b  has: 2       fs: any             maf: Yes or             maf105: Yes         gf: < 40
-                --Functionality is dominant but capped at 56 hours, subtract government homecare hours
-                when HasStatusId = 2 and gfhours <= 56 and (MAF = 1 or MAF105 = 1) then-- what's changed:if maf and/or maf105 , then 56 and gfhours < 56, not gfhours < 40 according to Ali  ---need <= instead of < ez
-                    (select min([value]) from (select 56 as [value] union select FsHours) as maxt) - iif(SubstractGovHours = 1,GovHours,0) --changed by Elvira from GovHours according to Ali
+                --Functionality is dominant but capped at 56 hours, subtract government homecare hours; LenaK 105
+                when HasStatusId = 2 and gfhours <= 105 and (MAF = 1 or MAF105 = 1) then-- what's changed:if maf and/or maf105 , then 56 and gfhours < 56, not gfhours < 40 according to Ali  ---need <= instead of < ez
+                    (select min([value]) from (select 105 as [value] union select FsHours) as maxt) - iif(SubstractGovHours = 1,GovHours,0) --changed by Elvira from GovHours according to Ali
                 --#6 has: 2       fs: any             maf: no              maf105: not         gf: > 40
                 --GF Hours is dominant but capped at 40 hours, subtract government homecare hours
                 when HasStatusId = 2 and maf = 0 and maf105 = 0  and gfhours > 40 then
@@ -307,14 +313,14 @@ AS
                            ----Mike code
                            ----when HasStatusId = 2 and  maf = 1 and maf105 = 0 and gfhours > 40 then
                            ----Elvira changed:
-                when HasStatusId = 2 and  maf = 1 and maf105 = 0 and gfhours > 56 then --what's changed:gfhours > 56 according to Ali
+                when HasStatusId = 2 and  maf = 1 and maf105 = 0 and gfhours > 105 then --what's changed:gfhours > 56 according to Ali; LenaK 105
                     (select min([value]) from (select 105 as [value] union select gfhours) as maxt) - iif(SubstractGovHours = 1,GovHours,0) --changed by Elvira from GovHours according to Ali
                 --#8 has: 2       fs: any             maf: Yes or No             maf105: yes         gf: > 56
                 --GF Hours is dominant, subtract government homecare hours
                            ----Mike code
                            ----when HasStatusId = 2 and maf105 = 1 and gfhours > 40 then
                            ----Elvira changed:
-                when HasStatusId = 2 and maf105 = 1 and gfhours > 56 then -- what's changed:and gfhours > 56, not gfhours > 40 according to Ali
+                when HasStatusId = 2 and maf105 = 1 and gfhours > 105 then -- what's changed:and gfhours > 56, not gfhours > 40 according to Ali; Lenak 105
                 gfhours - GovHours
 					-- (select min([value]) from (select 56 as [value] union select FsHours) as maxt) - iif(SubstractGovHours = 1,GovHours,0)
                            ----Mike code, Elvira combined with #10
@@ -354,9 +360,9 @@ AS
                     ----IF HAS= 2 IF MAF = NULL and MAF105 = NULL  then Hospice = 0
                     ----IF MAF = Yes and MAF105 = No then (select min([value]) from (select 105 as [value] union select FSHours) as mint) – (select(max([value]) from (GFhours,HasHours) – GovHours 
                     ----IF MAF105 = YES then FSHours - (select(max([value]) from (GFhours,HasHours) – GovHours
-                    case when HasStatusId = 2 and maf105 = 1  then FSHours - (select max([value1]) from (select 56 as [value1] union select gfhours) as maxt)  - GovHours
+                    case when HasStatusId = 2 and maf105 = 1  then FSHours - (select max([value1]) from (select 105 as [value1] union select gfhours) as maxt)  - GovHours --LenaK 105
                            when HasStatusId = 2 and maf = 1 and maf105 = 0 then
-                                        (select min([value]) from (select 105 as [value] union select FSHours) as mint) - (select max([value1]) from (select 56 as [value1] union select gfhours) as maxt)  - GovHours
+                                        (select min([value]) from (select 105 as [value] union select FSHours) as mint) - (select max([value1]) from (select 105 as [value1] union select gfhours) as maxt)  - GovHours
                            else 0 
                            end as HospiceCareCap
         from mafs as t
@@ -387,9 +393,29 @@ AS
              --case when t.GovHours < 0 then 0 else t.GovHours end as GovHcHours--,
              --t.FSHours,t.HasHours,t.maf105,t.maf, t.gfhours,FunctionalityLevelId,HasStatusId
        from hccaps as t
+	   --where ClientId = 291110
+	  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 GO
-
-
 
 

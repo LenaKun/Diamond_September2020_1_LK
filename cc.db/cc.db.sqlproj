@@ -584,6 +584,9 @@
     <Build Include="Schema Objects\Schemas\dbo\Tables\Genders.sql" />
     <Build Include="Schema Objects\Schemas\dbo\Tables\DafStatuses.sql" />
     <Build Include="Schema Objects\Schemas\dbo\Tables\MainReportStatuses.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Views\HcCapsTableRaw_Original.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Programmability\Functions\fnHcCapsTableRawBefore2021.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Programmability\Stored Procedures\spHcCapsTableRawBefore2021.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Post-Deployment\Init\Misc.sql">

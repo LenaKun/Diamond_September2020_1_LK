@@ -316,6 +316,9 @@
     <Compile Include="HcCapsTableRaw.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="HcCapsTableRaw_Original.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="HcQuantityQueryOutput.cs" />
     <Compile Include="HcQuantityReported.cs" />
     <Compile Include="HcStatus.cs">
@@ -622,6 +625,9 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="spHasNotificationResend_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="spHcCapsTableRawBefore2021_Result.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="spHcCapsTableRaw_Result.cs">

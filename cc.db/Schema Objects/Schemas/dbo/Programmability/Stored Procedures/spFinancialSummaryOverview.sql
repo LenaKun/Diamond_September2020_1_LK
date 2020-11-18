@@ -138,7 +138,7 @@ begin
 			mf.Name as MasterFundName,
 			p0.ClientsCount as ClientsCount,
 			p0.UniqueClientsCount,
-			p1.Amount / nullif(p0.UniqueClientsCount,0) as AverageCostPerUnduplicatedClient
+			p0.Amount / nullif(p0.UniqueClientsCount,0) as AverageCostPerUnduplicatedClient
 		from dbo.fnFinancialSummaryOverviewPart1(@cur, @start ,@end ,@submitted ,@showEstimated ,@agencyId ,@regionId ,@countryId ,@stateId ,@serviceTypeId ,@serviceId ,@masterFundId ,@fundId ,@appId ,@clientId ,@term ,@roleId ,@allowedAgencies) as p1
 		join agencies as a on p1.AgencyId = a.Id
 		join services as s on p1.ServiceId = s.Id

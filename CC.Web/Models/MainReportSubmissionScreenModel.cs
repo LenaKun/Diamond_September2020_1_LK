@@ -29,7 +29,7 @@ namespace CC.Web.Models
 		public override void LoadData()
 		{
 			_log.DebugFormat("Entering {0}", System.Reflection.MethodBase.GetCurrentMethod().Name);
-
+           
 			base.LoadData();
 
 			var errs = Validate().Take(errorsLimit + 1).ToList();
@@ -434,6 +434,7 @@ namespace CC.Web.Models
 			MainReport mainReport;
 			using (var db = new ccEntities(false, false))
 			{
+                db.CommandTimeout = 10000;
 				mainReport = db.MainReports.Include(f => f.AppBudget.App).Include(f => f.AppBudget.App.AgencyGroup).Single(f => f.Id == this.Id);
 				if (!AppBudget.IsApproved(mainReport.AppBudget))
 				{
@@ -2270,9 +2271,11 @@ namespace CC.Web.Models
 					Service.ReportingMethods.Homecare,
 					Service.ReportingMethods.HomecareWeekly
 				}.Select(f => (int)f).ToArray();
-				var q0 = from sr in db.SubReports
-						 where r0.Contains(sr.AppBudgetService.Service.ReportingMethodId)
-						 where sr.MainReportId == mainReport.Id
+                //}.Select(f => (int?)f.ToArray() ?? 0;
+                var q0 = from sr in db.SubReports
+                             where r0.Contains(sr.AppBudgetService.Service.ReportingMethodId)
+                        //where sr.AppBudgetService.Service.ReportingMethodId == (int)Service.ReportingMethods.adm
+                         where sr.MainReportId == mainReport.Id
 						 from cr in sr.ClientReports
 						 let e = (from e in db.HomeCareEntitledPeriods
 								  where e.ClientId == cr.ClientId
@@ -2293,6 +2296,12 @@ namespace CC.Web.Models
 							 SubReportId = sr.Id,
 							 ReportingMethodId = sr.AppBudgetService.Service.ReportingMethodId
 						 };
+
+                //var result0 = q0.ToArray();
+              //  if (result0.Length == 0)
+                  //  q0 = null;
+                  //q0 =='';
+
 
 				var q1 = from sr in db.SubReports
 						 where sr.AppBudgetService.Service.ReportingMethodId == (int)Service.ReportingMethods.Emergency
@@ -2339,15 +2348,36 @@ namespace CC.Web.Models
 							 SubReportId = sr.Id,
 							 ReportingMethodId = sr.AppBudgetService.Service.ReportingMethodId
 						 };
-				var all = q0.Distinct().ToList()
-					.Concat(q1.Distinct().ToList())
-					.Concat(q4.Distinct().ToList());
-				foreach (var r in all)
-				{
-					r.MessageTypeName = "Client is no longer eligible (Eligibility Periods)";
-					r.Message = string.Format("The client {0} (CCID: {1}) is no longer eligible (eligibility periods)", r.ClientName, r.ClientId);
-					yield return r;
-				}
+                
+            //    if (q0 is null)
+            //    {
+                 //   var all = q1.Distinct().ToList()
+                 //     .Concat(q4.Distinct().ToList());
+                  //  foreach (var r in all)
+                  //  {
+                   //     r.MessageTypeName = "Client is no longer eligible (Eligibility Periods)";
+                     //   r.Message = string.Format("The client {0} (CCID: {1}) is no longer eligible (eligibility periods)", r.ClientName, r.ClientId);
+                     //   yield return r;
+                  //  }
+              //  }
+                //else
+               // {
+                    var all = q0.Distinct().ToList()
+                      .Concat(q1.Distinct().ToList())
+                      .Concat(q4.Distinct().ToList());
+                    foreach (var r in all)
+                    {
+                        r.MessageTypeName = "Client is no longer eligible (Eligibility Periods)";
+                        r.Message = string.Format("The client {0} (CCID: {1}) is no longer eligible (eligibility periods)", r.ClientName, r.ClientId);
+                        yield return r;
+                    }
+               // }
+				//foreach (var r in all)
+				//{
+				//	r.MessageTypeName = "Client is no longer eligible (Eligibility Periods)";
+				//	r.Message = string.Format("The client {0} (CCID: {1}) is no longer eligible (eligibility periods)", r.ClientName, r.ClientId);
+				//	yield return r;
+				//}
 			}
 
 			_log.DebugFormat("Validation: finished {0} in {1}", System.Reflection.MethodBase.GetCurrentMethod().Name, (DateTime.Now - t).TotalMilliseconds);
@@ -2507,39 +2537,41 @@ namespace CC.Web.Models
 		public IEnumerable<Row> ValidateAnnualHcAssessment(MainReport mainreport)
 		{
 			var t = DateTime.Now;
-			using (var db = new ccEntities())
-			{
-				var appId = db.MainReports.Where(f => f.Id == mainreport.Id).Select(f => f.AppBudget.AppId).SingleOrDefault();
-				var q = from cr in db.ClientReports.Where(Permissions.ClientReportsFilter)
-						join mr in db.MainReports.Where(this.Permissions.MainReportsFilter).Where(MainReport.CurrentOrSubmitted(mainreport.Id)) on cr.SubReport.MainReportId equals mr.Id
-						where cr.SubReport.MainReport.AppBudget.AppId == appId
-						where cr.SubReport.AppBudgetService.Service.SingleClientPerYearAgency
-						group cr by new
-						{
-							ServiceId = cr.SubReport.AppBudgetService.ServiceId,
-							ServiceName = cr.SubReport.AppBudgetService.Service.Name,
-							ClientId = cr.ClientId,
-							AgencyId = cr.SubReport.AppBudgetService.AgencyId,
-							Year = System.Data.Objects.SqlClient.SqlFunctions.DatePart("year", cr.SubReport.MainReport.Start)
-						} into crg
-						where crg.Count() > 1
-						select new
-						{
-							ClientId = crg.Key.ClientId,
-							AgencyId = crg.Key.AgencyId,
-							ServiceName = crg.Key.ServiceName,
-							Year = crg.Key.Year,
+            using (var db = new ccEntities())
+                
+            {
+                db.CommandTimeout = 10000;
+                var appId = db.MainReports.Where(f => f.Id == mainreport.Id).Select(f => f.AppBudget.AppId).SingleOrDefault();
+                var q = from cr in db.ClientReports.Where(Permissions.ClientReportsFilter)
+                        join mr in db.MainReports.Where(this.Permissions.MainReportsFilter).Where(MainReport.CurrentOrSubmitted(mainreport.Id)) on cr.SubReport.MainReportId equals mr.Id
+                        where cr.SubReport.MainReport.AppBudget.AppId == appId
+                        where cr.SubReport.AppBudgetService.Service.SingleClientPerYearAgency
+                        group cr by new
+                        {
+                            ServiceId = cr.SubReport.AppBudgetService.ServiceId,
+                            ServiceName = cr.SubReport.AppBudgetService.Service.Name,
+                            ClientId = cr.ClientId,
+                            AgencyId = cr.SubReport.AppBudgetService.AgencyId,
+                            Year = System.Data.Objects.SqlClient.SqlFunctions.DatePart("year", cr.SubReport.MainReport.Start)
+                        } into crg
+                        where crg.Count() > 1
+                        select new
+                        {
+                            ClientId = crg.Key.ClientId,
+                            AgencyId = crg.Key.AgencyId,
+                            ServiceName = crg.Key.ServiceName,
+                            Year = crg.Key.Year,
 
-						};
-				foreach (var item in q)
-				{
-					yield return new Row
-					{
-						ClientId = item.ClientId,
-						Message = string.Format("CC ID {0} may only appear in {3} service line once per year {2} /per agency {1}", item.ClientId, item.AgencyId, item.Year, item.ServiceName)
-					};
-				}
-			}
+                        };
+                foreach (var item in q)
+                {
+                    yield return new Row
+                    {
+                        ClientId = item.ClientId,
+                        Message = string.Format("CC ID {0} may only appear in {3} service line once per year {2} /per agency {1}", item.ClientId, item.AgencyId, item.Year, item.ServiceName)
+                    };
+                }
+            }
 			_log.DebugFormat("Validation: finished {0} in {1}", System.Reflection.MethodBase.GetCurrentMethod().Name, (DateTime.Now - t).TotalMilliseconds);
 		}
 

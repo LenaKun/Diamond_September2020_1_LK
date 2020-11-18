@@ -809,6 +809,12 @@ namespace CC.Data
             get { return _validExistingClientsView  ?? (_validExistingClientsView = CreateObjectSet<ValidExistingClientsView>("ValidExistingClientsView")); }
         }
         private ObjectSet<ValidExistingClientsView> _validExistingClientsView;
+    
+        public virtual IObjectSet<HcCapsTableRaw_Original> HcCapsTableRaw_Original
+        {
+            get { return _hcCapsTableRaw_Original  ?? (_hcCapsTableRaw_Original = CreateObjectSet<HcCapsTableRaw_Original>("HcCapsTableRaw_Original")); }
+        }
+        private ObjectSet<HcCapsTableRaw_Original> _hcCapsTableRaw_Original;
 
         #endregion
 
@@ -3125,6 +3131,43 @@ namespace CC.Data
                 userIdParameter = new ObjectParameter("userId", typeof(int));
             }
             return base.ExecuteFunction<spFinancialSummaryDetails_Result>("spFinancialSummaryDetails", curParameter, startParameter, endParameter, submittedParameter, showEstimatedParameter, agencyIdParameter, regionIdParameter, countryIdParameter, stateIdParameter, serviceTypeIdParameter, serviceIdParameter, masterFundIdParameter, fundIdParameter, appIdParameter, clientIdParameter, termParameter, sortExpParameter, sortAscParameter, topParameter, skipParameter, userIdParameter);
+        }
+        public ObjectResult<spHcCapsTableRawBefore2021_Result> spHcCapsTableRawBefore2021(Nullable<int> clientid, Nullable<System.DateTime> checkPeriodStart, Nullable<System.DateTime> checkPeriodEnd)
+        {
+    
+            ObjectParameter clientidParameter;
+    
+            if (clientid.HasValue)
+            {
+                clientidParameter = new ObjectParameter("clientid", clientid);
+            }
+            else
+            {
+                clientidParameter = new ObjectParameter("clientid", typeof(int));
+            }
+    
+            ObjectParameter checkPeriodStartParameter;
+    
+            if (checkPeriodStart.HasValue)
+            {
+                checkPeriodStartParameter = new ObjectParameter("checkPeriodStart", checkPeriodStart);
+            }
+            else
+            {
+                checkPeriodStartParameter = new ObjectParameter("checkPeriodStart", typeof(System.DateTime));
+            }
+    
+            ObjectParameter checkPeriodEndParameter;
+    
+            if (checkPeriodEnd.HasValue)
+            {
+                checkPeriodEndParameter = new ObjectParameter("checkPeriodEnd", checkPeriodEnd);
+            }
+            else
+            {
+                checkPeriodEndParameter = new ObjectParameter("checkPeriodEnd", typeof(System.DateTime));
+            }
+            return base.ExecuteFunction<spHcCapsTableRawBefore2021_Result>("spHcCapsTableRawBefore2021", clientidParameter, checkPeriodStartParameter, checkPeriodEndParameter);
         }
 
         #endregion

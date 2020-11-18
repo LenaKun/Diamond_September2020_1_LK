@@ -29,10 +29,11 @@
                     "aoColumns": [
                         { "mData": "ServiceTypeName", "sTitle": "Service Type" },
                         { "mData": "ServiceName", "sTitle": "Service" },
-
+                         
                         { "mData": "Quantity", "sTitle": "Quantity", "sClass":"dec", "mRender": function (a) { return renderDecimal(a); } },
-                        { "mData": "Amount", "sTitle": "Amount", "sClass":"dec", "mRender": function (a) { return renderDecimal(a); } },
-                        { "mData": "ClientsCount", "sTitle": "Clients", "sClass":"dec", "mRender": function (a) { return renderDecimal(a); } },
+                        { "mData": "Amount", "sTitle": "Amount", "sClass": "dec", "mRender": function (a) { return renderDecimal(a); } },
+                        {"mData": "ClientsCount", "sTitle": "Clients", "mRender": function (a) { return a == null ? "N/A" : a; } },
+                       
                         { "mData": "AverageCostPerClient", "sTitle": "Average cost per client", "sClass":"dec", "mRender": function (a) { return renderDecimal(a); } },
                         { "mData": "AverageCostPerUnit", "sTitle": "Average cost per unit", "sClass":"dec", "mRender": function (a) { return renderDecimal(a); } },
                         { "mData": null, "sTitle": "CUR", "mRender": function () { return '@Model.CurId'; } },

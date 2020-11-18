@@ -27,7 +27,7 @@
                 "sAjaxSource": '@Url.Action("GetRows", new { Id = Model.Id })',
                 "aoColumnDefs": [
 					{
-					    "aTargets": [0, 3, 4, 5],
+					    "aTargets": [0, 3, 4, 5, 7],
 					    "bSortable": false
 					},
 					{ 
@@ -38,7 +38,13 @@
                         "aTargets": [4],
                         "mRender": function (a) { return '<a href="@Url.Action("Details","Clients")/' + a + '">' + a + '</a>'; }
                     },
-					{ "aTargets": [5], "sClass": "number", "mRender": function (val) { return renderDecimal(val); } },
+                    {
+                        "aTargets": [5],
+                        "bVisible":false
+                    },
+                    { "aTargets": [6], "sWidth": "7em", "sClass": "number", "mRender": function (val) { return renderDecimal(val); } },
+                    
+                   
 					{
 					    //last colum with buttons
 					    "aTargets": [-1],
@@ -90,13 +96,13 @@
                     var oData = $('table.grid').dataTable().fnGetData(tr.get(0));
                     $(this).closest('td').html('<button type="button" class="update">Update</button><button type="button" class="cancel">Cancel</button>');
                     tr.find('td:nth-child(6)').html('').append(
-						$('<input type="text" name="Amout"/>').val(oData[5]).addClass('required').addClass('number')
+						$('<input type="text" name="Amount"/>').val(oData[6]).addClass('required').addClass('number')
 						);
                     tr.find('td:nth-child(7)').html('').append(
-						$('<input type="text" name="Quantity"/>').val(oData[6]).addClass('required')
+						$('<input type="text" name="Quantity"/>').val(oData[7]).addClass('required')
 						);
                     tr.find('td:nth-child(8)').html('').append(
-                    $('<input type="text" name="Remarks"/>').val(oData[7]).addClass('required')
+                    $('<input type="text" name="Remarks"/>').val(oData[8]).addClass('required')
                     );
                 });
                 $('table.grid button.update').live('click', function () {
@@ -153,7 +159,7 @@
     }
 }
 <h2>
-    Detailed Report
+    Detailed Report 
 </h2>
 @Html.ValidationSummary()
 <p>
@@ -201,15 +207,17 @@
             <th>
                 Client Last Name
             </th>
-			 <th>
+            <th>
                 Client Approval Status
             </th>
             <th>
                 CC ID
             </th>
+            <th></th>
             <th class="edit" data-name="Amount" data-type="decimal">
                 Amount
             </th>
+
             <th class="edit" data-name="Discretionary" data-type="decimal">
                 Units
             </th>
@@ -217,6 +225,7 @@
             @if (Model.CanBeEdited)
             {
                 <th></th>
+                
             }
         </tr>
     </thead>

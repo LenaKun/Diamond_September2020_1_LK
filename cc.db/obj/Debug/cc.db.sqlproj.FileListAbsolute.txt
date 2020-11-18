@@ -41,3 +41,4 @@ D:\Current\Latest_Development\Diamond_Latest\Code\cc.db\obj\Debug\postdeploy.sql
 D:\Current\Latest_Development\Diamond_Latest\Code\cc.db\obj\Debug\predeploy.sql
 D:\Current\Latest_Development\Diamond_Latest\Code\cc.db\obj\Debug\cc.db.dll
 D:\Current\Latest_Development\Diamond_Latest\Code\cc.db\obj\Debug\cc.db.pdb
+D:\Current\Latest_Development\Diamond_Latest\Code\cc.db\obj\Debug\cc.db.sqlprojAssemblyReference.cache
