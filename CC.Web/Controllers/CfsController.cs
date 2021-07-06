@@ -96,15 +96,16 @@ namespace CC.Web.Controllers
 							 CfsAmount =  cfsAmount != null ? cfsAmount.Amount : 0,
 							 SerCurrency = client.Agency.AgencyGroup.DefaultCurrency,
 							 StartDate = c.StartDate,
-							 EndDate = c.EndDate,
-							 ClientResponseIsYes = c.ClientResponseIsYes,
+                             EndDate = client.LeaveReasonId != 1 ? (c.EndDate != null ? c.EndDate : client.LeaveDate) : null,//if LeaveReason not "moved away", then if it was cfs end date - then cfs end date or leave date
+							 //EndDate = client.LeaveReasonId != 1 ? c.EndDate : null, //Lena_Task32 //c.EndDate, //client.LeaveReasonId != 1 ? c.EndDate : null, //Lena_Task32
+                             ClientResponseIsYes = c.ClientResponseIsYes,
 							 AgencyOverRide = c.AgencyOverRide,
 							 CommunicationsPreference = client.CommunicationsPreference.Name,
 							 CareReceivedVia = client.CareReceivingOption.Name,
 							 AgencyGroupName = client.Agency.AgencyGroup.Name,
 							 RegionId = client.Agency.AgencyGroup.Country.RegionId,
 							 CountryId = client.Agency.AgencyGroup.CountryId,
-							 States = client.Agency.AgencyGroup.Country.States,
+							 States = client.Agency.AgencyGroup.StateId,//,.Country.States,
 							 AgencyGroupId = client.Agency.GroupId,
 							 AgencyId = client.AgencyId
 						 };
@@ -129,8 +130,9 @@ namespace CC.Web.Controllers
 			}
 			if(stateId.HasValue)
 			{
-				filtered = filtered.Where(f => f.States.Select(c => c.Id).Contains(stateId.Value));
-			}
+				//filtered = filtered.Where(f => f.States.Select(c => c.Id).Contains(stateId.Value));
+                filtered =  filtered.Where(f => f.States == stateId);
+            }
 			if(agencyGroupId.HasValue)
 			{
 				filtered = filtered.Where(f => f.AgencyGroupId == agencyGroupId);
@@ -181,16 +183,19 @@ namespace CC.Web.Controllers
 
 		public JsonResult Data(jQueryDataTableParamModel model)
 		{
-			var q = from c in db.CfsRows
-					where c.ClientId == model.ClientId
-					select new
-					{
-						c.Id,
-						c.CreatedAt,
-						c.ClientResponseIsYes,
-						c.StartDate,
-						c.EndDate
-					};
+            var q = from c in db.CfsRows
+                    join client in db.Clients.Where(Permissions.CfsClientsFilter) on c.ClientId equals client.Id
+                    where client.Agency.AgencyGroup.CfsDate != null
+                    where c.ClientId == model.ClientId
+                    select new
+                    {
+                        Id = c.Id,
+                        CreatedAt = c.CreatedAt,
+                        ClientResponseIsYes = c.ClientResponseIsYes,
+                        StartDate = c.StartDate,
+                        EndDate = client.LeaveReasonId != 1 ? (c.EndDate!= null? c.EndDate : client.LeaveDate) : null//if LeaveReason not "moved away", then if it was end date - end date or leave date
+
+                    };
 
 
 			var result = new jQueryDataTableResult

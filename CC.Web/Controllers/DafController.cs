@@ -73,7 +73,7 @@ namespace CC.Web.Controllers
 			var query = from item in DafRepository.Query()
 						where item.StatusId == (int)Daf.Statuses.Open
 						select item;
-			if (User.IsInRole(FixedRoles.DafEvaluator))
+			if (User.IsInRole(FixedRoles.DafEvaluator) || User.IsInRole(FixedRoles.SerAndReviewer))
 			{
 				query = query.Where(item => item.EvaluatorId == Permissions.User.Id);
 			}
@@ -82,7 +82,8 @@ namespace CC.Web.Controllers
 		}
 
 		[HttpGet]
-		public ActionResult IndexData(DafIndexModelFilter model)
+       
+        public ActionResult IndexData(DafIndexModelFilter model)
 		{
 			TryUpdateModel(model, "Filter");
 			var filter = model;
@@ -169,11 +170,11 @@ namespace CC.Web.Controllers
 		}
 
 		[HttpGet]
-		[CcAuthorize(Roles = FixedRoles.DafEvaluator | FixedRoles.Admin, Message = "Only DAF Evaluator may create a new DAF.")]
+		[CcAuthorize(Roles = FixedRoles.DafEvaluator | FixedRoles.Ser | FixedRoles.SerAndReviewer | FixedRoles.Admin, Message = "Only DAF Evaluator may create a new DAF.")]
 		public ActionResult Create(int clientId)
 		{
 			ViewBag.CurrentUserId = Permissions.User.Id;
-			ViewBag.IsEvaluator = User.IsInRole(FixedRoles.DafEvaluator);
+			ViewBag.IsEvaluator = User.IsInRole(FixedRoles.DafEvaluator) || User.IsInRole(FixedRoles.Ser) || User.IsInRole(FixedRoles.SerAndReviewer);
 			var rawData = (from c in db.Clients.Where(Permissions.ClientsFilter)
 						   select new
 						   {
@@ -200,8 +201,10 @@ namespace CC.Web.Controllers
 					AgencyId = rawData.AgencyId,
 					AgencyName = rawData.AgencyName,
 				};
-				if (User.IsInRole(FixedRoles.DafEvaluator))
-				{
+				if (User.IsInRole(FixedRoles.DafEvaluator) || User.IsInRole(FixedRoles.Ser) || User.IsInRole(FixedRoles.SerAndReviewer))
+                  
+
+                {
 					model.EvaluatorId = Permissions.User.Id;
 					model.EvaluatorName = Permissions.User.FirstName + " " + Permissions.User.LastName;
 				}
@@ -210,7 +213,7 @@ namespace CC.Web.Controllers
 		}
 
 		[HttpPost]
-		[CcAuthorize(FixedRoles.DafEvaluator, FixedRoles.Admin)]
+		[CcAuthorize(FixedRoles.DafEvaluator, FixedRoles.Ser, FixedRoles.SerAndReviewer,  FixedRoles.Admin)]
 		public ActionResult Create(DafCreateModel model, HttpPostedFileBase file)
 		{
 			ViewBag.CurrentUserId = Permissions.User.Id;
@@ -234,27 +237,62 @@ namespace CC.Web.Controllers
 				model.AgencyName = Client.AgencyName;
 				model.ClientFirstName = Client.FirstName;
 				model.ClientLastName = Client.LastName;
-				if (User.IsInRole(FixedRoles.DafEvaluator) && Permissions.User.AgencyId != Client.AgencyId)
+				if ((User.IsInRole(FixedRoles.DafEvaluator)) && Permissions.User.AgencyId != Client.AgencyId)
 				{
 					ModelState.AddModelError(string.Empty, Resources.Resource.NotAllowed);
 				}
 				CC.Web.Attributes.LocalizationAttributeBase.SetCulture(Client.Culture);
 			}
-			var evaluator = Evaluators(Client.AgencyId).FirstOrDefault(f => f.Id == model.EvaluatorId);
-			if (evaluator == null)
-			{
-				ModelState.AddModelError(string.Empty, Resources.Resource.EvaluatorNotFound);
-			}
-			else
-			{
-				model.EvaluatorName = evaluator.FirstName + " " + evaluator.LastName;
-			}
-			if (evaluator != null && Client != null && Client.AgencyId != evaluator.AgencyId)
-			{
-				ModelState.AddModelError(string.Empty, Resources.Resource.AgencyMismatch);
-			}
+           
+            //if (User.IsInRole(FixedRoles.Ser) || User.IsInRole(FixedRoles.SerAndReviewer))
+            //{
+            //    var evaluator = EvaluatorsSER(Client.AgencyId).FirstOrDefault(f => f.Id == model.EvaluatorId);
+            //    if (evaluator == null)
+            //    {
+            //        ModelState.AddModelError(string.Empty, Resources.Resource.EvaluatorNotFound);
+            //    }
+            //    else
+            //    {
+            //        model.EvaluatorName = evaluator.FirstName + " " + evaluator.LastName;
+            //    }
+            //    var AgencyId = evaluator.AgencyGroup.Agencies.First().Id;
+            //    model.AgencyId = AgencyId;
+            //    if (evaluator != null && Client != null && Client.AgencyId != AgencyId)
+            //    {
+            //        ModelState.AddModelError(string.Empty, Resources.Resource.AgencyMismatch);
+            //    }
+            //}
+            //else
+            //{
+                var evaluator = Evaluators(Client.AgencyId).FirstOrDefault(f => f.Id == model.EvaluatorId);
+                if (evaluator == null)
+                {
+                    ModelState.AddModelError(string.Empty, Resources.Resource.EvaluatorNotFound);
+                }
+                else
+                {
+                    model.EvaluatorName = evaluator.FirstName + " " + evaluator.LastName;
+                }
+                if (evaluator != null && Client != null && Client.AgencyId != evaluator.AgencyId)
+                {
+                    ModelState.AddModelError(string.Empty, Resources.Resource.AgencyMismatch);
+                }
+           // }
+			
+			//if (evaluator == null)
+			//{
+			//	ModelState.AddModelError(string.Empty, Resources.Resource.EvaluatorNotFound);
+			//}
+			//else
+			//{
+			//	model.EvaluatorName = evaluator.FirstName + " " + evaluator.LastName;
+			//}
+			//if (evaluator != null && Client != null && Client.AgencyId != evaluator.AgencyId)
+			//{
+			//	ModelState.AddModelError(string.Empty, Resources.Resource.AgencyMismatch);
+			//}
 
-			if (User.IsInRole(FixedRoles.DafEvaluator))
+			if (User.IsInRole(FixedRoles.DafEvaluator) || User.IsInRole(FixedRoles.Ser) || User.IsInRole(FixedRoles.SerAndReviewer))
 			{
 				if (model.EvaluatorId != Permissions.User.Id)
 				{
@@ -338,7 +376,7 @@ namespace CC.Web.Controllers
 		}
 
 		[HttpPost]
-		[CcAuthorize(FixedRoles.Admin, FixedRoles.DafEvaluator)]
+		[CcAuthorize(FixedRoles.Admin, FixedRoles.DafEvaluator, FixedRoles.SerAndReviewer, FixedRoles.AuditorReadOnly)]
 		[ActionName("Details")]
 		public ActionResult DetailsPost(int id, CC.Data.Models.DafDetails postData, HttpPostedFileBase file)
 		{
@@ -516,14 +554,30 @@ namespace CC.Web.Controllers
 		}
 		private IQueryable<User> Evaluators(int agencyId)
 		{
+
+           
 			IQueryable<CC.Data.User> users = from u in db.Users
-											 where u.AgencyId == agencyId
-											 where u.RoleId == (int)FixedRoles.DafEvaluator
-											 where !u.Disabled && u.MembershipUser.IsApproved
+                                            // from ag in db.Agencies 
+											 where u.AgencyId == agencyId 
+                                             where u.RoleId == (int)(FixedRoles.DafEvaluator)
+                                            where !u.Disabled && u.MembershipUser.IsApproved
 											 select u;
 			return users;
 		}
-		[HttpGet]
+
+        //private IQueryable<User> EvaluatorsSER(int agencyId)
+        //{
+
+
+        //    IQueryable<CC.Data.User> users = from u in db.Users
+        //                                     from ag in db.Agencies
+        //                                     where ag.GroupId == u.AgencyGroupId && ag.Id == agencyId
+        //                                     where  u.RoleId == (int) FixedRoles.Ser || u.RoleId == (int) FixedRoles.SerAndReviewer
+        //                                     where !u.Disabled && u.MembershipUser.IsApproved
+        //                                     select u;
+        //    return users; 
+        //}
+        [HttpGet]
 		public ActionResult Evaluators(int agencyId, string term, int page)
 		{
 			var pageSize = 30;
@@ -548,7 +602,8 @@ namespace CC.Web.Controllers
 			return this.MyJsonResult(result);
 		}
 
-		[HttpPost]
+       
+        [HttpPost]
 		[CC.Web.Attributes.ConfirmPassword]
 		[CcAuthorize(FixedRoles.DafEvaluator)]
 		[CC.Web.Attributes.LocalizationByDafId("id")]

@@ -55,7 +55,8 @@ namespace CC.Web.Models.Import.ClientReports
 						  let start = item.Date ?? subReport.MainReport.Start
                           let mrStart = subReport.MainReport.Start
                           let end = subReport.MainReport.End
-						  select new CriEmergencyPreview
+                          let subreportservicetypeid = subReport.AppBudgetService.Service.TypeId
+                          select new CriEmergencyPreview
 						  {
 							  RowIndex = item.RowIndex,
 							  ClientId = item.ClientId,
@@ -70,7 +71,8 @@ namespace CC.Web.Models.Import.ClientReports
 							  Errors = (item.Errors??
 								(
 								  ((item.Amount == null) ? "Amount is required." : "") +
-								  ((item.Discretionary == null) ? "Discretionary amount is required." : "") +
+                                  ((client.ApprovalStatusId == 1024 && subreportservicetypeid != 8) ? "Approved, Homecare Only clients can only be reported for Homecare services." : "") +
+                                  ((item.Discretionary == null) ? "Discretionary amount is required." : "") +
 								  ((item.Date == null) ? "Date is required." : "") +
 								  ((t == null) ? "Type is required." : "") +
 								  ((item.Remarks == null || item.Remarks.Trim()=="")?  "Purpose of grant":"")+

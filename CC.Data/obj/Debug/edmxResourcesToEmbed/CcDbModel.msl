@@ -343,6 +343,7 @@
     <EntitySetMapping Name="AgencyGroups">
       <EntityTypeMapping TypeName="ccModel.AgencyGroup">
         <MappingFragment StoreEntitySet="AgencyGroups">
+          <ScalarProperty Name="FluxxId" ColumnName="FluxxId" />
           <ScalarProperty Name="FluxxOrganizationName" ColumnName="FluxxOrganizationName" />
           <ScalarProperty Name="FluxxOrganizationId" ColumnName="FluxxOrganizationId" />
           <ScalarProperty Name="CfsDate" ColumnName="CfsDate" />
@@ -647,6 +648,8 @@
     <EntitySetMapping Name="Clients">
       <EntityTypeMapping TypeName="IsTypeOf(ccModel.Client)">
         <MappingFragment StoreEntitySet="Clients">
+          <ScalarProperty Name="AssistedLiving" ColumnName="AssistedLiving" />
+          <ScalarProperty Name="NursingHome" ColumnName="NursingHome" />
           <ScalarProperty Name="UnableToSign" ColumnName="UnableToSign" />
           <ScalarProperty Name="HAS2Date" ColumnName="HAS2Date" />
           <ScalarProperty Name="MAF105Date" ColumnName="MAF105Date" />
@@ -981,6 +984,8 @@
     <EntitySetMapping Name="ImportClients">
       <EntityTypeMapping TypeName="ccModel.ImportClient">
         <MappingFragment StoreEntitySet="ImportClients">
+          <ScalarProperty Name="AssistedLiving" ColumnName="AssistedLiving" />
+          <ScalarProperty Name="NursingHome" ColumnName="NursingHome" />
           <ScalarProperty Name="HAS2Date" ColumnName="HAS2Date" />
           <ScalarProperty Name="UnableToSign" ColumnName="UnableToSign" />
           <ScalarProperty Name="MAF105Date" ColumnName="MAF105Date" />
@@ -1265,6 +1270,8 @@
     <EntitySetMapping Name="ValidClientViews">
       <EntityTypeMapping TypeName="ccModel.ValidClientView">
         <MappingFragment StoreEntitySet="ValidClientView">
+          <ScalarProperty Name="AssistedLiving" ColumnName="AssistedLiving" />
+          <ScalarProperty Name="NursingHome" ColumnName="NursingHome" />
           <ScalarProperty Name="HAS2Date" ColumnName="HAS2Date" />
           <ScalarProperty Name="UnableToSign" ColumnName="UnableToSign" />
           <ScalarProperty Name="MAF105Date" ColumnName="MAF105Date" />
@@ -2051,6 +2058,7 @@
     <EntitySetMapping Name="viewFinSumDets">
       <EntityTypeMapping TypeName="ccModel.viewFinSumDet">
         <MappingFragment StoreEntitySet="viewFinSumDet">
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
           <ScalarProperty Name="MasterId" ColumnName="MasterId" />
           <ScalarProperty Name="LastName" ColumnName="LastName" />
           <ScalarProperty Name="FirstName" ColumnName="FirstName" />
@@ -2089,6 +2097,8 @@
     <EntitySetMapping Name="viewClientDetails">
       <EntityTypeMapping TypeName="ccModel.viewClientDetail">
         <MappingFragment StoreEntitySet="viewClientDetails">
+          <ScalarProperty Name="AssistedLiving" ColumnName="AssistedLiving" />
+          <ScalarProperty Name="NursingHome" ColumnName="NursingHome" />
           <ScalarProperty Name="Has2Date" ColumnName="Has2Date" />
           <ScalarProperty Name="UnableToSign" ColumnName="UnableToSign" />
           <ScalarProperty Name="CareReceivedId" ColumnName="CareReceivedId" />
@@ -2311,6 +2321,8 @@
     <EntitySetMapping Name="ValidExistingClientsView">
       <EntityTypeMapping TypeName="ccModel.ValidExistingClientsView">
         <MappingFragment StoreEntitySet="ValidExistingClientsView">
+          <ScalarProperty Name="AssistedLiving" ColumnName="AssistedLiving" />
+          <ScalarProperty Name="NursingHome" ColumnName="NursingHome" />
           <ScalarProperty Name="UnableToSign" ColumnName="UnableToSign" />
           <ScalarProperty Name="HAS2Date" ColumnName="HAS2Date" />
           <ScalarProperty Name="MAF105Date" ColumnName="MAF105Date" />
@@ -2495,6 +2507,7 @@
           <ScalarProperty Name="CountryName" ColumnName="CountryName" />
           <ScalarProperty Name="BirthCountryName" ColumnName="BirthCountryName" />
           <ScalarProperty Name="AgencyId" ColumnName="AgencyId" />
+          <ScalarProperty Name="DeceasedDate" ColumnName="DeceasedDate" />
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>
@@ -2816,6 +2829,7 @@
           <ScalarProperty Name="IsEstimated" ColumnName="IsEstimated" />
           <ScalarProperty Name="CcGrant" ColumnName="CcGrant" />
           <ScalarProperty Name="AppCur" ColumnName="AppCur" />
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>

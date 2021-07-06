@@ -396,6 +396,18 @@ namespace CC.Data
             get;
             set;
         }
+    
+        public virtual Nullable<bool> NursingHome
+        {
+            get;
+            set;
+        }
+    
+        public virtual Nullable<bool> AssistedLiving
+        {
+            get;
+            set;
+        }
 
         #endregion
 

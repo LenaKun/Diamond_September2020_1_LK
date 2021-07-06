@@ -103,12 +103,12 @@ namespace CC.Web.Models
 					filtered = filtered.Where(c => !(c.DeceasedDate == null && c.LeaveDate == null && c.LeaveReasonId == null));
 				}
 			}
-			if (param.AustrianEligible)
+			if (param.AustrianEligible && permissions.User.RoleId != 128)
 			{
 				filtered = filtered.Where(f => f.AustrianEligible == true);
 			}
 
-			if (param.RomanianEligible)
+			if (param.RomanianEligible && permissions.User.RoleId != 128)
 			{
 				filtered = filtered.Where(f => f.RomanianEligible == true);
 			}
@@ -140,10 +140,55 @@ namespace CC.Web.Models
 			{
 				filtered = filtered.Where(f => f.OtherServicesWaitlist);
 			}
+            //if (permissions.User.RoleId != 128)
+           // {
+                return filtered;
+           // }
+           // else
+           // {
+           // return filtered.Select(c => GetClients
+           // {
+                //ORGID = c.MasterId,
+                //Agency = c.Agency.Name,
+             //   FirstName = c.FirstName,
+             //   LastName = c.LastName
+               // M/dleName = c.MiddleName,
+               // OtherFirstName = c.OtherFirstName,
+               // OtherLastName = c.OtherLastName,
+               // PreviousFirstName = c.PreviousFirstName,
+               // PreviousLastName = c.PreviousLastName,
+             //   Address = c.Address,
+              //  City = c.City,
+              //  ZIP = c.ZIP,
+                //State = c.State,
+               // CountryName = c.CountryName,
+              //  BirthDate = c.BirthDate,
+               // Otherdateofbirth = c.Otherdateofbirth,
+                //BirthCity = c.BirthCity,
+               // BirthCountry = c.BirthCountry,
+               // IDType = c.IDType,
+               // OtherIDcard = c.OtherIDcard,
+               // OtherIDtype = c.OtherIDtype,
+                //GovernmentIssuedID = c.GovernmentIssuedID,
+              //  DeceasedDate = c.DeceasedDate,
+              //  LeaveDate = c.LeaveDate,
+              //  JoinDate = c.JoinDate,
+               // LeaveReason = c.LeaveReason,
+              //  Remarks = c.Remarks,
+              //  IncomeCriteriaComplied = c.IncomeCriteriaComplied,
+               // Gender = c.Gender
+         //   });
 
-			return filtered;
-		}
-		public static IQueryable<ClientsListEntry> GetClientsList(CC.Data.Services.IPermissionsBase permissions, CC.Data.ccEntities db, ClientsListDataTableModel param)
+           // }
+          }
+
+
+           // }
+            
+		//}
+
+       
+        public static IQueryable<ClientsListEntry> GetClientsList(CC.Data.Services.IPermissionsBase permissions, CC.Data.ccEntities db, ClientsListDataTableModel param)
 		{
 			var q = from c in GetClients(db, permissions, param)
 					let curfl = c.FunctionalityScores.OrderByDescending(s => s.StartDate).Where(s => s.StartDate < DateTime.Now).Select(s => s.FunctionalityLevel).FirstOrDefault()
@@ -237,93 +282,205 @@ namespace CC.Web.Models
 		public static IEnumerable<ClientsExportModel> GetExportData(CC.Data.ccEntities db, CC.Data.Services.IPermissionsBase permissions, ClientsListDataTableModel param)
 		{
 			var now = DateTime.Now;
-			var filtered = from a in GetClients(db, permissions, param)
-						   join c in db.viewClientDetails on a.Id equals c.CCID
-                           //join  d in db.HcCapsTableRaws on c.CCID equals d.ClientId
-                           // where d.EndDate ==null
-                           let CurHcCap = db.HcCapsTableRaws
-                                 .Where(cap => cap.ClientId == c.CCID)
-                                 .Where(cap => cap.StartDate <= DateTime.Now)
-                                 .Where(cap => cap.EndDate == null || cap.EndDate > DateTime.Now)
-                                 .OrderByDescending(cap => cap.StartDate)
-                                 .Select(cap => cap.HcCap)
-                                 .FirstOrDefault()
-                           select  new ClientsExportModel
-			{
-				InternalAgencyID = c.InternalAgencyID,
-				ORGID = c.ORGID,
-				Agency = c.Agency,
-				FirstName = c.FirstName,
-				LastName = c.LastName,
-				MiddleName = c.MiddleName,
-				OtherFirstName = c.OtherFirstName,
-				OtherLastName = c.OtherLastName,
-				PreviousFirstName = c.PreviousFirstName,
-				PreviousLastName = c.PreviousLastName,
-				Address = c.Address,
-				City = c.City,
-				ZIP = c.ZIP,
-				State = c.State,
-				CountryName = c.CountryName,
-				BirthDate = c.BirthDate,
-				Otherdateofbirth = c.Otherdateofbirth,
-				BirthCity = c.BirthCity,
-				BirthCountry = c.BirthCountry,
-				IDType = c.IDType,
-				OtherIDcard = c.OtherIDcard,
-				OtherIDtype = c.OtherIDtype,
-				GovernmentIssuedID = c.GovernmentIssuedID,
-				DeceasedDate = c.DeceasedDate,
-				LeaveDate = c.LeaveDate,
-				JoinDate = c.JoinDate,
-				LeaveReason = c.LeaveReason,
-				Remarks = c.Remarks,
-				IncomeCriteriaComplied = c.IncomeCriteriaComplied,
-				Gender = c.Gender == (int)Client.Genders.Female ? "Female" : c.Gender == (int)Client.Genders.Male ? "Male" : "",
-				CCID = c.CCID,
-				MasterId = c.MasterId,
-				CreateDate = c.CreatedAt,
-				FunctionalityLevelName = c.FunctionalityLevelName,
-                               //HCHours = d.HcCap,
-                               //HCHours = c.HcHours,
-                HCHours = CurHcCap == null ?  0 : CurHcCap, 
-                GrandfatheredHours = c.GrandfatheredHours,
-				GFStartDate = c.GFStartDate,
-				GFType =c.GFType,
-				ApprovalStatus = c.ApprovalStatus,
-				NaziPersecutionDetails = c.NaziPersecutionDetails,
-				CompensationProgram = c.CompensationProgram,
-				HomecareEligibilityStartDate = c.HomecareEligibilityStartDate,
-				//inclusive end date is desired here
-				HomecareEligibilityEndDate = c.HomecareEligibilityEndDate,
-				GovtHChours = c.GovtHChours,
-				GovtHChoursStartDate = c.GovtHChoursStartDate,
-				DiagnosticScore = c.DiagnosticScore,
-				HighestStartDateofDiagnosticScore = c.HighestStartDateofDiagnosticScore,
-				Deceased = (c.DeceasedDate != null) ? true : false,
-				Otheraddress = c.Otheraddress,
-				PreviousaddressinIsrael = c.PreviousaddressinIsrael,
-				Phone = c.Phone,
-				AustrianEligible = c.AustrianEligible,
-				RomanianEligible = c.RomanianEligible,
-				GGReportedOnly = c.GGReportedCount != null && c.GGReportedCount > 0 ? "Yes" : "No",
-				UnmetNeedsStartDate = c.UnmetNeedsStartDate,
-				UnmetNeedsValue = c.UnmetNeedsValue,
-				HomecareApprovalStatusName = c.HomecareApprovalStatusName,
-				AppearedAtLeastOnce =  c.AppearedAtLeastOnce == true ? "Yes" : "No",
-				IsCeefRecipient = c.IsCeefRecipient ? "Yes" : "No",
-				CeefId = c.CeefId,
-				HomecareWaitlist = c.HomecareWaitlist ? "Yes" : "No",
-                UnableToSign = c.UnableToSign ? "Yes" : "No",
-				OtherServicesWaitlist = c.OtherServicesWaitlist ? "Yes" : "No",
-				MAFDate = c.MAFDate,
-				MAF105Date = c.MAF105Date,
-                HAS2Date = c.Has2Date,
-				HomeCareEntitled = c.HomecareEligibilityEndDate == null || c.HomecareEligibilityEndDate > now ? "Yes" : "No",
-                CommPrefs = c.CommPrefs,
-				CareReceivedVia = c.CareReceivedVia
-			};
-			return filtered;
+            if (permissions.User.RoleId != 128) //not BMF
+            {
+                var filtered = from a in GetClients(db, permissions, param)
+                               join c in db.viewClientDetails on a.Id equals c.CCID
+                               //join  d in db.HcCapsTableRaws on c.CCID equals d.ClientId
+                               // where d.EndDate ==null
+                               let CurHcCap = db.HcCapsTableRaws
+                                     .Where(cap => cap.ClientId == c.CCID)
+                                     .Where(cap => cap.StartDate <= DateTime.Now)
+                                     .Where(cap => cap.EndDate == null || cap.EndDate > DateTime.Now)
+                                     .OrderByDescending(cap => cap.StartDate)
+                                     .Select(cap => cap.HcCap)
+                                     .FirstOrDefault()
+
+                              // let DAFId = db.Dafs
+                                //   .Where(dafid => dafid.ClientId == c.CCID)
+                                  // .Select(dafid => dafid.Id)
+                                  // .FirstOrDefault()
+
+                               select new ClientsExportModel
+                               {
+                                   InternalAgencyID = c.InternalAgencyID,
+                                   ORGID = c.ORGID,
+                                   Agency = c.Agency,
+                                   FirstName = c.FirstName,
+                                   LastName = c.LastName,
+                                   MiddleName = c.MiddleName,
+                                   OtherFirstName = c.OtherFirstName,
+                                   OtherLastName = c.OtherLastName,
+                                   PreviousFirstName = c.PreviousFirstName,
+                                   PreviousLastName = c.PreviousLastName,
+                                   Address = c.Address,
+                                   City = c.City,
+                                   ZIP = c.ZIP,
+                                   State = c.State,
+                                   CountryName = c.CountryName,
+                                   BirthDate = c.BirthDate,
+                                   Otherdateofbirth = c.Otherdateofbirth,
+                                   BirthCity = c.BirthCity,
+                                   BirthCountry = c.BirthCountry,
+                                   IDType = c.IDType,
+                                   OtherIDcard = c.OtherIDcard,
+                                   OtherIDtype = c.OtherIDtype,
+                                   GovernmentIssuedID = c.GovernmentIssuedID,
+                                   DeceasedDate = c.DeceasedDate,
+                                   LeaveDate = c.LeaveDate,
+                                   JoinDate = c.JoinDate,
+                                   LeaveReason = c.LeaveReason,
+                                   Remarks = c.Remarks,
+                                   IncomeCriteriaComplied = c.IncomeCriteriaComplied,
+                                   Gender = c.Gender == (int)Client.Genders.Female ? "Female" : c.Gender == (int)Client.Genders.Male ? "Male" : "",
+                                   CCID = c.CCID,
+                                   MasterId = c.MasterId,
+                                   CreateDate = c.CreatedAt,
+                                   FunctionalityLevelName = c.FunctionalityLevelName,
+                                   //HCHours = d.HcCap,
+                                   //HCHours = c.HcHours,
+                                   HCHours = CurHcCap == null ? 0 : CurHcCap,
+                                   GrandfatheredHours = c.GrandfatheredHours,
+                                   GFStartDate = c.GFStartDate,
+                                   GFType = c.GFType,
+                                   ApprovalStatus = c.ApprovalStatus,
+                                   NaziPersecutionDetails = c.NaziPersecutionDetails,
+                                   CompensationProgram = c.CompensationProgram,
+                                   HomecareEligibilityStartDate = c.HomecareEligibilityStartDate,
+                                   //inclusive end date is desired here
+                                   HomecareEligibilityEndDate = c.HomecareEligibilityEndDate,
+                                   GovtHChours = c.GovtHChours,
+                                   GovtHChoursStartDate = c.GovtHChoursStartDate,
+                                   DiagnosticScore = c.DiagnosticScore,
+                                   HighestStartDateofDiagnosticScore = c.HighestStartDateofDiagnosticScore,
+                                   Deceased = (c.DeceasedDate != null) ? true : false,
+                                   Otheraddress = c.Otheraddress,
+                                   PreviousaddressinIsrael = c.PreviousaddressinIsrael,
+                                   Phone = c.Phone,
+                                   AustrianEligible = c.AustrianEligible,
+                                   RomanianEligible = c.RomanianEligible,
+                                   GGReportedOnly = c.GGReportedCount != null && c.GGReportedCount > 0 ? "Yes" : "No",
+                                   UnmetNeedsStartDate = c.UnmetNeedsStartDate,
+                                   UnmetNeedsValue = c.UnmetNeedsValue,
+                                   HomecareApprovalStatusName = c.HomecareApprovalStatusName,
+                                   AppearedAtLeastOnce = c.AppearedAtLeastOnce == true ? "Yes" : "No",
+                                   IsCeefRecipient = c.IsCeefRecipient ? "Yes" : "No",
+                                   CeefId = c.CeefId,
+                                   HomecareWaitlist = c.HomecareWaitlist ? "Yes" : "No",
+                                   UnableToSign = c.UnableToSign ? "Yes" : "No",
+                                   NursingHome = c.NursingHome ? "Yes" : "No",
+                                   AssistedLiving = c.AssistedLiving ? "Yes" : "No",
+                                   OtherServicesWaitlist = c.OtherServicesWaitlist ? "Yes" : "No",
+                                   MAFDate = c.MAFDate,
+                                   MAF105Date = c.MAF105Date,
+                                //   HAS2Date = c.Has2Date,
+                                   HomeCareEntitled = c.HomecareEligibilityEndDate == null || c.HomecareEligibilityEndDate > now ? "Yes" : "No",
+                                   CommPrefs = c.CommPrefs,
+                                   CareReceivedVia = c.CareReceivedVia
+                                  // DAFID = DAFId == null ? 0 : DAFId
+
+                               };
+
+                return filtered;
+            }
+
+            else
+            {
+                var filtered = from a in GetClients(db, permissions, param)
+                               join c in db.viewClientDetails on a.Id equals c.CCID
+                               //join  d in db.HcCapsTableRaws on c.CCID equals d.ClientId
+                               // where d.EndDate ==null
+                               let CurHcCap = db.HcCapsTableRaws
+                                     .Where(cap => cap.ClientId == c.CCID)
+                                     .Where(cap => cap.StartDate <= DateTime.Now)
+                                     .Where(cap => cap.EndDate == null || cap.EndDate > DateTime.Now)
+                                     .OrderByDescending(cap => cap.StartDate)
+                                     .Select(cap => cap.HcCap)
+                                     .FirstOrDefault()
+
+                               select new ClientsExportModel
+                               {
+                                   InternalAgencyID = c.InternalAgencyID,
+                                   ORGID = c.ORGID,
+                                   Agency = c.Agency,
+                                   FirstName = c.FirstName,
+                                   LastName = c.LastName,
+                                   MiddleName = c.MiddleName,
+                                   OtherFirstName = c.OtherFirstName,
+                                   OtherLastName = c.OtherLastName,
+                                   PreviousFirstName = c.PreviousFirstName,
+                                   PreviousLastName = c.PreviousLastName,
+                                   Address = c.Address,
+                                   City = c.City,
+                                   ZIP = c.ZIP,
+                                   State = c.State,
+                                   CountryName = c.CountryName,
+                                   BirthDate = c.BirthDate,
+                                   Otherdateofbirth = c.Otherdateofbirth,
+                                   BirthCity = c.BirthCity,
+                                   BirthCountry = c.BirthCountry,
+                                   IDType = c.IDType,
+                                   OtherIDcard = c.OtherIDcard,
+                                   OtherIDtype = c.OtherIDtype,
+                                   GovernmentIssuedID = c.GovernmentIssuedID,
+                                   DeceasedDate = c.DeceasedDate,
+                                   LeaveDate = c.LeaveDate,
+                                   JoinDate = c.JoinDate,
+                                   LeaveReason = c.LeaveReason,
+                                   Remarks = c.Remarks,
+                                   IncomeCriteriaComplied = c.IncomeCriteriaComplied,
+                                   Gender = c.Gender == (int)Client.Genders.Female ? "Female" : c.Gender == (int)Client.Genders.Male ? "Male" : "",
+                                   CCID = c.CCID,
+                                  // MasterId = c.MasterId,
+                                   CreateDate = c.CreatedAt,
+                                   FunctionalityLevelName = c.FunctionalityLevelName,
+                                   //HCHours = d.HcCap,
+                                   //HCHours = c.HcHours,
+                                   HCHours = CurHcCap == null ? 0 : CurHcCap,
+                                   GrandfatheredHours = c.GrandfatheredHours,
+                                   GFStartDate = c.GFStartDate,
+                                   GFType = c.GFType,
+                                   ApprovalStatus = c.ApprovalStatus,
+                                   NaziPersecutionDetails = c.NaziPersecutionDetails,
+                                   CompensationProgram = c.CompensationProgram,
+                                   HomecareEligibilityStartDate = c.HomecareEligibilityStartDate,
+                                   //inclusive end date is desired here
+                                   HomecareEligibilityEndDate = c.HomecareEligibilityEndDate,
+                                   GovtHChours = c.GovtHChours,
+                                   GovtHChoursStartDate = c.GovtHChoursStartDate,
+                                   DiagnosticScore = c.DiagnosticScore,
+                                   HighestStartDateofDiagnosticScore = c.HighestStartDateofDiagnosticScore,
+                                   Deceased = (c.DeceasedDate != null) ? true : false,
+                                   Otheraddress = c.Otheraddress,
+                                   PreviousaddressinIsrael = c.PreviousaddressinIsrael,
+                                   Phone = c.Phone,
+                                   AustrianEligible = c.AustrianEligible,
+                                   RomanianEligible = c.RomanianEligible,
+                                   GGReportedOnly = c.GGReportedCount != null && c.GGReportedCount > 0 ? "Yes" : "No",
+                                   UnmetNeedsStartDate = c.UnmetNeedsStartDate,
+                                   UnmetNeedsValue = c.UnmetNeedsValue,
+                                   HomecareApprovalStatusName = c.HomecareApprovalStatusName,
+                                   AppearedAtLeastOnce = c.AppearedAtLeastOnce == true ? "Yes" : "No",
+                                   IsCeefRecipient = c.IsCeefRecipient ? "Yes" : "No",
+                                   CeefId = c.CeefId,
+                                   HomecareWaitlist = c.HomecareWaitlist ? "Yes" : "No",
+                                   UnableToSign = c.UnableToSign ? "Yes" : "No",
+                                   NursingHome = c.NursingHome ? "Yes" : "No",
+                                   AssistedLiving = c.AssistedLiving ? "Yes" : "No",
+                                   OtherServicesWaitlist = c.OtherServicesWaitlist ? "Yes" : "No",
+                                   MAFDate = c.MAFDate,
+                                   MAF105Date = c.MAF105Date,
+                                //   HAS2Date = c.Has2Date,
+                                   HomeCareEntitled = c.HomecareEligibilityEndDate == null || c.HomecareEligibilityEndDate > now ? "Yes" : "No",
+                                   CommPrefs = c.CommPrefs,
+                                   CareReceivedVia = c.CareReceivedVia
+
+                               };
+
+                return filtered;
+
+            }
+           
 		}
 		public static IEnumerable<DuplicateExportModel> GetDuplicateExportData(CC.Data.ccEntities db, CC.Data.Services.IPermissionsBase permissions, ClientsListDataTableModel param)
 		{
@@ -361,12 +518,24 @@ namespace CC.Web.Models
         public static IEnumerable<FunctionalityScoresExportModel> GetFunctionalityScoresExportData(CC.Data.ccEntities db, CC.Data.Services.IPermissionsBase permissions, ClientsListDataTableModel param)
         {
             return (from c in GetClients(db, permissions, param)
-                   join fs in db.FunctionalityScores on c.Id equals fs.ClientId
-                   select new FunctionalityScoresExportModel
+                    join fs in db.FunctionalityScores on c.Id equals fs.ClientId
+                   // join d in db.Dafs on fs.Id equals d.FunctionalityScoreId
+                   // join fs in db.FunctionalityScores on d.FunctionalityScoreId equals fs.Id
+                  // join d in db.viewClientDetails on c.Id equals d.CCID
+                   //join d in db.Dafs on fs.Id equals d.FunctionalityScoreId //c.Id equals d.ClientId and d.FunctionalityScoreId equals fs.
+                    let DAFId = db.Dafs
+                                  .Where(dafid => dafid.ClientId == c.Id) //d.CCID) //c.Id)
+                                  .Where(dafid => dafid.FunctionalityScoreId == fs.Id)
+                                 // .Where(dafid => dafid.Id != 0)
+                                   .Select(dafid => dafid.Id)
+                                   .FirstOrDefault()
+
+                    select new FunctionalityScoresExportModel
                     {
                         Id = c.Id,
                         DiagnosticScore = fs.DiagnosticScore,
-                        StartDate = fs.StartDate
+                        StartDate = fs.StartDate,
+                        DAFID = DAFId == null ? 0 : DAFId // : DAFId //d.Id  
                     }).OrderBy(f => f.Id).ThenBy(f => f.StartDate);
         }
 
@@ -639,6 +808,10 @@ namespace CC.Web.Models
 
         [Display(Name = "START_DATE")]
         public DateTime StartDate { get; set; }
+
+        [Display(Name = "DAF ID", Order = 68)]
+        public int? DAFID { get; set; }
+
     }
     public class ApprovalStatusChangesExportModel
     {

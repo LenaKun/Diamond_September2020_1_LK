@@ -529,7 +529,7 @@ namespace CC.Web.Models
 			var IsraelKerenSerNumber = System.Web.Configuration.WebConfigurationManager.AppSettings["IsraelKerenSerNumber"].Parse<int>();
 			var IsraelCashSerNumber = System.Web.Configuration.WebConfigurationManager.AppSettings["IsraelCashSerNumber"].Parse<int>();
 
-			if (mainReport.AppBudget.App.AgencyGroupId == IsraelKerenSerNumber && mainReport.Start.Year >= CashForServicesStartYear) //Benefits of Holocaust Victims in Israel SER (“The Keren”
+			if (mainReport.AppBudget.App.AgencyGroupId == IsraelKerenSerNumber && mainReport.Start.Year >= CashForServicesStartYear ) //Benefits of Holocaust Victims in Israel SER (“The Keren”
 			{
 				using (var db = new ccEntities(false, false))
 				{
@@ -778,6 +778,7 @@ namespace CC.Web.Models
                                   AgencyName = sr.AppBudgetService.Agency.Name,
                                   ClientId = cr.ClientId,
                                   ClientName = c.FirstName + " " + c.LastName,
+                                  NationalId = c.NationalId,
                                   ServiceName = sr.AppBudgetService.Service.Name,
                                   ServiceTypeId = sr.AppBudgetService.Service.TypeId,
                                   ServiceTypeName = sr.AppBudgetService.Service.ServiceType.Name,
@@ -866,7 +867,8 @@ namespace CC.Web.Models
 						Message = string.Format("Invalid number for months reported ({0}) for client {1}. The allowed months count is {2}", c.MonthsReported, c.ClientId, c.MonthsAllowed)
 					};
 				}
-			}
+               
+            }
 
 
 		}
@@ -908,10 +910,11 @@ namespace CC.Web.Models
 
 								 where mv.ReportDate.Year == mainReport.Start.Year
 								 where mv.ReportDate.Month == mainReport.Start.Month + i
-								 where mv.Client.NationalId == r.NationalId
-								 select mv;
+								 where mv.Client.NationalId ==  r.NationalId
+                                 select mv;
 
 						var count = q1.Count();
+                       
 						if (count > dcc_visits_limit)
 						{
 							string monthName = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(mainReport.Start.Month + i);
@@ -921,10 +924,64 @@ namespace CC.Web.Models
 
 							yield return r;
 						}
+
+                        
 					}
 				}
 
-				var dccNotEligibleJoinDate = (from mv in db.DccMemberVisits
+                for (int i = 0; i < 3; i++)
+                {
+                    foreach (var r in q)
+                    {
+                        var SameDateNationalId = (from mv in db.DccMemberVisits
+                                                  from mv1 in db.DccMemberVisits
+                                                  where mv.ReportDate.Year == mainReport.Start.Year
+                                                  where mv.ReportDate.Month == mainReport.Start.Month + i
+                                                  where mv1.ReportDate.Year == mainReport.Start.Year
+                                                  where mv1.ReportDate.Month == mainReport.Start.Month + i
+                                                  // where mv.ClientId != mv.ClientId
+
+                                                  where mv.Client.NationalId == r.NationalId
+                                                  where mv1.Client.NationalId == r.NationalId
+                                                  where mv.ReportDate == mv1.ReportDate
+                                                  where mv.ClientId != mv1.ClientId
+                                                  select new Row
+                                                  {
+                                                      ClientId = mv.ClientId,
+                                                      Date = mv.ReportDate
+                                                  }).ToList();
+                        var SameDateNationalIdCount = SameDateNationalId.Count();
+                        if (SameDateNationalIdCount > 0)
+                        {
+                            string monthName = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(mainReport.Start.Month + i);
+                            r.MessageTypeName = "Another client under this National ID was already reported for the same dates";
+                             r.Message = "CC National ID " + r.NationalId + " has another Client Id already reported at the same dates in " + monthName + " " + mainReport.Start.Year + ". Please contact your Program Officer."  ; 
+                                yield return r;
+                            }
+
+
+
+                        }
+
+                    }
+               
+                
+
+                //                {
+                //            string monthName = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(mainReport.Start.Month + i);
+
+                //            r.MessageTypeName = string.Format("Client has more then {0} visits per months", dcc_visits_limit);
+                //            r.Message = "CC National ID " + r.NationalId + " reported more then " + dcc_visits_limit + " visits in " + monthName + " " + mainReport.Start.Year;
+
+                //            yield return r;
+                //        }
+
+
+                //    }
+                //}
+
+
+                var dccNotEligibleJoinDate = (from mv in db.DccMemberVisits
 											  join sr in db.SubReports on mv.SubReportId equals sr.Id
 											  where sr.MainReportId == mainReport.Id
 											  join c in db.Clients on mv.ClientId equals c.Id
@@ -1845,7 +1902,7 @@ namespace CC.Web.Models
 			//#warning unittests
 			using (var db = new ccEntities())
 			{
-				db.CommandTimeout = 180;
+				db.CommandTimeout = 300;
 
 				//validate monthly Homecare caps
 				var spresult = db.spValidateMrHc(mainReport.Id);
@@ -2706,7 +2763,8 @@ namespace CC.Web.Models
 									  join c in reportedClients on skr.ClientId equals c.ClientId
 									  join sr in db.SubReports on skr.SubReportId equals sr.Id
 									  where sr.Id != c.SubReportId && sr.AppBudgetService.Service.TypeId == (int)Service.ServiceTypes.SoupKitchens
-									  where sk.ReportDate == c.ReportDate
+                                       where sk.ReportDate == c.ReportDate
+                                     
 									  select new
 									  {
 										  ClientId = c.ClientId,
@@ -2738,7 +2796,32 @@ namespace CC.Web.Models
 					};
 				}
 
-				var nationalReported = from skr in db.SoupKitchensReports
+
+             
+                var Reported2FoodServices = from skr in db.SoupKitchensReports
+                                             join sr in db.SubReports on skr.SubReportId equals sr.Id
+                                             where sr.MainReportId == mainReport.Id && sr.AppBudgetService.Service.TypeId == (int)Service.ServiceTypes.SoupKitchens
+                                             
+                                             select new
+                                             {
+                                                 ClientId = skr.ClientId
+
+                                             };
+                foreach (var c in Reported2FoodServices.GroupBy(f => f.ClientId))
+                {
+                    if (c.ToList().Count > 1)
+                    { 
+                        yield return new Row
+                    {
+                            MessageTypeName = "Soup Kitchens - Client Already Reported",
+                            Message = string.Format("Client (CCID: {0}) can't be reported for both services - Soup Kitchens and Meals on Wheels at the same period of time.",  c.FirstOrDefault())
+                        };
+                    }
+
+                }
+               
+
+                var nationalReported = from skr in db.SoupKitchensReports
 									   join sk in db.SKMembersVisits on skr.Id equals sk.SKReportId
 									   join c in db.Clients on skr.ClientId equals c.Id
 									   join rc in reportedClients on c.NationalId equals rc.NationalId

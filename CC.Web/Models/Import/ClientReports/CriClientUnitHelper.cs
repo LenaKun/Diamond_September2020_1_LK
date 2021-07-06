@@ -46,18 +46,20 @@ namespace CC.Web.Models.Import.ClientReports
 						  let ldx = System.Data.Objects.EntityFunctions.AddDays(client.LeaveDate, client.DeceasedDate == null ? 0 : 90)
 						  let start = subReport.MainReport.Start
                           let end = subReport.MainReport.End
-						  select new CriClientUnitPreview
+                          let subreportservicetypeid = subReport.AppBudgetService.Service.TypeId
+                          select new CriClientUnitPreview
 						  {
 							  
 							  RowIndex = item.RowIndex,
 							  ClientId = item.ClientId,
 							  Quantity = item.Quantity,
 							  ClientName = client.AgencyId != subReport.AppBudgetService.AgencyId ? "" : client.FirstName + " " + client.LastName,
-							  Errors = item.Errors??
+							  Errors = item.Errors ??
 								
 									(
 									((item.Quantity==null)?"Quantity is required.":"")+
-									((client == null)? "Invalid ClientId":"")+
+                                    ((client.ApprovalStatusId == 1024 && subreportservicetypeid != 8 ) ? "Approved, Homecare Only clients can only be reported for Homecare services." : "") +
+                                    ((client == null)? "Invalid ClientId":"")+
 									((client.AgencyId != subReport.AppBudgetService.AgencyId) ? "Invalid Agency":"")+
 									( ldx < start ? "The Client has left the agency." : "" ) +
 									( 
@@ -68,9 +70,10 @@ namespace CC.Web.Models.Import.ClientReports
                                     (client.DeceasedDate == null && client.LeaveDate < start ? "Client has left before report start date" : "") +
                                     (client.DeceasedDate != null && client.DeceasedDate < start ? "Client has DOD before report start date" : "")
 									)
+                               
 
 						  });
-			return source;
+            return source;
 		}
 		public override void Import(Guid importId)
 		{

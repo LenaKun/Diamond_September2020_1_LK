@@ -26,12 +26,16 @@
 			<div class="editor-label">
 				@Html.LabelFor(model => model.EvaluatorId)
 			</div>
-			<div class="editor-field">
-				@Html.EditorFor(model => model.EvaluatorId)
-				@Html.ValidationMessageFor(model => model.EvaluatorId)
-				<script>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.EvaluatorId)
+                @Html.ValidationMessageFor(model => model.EvaluatorId)
+               
+                
+
+
+                <script>
 					$(function () {
-						var evaluator = $('#@Html.FieldIdFor(model=>model.EvaluatorId)');
+						var evaluator = $('#@Html.FieldIdFor(model => model.EvaluatorId)');
 						var pageSize = 30;
 						var clientMap = function (a) {
 							return { id: a.Id, text: a.FirstName + " " + a.LastName, AgencyId: a.AgencyId }
@@ -66,9 +70,10 @@
 							}
 						})
 					})
-				</script>
-			</div>
-			@if (User.IsInRole(FixedRoles.DafEvaluator))
+                </script>
+                
+            </div>
+			@if (User.IsInRole(FixedRoles.DafEvaluator) || User.IsInRole(FixedRoles.Ser) || User.IsInRole(FixedRoles.SerAndReviewer))
 			{
 				<script>
 					$(function(){

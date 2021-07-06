@@ -26,7 +26,8 @@
     [IsAudit] BIT NOT NULL DEFAULT (0), 
     [CfsDate] DATETIME NULL, 
     [FluxxOrganizationId] INT NULL, 
-    [FluxxOrganizationName] NVARCHAR(255) NULL,
+    [FluxxOrganizationName] NVARCHAR(255) NULL, 
+    [FluxxId] INT NULL,
 )
 go
 

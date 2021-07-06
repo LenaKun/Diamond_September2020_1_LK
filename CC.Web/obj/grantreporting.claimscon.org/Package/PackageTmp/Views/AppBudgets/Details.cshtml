@@ -120,7 +120,7 @@
 })
 @if (Model.AppBudgetServices.Any())
 {
-    <script>
+<script>
         $(document).ready(function () {
 			var isNotBmf = '@User.IsInRole("BMF")' == 'False';
 			var isRevised = '@Model.Data.Revised' == 'True';
@@ -206,7 +206,11 @@
 					buttons: [{ text: "Close", click: function () { $(this).dialog("close"); } }]
 				});
 			});
-		});
+        });
+
+        
+				
+
     </script>
 }
 <div id="totals">
@@ -455,13 +459,23 @@ else if (Model.CanBeApprovedByRpo())
             @Html.Hidden("id", Model.Data.Id)
             <div>
                 <ul>
-                    @if (Model.FormARequired)
+                    @if (Model.Data.FormASubmitted)
                     {
+
+
                         <li>
-                            <input type="checkbox" name="FormASubmitted" id="FormASubmitted" value="true" />
+                            <input type="checkbox" name="FormASubmitted" id="FormASubmitted" value="true" checked />
                             <label for="FormASubmitted">Was a Form A submitted?</label>
                         </li>
                     }
+                    else
+                    {
+                        <li>
+                            <input type="checkbox" name="FormASubmitted" id="FormASubmitted" value="true"  />
+                            <label for="FormASubmitted">Was a Form A submitted?</label>
+                        </li>
+                    }
+
                     <li>
                         <label>
                             Remarks:

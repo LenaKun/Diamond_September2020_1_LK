@@ -367,7 +367,7 @@
 		};
 	});
 </script>
-@if (Model.Permissions.CanCreateMainReport)
+@if (Model.Permissions.CanCreateMainReport && User.IsInRole(FixedRoles.AgencyUser) == false)
 {
 	<fieldset>
 		<a href="@Url.Action("SelectApp")" class="button">Create New Financial Report </a>

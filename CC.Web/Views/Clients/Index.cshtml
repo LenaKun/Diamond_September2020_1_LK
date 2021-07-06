@@ -21,28 +21,28 @@
 </script>
 <div id="divTable">
 	<div id="filter">
-		<fieldset style="overflow: auto">
-			@if (!User.IsInRole("RegionReadOnly"))
-			{
-				<div class="editor-item">
-					<label>
-						Region:
-					</label>
-					@Html.EditorFor(f => f.Filter.RegionId)
-				</div>
-			}
-			<div class="editor-item">
-				<label>
-					Ser:
-				</label>
-				@Html.EditorFor(f => f.Filter.AgencyGroupId)
-			</div>
-			<div class="editor-item">
-				<label>
-					Agency:
-				</label>
-				@Html.EditorFor(f => f.Filter.AgencyId)
-				<script type="text/javascript">
+        <fieldset style="overflow: auto">
+            @if (!User.IsInRole("RegionReadOnly"))
+            {
+                <div class="editor-item">
+                    <label>
+                        Region:
+                    </label>
+                    @Html.EditorFor(f => f.Filter.RegionId)
+                </div>
+            }
+            <div class="editor-item">
+                <label>
+                    Ser:
+                </label>
+                @Html.EditorFor(f => f.Filter.AgencyGroupId)
+            </div>
+            <div class="editor-item">
+                <label>
+                    Agency:
+                </label>
+                @Html.EditorFor(f => f.Filter.AgencyId)
+                <script type="text/javascript">
 					var region = $('#@Html.FieldIdFor(model => model.Filter.RegionId)').select2({
 						width: 300,
 						allowClear: true,
@@ -174,108 +174,111 @@
 					agencyGroup.change(function () {
 						agency.select2('val', '');
 					});
-				</script>
-			</div>
-			<div class="editor-item">
-				<label>
-					Approval Status:
-				</label>
-				@Html.DropDownList("ApprovalStatusId", new SelectList(Model.ApprovalStatuses, "Key", "Value"), "")
-			</div>
-			<div class="editor-item">
-				<label>
-					First Name:
-				</label>
-				@Html.EditorFor(f => f.Filter.FirstName)
-			</div>
-			<div class="editor-item">
-				<label>
-					Last Name:
-				</label>
-				@Html.EditorFor(f => f.Filter.LastName)
-			</div>
-			<div class="editor-item">
-				<label>
-					Government Issued ID:
-				</label>
-				@Html.EditorFor(f => f.Filter.NationalId)
-			</div>
-			<div class="editor-item">
-				<label>
-					ID:
-				</label>
-				@Html.EditorFor(f => f.Filter.Id)
-			</div>
-			<div class="editor-item">
-				<label>Active</label>
-				<select id="active">
-					<option value="">All</option>
-					<option value="true">Active clients</option>
-					<option value="false">Inactive Clients</option>
-				</select>
-			</div>
-			<div class="editor-item">
-				<label>Create Date From:</label>
-				@Html.EditorFor(f => f.Filter.CreateDateFrom)
-			</div>
-			<div class="editor-item">
-				<label>Create Date To:</label>
-				@Html.EditorFor(f => f.Filter.CreateDateTo)
-			</div>
-			<div class="editor-item">
-				<label>Austrian Eligible</label>
-				<input type="checkbox" id="AustrianEligible" />
-			</div>
-			<div class="editor-item">
-				<label>Romanian Eligible</label>
-				<input type="checkbox" id="RomanianEligible" />
-			</div>
-			@if (((CC.Data.Services.IPermissionsBase)ViewBag.Permissions).CanSeeSc)
-			{
-				<div class="editor-item">
-					<label>SC</label>
-					<input type="checkbox" id="SC" />
-				</div>
-			}
-			@if (((CC.Data.Services.IPermissionsBase)ViewBag.Permissions).CanSeeDcc)
-			{
-				<div class="editor-item">
-					<label>DCC</label>
-					<input type="checkbox" id="DCC" />
-				</div>
-			}
-			@if (!User.IsInRole("BMF"))
-			{
-				<div class="editor-item">
-					<label>GG Reported Only</label>
-					<input type="checkbox" id="GGReportedOnly" />
-				</div>
-			}
-			<div class="editor-item">
-				<label>Homecare Waitlist Only</label>
-				<input type="checkbox" id="HcWaitlistOnly" />
-			</div>
-			<div class="editor-item">
-				<label>Other Services Waitlist Only</label>
-				<input type="checkbox" id="OtherWaitlistOnly" />
-			</div>
-			<div class="editor-item">
-				<button type="button" id="go" class="button">
-					Go
-				</button>
-				<button type="button" id="reset" class="button">
-					Reset
-				</button>
-			</div>
-			@if(!User.IsInRole(FixedRoles.CfsAdmin))
-			{
-				<div class="editor-item" id="exportContainer" style="display:none">
-					<label>Export Option</label>
-					@Html.DropDownList("ClientExportList", Model.GetExportList(), new { id = "ddlExport" })
-					<button type="button" id="exportBtn">
-						<i class="fa fa-folder-open-o"></i> Export
-					</button>
-					<script type="text/javascript">
+                </script>
+            </div>
+            <div class="editor-item">
+                <label>
+                    Approval Status:
+                </label>
+                @Html.DropDownList("ApprovalStatusId", new SelectList(Model.ApprovalStatuses, "Key", "Value"), "")
+            </div>
+            <div class="editor-item">
+                <label>
+                    First Name:
+                </label>
+                @Html.EditorFor(f => f.Filter.FirstName)
+            </div>
+            <div class="editor-item">
+                <label>
+                    Last Name:
+                </label>
+                @Html.EditorFor(f => f.Filter.LastName)
+            </div>
+            <div class="editor-item">
+                <label>
+                    Government Issued ID:
+                </label>
+                @Html.EditorFor(f => f.Filter.NationalId)
+            </div>
+            <div class="editor-item">
+                <label>
+                    ID:
+                </label>
+                @Html.EditorFor(f => f.Filter.Id)
+            </div>
+            <div class="editor-item">
+                <label>Active</label>
+                <select id="active">
+                    <option value="">All</option>
+                    <option value="true">Active clients</option>
+                    <option value="false">Inactive Clients</option>
+                </select>
+            </div>
+            <div class="editor-item">
+                <label>Create Date From:</label>
+                @Html.EditorFor(f => f.Filter.CreateDateFrom)
+            </div>
+            <div class="editor-item">
+                <label>Create Date To:</label>
+                @Html.EditorFor(f => f.Filter.CreateDateTo)
+            </div>
+            @if (!User.IsInRole("BMF"))
+            {
+                <div class="editor-item">
+                    <label>Austrian Eligible</label>
+                    <input type="checkbox" id="AustrianEligible" />
+                </div>
+            <div class="editor-item">
+                <label>Romanian Eligible</label>
+                <input type="checkbox" id="RomanianEligible" />
+            </div>
+            }
+            @if (((CC.Data.Services.IPermissionsBase)ViewBag.Permissions).CanSeeSc)
+            {
+                <div class="editor-item">
+                    <label>SC</label>
+                    <input type="checkbox" id="SC" />
+                </div>
+            }
+            @if (((CC.Data.Services.IPermissionsBase)ViewBag.Permissions).CanSeeDcc)
+            {
+                <div class="editor-item">
+                    <label>DCC</label>
+                    <input type="checkbox" id="DCC" />
+                </div>
+            }
+            @if (!User.IsInRole("BMF"))
+            {
+                <div class="editor-item">
+                    <label>GG Reported Only</label>
+                    <input type="checkbox" id="GGReportedOnly" />
+                </div>
+            }
+            <div class="editor-item">
+                <label>Homecare Waitlist Only</label>
+                <input type="checkbox" id="HcWaitlistOnly" />
+            </div>
+            <div class="editor-item">
+                <label>Other Services Waitlist Only</label>
+                <input type="checkbox" id="OtherWaitlistOnly" />
+            </div>
+            <div class="editor-item">
+                <button type="button" id="go" class="button">
+                    Go
+                </button>
+                <button type="button" id="reset" class="button">
+                    Reset
+                </button>
+            </div>
+            @if (!User.IsInRole(FixedRoles.CfsAdmin))
+            {
+                <div class="editor-item" id="exportContainer" style="display:none">
+                    <label>Export Option</label>
+                    @Html.DropDownList("ClientExportList", Model.GetExportList(), new { id = "ddlExport" })
+                    <button type="button" id="exportBtn">
+                        <i class="fa fa-folder-open-o"></i> Export
+                    </button>
+                    <script type="text/javascript">
 						$(function () {
 							$('#exportBtn').click(function () {
 								var location = '@Url.Action("Export", "Clients")?';
@@ -303,13 +306,13 @@
 								window.location = location;
 							});
 						});
-					</script>
-					<button type="button" onclick="window.print()">
-						Print
-					</button>
-				</div>
-			}
-		</fieldset>
+                    </script>
+                    <button type="button" onclick="window.print()">
+                        Print
+                    </button>
+                </div>
+            }
+        </fieldset>
 	</div>
 </div>
 <fieldset class="blockElement">
@@ -339,7 +342,7 @@
 				<th>Functionality Level </th>
 				<th>Approval Status </th>
 				<th>Allowed Home Care Hours </th>
-				<th>Grandfathered Hours </th>
+				<th>Legacy Hours </th>
 				<th>GG Reported?</th>
 				<th>Details </th>
 			</tr>

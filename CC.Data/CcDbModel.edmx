@@ -50,6 +50,7 @@
           <Property Name="CfsDate" Type="datetime" />
           <Property Name="FluxxOrganizationId" Type="int" />
           <Property Name="FluxxOrganizationName" Type="nvarchar" MaxLength="255" />
+          <Property Name="FluxxId" Type="int" />
         </EntityType>
         <EntityType Name="AgencyOverRideReasons">
           <Key>
@@ -432,6 +433,8 @@
           <Property Name="MAF105Date" Type="datetime" />
           <Property Name="UnableToSign" Type="bit" Nullable="false" />
           <Property Name="HAS2Date" Type="datetime" />
+          <Property Name="NursingHome" Type="bit" Nullable="false" />
+          <Property Name="AssistedLiving" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Comments">
           <Key>
@@ -907,6 +910,8 @@
           <Property Name="MAF105Date" Type="datetime" />
           <Property Name="UnableToSign" Type="bit" />
           <Property Name="HAS2Date" Type="datetime" />
+          <Property Name="NursingHome" Type="bit" />
+          <Property Name="AssistedLiving" Type="bit" />
         </EntityType>
         <EntityType Name="ImportFunctionalityScores">
           <Key>
@@ -1746,6 +1751,8 @@ warning 6002: The table/view 'cc_dev.dbo.ValidClientView' does not have a primar
           <Property Name="MAF105Date" Type="datetime" />
           <Property Name="HAS2Date" Type="datetime" />
           <Property Name="UnableToSign" Type="bit" />
+          <Property Name="NursingHome" Type="bit" />
+          <Property Name="AssistedLiving" Type="bit" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'cc_dev.dbo.ValidExistingClientsView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -1818,6 +1825,8 @@ warning 6002: The table/view 'cc_dev.dbo.ValidExistingClientsView' does not have
           <Property Name="MAF105Date" Type="datetime" />
           <Property Name="HAS2Date" Type="datetime" />
           <Property Name="UnableToSign" Type="bit" />
+          <Property Name="NursingHome" Type="bit" />
+          <Property Name="AssistedLiving" Type="bit" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'cc_dev.dbo.viewAppExchangeRates' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -1855,6 +1864,8 @@ warning 6002: The table/view 'cc_dev.dbo.viewClientDetails' does not have a prim
             <PropertyRef Name="HomecareWaitlist" />
             <PropertyRef Name="OtherServicesWaitlist" />
             <PropertyRef Name="UnableToSign" />
+            <PropertyRef Name="NursingHome" />
+            <PropertyRef Name="AssistedLiving" />
           </Key>
           <Property Name="AgencyId" Type="int" Nullable="false" />
           <Property Name="RegionId" Type="int" />
@@ -1933,6 +1944,8 @@ warning 6002: The table/view 'cc_dev.dbo.viewClientDetails' does not have a prim
           <Property Name="CareReceivedVia" Type="nvarchar" MaxLength="255" />
           <Property Name="CareReceivedId" Type="int" />
           <Property Name="UnableToSign" Type="bit" Nullable="false" />
+          <Property Name="NursingHome" Type="bit" Nullable="false" />
+          <Property Name="AssistedLiving" Type="bit" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'cc_dev.dbo.ViewClientReports' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -2279,6 +2292,7 @@ warning 6002: The table/view 'cc_dev.rep.viewFinSumDet' does not have a primary 
           <Property Name="ExcludeFromReports" Type="bit" Nullable="false" />
           <Property Name="FirstName" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="LastName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Remarks" Type="nvarchar" MaxLength="255" />
           <Property Name="MasterId" Type="int" />
         </EntityType>
         <Association Name="FK__Agencies__GroupI__526F16A8">
@@ -4933,7 +4947,9 @@ FROM [dbo].[HcCapsTableRaw_Original] AS [HcCapsTableRaw_Original]</DefiningQuery
 [ValidClientView].[MAFDate] AS [MAFDate], 
 [ValidClientView].[MAF105Date] AS [MAF105Date], 
 [ValidClientView].[HAS2Date] AS [HAS2Date], 
-[ValidClientView].[UnableToSign] AS [UnableToSign]
+[ValidClientView].[UnableToSign] AS [UnableToSign], 
+[ValidClientView].[NursingHome] AS [NursingHome], 
+[ValidClientView].[AssistedLiving] AS [AssistedLiving]
 FROM [dbo].[ValidClientView] AS [ValidClientView]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="ValidExistingClientsView" EntityType="Self.ValidExistingClientsView" store:Type="Views" store:Schema="dbo">
@@ -5000,7 +5016,9 @@ FROM [dbo].[ValidClientView] AS [ValidClientView]</DefiningQuery>
 [ValidExistingClientsView].[MAFDate] AS [MAFDate], 
 [ValidExistingClientsView].[MAF105Date] AS [MAF105Date], 
 [ValidExistingClientsView].[HAS2Date] AS [HAS2Date], 
-[ValidExistingClientsView].[UnableToSign] AS [UnableToSign]
+[ValidExistingClientsView].[UnableToSign] AS [UnableToSign], 
+[ValidExistingClientsView].[NursingHome] AS [NursingHome], 
+[ValidExistingClientsView].[AssistedLiving] AS [AssistedLiving]
 FROM [dbo].[ValidExistingClientsView] AS [ValidExistingClientsView]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="viewAppExchangeRates" EntityType="Self.viewAppExchangeRates" store:Type="Views" store:Schema="dbo">
@@ -5088,7 +5106,9 @@ FROM [dbo].[viewAppExchangeRates] AS [viewAppExchangeRates]</DefiningQuery>
 [viewClientDetails].[CommPrefsId] AS [CommPrefsId], 
 [viewClientDetails].[CareReceivedVia] AS [CareReceivedVia], 
 [viewClientDetails].[CareReceivedId] AS [CareReceivedId], 
-[viewClientDetails].[UnableToSign] AS [UnableToSign]
+[viewClientDetails].[UnableToSign] AS [UnableToSign], 
+[viewClientDetails].[NursingHome] AS [NursingHome], 
+[viewClientDetails].[AssistedLiving] AS [AssistedLiving]
 FROM [dbo].[viewClientDetails] AS [viewClientDetails]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="ViewClientReports" EntityType="Self.ViewClientReports" store:Type="Views" store:Schema="dbo">
@@ -5300,6 +5320,7 @@ FROM [dbo].[viewSubreportAmounts] AS [viewSubreportAmounts]</DefiningQuery>
 [viewFinSumDet].[ExcludeFromReports] AS [ExcludeFromReports], 
 [viewFinSumDet].[FirstName] AS [FirstName], 
 [viewFinSumDet].[LastName] AS [LastName], 
+[viewFinSumDet].[Remarks] AS [Remarks], 
 [viewFinSumDet].[MasterId] AS [MasterId]
 FROM [rep].[viewFinSumDet] AS [viewFinSumDet]</DefiningQuery>
           </EntitySet>
@@ -7626,6 +7647,7 @@ FROM [rep].[viewFinSumDet] AS [viewFinSumDet]</DefiningQuery>
           <Property Name="CfsDate" Type="DateTime" Precision="3" />
           <Property Name="FluxxOrganizationId" Type="Int32" />
           <Property Name="FluxxOrganizationName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="FluxxId" Type="Int32" />
 				</EntityType>
 				<Association Name="FK__Agencies__b55fc748a1647ea8440d">
 					<End Type="ccModel.AgencyGroup" Multiplicity="1" Role="AgencyGroup" />
@@ -8602,6 +8624,8 @@ FROM [rep].[viewFinSumDet] AS [viewFinSumDet]</DefiningQuery>
           <NavigationProperty Name="CfsRows" Relationship="ccModel.fk_cfs_clients" FromRole="Client" ToRole="CfsRow" />
           <Property Name="HAS2Date" Type="DateTime" Precision="3" />
           <Property Name="UnableToSign" Type="Boolean" Nullable="false" />
+          <Property Name="NursingHome" Type="Boolean" Nullable="false" />
+          <Property Name="AssistedLiving" Type="Boolean" Nullable="false" />
 				</EntityType>
 				<Association Name="FK__Clients__AgencyI__3AA27A0F">
 					<End Type="ccModel.Agency" Role="Agency" Multiplicity="1" />
@@ -8981,6 +9005,8 @@ FROM [rep].[viewFinSumDet] AS [viewFinSumDet]</DefiningQuery>
           <Property Name="MAF105Date" Type="DateTime" Precision="3" />
           <Property Name="UnableToSign" Type="Boolean" />
           <Property Name="HAS2Date" Type="DateTime" Precision="3" />
+          <Property Name="NursingHome" Type="Boolean" />
+          <Property Name="AssistedLiving" Type="Boolean" />
 				</EntityType>
 				<EntityType Name="UserAgreementAudit">
 					<Key>
@@ -9311,6 +9337,7 @@ FROM [rep].[viewFinSumDet] AS [viewFinSumDet]</DefiningQuery>
           <Property Type="String" Name="CountryName" Nullable="true" MaxLength="255" />
           <Property Type="String" Name="BirthCountryName" Nullable="true" MaxLength="50" />
           <Property Type="Int32" Name="AgencyId" Nullable="false" />
+          <Property Type="DateTime" Name="DeceasedDate" Nullable="true" Precision="23" />
         </ComplexType>
         <EntityType Name="viewGgQuarterlyHcFl">
           <Key>
@@ -9578,6 +9605,8 @@ FROM [rep].[viewFinSumDet] AS [viewFinSumDet]</DefiningQuery>
           <Property Name="MAF105Date" Type="DateTime" Precision="3" />
           <Property Name="UnableToSign" Type="Boolean" />
           <Property Name="HAS2Date" Type="DateTime" Precision="3" />
+          <Property Name="NursingHome" Type="Boolean" />
+          <Property Name="AssistedLiving" Type="Boolean" />
         </EntityType>
         <EntityType Name="viewHc">
           <Key>
@@ -11171,6 +11200,7 @@ FROM [rep].[viewFinSumDet] AS [viewFinSumDet]</DefiningQuery>
           <Property Name="FirstName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="LastName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="MasterId" Type="Int32" />
+          <Property Name="Remarks" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="viewClientDetail">
           <Key>
@@ -11178,6 +11208,8 @@ FROM [rep].[viewFinSumDet] AS [viewFinSumDet]</DefiningQuery>
             <PropertyRef Name="HomecareWaitlist" />
             <PropertyRef Name="OtherServicesWaitlist" />
             <PropertyRef Name="UnableToSign" />
+            <PropertyRef Name="NursingHome" />
+            <PropertyRef Name="AssistedLiving" />
           </Key>
           <Property Name="InternalAgencyID" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="ORGID" Type="Int32" Nullable="false" />
@@ -11256,6 +11288,8 @@ FROM [rep].[viewFinSumDet] AS [viewFinSumDet]</DefiningQuery>
           <Property Name="CareReceivedId" Type="Int32" />
           <Property Name="UnableToSign" Type="Boolean" Nullable="false" />
           <Property Name="Has2Date" Type="DateTime" Precision="3" />
+          <Property Name="NursingHome" Type="Boolean" Nullable="false" />
+          <Property Name="AssistedLiving" Type="Boolean" Nullable="false" />
         </EntityType>
         <ComplexType Name="spValidateWeeklyHcCaps_Result">
           <Property Type="Int32" Name="ClientId" Nullable="false" />
@@ -11593,6 +11627,8 @@ FROM [rep].[viewFinSumDet] AS [viewFinSumDet]</DefiningQuery>
           <Property Name="MAF105Date" Type="DateTime" Precision="3" />
           <Property Name="HAS2Date" Type="DateTime" Precision="3" />
           <Property Name="UnableToSign" Type="Boolean" />
+          <Property Name="NursingHome" Type="Boolean" />
+          <Property Name="AssistedLiving" Type="Boolean" />
         </EntityType>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
@@ -11728,6 +11764,7 @@ FROM [rep].[viewFinSumDet] AS [viewFinSumDet]</DefiningQuery>
           <Property Type="Boolean" Name="IsEstimated" Nullable="true" />
           <Property Type="Decimal" Name="CcGrant" Nullable="true" Precision="18" Scale="0" />
           <Property Type="String" Name="AppCur" Nullable="false" MaxLength="3" />
+          <Property Type="String" Name="Remarks" Nullable="true" MaxLength="255" />
         </ComplexType>
         <EntityType Name="HcCapsTableRaw_Original">
           <Key>
@@ -12121,6 +12158,7 @@ FROM [rep].[viewFinSumDet] AS [viewFinSumDet]</DefiningQuery>
 					<EntitySetMapping Name="AgencyGroups">
 						<EntityTypeMapping TypeName="ccModel.AgencyGroup">
 							<MappingFragment StoreEntitySet="AgencyGroups">
+                <ScalarProperty Name="FluxxId" ColumnName="FluxxId" />
                 <ScalarProperty Name="FluxxOrganizationName" ColumnName="FluxxOrganizationName" />
                 <ScalarProperty Name="FluxxOrganizationId" ColumnName="FluxxOrganizationId" />
                 <ScalarProperty Name="CfsDate" ColumnName="CfsDate" />
@@ -12425,6 +12463,8 @@ FROM [rep].[viewFinSumDet] AS [viewFinSumDet]</DefiningQuery>
 					<EntitySetMapping Name="Clients">
 						<EntityTypeMapping TypeName="IsTypeOf(ccModel.Client)">
 							<MappingFragment StoreEntitySet="Clients">
+                <ScalarProperty Name="AssistedLiving" ColumnName="AssistedLiving" />
+                <ScalarProperty Name="NursingHome" ColumnName="NursingHome" />
                 <ScalarProperty Name="UnableToSign" ColumnName="UnableToSign" />
                 <ScalarProperty Name="HAS2Date" ColumnName="HAS2Date" />
                 <ScalarProperty Name="MAF105Date" ColumnName="MAF105Date" />
@@ -12759,6 +12799,8 @@ FROM [rep].[viewFinSumDet] AS [viewFinSumDet]</DefiningQuery>
 					<EntitySetMapping Name="ImportClients">
 						<EntityTypeMapping TypeName="ccModel.ImportClient">
 							<MappingFragment StoreEntitySet="ImportClients">
+                <ScalarProperty Name="AssistedLiving" ColumnName="AssistedLiving" />
+                <ScalarProperty Name="NursingHome" ColumnName="NursingHome" />
                 <ScalarProperty Name="HAS2Date" ColumnName="HAS2Date" />
                 <ScalarProperty Name="UnableToSign" ColumnName="UnableToSign" />
                 <ScalarProperty Name="MAF105Date" ColumnName="MAF105Date" />
@@ -13043,6 +13085,8 @@ FROM [rep].[viewFinSumDet] AS [viewFinSumDet]</DefiningQuery>
           <EntitySetMapping Name="ValidClientViews">
             <EntityTypeMapping TypeName="ccModel.ValidClientView">
               <MappingFragment StoreEntitySet="ValidClientView">
+                <ScalarProperty Name="AssistedLiving" ColumnName="AssistedLiving" />
+                <ScalarProperty Name="NursingHome" ColumnName="NursingHome" />
                 <ScalarProperty Name="HAS2Date" ColumnName="HAS2Date" />
                 <ScalarProperty Name="UnableToSign" ColumnName="UnableToSign" />
                 <ScalarProperty Name="MAF105Date" ColumnName="MAF105Date" />
@@ -13830,6 +13874,7 @@ FROM [rep].[viewFinSumDet] AS [viewFinSumDet]</DefiningQuery>
           <EntitySetMapping Name="viewFinSumDets">
             <EntityTypeMapping TypeName="ccModel.viewFinSumDet">
               <MappingFragment StoreEntitySet="viewFinSumDet">
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
                 <ScalarProperty Name="MasterId" ColumnName="MasterId" />
                 <ScalarProperty Name="LastName" ColumnName="LastName" />
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />
@@ -13868,6 +13913,8 @@ FROM [rep].[viewFinSumDet] AS [viewFinSumDet]</DefiningQuery>
           <EntitySetMapping Name="viewClientDetails">
             <EntityTypeMapping TypeName="ccModel.viewClientDetail">
               <MappingFragment StoreEntitySet="viewClientDetails">
+                <ScalarProperty Name="AssistedLiving" ColumnName="AssistedLiving" />
+                <ScalarProperty Name="NursingHome" ColumnName="NursingHome" />
                 <ScalarProperty Name="Has2Date" ColumnName="Has2Date" />
                 <ScalarProperty Name="UnableToSign" ColumnName="UnableToSign" />
                 <ScalarProperty Name="CareReceivedId" ColumnName="CareReceivedId" />
@@ -14090,6 +14137,8 @@ FROM [rep].[viewFinSumDet] AS [viewFinSumDet]</DefiningQuery>
           <EntitySetMapping Name="ValidExistingClientsView">
             <EntityTypeMapping TypeName="ccModel.ValidExistingClientsView">
               <MappingFragment StoreEntitySet="ValidExistingClientsView">
+                <ScalarProperty Name="AssistedLiving" ColumnName="AssistedLiving" />
+                <ScalarProperty Name="NursingHome" ColumnName="NursingHome" />
                 <ScalarProperty Name="UnableToSign" ColumnName="UnableToSign" />
                 <ScalarProperty Name="HAS2Date" ColumnName="HAS2Date" />
                 <ScalarProperty Name="MAF105Date" ColumnName="MAF105Date" />
@@ -14274,6 +14323,7 @@ FROM [rep].[viewFinSumDet] AS [viewFinSumDet]</DefiningQuery>
                 <ScalarProperty Name="CountryName" ColumnName="CountryName" />
                 <ScalarProperty Name="BirthCountryName" ColumnName="BirthCountryName" />
                 <ScalarProperty Name="AgencyId" ColumnName="AgencyId" />
+                <ScalarProperty Name="DeceasedDate" ColumnName="DeceasedDate" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
@@ -14595,6 +14645,7 @@ FROM [rep].[viewFinSumDet] AS [viewFinSumDet]</DefiningQuery>
                 <ScalarProperty Name="IsEstimated" ColumnName="IsEstimated" />
                 <ScalarProperty Name="CcGrant" ColumnName="CcGrant" />
                 <ScalarProperty Name="AppCur" ColumnName="AppCur" />
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

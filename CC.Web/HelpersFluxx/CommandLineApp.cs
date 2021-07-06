@@ -63,6 +63,7 @@ namespace CC.Web.HelpersFluxx
                 startInfo.FileName = exe_full_name;
                 startInfo.WindowStyle = ProcessWindowStyle.Hidden;
                 startInfo.Arguments = args;
+                
                 if (id != null)
                 {
                     startInfo.Arguments = args + " id=" + id;
@@ -70,7 +71,8 @@ namespace CC.Web.HelpersFluxx
                 
                 using (Process exeProcess = Process.Start(startInfo))
                 {
-                    exeProcess.WaitForExit();
+                    
+                    exeProcess.WaitForExit();//LenaFluxx
                 }
             }
         }

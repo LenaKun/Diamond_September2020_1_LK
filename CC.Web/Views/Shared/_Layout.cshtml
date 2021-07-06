@@ -293,47 +293,50 @@
 					var ccuser = ((CC.Web.Security.CcPrincipal)HttpContext.Current.User).CcUser;
                 }
                 <ul id="mainMenu" class="menu">
-					<li>@Html.ActionLink("Landing Page", "Index", new { area = string.Empty, controller = "LandingPage" })</li>
-					@if ((FixedRoles.DafEvaluator | FixedRoles.DafReviewer).HasFlag(roleId))
-					{
-						<li>@Html.ActionLink("DAF", "Index", new {area = string.Empty , controller="Daf"})</li>
-					}
-					<li>@Html.ActionLink("Clients Management", "Index", "Clients", new { area = string.Empty }, null)</li>
-					@if (!(FixedRoles.Ser | FixedRoles.AgencyUser | FixedRoles.SerAndReviewer | FixedRoles.AgencyUserAndReviewer).HasFlag(roleId) || 
-						 (User.IsInRole(FixedRoles.Ser) || User.IsInRole(FixedRoles.SerAndReviewer)) && ccuser.AgencyGroup.CfsDate.HasValue ||
-						 (User.IsInRole(FixedRoles.AgencyUser) || User.IsInRole(FixedRoles.AgencyUserAndReviewer)) && ccuser.Agency.AgencyGroup.CfsDate.HasValue)
-					{ 
-						<li>@Html.ActionLink("CFS", "Default", new { area = string.Empty, controller = "Cfs" })</li>
-					}
-					@if ((FixedRoles.AgencyUser | FixedRoles.Ser | FixedRoles.SerAndReviewer | FixedRoles.AgencyUserAndReviewer | FixedRoles.AuditorReadOnly | FixedRoles.Admin).HasFlag(roleId))
-					{
-						<li>@Html.ActionLink("DAF", "Index", new {area = string.Empty , controller="Daf"})</li>
-					}
-					@if (!(FixedRoles.DafEvaluator | FixedRoles.DafReviewer | FixedRoles.CfsAdmin).HasFlag(roleId)) {
-						<li>@Html.ActionLink("Budgets", "Index", new { area = string.Empty, controller = "AppBudgets" })</li>
-						<li>@Html.ActionLink("Financial Reports", "Index", new { area = string.Empty, Controller = "MainReports" })</li>
-						<li>@Html.ActionLink("Financial Summary", "Overview", new { area = string.Empty, Controller = "FinancialSummary" })</li>
-					}
-                    @if (roleId != FixedRoles.AgencyUser && roleId != FixedRoles.BMF 
-						&& roleId != FixedRoles.GlobalReadOnly 
-						&& roleId != FixedRoles.RegionReadOnly 
-						&& roleId != FixedRoles.AuditorReadOnly
-						&& roleId != FixedRoles.DafReviewer
-						&& roleId != FixedRoles.AgencyUserAndReviewer
-						&& roleId != FixedRoles.DafEvaluator
-						&& roleId != FixedRoles.CfsAdmin)
-                    {                    
+                    <li>@Html.ActionLink("Landing Page", "Index", new { area = string.Empty, controller = "LandingPage" })</li>
+                    <li>@Html.ActionLink("Clients Management", "Index", "Clients", new { area = string.Empty }, null)</li>
+                    @if ((FixedRoles.DafEvaluator | FixedRoles.DafReviewer | FixedRoles.Ser | FixedRoles.SerAndReviewer).HasFlag(roleId))
+                    {
+                        <li>@Html.ActionLink("DAF", "Index", new { area = string.Empty, controller = "Daf" })</li>
+                    }
+                    
+                    @if (!(FixedRoles.Ser | FixedRoles.AgencyUser | FixedRoles.SerAndReviewer | FixedRoles.AgencyUserAndReviewer).HasFlag(roleId) ||
+                                        (User.IsInRole(FixedRoles.Ser) || User.IsInRole(FixedRoles.SerAndReviewer)) && ccuser.AgencyGroup.CfsDate.HasValue ||
+                                        (User.IsInRole(FixedRoles.AgencyUser) || User.IsInRole(FixedRoles.AgencyUserAndReviewer)) && ccuser.Agency.AgencyGroup.CfsDate.HasValue)
+                    {
+                        <li>@Html.ActionLink("CFS", "Default", new { area = string.Empty, controller = "Cfs" })</li>
+                    }
+                    @if ((FixedRoles.AgencyUserAndReviewer | FixedRoles.AuditorReadOnly | FixedRoles.Admin).HasFlag(roleId))
+                    {
+                        <li>@Html.ActionLink("DAF", "Index", new { area = string.Empty, controller = "Daf" })</li>
+                    }
+                    @if (!(FixedRoles.DafEvaluator | FixedRoles.DafReviewer | FixedRoles.CfsAdmin).HasFlag(roleId))
+                    {
+                        <li>@Html.ActionLink("Budgets", "Index", new { area = string.Empty, controller = "AppBudgets" })</li>
+                        <li>@Html.ActionLink("Financial Reports", "Index", new { area = string.Empty, Controller = "MainReports" })</li>
+                        <li>@Html.ActionLink("Financial Summary", "Overview", new { area = string.Empty, Controller = "FinancialSummary" })</li>
+                    }
+                    @if (roleId != FixedRoles.AgencyUser && roleId != FixedRoles.BMF
+                        && roleId != FixedRoles.GlobalReadOnly
+                        && roleId != FixedRoles.RegionReadOnly
+                        && roleId != FixedRoles.AuditorReadOnly
+                        && roleId != FixedRoles.DafReviewer
+                        && roleId != FixedRoles.AgencyUserAndReviewer
+                        && roleId != FixedRoles.DafEvaluator
+                        && roleId != FixedRoles.CfsAdmin)
+                    {
                         <li>@Html.ActionLink("Users Management", "Index", new { area = "Admin", Controller = "Users" })</li>
                     }
 
-					@if (!(FixedRoles.DafEvaluator | FixedRoles.DafReviewer | FixedRoles.CfsAdmin).HasFlag(roleId)) { 
-						<li>@Html.ActionLink("Agency Reporting", "Index", new { area = string.Empty, Controller = "AgencyReporting" })</li>
-					}
-					@if ((FixedRoles.Admin | FixedRoles.AuditorReadOnly).HasFlag(roleId))
-					{
-						<li>@Html.ActionLink("Audit Sers", "Index", new { area = string.Empty, Controller = "AuditSers" })</li>
-					}
-                    @if (roleId == FixedRoles.Admin || roleId == FixedRoles.GlobalOfficer)
+                    @if (!(FixedRoles.DafEvaluator | FixedRoles.DafReviewer | FixedRoles.CfsAdmin).HasFlag(roleId))
+                    {
+                        <li>@Html.ActionLink("Agency Reporting", "Index", new { area = string.Empty, Controller = "AgencyReporting" })</li>
+                    }
+                    @if ((FixedRoles.Admin | FixedRoles.AuditorReadOnly).HasFlag(roleId))
+                    {
+                        <li>@Html.ActionLink("Audit Sers", "Index", new { area = string.Empty, Controller = "AuditSers" })</li>
+                    }
+                    @if (roleId == FixedRoles.Admin || roleId == FixedRoles.GlobalOfficer || roleId == FixedRoles.RegionAssistant)
                     {
                         <li>@Html.ActionLink("Reporting", "Index", new { area = string.Empty, Controller = "Reporting" })</li>
                     }

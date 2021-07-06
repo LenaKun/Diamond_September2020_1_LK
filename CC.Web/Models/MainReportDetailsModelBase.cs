@@ -96,7 +96,19 @@ namespace CC.Web.Models
 									   Date = c.Date
 								   }).ToList();
 
-				this.InternalComments = (from mr in db.MainReports
+               // foreach (var item in this.PoComments)
+                //{
+                //  if(item.Content.Contains("rejected") && this.ProgramOverviewFileName != null)
+                   // {
+                     //   item.Content = item.Content + "***" + this.ProgramOverviewFileName;
+                     //   item.IsFile = true;
+                  //  }
+
+               // }
+
+                   
+
+                this.InternalComments = (from mr in db.MainReports
 										 where mr.Id == this.Id
 										 from c in mr.InternalComments
 										 select new CommentView

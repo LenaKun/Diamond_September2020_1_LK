@@ -64,7 +64,7 @@
             <li><a href="#cfs">CFS</a></li>
         }
         <li><a href="#govHcHours">Gov HC Hours</a></li>
-        <li><a href="#gfHours">Grandfather Hours</a></li>
+        <li><a href="#gfHours">Legacy Hours</a></li>
         @if (User.IsInRole(FixedRoles.Admin) || User.IsInRole(FixedRoles.GlobalOfficer) || User.IsInRole(FixedRoles.AuditorReadOnly))
         {
             <li><a href="#hcStatuses">HC Approval Statuses</a></li>
@@ -131,9 +131,16 @@
                         @Html.LabelFor(modle => modle.UnableToSign)
                         @Html.DisplayFor(modle => modle.UnableToSign)
                     </div>
-
+                    <div class="editor-item">
+                        @Html.LabelFor(modle => modle.NursingHome)
+                        @Html.DisplayFor(modle => modle.NursingHome)
+                    </div>
+                    <div class="editor-item">
+                        @Html.LabelFor(modle => modle.AssistedLiving)
+                        @Html.DisplayFor(modle => modle.AssistedLiving)
+                    </div>
                 </div>
-               
+
             }
         </div>
     </div>
@@ -161,17 +168,18 @@
                 @Html.LabelFor(model => model.ApprovalStatus):
                 @Html.DisplayFor(model => model.ApprovalStatus.Name)
             </div>
+            @if (!User.IsInRole("BMF"))
+            {
+                <div class="editor-item">
+                    @Html.LabelFor(model => model.AustrianEligible):
+                    @Html.DisplayFor(model => model.AustrianEligible)
+                </div>
 
-            <div class="editor-item">
-                @Html.LabelFor(model => model.AustrianEligible):
-                @Html.DisplayFor(model => model.AustrianEligible)
-            </div>
-
-            <div class="editor-item">
-                @Html.LabelFor(model => model.RomanianEligible):
-                @Html.DisplayFor(model => model.RomanianEligible)
-            </div>
-
+                <div class="editor-item">
+                    @Html.LabelFor(model => model.RomanianEligible):
+                    @Html.DisplayFor(model => model.RomanianEligible)
+                </div>
+            }
             <div id="hcepContainer" class="clear">
                 @Html.Action("Index", "HomeCareEntitledPeriods", new { ClientId = Model.Id })
             </div>
@@ -208,11 +216,20 @@
         </div>
         <div class="editor-item">
             @Html.LabelFor(model => model.HomeCareAllowedHours):
-            @Html.DisplayFor(model => model.HomeCareAllowedHours)
+            @if (Model.DeceasedDate == null)
+            {
+                @Html.DisplayFor(model => model.HomeCareAllowedHours)
+            }
+            else
+            {
+                @Html.DisplayFor(model => model.HomeCareAllowedHours1)
+            }
+
             @if (Model.HasOpenCfsRecord)
             {
                 @Html.DescriptionFor(model => model.HomeCareAllowedHours)
             }
+
         </div>
         <div class="editor-item">
             @Html.LabelFor(model => model.MAFDate):
@@ -223,19 +240,20 @@
             @Html.DisplayFor(model => model.MAF105Date)
         </div>
 
-        <div class="editor-item">
+       @* <div class="editor-item">
             @Html.LabelFor(model => model.HAS2Date):
             @Html.DisplayFor(model => model.HAS2Date)
-        </div>
+        </div>*@
 
         @Html.Action("Index", "FunctionalityScores", new { ClientId = Model.Id })
     </div>
-    @if (ViewBag.IsCfsActive)
+    @if (ViewBag.IsCfsActive )
     {
         <div id="cfs">
-            @Html.Action("Index", "Cfs", new { clientId = Model.Id })
+            @Html.Action("Index", "Cfs", new { clientId = Model.Id, leavereasonid = Model.LeaveReasonId })
         </div>
     }
+   
     <div id="govHcHours">
         @Html.Action("GovHcHours", new { clientId = Model.Id })
     </div>
@@ -248,33 +266,33 @@
             @Html.Action("Index", "ClientHcApprovalStatuses", new { clientId = Model.Id })
         </div>
     }
-        <div id="UnmetNeeds">
-            @Html.Action("UnmetNeeds", new { clientId = Model.Id })
-        </div>
-        @if (!(FixedRoles.BMF).HasFlag((FixedRoles)(ViewBag.Permissions as CC.Data.Services.IPermissionsBase).User.RoleId))
-        {
-            <div id="UnmetNeedsOther">
-                @Html.Action("UnmetNeedsOther", new { clientId = Model.Id })
-            </div>
-        }
-
-        <div id="homeCare">
-            @Html.Action("HomeCareTab", new { id = Model.Id })
-        </div>
-
-        <div id="emergencies">
-            @Html.Action("EmergenciesTab", new { id = Model.Id })
-        </div>
-        <div id="otherServices">
-            @Html.Action("OtherServicesTab", new { id = Model.Id })
-        </div>
-        @if ((FixedRoles.Admin | FixedRoles.GlobalOfficer | FixedRoles.RegionOfficer | FixedRoles.AgencyUser | FixedRoles.AgencyUserAndReviewer | FixedRoles.RegionAssistant | FixedRoles.Ser | FixedRoles.SerAndReviewer | FixedRoles.RegionReadOnly | FixedRoles.CfsAdmin).HasFlag((FixedRoles)(ViewBag.Permissions as CC.Data.Services.IPermissionsBase).User.RoleId))
-        {
-            <div id="history">
-                @Html.Partial("~/Views/Clients/Audit.cshtml", Model.Id)
-            </div>
-        }
+    <div id="UnmetNeeds">
+        @Html.Action("UnmetNeeds", new { clientId = Model.Id })
     </div>
+    @if (!(FixedRoles.BMF).HasFlag((FixedRoles)(ViewBag.Permissions as CC.Data.Services.IPermissionsBase).User.RoleId))
+    {
+        <div id="UnmetNeedsOther">
+            @Html.Action("UnmetNeedsOther", new { clientId = Model.Id })
+        </div>
+    }
+
+    <div id="homeCare">
+        @Html.Action("HomeCareTab", new { id = Model.Id })
+    </div>
+
+    <div id="emergencies">
+        @Html.Action("EmergenciesTab", new { id = Model.Id })
+    </div>
+    <div id="otherServices">
+        @Html.Action("OtherServicesTab", new { id = Model.Id })
+    </div>
+    @if ((FixedRoles.Admin | FixedRoles.GlobalOfficer | FixedRoles.RegionOfficer | FixedRoles.AgencyUser | FixedRoles.AgencyUserAndReviewer | FixedRoles.RegionAssistant | FixedRoles.Ser | FixedRoles.SerAndReviewer | FixedRoles.RegionReadOnly | FixedRoles.CfsAdmin).HasFlag((FixedRoles)(ViewBag.Permissions as CC.Data.Services.IPermissionsBase).User.RoleId))
+    {
+        <div id="history">
+            @Html.Partial("~/Views/Clients/Audit.cshtml", Model.Id)
+        </div>
+    }
+</div>
 <script type="text/javascript">
 	$(function () {
 		$('#tabs').tabs({

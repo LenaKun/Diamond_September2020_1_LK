@@ -255,8 +255,11 @@
             <a href="@Url.Action("ExportToPdf", new { id = Model.Id, ifCtera = true })" class="button">Update PDF</a>
         }
         <a href="@Url.Action("StatusAudit", new { id = Model.Id })" class="button">Status History</a>
+        @if (User.IsInRole(CC.Data.FixedRoles.Admin.ToString()) || User.IsInRole(CC.Data.FixedRoles.RegionAssistant.ToString()))
+        {
         <a href="@Url.Action("HseapDetailed", new { id = Model.Id })" class="button">HSEAP - Detailed</a>
         <a href="@Url.Action("HseapSummary", new { id = Model.Id })" class="button">HSEAP - Summary</a>
+        }
     </fieldset>
 <script>
     $(function () {
@@ -562,8 +565,9 @@
             
             <div class="display-item">
                 @Html.LabelFor(f => f.Totals.CcExp, "Total Reported on this Report")
-               
+
                 @Html.DisplayFor(f => f.Totals.CcExp)
+              
                 @Html.DisplayFor(f => f.Totals.CurrencyId)
             </div>
             <div class="display-item">

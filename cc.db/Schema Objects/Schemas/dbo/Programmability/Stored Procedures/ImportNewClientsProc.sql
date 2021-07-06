@@ -13,9 +13,9 @@ AS
 	
 	with cc as
 	( 
-		select clients.* from clients
-		join Agencies on clients.AgencyId = Agencies.id
-		where coalesce(@agencyid, agencies.Id)= clients.AgencyId and coalesce(@agencygroupid, agencies.GroupId) = Agencies.Groupid 
+		select Clients.* from Clients
+		join Agencies on Clients.AgencyId = Agencies.id
+		where coalesce(@agencyid, agencies.Id)= Clients.AgencyId and coalesce(@agencygroupid, agencies.GroupId) = Agencies.Groupid 
 	)
 	merge cc as target
 	using 
@@ -58,13 +58,13 @@ AS
 
 
 	--insert new clients w/ccids
-	set identity_insert clients on;
+	set identity_insert Clients on;
 
 	with cc as
 	( 
-		select clients.* from clients
-		join Agencies on clients.AgencyId = Agencies.id
-		where coalesce(@agencyid, agencies.Id)= clients.AgencyId and coalesce(@agencygroupid, agencies.GroupId) = Agencies.Groupid 
+		select Clients.* from Clients
+		join Agencies on Clients.AgencyId = Agencies.id
+		where coalesce(@agencyid, agencies.Id)= Clients.AgencyId and coalesce(@agencygroupid, agencies.GroupId) = Agencies.Groupid 
 	)
 	merge cc as target
 	using 
@@ -104,11 +104,11 @@ AS
 		source.UpdatedById, source.UpdatedAt, source.CreatedAt, source.Gender, case when source.LeaveReasonId = 13 then 1 else 0 end /*Not Eligible*/, source.CommPrefsId, source.CareReceivedId, source.MAFDate, source.MAF105Date)
 	output inserted.id, inserted.NationalId, inserted.CareReceivedId into @t;
 
-	set identity_insert clients off;
+	set identity_insert Clients off;
 
 	--cleanup
 	delete i 
-		from importclients as i join @t as t on  i.id = t.id
+		from ImportClients as i join @t as t on  i.id = t.id
 		where i.ImportId = @id;
 
 

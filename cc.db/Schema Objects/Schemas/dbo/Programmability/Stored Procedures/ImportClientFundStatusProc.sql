@@ -12,7 +12,10 @@ AS
 		NewApprovalStatusId int, 
 		LeaveReasonId int null,
 		CountryId int,
-		BirthCountryId int
+		BirthCountryId int,
+		DeceasedDate datetime null
+
+		
 	);
 	declare @t2 table(
 		Id int, 
@@ -35,7 +38,8 @@ AS
 			fundstatuses.id as FundStatusId, 
 			approvalstatuses.id as ApprovalStatusId,
 			importclients.UpdatedById,
-			importclients.LeaveReasonId
+			importclients.LeaveReasonId,
+			importclients.DeceasedDate
 		from ImportClients
 			join FundStatuses on importclients.fundstatusid = fundstatuses.id
 			join approvalstatuses on fundstatuses.approvalstatusname = approvalstatuses.name
@@ -56,7 +60,10 @@ AS
 		inserted.ApprovalStatusId, 
 		inserted.LeaveReasonId,
 		inserted.CountryId,
-		inserted.BirthCountryId
+		inserted.BirthCountryId,
+		inserted.DeceasedDate
+
+		
 	into @t;
 
 
@@ -70,12 +77,13 @@ AS
 		delete from imports where imports.id = @importId;
 	end
 	
-	select t.Id as ClientId, t.NationalId, t.FirstName, t.LastName, t.NewApprovalStatusId, t.OldApprovalStatusId, a.Id as AgencyId, a.GroupId as AgencyGroupId, t.LeaveReasonId
-	,hc.HcStatusName as HcStatusName
+	select t.Id as ClientId, t.NationalId, t.FirstName, t.LastName, t.NewApprovalStatusId, t.OldApprovalStatusId, a.Id as AgencyId, a.GroupId as AgencyGroupId, t.LeaveReasonId, t.DeceasedDate
+	,hc.HcStatusName as HcStatusName 
 	,t2.OldHcStatusId
 	,hc.HcStatusId as NewHcStatusId
 	,cntry.Name as CountryName
 	,bcntry.Name as BirthCountryName
+	
 
 	from @t as t
 	join Agencies as a on t.AgencyId = a.id

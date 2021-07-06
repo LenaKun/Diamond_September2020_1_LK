@@ -93,7 +93,9 @@ namespace CC.Web.Models.Import.ClientReports
 										  DaysCount = hcg.Sum(f => SqlFunctions.DateDiff("DAY", f.StartDate, f.EndDate))
 									  }).FirstOrDefault()
 						  let daysCap = hcep.DaysCount < daysCount ? (hcep.DaysCount < 0 ? 0 : hcep.DaysCount) : (daysCount < 0 ? 0 : daysCount)
-						  select new CriSoupKitchensPreview
+                          let subreportservicetypeid = subReport.AppBudgetService.Service.TypeId
+
+                          select new CriSoupKitchensPreview
 						  {
 							  RowIndex = item.RowIndex,
 							  ClientId = item.ClientId,
@@ -103,7 +105,8 @@ namespace CC.Web.Models.Import.ClientReports
 								(
 
 								  ((item.Date == null) ? "Report Date is required. " : "") +
-								  ((item.Date < subReport.MainReport.Start || item.Date >= subReport.MainReport.End) ? "Invalid Date (report date is outside of the report period). " : "") +
+                                  ((client.ApprovalStatusId == 1024 && subreportservicetypeid != 8) ? "Approved, Homecare Only clients can only be reported for Homecare services." : "") +
+                                  ((item.Date < subReport.MainReport.Start || item.Date >= subReport.MainReport.End) ? "Invalid Date (report date is outside of the report period). " : "") +
 								  (client.JoinDate > subReport.MainReport.End ? "Client has joined after report end date. " : "") +
 								  (client.DeceasedDate == null && client.LeaveDate < subReport.MainReport.Start ? "Client has left before report start date. " : "") +
 								  (client.DeceasedDate != null && client.DeceasedDate < subReport.MainReport.Start ? "Client has DOD before report start date. " : "") +

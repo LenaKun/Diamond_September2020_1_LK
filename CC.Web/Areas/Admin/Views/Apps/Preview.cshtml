@@ -1,7 +1,7 @@
 ﻿@model Guid
 @{
-	ViewBag.Title = "Preview";
-	bool HasErrors = ViewBag.HasErrors;
+    ViewBag.Title = "Preview";
+    bool HasErrors = ViewBag.HasErrors;
 }
 
 <h2>Preview</h2>
@@ -94,20 +94,20 @@
 			{
 				mData: "Errors", sTitle: "Errors"
 			}
-				
+
 		]
 	});
 </script>
 
 @if (!HasErrors)
 {
-	using (Html.BeginForm(new { action = "Import", Controller = "Apps", area = "Admin", id = Model }))
-	{
-		<button type="submit">Import</button>
-	}
+    using (Html.BeginForm(new { action = "Import", Controller = "Apps", area = "Admin", id = Model }))
+    {
+        <button type="submit">Import</button>
+    }
 }
-@using (Html.BeginForm(new { action = "CancelImport", Controller = "Apps", area = "Admin", id=Model }))
+@using (Html.BeginForm(new { action = "CancelImport", Controller = "Apps", area = "Admin", id = Model }))
 {
-	<button type="submit">Cancel</button>
+    <button type="submit">Cancel</button>
 }
 

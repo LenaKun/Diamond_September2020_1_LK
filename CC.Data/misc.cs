@@ -59,7 +59,7 @@ namespace System
 		}
 		public static int GetDecimalDigits()
 		{
-			int digits = 2;
+			int digits =2;
 			if (System.Web.HttpContext.Current != null)
 			{
 				var obj = System.Web.HttpContext.Current.Items[DecimalDigitsDisplayItemName];

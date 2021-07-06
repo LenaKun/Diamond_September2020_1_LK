@@ -114,6 +114,12 @@ namespace CC.Data
             get;
             set;
         }
+    
+        public string Remarks
+        {
+            get;
+            set;
+        }
 
         #endregion
 

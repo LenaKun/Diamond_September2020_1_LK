@@ -104,7 +104,9 @@ AdministrativeLeave bit not null default(0),
     [CareReceivedId] INT NULL foreign key ([CareReceivedId]) references dbo.CareReceivingOptions(Id), 
     [MAF105Date] DATETIME NULL, 
     [UnableToSign] bit NOT NULL DEFAULT (0), 
-    [HAS2Date] DATETIME NULL, 
+    [HAS2Date] DATETIME NULL,
+	[NursingHome] bit NOT NULL DEFAULT (0), 
+    [AssistedLiving] BIT NOT NULL DEFAULT (0), 
 
 )
 GO

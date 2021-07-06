@@ -6,56 +6,59 @@
 <h2>Details</h2>
 
 <fieldset>
-	<legend>AgencyGroup</legend>
+    <legend>AgencyGroup</legend>
 
-	<div class="display-label">@Html.LabelFor(model => model.Name)</div>
-	<div class="display-field">@Html.DisplayFor(model => model.Name) </div>
+    <div class="display-label">@Html.LabelFor(model => model.Name)</div>
+    <div class="display-field">@Html.DisplayFor(model => model.Name) </div>
 
-	<div class="display-label">@Html.LabelFor(model => model.Name)</div>
-	<div class="display-field">@Html.DisplayFor(model => model.Addr1) </div>
+    <div class="display-label">@Html.LabelFor(model => model.Name)</div>
+    <div class="display-field">@Html.DisplayFor(model => model.Addr1) </div>
 
-	<div class="display-label">@Html.LabelFor(model => model.Name)</div>
-	<div class="display-field">@Html.DisplayFor(model => model.Addr2) </div>
+    <div class="display-label">@Html.LabelFor(model => model.Name)</div>
+    <div class="display-field">@Html.DisplayFor(model => model.Addr2) </div>
 
-	<div class="display-label">@Html.LabelFor(model => model.Name)</div>
-	<div class="display-field">@Html.DisplayFor(model => model.City) </div>
+    <div class="display-label">@Html.LabelFor(model => model.Name)</div>
+    <div class="display-field">@Html.DisplayFor(model => model.City) </div>
 
-	<div class="display-label">@Html.LabelFor(model => model.Name)</div>
-	<div class="display-field">@Html.DisplayFor(model => model.State.Code) </div>
+    <div class="display-label">@Html.LabelFor(model => model.Name)</div>
+    <div class="display-field">@Html.DisplayFor(model => model.State.Code) </div>
 
-	<div class="display-label">@Html.LabelFor(model => model.Name)</div>
-	<div class="display-field">@Html.DisplayFor(model => model.Country.Code) </div>
+    <div class="display-label">@Html.LabelFor(model => model.Name)</div>
+    <div class="display-field">@Html.DisplayFor(model => model.Country.Code) </div>
 
-	<div class="display-label">@Html.LabelFor(model => model.Culture)</div>
-	<div class="display-field">@Html.DisplayFor(model => model.Culture) </div>
+    <div class="display-label">@Html.LabelFor(model => model.Culture)</div>
+    <div class="display-field">@Html.DisplayFor(model => model.Culture) </div>
 
-	<div class="display-label">@Html.LabelFor(f => f.ReportingPeriodId)</div>
-	<div class="display-field">@Html.DisplayFor(model => model.ReportingPeriodId) </div>
+    <div class="display-label">@Html.LabelFor(f => f.ReportingPeriodId)</div>
+    <div class="display-field">@Html.DisplayFor(model => model.ReportingPeriodId) </div>
 
-	<div class="display-label">@Html.LabelFor(f => f.RequiredMatch)</div>
-	<div class="display-field">@Html.DisplayFor(model => model.RequiredMatch, "boolYesNo") </div>
+    <div class="display-label">@Html.LabelFor(f => f.RequiredMatch)</div>
+    <div class="display-field">@Html.DisplayFor(model => model.RequiredMatch, "boolYesNo") </div>
 
-	<div class="display-label">@Html.LabelFor(f => f.ForceIsraelID)</div>
-	<div class="display-field">@Html.DisplayFor(model => model.ForceIsraelID, "boolYesNo") </div>
-    
+    <div class="display-label">@Html.LabelFor(f => f.ForceIsraelID)</div>
+    <div class="display-field">@Html.DisplayFor(model => model.ForceIsraelID, "boolYesNo") </div>
+
     <div class="display-label">@Html.LabelFor(f => f.ExcludeFromReports)</div>
     <div class="display-field">@Html.DisplayFor(model => model.ExcludeFromReports, "boolYesNo") </div>
 
     <div class="display-label">@Html.LabelFor(f => f.SupportiveCommunities)</div>
     <div class="display-field">@Html.DisplayFor(model => model.SupportiveCommunities, "boolYesNo") </div>
-@if (Model.SupportiveCommunities)
-         {
-    <div class="display-label">@Html.LabelFor(f => f.SC_FullSubsidy)</div>
-    <div class="display-field">@Html.DisplayFor(model => model.SC_FullSubsidy, "boolYesNo") </div>
-}
+    @if (Model.SupportiveCommunities)
+    {
+        <div class="display-label">@Html.LabelFor(f => f.SC_FullSubsidy)</div>
+        <div class="display-field">@Html.DisplayFor(model => model.SC_FullSubsidy, "boolYesNo") </div>
+    }
     <div class="display-label">@Html.LabelFor(f => f.DayCenter)</div>
     <div class="display-field">@Html.DisplayFor(model => model.DayCenter, "boolYesNo") </div>
 
-	<div class="display-label">@Html.LabelFor(f => f.DefaultCurrency)</div>
-	<div class="display-field">@Html.DisplayFor(model => model.DefaultCurrency) </div>
+    <div class="display-label">@Html.LabelFor(f => f.DefaultCurrency)</div>
+    <div class="display-field">@Html.DisplayFor(model => model.DefaultCurrency) </div>
 
-	<div class="display-label">@Html.LabelFor(f => f.CfsDate)</div>
-	<div class="display-field">@Html.DisplayFor(model => model.CfsDate) </div>
+    <div class="display-label">@Html.LabelFor(f => f.CfsDate)</div>
+    <div class="display-field">@Html.DisplayFor(model => model.CfsDate) </div>
+
+    <div class="display-label">@Html.LabelFor(f => f.FluxxId)</div>
+    <div class="display-field">@Html.DisplayFor(model => model.FluxxId) </div>
 </fieldset>
 <p>
 	@Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |

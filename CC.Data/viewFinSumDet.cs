@@ -210,6 +210,12 @@ namespace CC.Data
             get;
             set;
         }
+    
+        public virtual string Remarks
+        {
+            get;
+            set;
+        }
 
         #endregion
 

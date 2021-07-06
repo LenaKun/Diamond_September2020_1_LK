@@ -102,7 +102,9 @@ select
 			c.CommPrefsId,
 			[careOption].Name as CareReceivedVia,
 			c.CareReceivedId,
-			c.UnableToSign
+			c.UnableToSign,
+			c.NursingHome,
+			c.AssistedLiving
 from clients as c
 join agencies as a on c.agencyid = a.Id
 left outer join states as [state] on c.StateId = [state].Id

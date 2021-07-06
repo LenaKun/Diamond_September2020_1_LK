@@ -152,7 +152,15 @@ namespace CC.Data
 			set;
 		}
 
-		public bool HasOpenCfsRecord { get; set; }
+        public string HomeCareAllowedHours1
+        {
+            get
+            {
+                return "N/A";
+            }
+        }
+
+        public bool HasOpenCfsRecord { get; set; }
 
 		public bool IsIncomeVerificationRequired()
 		{
@@ -293,7 +301,7 @@ namespace CC.Data
                 }
 
 
-                if ((this.NationalIdTypeId != null && (this.NationalIdTypeId == 1)) || agencygroup.ForceIsraelID)
+                if ((this.NationalIdTypeId != null && this.NationalIdTypeId == 1) || agencygroup.ForceIsraelID)
                 {
                     if (this.NationalId.IsNullOrEmptyHtml())
                     {

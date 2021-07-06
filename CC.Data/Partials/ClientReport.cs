@@ -168,10 +168,10 @@ namespace CC.Data
 					}
 
                 //validation for HAS2Date for 168 hours
-                if (this.Client.HAS2Date.HasValue)
-                {
-                    var HAS2Date = this.Client.HAS2Date.Value;
-                }
+             //   if (this.Client.HAS2Date.HasValue)
+              //  {
+              //      var HAS2Date = this.Client.HAS2Date.Value;
+              //  }
 
 
                 }

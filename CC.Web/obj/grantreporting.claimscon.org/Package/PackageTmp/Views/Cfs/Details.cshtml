@@ -51,12 +51,14 @@
     <div class="display-field">
         @Html.DisplayFor(model => model.StartDate)
     </div>
+   
     <div class="display-label">@Html.LabelFor(model => model.EndDate)</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.EndDate)
     </div>
     @if (Model.EndDate.HasValue)
     {
+       
         <div class="display-label">@Html.LabelFor(model => model.EndDateReasonId)</div>
         <div class="display-field">
             @Html.DisplayFor(model => model.CfsEndDateReason.Name)
@@ -73,10 +75,13 @@
         <div class="display-field">
             @Html.DisplayFor(model => model.AgencyRequestorTitle)
         </div>
+       
         <div class="display-label">@Html.LabelFor(model => model.EndRequestDate)</div>
         <div class="display-field">
             @Html.DisplayFor(model => model.EndRequestDate)
         </div>
+        
+       
     }
 
     <div class="display-label">@Html.LabelFor(model => model.CfsAdminRemarks)</div>

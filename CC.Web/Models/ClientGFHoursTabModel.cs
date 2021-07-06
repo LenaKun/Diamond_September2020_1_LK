@@ -126,7 +126,7 @@ namespace CC.Web.Models
 					StartDate = f.StartDate.ToShortDateString(),
 					IsoStartDate = f.StartDate.ToString("s"),
 					Value = f.Value.ToString(),
-                    Type = f.Type == 0 ? "Grandfathered" : f.Type == 1 ? "Exceptional" : "BMF Approved"
+                    Type = f.Type == 0 ? "Legacy" : f.Type == 1 ? "Exceptional" : "BMF Approved"
                     //Type = f.Type == 0 ? "Grandfathered" : "Exceptional"
                     
 

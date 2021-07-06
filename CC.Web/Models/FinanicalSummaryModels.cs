@@ -379,7 +379,10 @@ namespace CC.Web.Models
 			[Display(Name = "Fund")]
 			public string FundName { get; set; }
 
-			[Display(Name = "Master Fund")]
+          //  [Display(Name = "Unique Cirqumstances")]
+         //   public string UnCirq { get; set; }
+
+            [Display(Name = "Master Fund")]
 			public string MasterFundName { get; set; }
 
 			[Display(Name = "App")]
@@ -432,7 +435,7 @@ namespace CC.Web.Models
 				, this.ServiceId
 				, this.MasterFundId
 				, this.FundId
-				, this.AppId
+               	, this.AppId
 				, this.ClientId
 				, this.sSearch
 				, this.sSortCol_0
@@ -456,6 +459,7 @@ namespace CC.Web.Models
 				Quantity = f.Quantity,
 				Amount = f.Amount,
 				Cur = this.CurId,
+                Remarks = f.Remarks,
 				IsEstimated = f.IsEstimated ?? false,
                 SubReportId1 = f.SubReportId
                 
@@ -491,7 +495,10 @@ namespace CC.Web.Models
 			[Display(Name = "Fund")]
 			public string FundName { get; set; }
 
-			[Display(Name = "App")]
+            [Display(Name = "Unique Cirqumstances")]
+            public string Remarks { get; set; }
+
+            [Display(Name = "App")]
 			public string AppName { get; set; }
 
 			[Display(Name = "Grant Amount")]
@@ -521,7 +528,9 @@ namespace CC.Web.Models
 			[Display(Name = "CUR")]
 			public string Cur { get; set; }
 
-			[NotMapped]
+           
+
+            [NotMapped]
 			public int SubReportId { get; set; }
             [NotMapped]
             public int SubReportId1 { get; set; }

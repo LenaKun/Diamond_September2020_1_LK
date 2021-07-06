@@ -349,15 +349,17 @@ namespace CC.Web.Models
             //subreport.DetailsHeader.TotalAmountReported = subreport.Totals.TotalAmountReported + (FuneralExpAmount ?? 0);
             if (SubServiceRowModes.asdf(source).Where(f => f.Id == id).Select(f => f.AppBudgetService.Service.ReportingMethodId).Single() == (int)Service.ReportingMethods.SoupKitchens)
             {
+              
                 var sr = SubServiceRowModes.asdf(source).SingleOrDefault(f => f.Id == id);
                 var mr = MainReports.SingleOrDefault(f => f.Id == sr.MainReportId);
                 DateTime startOfYear = new DateTime(mr.Start.Year, 1, 1);
                 var submittedMainReports = from mrq in MainReports.Where(MainReport.Submitted)
                                            where mrq.SubReports.Any(f => f.AppBudgetService.Service.ReportingMethodId == (int)Service.ReportingMethods.SoupKitchens)
                                            where mrq.Start < mr.End
-                                           select mrq;
+                                           select mrq; 
 
                 subreport.Totals.TotalVisitCount = skMemberVisist.Count(f => f.SoupKitchensReport.SubReportId == id);
+           
                 subreport.Totals.TotalYTDVisitCountExceptThisSr = (from skmv in skMemberVisist
                                                                    join smr in submittedMainReports on skmv.SoupKitchensReport.SubReport.MainReportId equals smr.Id
                                                                    where skmv.ReportDate < mr.End && skmv.ReportDate >= startOfYear && skmv.SoupKitchensReport.SubReportId != id

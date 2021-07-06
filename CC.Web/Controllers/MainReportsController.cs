@@ -69,6 +69,7 @@ namespace CC.Web.Controllers
                 {
                     try
                     {
+                      //  Thread.Sleep(60000);//delay 1 minute
                         Thread t = new Thread(this.RunCommandLineApp);
                         t.Start(report.Id);
                     }
@@ -964,8 +965,9 @@ namespace CC.Web.Controllers
                 pdfTabAppTotals.AddCell(tempValue + " " + financialReportDetails.Totals.CurrencyId);
                 tempValue = financialReportDetails.Totals.AppBalance.HasValue ? financialReportDetails.Totals.AppBalance.Value.Format() : "0";
                 pdfTabAppTotals.AddCell(tempValue + " " + financialReportDetails.Totals.CurrencyId);
-                // tempValue = financialReportDetails.Totals.AppMatchBalance.HasValue ? financialReportDetails.Totals.AppMatchBalance.Value.Format() : "0";
-                tempValue = financialReportDetails.Totals.TotalReportedAppMatchBalance.HasValue ? financialReportDetails.Totals.TotalReportedAppMatchBalance.Value.Format() : "0";
+               // tempValue = string.Format("N{0}", 3, financialReportDetails.Totals.AppMatchBalance.Value.Format());
+                tempValue = financialReportDetails.Totals.AppMatchBalance.HasValue ? financialReportDetails.Totals.AppMatchBalance.Value.Format() : "0";
+                //  tempValue = financialReportDetails.Totals.TotalReportedAppMatchBalance.HasValue ? financialReportDetails.Totals.TotalReportedAppMatchBalance.Value.Format() : "0";//Lena commented for issue 81
                 pdfTabAppTotals.AddCell(tempValue + " " + financialReportDetails.Totals.CurrencyId);
                 foreach (var total in financialReportDetails.Totals.AgencySubTotals)
                 {
@@ -3247,6 +3249,7 @@ namespace CC.Web.Controllers
             {
                 try
                 {
+                    db.CommandTimeout = 10000;//LF
                     db.SaveChanges();
                     AddOrUpdateMainReportAtFluxx(mr);
                 }
@@ -3626,6 +3629,7 @@ namespace CC.Web.Controllers
                 }
             }
 
+            
             foreach (var row in model.Errors)
             {
                 ModelState.AddModelError(string.Empty, row.Message);
@@ -3649,7 +3653,7 @@ namespace CC.Web.Controllers
                 ModelState.AddModelError(string.Empty, "The remarks are missing.");
             }
 
-
+           
 
 
             if (ModelState.IsValid)
@@ -4068,7 +4072,7 @@ namespace CC.Web.Controllers
                     switch (mainreport.Status)
                     {
                         case MainReport.Statuses.Approved:
-                            SendEmailNotification(mainreport);
+                            SendEmailNotification(mainreport);// LenaUncomment
                             //fluxx
                             try
                             {
@@ -4185,10 +4189,12 @@ namespace CC.Web.Controllers
 
 
             msg.IsBodyHtml = true;
+            var prevStatus = db.MainReportStatusAudits.Where(f => f.MainReportId == mainreport.Id).OrderByDescending(f => f.StatusChangeDate).FirstOrDefault();
+            
 
-
-            if (mainreport.Status == MainReport.Statuses.Approved)
+            if (mainreport.Status == MainReport.Statuses.Approved)// && prevStatus.NewStatusId != 2)
             {
+                
                 CC.Web.Helpers.EmailHelper.AddRecipeintsByMainReportId(msg, mainreport.Id);
                 msg.Subject = "Diamond Financial Report Approval for  ";
                 msg.Body = GetMainReportMailText(mainreport);
@@ -4212,6 +4218,10 @@ namespace CC.Web.Controllers
                 msg.Subject = "Diamond Financial Report Awaiting Agency Response for  ";
                 msg.Body = GetMainReportMailText(mainreport);
             }
+           // else if (mainreport.Status == MainReport.Statuses.Approved && prevStatus.NewStatusId == 2) //change status from Approved to Approved - don't want to send an email
+           // {
+               // return;
+          //  }
             else
             {
                 throw new InvalidOperationException();

@@ -59,6 +59,7 @@ AS
 			,t.Amount * exRate.Value as Amount
 			,t.IsEstimated
 			,t.AppCur
+			,t.Remarks
 			,0 as FakeSort
 		from rep.viewFinSumDet as t-- with (noexpand)
 			join dbo.viewAppExchangeRates as exRate on exRate.ToCur = @local_cur and exRate.AppId = t.AppId
@@ -130,6 +131,7 @@ AS
 			,t.IsEstimated
 			,cast(0 as decimal) as CcGrant
 			,t.AppCur
+			,t.Remarks
 			,t.SubReportId
 	from res as t
 	where rn between @local_skip + 1 and @local_skip + @local_top

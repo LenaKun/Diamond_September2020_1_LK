@@ -200,8 +200,10 @@ namespace CC.Web.Models
 			sqlBulk.ColumnMappings.Add("CareReceivedId", "CareReceivedId");
 			sqlBulk.ColumnMappings.Add("MAFDate", "MAFDate");
 			sqlBulk.ColumnMappings.Add("MAF105Date", "MAF105Date");
-            sqlBulk.ColumnMappings.Add("HAS2Date", "HAS2Date");
+            //sqlBulk.ColumnMappings.Add("HAS2Date", "HAS2Date");
             sqlBulk.ColumnMappings.Add("UnableToSign", "UnableToSign");
+            sqlBulk.ColumnMappings.Add("NursingHome", "NursingHome");
+            sqlBulk.ColumnMappings.Add("AssistedLiving", "AssistedLiving");
         }
 	}
 
@@ -269,8 +271,10 @@ namespace CC.Web.Models
 			Map(f => f.CareReceivedId).Name("Care Received Via").TypeConverter<CareReceivedConverter>();
 			Map(f => f.MAFDate).Name("MAF Date").TypeConverter<InvariantDateTypeConverter>();
 			Map(f => f.MAF105Date).Name("MAF 105+ Date").TypeConverter<InvariantDateTypeConverter>();
-            Map(f => f.HAS2Date).Name("HAS2 Date").TypeConverter<InvariantDateTypeConverter>();
+           // Map(f => f.HAS2Date).Name("HAS2 Date").TypeConverter<InvariantDateTypeConverter>();
             Map(f => f.UnableToSign).Name("Unable To Sign").TypeConverter<NullBoolTypeConverter>();
+            Map(f => f.NursingHome).Name("Nursing Home").TypeConverter<NullBoolTypeConverter>();
+            Map(f => f.AssistedLiving).Name("Assisted Living").TypeConverter<NullBoolTypeConverter>();
         }
 
 	}
@@ -319,8 +323,10 @@ namespace CC.Web.Models
 			Map(f => f.CareReceivedId).Name("Care Received Via").TypeConverter<CareReceivedConverter>();
 			Map(f => f.MAFDate).Name("MAF Date").TypeConverter<InvariantDateTypeConverter>();
 			Map(f => f.MAF105Date).Name("MAF 105+ Date").TypeConverter<InvariantDateTypeConverter>();
-            Map(f => f.HAS2Date).Name("HAS2 Date").TypeConverter<InvariantDateTypeConverter>();
+          //  Map(f => f.HAS2Date).Name("HAS2 Date").TypeConverter<InvariantDateTypeConverter>();
             Map(f => f.UnableToSign).Name("Unable To Sign").TypeConverter<NullBoolTypeConverter>();
+            Map(f => f.NursingHome).Name("Nursing Home").TypeConverter<NullBoolTypeConverter>();
+            Map(f => f.AssistedLiving).Name("Assisted Living").TypeConverter<NullBoolTypeConverter>();
         }
 	}
 

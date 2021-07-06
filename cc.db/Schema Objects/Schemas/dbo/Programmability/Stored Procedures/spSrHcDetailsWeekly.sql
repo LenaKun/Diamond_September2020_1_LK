@@ -99,7 +99,8 @@ AS
 		AgencyGroupId int,
 		NationalId longString null,
 		RowNumber int,
-		LeaveDate datetime
+		LeaveDate datetime,
+		NursingHome int
 	);
 	
 	/* Clients that are allowed to be retrieved for current user */
@@ -169,6 +170,7 @@ AS
 			HASName,
 			JoinDate,
 			LeaveDate,
+			NursingHome,
 			case when  IncomeVerificationRequired = 1 and IncomeCriteriaComplied = 0 then 0 
 				when @exceptionalHours = 1 and HcCap is null then 0
 				when @exceptionalHours = 0 and ((HcCap is null or HcCap <= 0) and (DeceasedDate is null or 
@@ -196,6 +198,7 @@ AS
 				has.Name as HASName,
 				c.JoinDate,
 				c.LeaveDate,
+				c.NursingHome,
 				case when country.IncomeVerificationRequired = 1 and  isnull(fs.IncomeVerificationRequired, 1) = 1
 					then 1 else 0 end as IncomeVerificationRequired
 			from allowedClients as c 
@@ -244,7 +247,8 @@ AS
 		AgencyGroupId,
 		NationalId,
 		RowNumber,
-		LeaveDate)
+		LeaveDate,
+		NursingHome)
 	select 
 		cr.ClientReportId,
 		c.FirstName,
@@ -278,7 +282,8 @@ AS
 										  when @sort = 'firstname' and @sortAsc = 0 then c.firstname end) desc,
 									(case when @sort = 'lastname' and @sortAsc = 1 then c.lastname
 									      when @sort = 'firstname' and @sortAsc = 1 then c.firstname end) ) as RowNumber,
-		c.LeaveDate
+		c.LeaveDate,
+		c.NursingHome
 	from agencyClients as c
 	left outer join clientReports as cr on c.ClientId = cr.ClientId
 	
@@ -317,13 +322,14 @@ AS
 		W15,
 		Remarks,
 		LeaveDate,
+		NursingHome,
 		cast (case when AgencyGroupId = 20275 /* Keren Ser id */
 			then dbo.fnCfsReported(NationalId, @mrStart)
 			else null
 			end
 		as bit) as Cfs
 	from @filtered as filtered
-	where RowNumber > @skip
+	where RowNumber > @skip and NursingHome <> 1
 
 	select @displayCount = count(ClientId) from @filtered
 

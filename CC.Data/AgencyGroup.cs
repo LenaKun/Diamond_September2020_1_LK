@@ -260,6 +260,12 @@ namespace CC.Data
             get;
             set;
         }
+    
+        public virtual Nullable<int> FluxxId
+        {
+            get;
+            set;
+        }
 
         #endregion
 

@@ -1682,6 +1682,7 @@
     <Property Name="CfsDate" Type="DateTime" Precision="3" />
     <Property Name="FluxxOrganizationId" Type="Int32" />
     <Property Name="FluxxOrganizationName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="FluxxId" Type="Int32" />
   </EntityType>
   <Association Name="FK__Agencies__b55fc748a1647ea8440d">
     <End Type="ccModel.AgencyGroup" Multiplicity="1" Role="AgencyGroup" />
@@ -2658,6 +2659,8 @@
     <NavigationProperty Name="CfsRows" Relationship="ccModel.fk_cfs_clients" FromRole="Client" ToRole="CfsRow" />
     <Property Name="HAS2Date" Type="DateTime" Precision="3" />
     <Property Name="UnableToSign" Type="Boolean" Nullable="false" />
+    <Property Name="NursingHome" Type="Boolean" Nullable="false" />
+    <Property Name="AssistedLiving" Type="Boolean" Nullable="false" />
   </EntityType>
   <Association Name="FK__Clients__AgencyI__3AA27A0F">
     <End Type="ccModel.Agency" Role="Agency" Multiplicity="1" />
@@ -3037,6 +3040,8 @@
     <Property Name="MAF105Date" Type="DateTime" Precision="3" />
     <Property Name="UnableToSign" Type="Boolean" />
     <Property Name="HAS2Date" Type="DateTime" Precision="3" />
+    <Property Name="NursingHome" Type="Boolean" />
+    <Property Name="AssistedLiving" Type="Boolean" />
   </EntityType>
   <EntityType Name="UserAgreementAudit">
     <Key>
@@ -3367,6 +3372,7 @@
     <Property Type="String" Name="CountryName" Nullable="true" MaxLength="255" />
     <Property Type="String" Name="BirthCountryName" Nullable="true" MaxLength="50" />
     <Property Type="Int32" Name="AgencyId" Nullable="false" />
+    <Property Type="DateTime" Name="DeceasedDate" Nullable="true" Precision="23" />
   </ComplexType>
   <EntityType Name="viewGgQuarterlyHcFl">
     <Key>
@@ -3634,6 +3640,8 @@
     <Property Name="MAF105Date" Type="DateTime" Precision="3" />
     <Property Name="UnableToSign" Type="Boolean" />
     <Property Name="HAS2Date" Type="DateTime" Precision="3" />
+    <Property Name="NursingHome" Type="Boolean" />
+    <Property Name="AssistedLiving" Type="Boolean" />
   </EntityType>
   <EntityType Name="viewHc">
     <Key>
@@ -5227,6 +5235,7 @@
     <Property Name="FirstName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="LastName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="MasterId" Type="Int32" />
+    <Property Name="Remarks" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="viewClientDetail">
     <Key>
@@ -5234,6 +5243,8 @@
       <PropertyRef Name="HomecareWaitlist" />
       <PropertyRef Name="OtherServicesWaitlist" />
       <PropertyRef Name="UnableToSign" />
+      <PropertyRef Name="NursingHome" />
+      <PropertyRef Name="AssistedLiving" />
     </Key>
     <Property Name="InternalAgencyID" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
     <Property Name="ORGID" Type="Int32" Nullable="false" />
@@ -5312,6 +5323,8 @@
     <Property Name="CareReceivedId" Type="Int32" />
     <Property Name="UnableToSign" Type="Boolean" Nullable="false" />
     <Property Name="Has2Date" Type="DateTime" Precision="3" />
+    <Property Name="NursingHome" Type="Boolean" Nullable="false" />
+    <Property Name="AssistedLiving" Type="Boolean" Nullable="false" />
   </EntityType>
   <ComplexType Name="spValidateWeeklyHcCaps_Result">
     <Property Type="Int32" Name="ClientId" Nullable="false" />
@@ -5649,6 +5662,8 @@
     <Property Name="MAF105Date" Type="DateTime" Precision="3" />
     <Property Name="HAS2Date" Type="DateTime" Precision="3" />
     <Property Name="UnableToSign" Type="Boolean" />
+    <Property Name="NursingHome" Type="Boolean" />
+    <Property Name="AssistedLiving" Type="Boolean" />
   </EntityType>
   <ComplexType Name="sp_helpdiagramdefinition_Result">
     <Property Type="Int32" Name="version" Nullable="true" />
@@ -5784,6 +5799,7 @@
     <Property Type="Boolean" Name="IsEstimated" Nullable="true" />
     <Property Type="Decimal" Name="CcGrant" Nullable="true" Precision="18" Scale="0" />
     <Property Type="String" Name="AppCur" Nullable="false" MaxLength="3" />
+    <Property Type="String" Name="Remarks" Nullable="true" MaxLength="255" />
   </ComplexType>
   <EntityType Name="HcCapsTableRaw_Original">
     <Key>

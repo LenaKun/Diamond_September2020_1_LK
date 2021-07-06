@@ -35,6 +35,7 @@
 		ag.ExcludeFromReports,
 		client.FirstName,
 		client.LastName,
+		clientrep.Remarks,
 		coalesce(client.MasterId, client.Id) as MasterId
 	from rep.finSumDet as t
 		join dbo.subreports as sr on t.SubReportId = sr.Id
@@ -50,7 +51,10 @@
 		join dbo.agencygroups as ag on a.groupid = ag.id
 		join dbo.countries as c on ag.countryid = c.id
 		join dbo.Clients as client on t.clientid = client.Id
-		left outer join dbo.ClientReports as clientrep on t.ClientId = clientrep.ClientId and t.SubReportId = clientrep.SubReportId and clientrep.Amount is not null
+		left outer join dbo.ClientReports as clientrep on t.ClientId = clientrep.ClientId and t.SubReportId = clientrep.SubReportId and (clientrep.Amount is not null or (clientrep.Remarks is not null and clientrep.Remarks <> '' )) 
+        and clientrep.Rate in(select max(Rate) from dbo.ClientReports where dbo.ClientReports.ClientId = t.ClientId and dbo.ClientReports.SubReportId = t.SubReportId )
+
+		--left outer join dbo.ClientReports as clientrep on t.ClientId = clientrep.ClientId and t.SubReportId = clientrep.SubReportId and clientrep.Amount is not null
 GO
 CREATE UNIQUE CLUSTERED INDEX [IDX_CLUSTERED_viewFinSumDet] ON [rep].[viewFinSumDet] 
 (

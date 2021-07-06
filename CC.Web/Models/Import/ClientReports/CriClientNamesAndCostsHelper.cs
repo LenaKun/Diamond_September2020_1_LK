@@ -41,20 +41,22 @@ namespace CC.Web.Models.Import.ClientReports
 						  let ldx = System.Data.Objects.EntityFunctions.AddDays(client.LeaveDate, client.DeceasedDate == null ? 0 : 90)
 						  let start = subReport.MainReport.Start
                           let end = subReport.MainReport.End
-						  select new CriClientNamesAndCostsPreview
+                          let subreportservicetypeid = subReport.AppBudgetService.Service.TypeId
+                          select new CriClientNamesAndCostsPreview
 						  {
 							  RowIndex = item.RowIndex,
 							  ClientId = item.ClientId,
 							  TotalAmount = item.TotalAmount,
 							  ClientName = client.AgencyId != subReport.AppBudgetService.AgencyId ? "" : client.FirstName + " " + client.LastName,
-							  Errors = (item.Errors ??
+                              Errors = (item.Errors ??
 							  (
 									((item.TotalAmount == null) ? "Amount is required." : "") +
-									((client == null) ? "Invalid ClientId" : "") +
+                                    ((client.ApprovalStatusId == 1024 && subreportservicetypeid != 8) ? "Approved, Homecare Only clients can only be reported for Homecare services " :  "") +
+                                    ((client == null) ? "Invalid ClientId" : "") +
                                     (client.JoinDate > end ? "Client has joined after report end date" : "") +
                                     (client.DeceasedDate == null && client.LeaveDate < start ? "Client has left before report start date" : "") +
                                     (client.DeceasedDate != null && client.DeceasedDate < start ? "Client has DOD before report start date" : "") +
-									((client.AgencyId != subReport.AppBudgetService.AgencyId) ? "Invalid Agency" : "")+
+                                    ((client.AgencyId != subReport.AppBudgetService.AgencyId) ? "Invalid Agency" : "")+
 									( ldx < start ? "The Client has left the agency." : "" ) +
 									( 
 										(client.LeaveDate < start && ldx >= start && (item.Remarks == null || item.Remarks.Trim().Length == 0)) ? 

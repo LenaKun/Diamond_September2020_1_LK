@@ -260,7 +260,8 @@ namespace CC.Web.Controllers
 
 			using (var db = new ccEntities())
 			{
-				db.Imports.AddObject(new Import()
+                db.CommandTimeout = 1000;
+                db.Imports.AddObject(new Import()
 				{
 					Id = ImportId,
 					StartedAt = updatedAt,
@@ -314,47 +315,50 @@ namespace CC.Web.Controllers
 		public ActionResult Preview(Guid id)
 		{
 			CheckImportIdPermissions(id);
-			using (var db = new ccEntities())
-			{
-				var valid = PreviewDataQuery(db, id).Where(f => f.Errors != "").Count() > 0;
+            using (var db = new ccEntities())
+                db.CommandTimeout = 1000;
+            {
+                var valid = PreviewDataQuery(db, id).Where(f => f.Errors != "").Count() > 0;
 
-				if (valid)
-				{
-					ModelState.AddModelError(string.Empty, "One or more rows contain errors.");
-				}
-				return View(id);
-			}
+                if (valid)
+                {
+                    ModelState.AddModelError(string.Empty, "One or more rows contain errors.");
+                }
+                return View(id);
+            }
 		}
 
 		[CcAuthorize(FixedRoles.Admin, FixedRoles.Ser, FixedRoles.AgencyUser, FixedRoles.SerAndReviewer, FixedRoles.AgencyUserAndReviewer)]
 		public JsonResult PreviewData(Guid id, CC.Web.Models.jQueryDataTableParamModel jq)
 		{
 			CheckImportIdPermissions(id);
-			using (var db = new ccEntities())
-			{
-				var q = PreviewDataQuery(db, id);
-				var filtered = q;
-				var sorted = filtered.OrderByDescending(f => f.Errors.Count());
-				sorted = filtered.OrderByField(Request["mDataProp_" + jq.iSortCol_0], jq.sSortDir_0 == "asc");
-				if (Request["iSortCol_2"] != null)
-					sorted = sorted.ThenByField(Request["mDataProp_" + Request["iSortCol_2"]], Request["sSortDir_2"] == "asc");
-				if (Request["iSortCol_2"] != null)
-					sorted = sorted.ThenByField(Request["mDataProp_" + Request["iSortCol_2"]], Request["sSortDir_2"] == "asc");
+            using (var db = new ccEntities())
+                db.CommandTimeout = 1000;
+            {
+                var q = PreviewDataQuery(db, id);
+                var filtered = q;
+                var sorted = filtered.OrderByDescending(f => f.Errors.Count());
+                sorted = filtered.OrderByField(Request["mDataProp_" + jq.iSortCol_0], jq.sSortDir_0 == "asc");
+                if (Request["iSortCol_2"] != null)
+                    sorted = sorted.ThenByField(Request["mDataProp_" + Request["iSortCol_2"]], Request["sSortDir_2"] == "asc");
+                if (Request["iSortCol_2"] != null)
+                    sorted = sorted.ThenByField(Request["mDataProp_" + Request["iSortCol_2"]], Request["sSortDir_2"] == "asc");
 
-				var result = new jQueryDataTableResult()
-				{
-					sEcho = jq.sEcho,
-					iTotalDisplayRecords = filtered.Count(),
-					iTotalRecords = q.Count(),
-					aaData = sorted.Skip(jq.iDisplayStart).Take(jq.iDisplayLength).ToList()
+                var result = new jQueryDataTableResult()
+                {
+                    sEcho = jq.sEcho,
+                    iTotalDisplayRecords = filtered.Count(),
+                    iTotalRecords = q.Count(),
+                    aaData = sorted.Skip(jq.iDisplayStart).Take(jq.iDisplayLength).ToList()
 
-				};
-				return this.MyJsonResult(result, JsonRequestBehavior.AllowGet);
-			}
+                };
+                return this.MyJsonResult(result, JsonRequestBehavior.AllowGet);
+            }
 		}
 		private IQueryable<fsimportpreviewrow> PreviewDataQuery(ccEntities db, Guid id)
 		{
-			var maxDate = DateTime.Now.Date;
+            db.CommandTimeout = 1000;
+            var maxDate = DateTime.Now.Date;
 			return from i in db.ImportFunctionalityScores
 				   where i.ImportId == id
 				   join c in db.Clients.Where(this.Permissions.ClientsFilter) on i.ClientId equals c.Id into cG

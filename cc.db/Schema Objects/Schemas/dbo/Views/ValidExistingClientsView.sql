@@ -66,6 +66,8 @@ select
 ,	t.MAF105Date
 ,   t.HAS2Date
 ,   t.UnableToSign
+,   t.NursingHome
+,   t.AssistedLiving
 from
 (
 	Select
@@ -130,7 +132,9 @@ from
 		coalesce(i.MAFDate, c.MAFDate) as MAFDate,
 		coalesce(i.MAF105Date, c.MAF105Date) as MAF105Date,
 		coalesce(i.HAS2Date, c.HAS2Date) as  HAS2Date,
-		coalesce(i.UnableToSign, c.UnableToSign) as UnableToSign
+		coalesce(i.UnableToSign, c.UnableToSign) as UnableToSign,
+		coalesce(i.NursingHome, c.NursingHome) as NursingHome,
+		coalesce(i.AssistedLiving, c.AssistedLiving) as AssistedLiving
 	from ImportClients as i
 		left outer join clients as c on i.ClientId = c.Id
 ) as t

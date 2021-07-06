@@ -1,39 +1,39 @@
 ﻿@model CC.Data.Models.DafDetails
 @{
-	ViewBag.Title = global::Resources.Resource.DafDetails;
-	var disableForm = User.IsInRole(FixedRoles.DafReviewer) || User.IsInRole(FixedRoles.AgencyUserAndReviewer) || User.IsInRole(FixedRoles.SerAndReviewer) || User.IsInRole(FixedRoles.AgencyUser) || User.IsInRole(FixedRoles.Ser) || Model.Status != Daf.Statuses.Open;
-	disableForm |= (Model.DownloadedAt != null && Model.DownloadedBy != null && Model.DownloadedTo != null);
+    ViewBag.Title = global::Resources.Resource.DafDetails;
+    var disableForm = User.IsInRole(FixedRoles.DafReviewer) || User.IsInRole(FixedRoles.AgencyUserAndReviewer)  || User.IsInRole(FixedRoles.AgencyUser) || User.IsInRole(FixedRoles.Ser) || Model.Status != Daf.Statuses.Open;
+    disableForm |= (Model.DownloadedAt != null && Model.DownloadedBy != null && Model.DownloadedTo != null);
 }
 <h2>
-	@ViewBag.Title
+    @ViewBag.Title
 </h2>
 <script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
 <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
 <form method="post" enctype="multipart/form-data">
-	@Html.ValidationSummary(true)
-	<fieldset>
-		@Html.LabelFor(model => model.ClientId)
-		<span class="stringdisplaytemplate">
-			<a href="@Url.Action("Details", "Clients", new{ Id = Model.ClientId})">@Model.ClientId</a>
-		</span>
-		@Html.LabelFor(model => model.AgencyName)
-		@Html.DisplayFor(model => model.AgencyName)
-		@Html.LabelFor(model => model.ClientFirstName)
-		@Html.DisplayFor(model => model.ClientFirstName)
-		@Html.LabelFor(model => model.ClientLastName)
-		@Html.DisplayFor(model => model.ClientLastName)
-	</fieldset>
-	<fieldset @(disableForm ? "disabled=\"disabled\"" : null)>
-		<legend>DAF</legend>
-		<div class="editor-label">
-			@Html.LabelFor(model => model.EvaluatorId)
-		</div>
-		<div class="editor-field">
-			@if (Model.Status == Daf.Statuses.Open && (User.IsInRole(FixedRoles.Admin) || User.IsInRole(FixedRoles.DafEvaluator)))
-			{
-				@Html.EditorFor(model => model.EvaluatorId)
-				@Html.ValidationMessageFor(model => model.EvaluatorId)
-				<script>
+    @Html.ValidationSummary(true)
+    <fieldset>
+        @Html.LabelFor(model => model.ClientId)
+        <span class="stringdisplaytemplate">
+            <a href="@Url.Action("Details", "Clients", new{ Id = Model.ClientId})">@Model.ClientId</a>
+        </span>
+        @Html.LabelFor(model => model.AgencyName)
+        @Html.DisplayFor(model => model.AgencyName)
+        @Html.LabelFor(model => model.ClientFirstName)
+        @Html.DisplayFor(model => model.ClientFirstName)
+        @Html.LabelFor(model => model.ClientLastName)
+        @Html.DisplayFor(model => model.ClientLastName)
+    </fieldset>
+    <fieldset @(disableForm ? "disabled=\"disabled\"" : null)>
+        <legend>DAF</legend>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.EvaluatorId)
+        </div>
+        <div class="editor-field">
+            @if (Model.Status == Daf.Statuses.Open && (User.IsInRole(FixedRoles.Admin) || User.IsInRole(FixedRoles.DafEvaluator) || User.IsInRole(FixedRoles.SerAndReviewer)))
+            {
+                @Html.EditorFor(model => model.EvaluatorId)
+                @Html.ValidationMessageFor(model => model.EvaluatorId)
+                <script>
 					$(function () {
 						var evaluator = $('#@Html.FieldIdFor(model=>model.EvaluatorId)');
 						var pageSize = 30;
@@ -72,26 +72,26 @@
 
 
 					})
-				</script>
-			}
-			else
-			{
-				@Html.DisplayFor(model => model.EvaluatorName)
-			}
-		</div>
-		<div class="editor-label">
-			@Html.LabelFor(model => model.Status)
-		</div>
-		<div class="editor-field">
-			@Html.DisplayFor(model => model.StatusName)
-		</div>
-		<div class="editor-label">
-			@Html.LabelFor(model => model.FileName)
-		</div>
-		<div class="editor-field">
-			@if (User.IsInRole(FixedRoles.DafEvaluator) && Model.Status == Daf.Statuses.Open)
-			{
-				<script>
+                </script>
+            }
+            else
+            {
+                @Html.DisplayFor(model => model.EvaluatorName)
+            }
+        </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Status)
+        </div>
+        <div class="editor-field">
+            @Html.DisplayFor(model => model.StatusName)
+        </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.FileName)
+        </div>
+        <div class="editor-field">
+            @if (User.IsInRole(FixedRoles.DafEvaluator) || User.IsInRole(FixedRoles.SerAndReviewer) && Model.Status == Daf.Statuses.Open)
+            {
+                <script>
 					$(function(){
 						$('#@Html.FieldIdFor(model=>model.EvaluatorId)').change(function(){
 							var currentUserId = parseInt('@ViewBag.CurrentUserId');
@@ -101,94 +101,94 @@
 							$('#container1').toggle(show);
 						});
 					})
-				</script>
-				if (ViewBag.CurrentUserId == Model.EvaluatorId)
-				{
-					<script>
-						$(function(){
-							$('#container1').hide();
-						})
-					</script>
-				}
-				<div id="container1">
-					<div class="editor-label">
-						@Html.LabelFor(model => model.FileName)
-						@Html.HiddenFor(model => model.UploadedFile)
-						<span class="error" title="This field is required">*</span>
-					</div>
-					<div class="editor-field">
-						<input type="file" name="file" />
-					</div>
-					<div class="editor-label">
-						<label>
-							@Html.CheckBoxFor(f => f.Disclaimer)
-							<span> @Html.DisplayNameFor(f => f.Disclaimer)</span>
-							<span class="error" title="This field is required">*</span>
-						</label>
-					</div>
-					<div class="editor-field">
+                </script>
+                if (ViewBag.CurrentUserId == Model.EvaluatorId)
+                {
+                    <script>
+                        $(function () {
+                            $('#container1').hide();
+                        })
+                    </script>
+                }
+                <div id="container1">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.FileName)
+                        @Html.HiddenFor(model => model.UploadedFile)
+                        <span class="error" title="This field is required">*</span>
+                    </div>
+                    <div class="editor-field">
+                        <input type="file" name="file" />
+                    </div>
+                    <div class="editor-label">
+                        <label>
+                            @Html.CheckBoxFor(f => f.Disclaimer)
+                            <span> @Html.DisplayNameFor(f => f.Disclaimer)</span>
+                            <span class="error" title="This field is required">*</span>
+                        </label>
+                    </div>
+                    <div class="editor-field">
 
-					</div>
-				</div>
-			}
-			@if (string.IsNullOrEmpty(Model.UploadedFile))
-			{
-				<span>N/A</span>
-			}
-			else
-			{
-				<a href="@Url.Action("SignedDaf", "Daf", new{ id=Model.Id})">@Model.UploadedFile</a>
-			}
-		</div>
-		<div class="editor-label">
-			@Html.LabelFor(model => model.AssessmentDate)
-		</div>
-		@if (Model.Status == Daf.Statuses.Open && (User.IsInRole(FixedRoles.Admin) || User.IsInRole(FixedRoles.DafEvaluator)))
-		{
-			<div class="editor-field">
-				@Html.EditorFor(model => model.AssessmentDate)
-				@Html.ValidationMessageFor(model => model.AssessmentDate)
-			</div>
-		}
-		else
-		{
-			<div class="editor-field">
-				@Html.DisplayFor(model => model.AssessmentDate)
-				@Html.HiddenFor(model => model.AssessmentDate)
-			</div>
-		}
-		<div class="editor-label">
-			@Html.LabelFor(model => model.EffectiveDate)
-		</div>
-		@if (Model.Status == Daf.Statuses.Open && (User.IsInRole(FixedRoles.Admin) || User.IsInRole(FixedRoles.DafEvaluator)))
-		{
-			<div class="editor-field">
-				@Html.EditorFor(model => model.EffectiveDate)
-				@Html.ValidationMessageFor(model => model.EffectiveDate)
-			</div>
-		}
-		else
-		{
-			<div class="editor-field">
-				@Html.DisplayFor(model => model.EffectiveDate)
-				@Html.HiddenFor(model => model.EffectiveDate)
-			</div>
-		}
-		<div class="editor-label">
-			@Html.LabelFor(model => model.CreateDate)
-		</div>
-		<div class="editor-field">
-			@Html.DisplayFor(model => model.CreateDate)
-		</div>
-		<table>
-			@Html.EditorFor(x => x.Questions)
-		</table>
-		<div class="editor-label">
-			@Html.LabelFor(f => f.TotalScore)
-		</div>
-		<div class="editor-field" id="@Html.FieldIdFor(f=> f.TotalScore)_container">
-			@Html.DisplayFor(f => f.TotalScore)
-			<script>
+                    </div>
+                </div>
+            }
+            @if (string.IsNullOrEmpty(Model.UploadedFile))
+            {
+                <span>N/A</span>
+            }
+            else
+            {
+                <a href="@Url.Action("SignedDaf", "Daf", new{ id=Model.Id})">@Model.UploadedFile</a>
+            }
+        </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.AssessmentDate)
+        </div>
+        @if (Model.Status == Daf.Statuses.Open && (User.IsInRole(FixedRoles.Admin) || User.IsInRole(FixedRoles.DafEvaluator) || User.IsInRole(FixedRoles.SerAndReviewer)))
+        {
+            <div class="editor-field">
+                @Html.EditorFor(model => model.AssessmentDate)
+                @Html.ValidationMessageFor(model => model.AssessmentDate)
+            </div>
+        }
+        else
+        {
+            <div class="editor-field">
+                @Html.DisplayFor(model => model.AssessmentDate)
+                @Html.HiddenFor(model => model.AssessmentDate)
+            </div>
+        }
+        <div class="editor-label">
+            @Html.LabelFor(model => model.EffectiveDate)
+        </div>
+        @if (Model.Status == Daf.Statuses.Open && (User.IsInRole(FixedRoles.Admin) || User.IsInRole(FixedRoles.DafEvaluator) || User.IsInRole(FixedRoles.SerAndReviewer)))
+        {
+            <div class="editor-field">
+                @Html.EditorFor(model => model.EffectiveDate)
+                @Html.ValidationMessageFor(model => model.EffectiveDate)
+            </div>
+        }
+        else
+        {
+            <div class="editor-field">
+                @Html.DisplayFor(model => model.EffectiveDate)
+                @Html.HiddenFor(model => model.EffectiveDate)
+            </div>
+        }
+        <div class="editor-label">
+            @Html.LabelFor(model => model.CreateDate)
+        </div>
+        <div class="editor-field">
+            @Html.DisplayFor(model => model.CreateDate)
+        </div>
+        <table>
+            @Html.EditorFor(x => x.Questions)
+        </table>
+        <div class="editor-label">
+            @Html.LabelFor(f => f.TotalScore)
+        </div>
+        <div class="editor-field" id="@Html.FieldIdFor(f=> f.TotalScore)_container">
+            @Html.DisplayFor(f => f.TotalScore)
+            <script>
 				$(function(){
 					$(':radio[data-score]').change(function(){
 						var scores = [];
@@ -206,121 +206,121 @@
 					})
 
 				});
-			</script>
-		</div>
-		<div class="editor-label">
-			@Html.LabelFor(f => f.FunctionalityLevelName)
-		</div>
-		<div class="editor-field">
-			@Html.DisplayFor(f => f.FunctionalityLevelName)
-		</div>
-		@*<div class="editor-label">
-				@Html.LabelFor(model => model.GovernmentHours)
-			</div>
-			<div class="editor-field">
-				@Html.EditorFor(model => model.GovernmentHours)
-				@Html.ValidationMessageFor(model => model.GovernmentHours)
-			</div>
-			<div class="editor-label">
-				@Html.LabelFor(model => model.ExceptionalHours)
-			</div>
-			<div class="editor-field">
-				@Html.EditorFor(model => model.ExceptionalHours)
-				@Html.ValidationMessageFor(model => model.ExceptionalHours)
-			</div>*@
-		<div class="editor-label">
-			@Html.LabelFor(model => model.Comments)
-		</div>
-		<div class="editor-field">
-			@Html.EditorFor(model => model.Comments)
-		</div>
-		<span>@Resources.Resource.DiagnostinAssessmentPerformedBySection</span>
-		<dl class="dl-horizontal">
-			<dt>
-				@Html.LabelFor(f => f.SignerName)
-			</dt>
-			<dd>
-				@Html.DisplayFor(f => f.SignerName)
-			</dd>
-			<dt>
+            </script>
+        </div>
+        <div class="editor-label">
+            @Html.LabelFor(f => f.FunctionalityLevelName)
+        </div>
+        <div class="editor-field">
+            @Html.DisplayFor(f => f.FunctionalityLevelName)
+        </div>
+        @*<div class="editor-label">
+                @Html.LabelFor(model => model.GovernmentHours)
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.GovernmentHours)
+                @Html.ValidationMessageFor(model => model.GovernmentHours)
+            </div>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.ExceptionalHours)
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.ExceptionalHours)
+                @Html.ValidationMessageFor(model => model.ExceptionalHours)
+            </div>*@
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Comments)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Comments)
+        </div>
+        <span>@Resources.Resource.DiagnostinAssessmentPerformedBySection</span>
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.LabelFor(f => f.SignerName)
+            </dt>
+            <dd>
+                @Html.DisplayFor(f => f.SignerName)
+            </dd>
+            <dt>
 
-				@Html.LabelFor(f => f.EvaluatorPosition)
-			</dt>
-			<dd>
-				@Html.EditorFor(f => f.EvaluatorPosition)
-			</dd>
-			<dt>
-				@Html.LabelFor(f => f.SignDate)
-			</dt>
-			<dd>
-				@Html.DisplayFor(f => f.SignDate)
-			</dd>
-			<dt>
-				@Html.LabelFor(f => f.ReviewerName)
-			</dt>
-			<dd>
-				@Html.DisplayFor(f => f.ReviewerName)
-			</dd>
-			<dt>
-				@Html.LabelFor(f => f.ReviewDate)
-			</dt>
-			<dd>
-				@Html.DisplayFor(f => f.ReviewDate)
-		</dl>
-		@if (User.IsInRole(FixedRoles.Admin) || User.IsInRole(FixedRoles.DafEvaluator))
-		{
-			<p>
-				<input type="submit" value="@Resources.Resource.Save" />
-				<a href="@Url.Action("Index")">@Resources.Resource.Cancel</a>
-			</p>
-		}
-	</fieldset>
+                @Html.LabelFor(f => f.EvaluatorPosition)
+            </dt>
+            <dd>
+                @Html.EditorFor(f => f.EvaluatorPosition)
+            </dd>
+            <dt>
+                @Html.LabelFor(f => f.SignDate)
+            </dt>
+            <dd>
+                @Html.DisplayFor(f => f.SignDate)
+            </dd>
+            <dt>
+                @Html.LabelFor(f => f.ReviewerName)
+            </dt>
+            <dd>
+                @Html.DisplayFor(f => f.ReviewerName)
+            </dd>
+            <dt>
+                @Html.LabelFor(f => f.ReviewDate)
+            </dt>
+            <dd>
+                @Html.DisplayFor(f => f.ReviewDate)
+        </dl>
+        @if (User.IsInRole(FixedRoles.Admin) || User.IsInRole(FixedRoles.DafEvaluator) || User.IsInRole(FixedRoles.SerAndReviewer))
+        {
+            <p>
+                <input type="submit" value="@Resources.Resource.Save" />
+                <a href="@Url.Action("Index")">@Resources.Resource.Cancel</a>
+            </p>
+        }
+    </fieldset>
 
 
 </form>
 
 @if ((bool?)ViewBag.CanDelete == true)
 {
-	using (Html.BeginForm("Delete", "Daf", new { id = Model.Id }))
-	{
-		<button type="submit">@Resources.Resource.Delete</button>
-	}
+    using (Html.BeginForm("Delete", "Daf", new { id = Model.Id }))
+    {
+        <button type="submit">@Resources.Resource.Delete</button>
+    }
 }
 
 @if (Model.DownloadedBy != null)
 {
-	<div>
-		This DAF was taken offline by @Html.DisplayFor(model => model.DownloaderFullName) (@Html.DisplayFor(model => model.DownloaderUsername) at @Html.DisplayFor(model => model.DownloadedAt)
-	</div>
+    <div>
+        This DAF was taken offline by @Html.DisplayFor(model => model.DownloaderFullName) (@Html.DisplayFor(model => model.DownloaderUsername) at @Html.DisplayFor(model => model.DownloadedAt)
+    </div>
 }
 @if (Model.UserConsentObtainedAt.HasValue)
 {
     <div>
-        User consent obtained at @Html.DisplayFor(model=>model.UserConsentObtainedAt)
+        User consent obtained at @Html.DisplayFor(model => model.UserConsentObtainedAt)
     </div>
 }
 
 @if (ViewContext.ViewData.ModelState.IsValid && Model.DownloadedBy == null)
 {
-	<div>
-		@if (User.IsInRole(FixedRoles.DafEvaluator) && Model.Status == Daf.Statuses.Open)
-		{
-			<button id="signButton" type="button">@Resources.Resource.Sign</button>
-		}
-		@if ((User.IsInRole(FixedRoles.DafReviewer) || User.IsInRole(FixedRoles.AgencyUserAndReviewer) || User.IsInRole(FixedRoles.SerAndReviewer)) && Model.Status == Daf.Statuses.EvaluatorSigned)
-		{
-			<button id="rejectButton" type="button">@Resources.Resource.Reject</button>
-			<button id="completeButton" type="button">@Resources.Resource.Complete</button>
-		}
-	</div>
-	<div id="signDialog">
-		<form id="actionForm" action="ooo" method="post">
-			<div id="disclaimer"></div>
-			<label for="password">@Resources.Resource.Password</label>
-			<input type="password" name="password" id="password" />
-		</form>
-	</div>
-	<script>
+    <div>
+        @if ((User.IsInRole(FixedRoles.DafEvaluator) || User.IsInRole(FixedRoles.SerAndReviewer)) && Model.Status == Daf.Statuses.Open)
+        {
+            <button id="signButton" type="button">@Resources.Resource.Sign</button>
+        }
+        @if ((User.IsInRole(FixedRoles.DafReviewer) || User.IsInRole(FixedRoles.AgencyUserAndReviewer) || User.IsInRole(FixedRoles.SerAndReviewer)) && Model.Status == Daf.Statuses.EvaluatorSigned)
+        {
+            <button id="rejectButton" type="button">@Resources.Resource.Reject</button>
+            <button id="completeButton" type="button">@Resources.Resource.Complete</button>
+        }
+    </div>
+    <div id="signDialog">
+        <form id="actionForm" action="ooo" method="post">
+            <div id="disclaimer"></div>
+            <label for="password">@Resources.Resource.Password</label>
+            <input type="password" name="password" id="password" />
+        </form>
+    </div>
+    <script>
 		$(function(){
 			var dialog = $('#signDialog').dialog({
 				autoOpen: false,
@@ -355,7 +355,7 @@
 				dialog.dialog('open');
 			})
 		});
-	</script>
+    </script>
 }
 
 
@@ -363,5 +363,5 @@
 @Html.Partial("~/Views/Shared/Audit.cshtml", Model.Id)
 
 <div>
-	@Html.ActionLink(Resources.Resource.BackToList, "Index")
+    @Html.ActionLink(Resources.Resource.BackToList, "Index")
 </div>

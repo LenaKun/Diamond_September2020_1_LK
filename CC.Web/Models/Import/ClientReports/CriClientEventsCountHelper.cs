@@ -44,6 +44,7 @@ namespace CC.Web.Models.Import.ClientReports
                           where item.ImportId == id
                           join subReport in SubReports on item.SubReportId equals subReport.Id into srg
                           from subReport in srg.DefaultIfEmpty()
+                          
                           select new CriClientEventsCountPreview
                           {
                               RowIndex = item.RowIndex,

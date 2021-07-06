@@ -132,8 +132,9 @@ namespace CC.Web.Models.Import.ClientReports
 							  )
 
 						  });
-			return source;
-		}
+			return source.OrderByDescending(f => f.Errors);
+            
+        }
 		public override void Import(Guid importId)
 		{
 			using (var db = getDbContext())

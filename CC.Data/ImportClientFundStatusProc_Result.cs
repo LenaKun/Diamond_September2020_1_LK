@@ -102,6 +102,12 @@ namespace CC.Data
             get;
             set;
         }
+    
+        public Nullable<System.DateTime> DeceasedDate
+        {
+            get;
+            set;
+        }
 
         #endregion
 

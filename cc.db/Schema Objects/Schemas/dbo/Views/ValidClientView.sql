@@ -64,6 +64,8 @@
 	  ,[i].MAF105Date
 	  ,[i].HAS2Date
 	  ,[i].UnableToSign
+	  ,[i].NursingHome
+	  ,[i].AssistedLiving
   from ImportClients as i
 		join ApprovalStatuses as approvalStatus on i.ApprovalStatusId = approvalStatus.Id
 		join Agencies as agency on i.AgencyId = agency.Id

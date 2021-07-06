@@ -24,11 +24,11 @@
             {
                 <li>
                     @Html.LabelFor(f => f.Remarks)
-                <div>
-                    @Html.EditorFor(f => f.Remarks)
-                </div>
-            </li>
-        }
+                    <div>
+                        @Html.EditorFor(f => f.Remarks)
+                    </div>
+                </li>
+            }
 
             @if (Model.AdministrativeOverheadOverflow)
             {
@@ -45,69 +45,90 @@
             {
                 <li>
                     @Html.LabelFor(f => f.ProgramOverview)
-                <p>
-                    Program Overview should include:<br />
-                </p>
-                <ol>
-                    <li>Economic and/or social changes your community experienced since the last reporting period (ex. changes in Government benefits, public policy, etc.)</li>
-                    <li>Challenges that arose during the previous reporting period and agency responded to them</li>
-                    <li>Recent developments in the program that took place since the last reporting period</li>
-                    <li>Changes in project management since your last report</li>
-                    <li>
-                        <p>If this is the final report for this grant, please address the following:</p>
+                    <p>
+                        Program Overview should include:<br />
+                    </p>
+                    <ol>
+                        <li> Describe changes within and/or outside your organization (including staff changes) that have an impact on the programs/services supported by Claims Conference (e.g. community, government, leadership) within the quarter.</li>
+                        <li> If your organization is significantly overspending/underspending on a line item in the quarter, describe the circumstances. If overspending, describe agency’s plan for maintaining service levels through the end of the year.</li>
+                        <li> Any media, press releases related to your agency you would like to share?</li>
+                        <li> Please provide any other additional information regarding the program.</li>
+                    </ol>
 
-                        <ul>
-                            <li>How the success and/or impact of this project are measured.</li>
-                            <li>Attach a client profile that includes client’s feedback and his/her overall experience in the program.</li>
-                        </ul>
-
-                    </li>
-                    <li>If this report is RETURNED TO AGENCY, and no changes to Program Overview then just specify &quot;No Changes&quot;</li>
-                </ol>
-                @Html.HiddenFor(f => f.ProgramOverviewRequired)
-                <div>
-                    @Html.EditorFor(f => f.ProgramOverview)
-                </div>
-                <div class="editor-label">
-                    @Html.LabelFor(f => f.ProgramOverviewFileName)
-                    @Html.HiddenFor(f => f.ProgramOverviewUploadedFile)
-                </div>
-                <div class="editor-field">
-                    <input type="file" name="programOverviewFile" id="pof" />
-                    <script>
-                        $("#pof").change(function () {
-                            if ($(this).val() !== "") {
-                                var file = $('#pof')[0].files[0];
-                                var totalSize = file.size;
-                                if ($('#mhsaf').val() !== "") {
-                                    var mf = $('#mhsaf')[0].files[0];
-                                    totalSize += mf.size;
+                    <ul style="list-style-type:none;">
+                        <li>
+                            <p>
+                                Homecare Agencies:<br />
+                            </p>
+                        </li>
+                    </ul>
+                    <ol>
+                        <li> Please confirm unmet homecare and supplemental services need are up to date in Diamond.</li>
+                        <li> Briefly describe the agency’s method of providing homecare (i.e. private pay, vendor, agency own homecare workers, other). Confirm that the “care via” field in Diamond is updated.</li>
+                    </ol>
+                    <ul style="list-style-type:none;">
+                        <li>
+                            <p>
+                                If this is the final reporting period for the grant:<br />
+                            </p>
+                        </li>
+                    </ul>
+                    <ol>
+                        <li> Provide a client profile that includes client's feedback and his/her overall experience in the program.</li>
+                        <li> Upload socialization materials in Fluxx.</li>
+                        <li> Upload proof of public acknowledgement in Fluxx.</li>
+                    </ol>
+                    <ul style="list-style-type:none;">
+                        <li>
+                            <p>
+                                If the report is being resubmitted and there are no changes to the Program Overview submitted previously, please type No Changes in the field.<br />
+                            </p>
+                        </li>
+                    </ul>
+                    @Html.HiddenFor(f => f.ProgramOverviewRequired)
+                    <div>
+                        @Html.EditorFor(f => f.ProgramOverview)
+                    </div>
+                    <div class="editor-label">
+                        @Html.LabelFor(f => f.ProgramOverviewFileName)
+                        @Html.HiddenFor(f => f.ProgramOverviewUploadedFile)
+                    </div>
+                    <div class="editor-field">
+                        <input type="file" name="programOverviewFile" id="pof" />
+                        <script>
+                            $("#pof").change(function () {
+                                if ($(this).val() !== "") {
+                                    var file = $('#pof')[0].files[0];
+                                    var totalSize = file.size;
+                                    if ($('#mhsaf').val() !== "") {
+                                        var mf = $('#mhsaf')[0].files[0];
+                                        totalSize += mf.size;
+                                    }
+                                    if (totalSize > 20000000) {
+                                        alert("Uploading size limit is 20MB in total");
+                                        $('#pof').val('');
+                                    }
                                 }
-                                if (totalSize > 20000000) {
-                                    alert("Uploading size limit is 20MB in total");
-                                    $('#pof').val('');
-                                }
-                            }
-                        });
-                    </script>
-                </div>
-                @if (string.IsNullOrEmpty(Model.ProgramOverviewUploadedFile))
-                {
-                    <span>N/A</span>
+                            });
+                        </script>
+                    </div>
+                    @if (string.IsNullOrEmpty(Model.ProgramOverviewUploadedFile))
+                    {
+                        <span>N/A</span>
+                    }
+                    else
+                    {
+                        <a href="@Url.Action("ProgramOverviewFile", "MainReports", new { id = Model.Id })">@Model.ProgramOverviewUploadedFile</a>
+                    }
+                </li>
                 }
-                else
-                {
-                    <a href="@Url.Action("ProgramOverviewFile", "MainReports", new { id = Model.Id })">@Model.ProgramOverviewUploadedFile</a>
-                }
-            </li>
-        }
 
 
             <li>
                 <p>
                     <input type="checkbox" id="DuplicateClientsAknowledgement" data-val="true" data-val-required="*" name="asdf" />
                     <label for="DuplicateClientsAknowledgement">
-                        Successful submission of reports on homecare hours does not confirm universal validation of those hours.   For audit purposes, each client’s file must contain complete records indicating that homecare hours provided do not exceed weekly homecare hours to which that client is entitled.
+                      If providing homecare on this grant, successful submission of reports on homecare hours does not confirm universal validation of those hours. For audit purposes, each client’s file must contain complete records indicating that homecare hours provided do not exceed weekly homecare hours to which that client is entitled.
                     </label>
 
                 </p>
@@ -153,13 +174,13 @@
                         </script>
                     </div>
                     @if (string.IsNullOrEmpty(Model.MhsaUploadedFile))
-                    {
-                        <span>N/A</span>
-                    }
-                    else
-                    {
-                        <a href="@Url.Action("MhsaFile", "MainReports", new { id = Model.Id })">@Model.MhsaUploadedFile</a>
-                    }
+                                        {
+                    <span>N/A</span>
+                                        }
+                                        else
+                                        {
+                    <a href="@Url.Action("MhsaFile", "MainReports", new { id = Model.Id })">@Model.MhsaUploadedFile</a>
+                                        }
                 </div>
             </li>
             <li>
@@ -174,16 +195,16 @@
                 <div>
                     <div class="display-item">
                         @Html.LabelFor(f => f.UserName)
-                    @Html.DisplayFor(f => f.UserName)
+                        @Html.DisplayFor(f => f.UserName)
+                    </div>
                 </div>
-            </div>
-            <div>
-                <div class="display-item">
-                    @Html.LabelFor(f => f.Password)
-                @Html.EditorFor(f => f.Password)
-            </div>
-        </div>
-        </li>
+                <div>
+                    <div class="display-item">
+                        @Html.LabelFor(f => f.Password)
+                        @Html.EditorFor(f => f.Password)
+                    </div>
+                </div>
+            </li>
         </ul>
 	}
 </div>

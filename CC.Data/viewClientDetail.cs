@@ -480,6 +480,18 @@ namespace CC.Data
             get;
             set;
         }
+    
+        public virtual bool NursingHome
+        {
+            get;
+            set;
+        }
+    
+        public virtual bool AssistedLiving
+        {
+            get;
+            set;
+        }
 
         #endregion
 

@@ -219,6 +219,12 @@ namespace CC.Data.MetaData
         [DisplayName("Unable To Sign")]
         public bool UnableToSign{ get; set; }
 
+        [DisplayName("Nursing Home/Old Age Home")]
+        public bool NursingHome { get; set; }
+
+        [DisplayName("Assisted Living")]
+        public bool AssistedLiving { get; set; }
+
         [DisplayName("Other Services Waitlist")]
 		public bool OtherServicesWaitlist { get; set; }
 

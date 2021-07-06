@@ -125,15 +125,18 @@
 				{
 					"mData": "HcCaps", "sTitle": '@(Model.ExceptionalHomeCareHours && @Model.CoPGovHoursValidation)' == "True" ? "Allowed Govt Hours/week" : "Allowed Hours/week", "mRender": function (a, b, c) {
 						//collapse adjustent periods with same hccap
-						if (a == null) {
-							return 'N/A';
-						}
-						else {
-							for (var i = a.length - 1; i > 0; i--) {
-								if (a[i].HcCap == a[i - 1].HcCap && a[i].StartDate == a[i - 1].EndDate) {
+                        if (a == null) {
+                            return 'N/A'
+                        }
+                        else {
+                           
+                          
+                            for (var i = a.length - 1; i > 0; i--) {
+                                
+								if (a[i].HcCap == a[i - 1].HcCap && a[i].StartDate == a[i - 1].EndDate)   {
 									a[i - 1].EndDate = a[i].EndDate;
-									a.splice(i, 1);
-								}
+                                    a.splice(i, 1);
+							}
 							}
 						}
 

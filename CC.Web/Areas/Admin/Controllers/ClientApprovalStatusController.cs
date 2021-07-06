@@ -397,7 +397,7 @@ namespace CC.Web.Areas.Admin.Controllers
 			}
 
 		}
-		[HttpPost]
+
 		public ActionResult Import(Guid id)
 		{
 			try
@@ -406,12 +406,17 @@ namespace CC.Web.Areas.Admin.Controllers
                 var IsraelCashSerNumber = System.Web.Configuration.WebConfigurationManager.AppSettings["IsraelCashSerNumber"].Parse<int>();
                 var cfsClients = clients.Where(c=>c.AgencyGroupId == IsraelCashSerNumber).ToList();
 				var context = System.Web.HttpContext.Current;
-                new Thread(delegate()
+
+               
+
+
+                    new Thread(delegate()
                 {
                     try
                     {
-                        var sendClients = clients.Where(c=>c.LeaveReasonId == null || c.LeaveReasonId != (int)LeaveReasonEnum.Deceased).ToList();
-						var approvalStatusSend = new List<ImportClientFundStatusProc_Result>();
+                        // var sendClients = clients.Where(c=>c.LeaveReasonId == null  ||c.LeaveReasonId != (int)LeaveReasonEnum.Deceased || c.DeceasedDate ==null).ToList();
+                        var sendClients = clients.Where(c =>  c.DeceasedDate == null).ToList();
+                        var approvalStatusSend = new List<ImportClientFundStatusProc_Result>();
 						var hcStatusSend = new List<ImportClientFundStatusProc_Result>();
 						foreach (var c in sendClients)
 						{
@@ -424,6 +429,8 @@ namespace CC.Web.Areas.Admin.Controllers
 							{
 								approvalStatusSend.Add(c);
 							}
+
+                           
 						}
 						
                         if (approvalStatusSend.Count > 0)
@@ -484,7 +491,8 @@ namespace CC.Web.Areas.Admin.Controllers
 					where h.UpdateDate <= t
 					join c in db.Clients on h.ReferenceId equals c.Id
                     //where c.LeaveReasonId == null || c.LeaveReasonId != (int)LeaveReasonEnum.Deceased
-                    where c.DeceasedDate != null //Deceased c.LeaveReasonId == null || c.LeaveReasonId != (int)LeaveReasonEnum.Deceased 
+                    // where c.DeceasedDate != null //Deceased c.LeaveReasonId == null || c.LeaveReasonId != (int)LeaveReasonEnum.Deceased 
+                    where c.DeceasedDate == null
                     select new
 					{
 						ClientId = c.Id,
@@ -595,7 +603,8 @@ Not Eligible: Clients are not eligible to receive CC funded services and must ce
 			using (var db = new ccEntities())
 			{
 				var gpos = db.Users.Where(f => f.RoleId == (int)FixedRoles.GlobalOfficer || f.RoleId == (int)FixedRoles.GlobalReadOnly || f.RoleId == (int)FixedRoles.AuditorReadOnly);
-				var groups = from c in clients 
+				var groups = from c in clients
+                             
 							 group c by c.AgencyId into cg
 							 select cg;
 				var serUsers = (from s in db.AgencyGroups

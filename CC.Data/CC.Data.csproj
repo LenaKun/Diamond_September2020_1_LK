@@ -569,6 +569,7 @@
     <Compile Include="Role.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="SCSubsidy.cs" />
     <Compile Include="ScSubsidyAmount.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>

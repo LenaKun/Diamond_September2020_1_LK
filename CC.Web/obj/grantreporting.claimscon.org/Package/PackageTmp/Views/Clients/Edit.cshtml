@@ -596,7 +596,6 @@
 				</div>
                 <div class="sc1">
                     @Html.LabelFor(model => model.Data.SC_MonthlyCost):
-                    <!--@Html.EditorFor(model => model.Data.SC_MonthlyCost)-->
                     @Html.DisplayFor(model => model.Data.SC_MonthlyCost)
                 </div>
 			</div>
@@ -890,8 +889,40 @@
                         }
 
 
+                        <div>
 
+                            @Html.LabelFor(model => model.Data.NursingHome):
+                            @if ((User.IsInRole(CC.Data.FixedRoles.Admin.ToString())) || (User.IsInRole(CC.Data.FixedRoles.Ser.ToString())) || (User.IsInRole(CC.Data.FixedRoles.SerAndReviewer.ToString())) || (User.IsInRole(CC.Data.FixedRoles.AgencyUser.ToString())) || (User.IsInRole(CC.Data.FixedRoles.AgencyUserAndReviewer.ToString())))
+                            {
+                                @Html.EditorFor(model => model.Data.NursingHome)
+                            }
+                            else
+                            {
+                                @Html.DisplayFor(model => model.Data.NursingHome)
+                                @Html.HiddenFor(model => model.Data.NursingHome)
+                            }
+
+
+
+                        </div>
+                        <div>
+
+                            @Html.LabelFor(model => model.Data.AssistedLiving):
+                            @if ((User.IsInRole(CC.Data.FixedRoles.Admin.ToString())) || (User.IsInRole(CC.Data.FixedRoles.Ser.ToString())) || (User.IsInRole(CC.Data.FixedRoles.SerAndReviewer.ToString())) || (User.IsInRole(CC.Data.FixedRoles.AgencyUser.ToString())) || (User.IsInRole(CC.Data.FixedRoles.AgencyUserAndReviewer.ToString())))
+                            {
+                                @Html.EditorFor(model => model.Data.AssistedLiving)
+                            }
+                            else
+                            {
+                                @Html.DisplayFor(model => model.Data.AssistedLiving)
+                                @Html.HiddenFor(model => model.Data.AssistedLiving)
+                            }
+
+
+
+                        </div>
                     </div>
+
                 </div>
 			</div>
 		</div>
@@ -1010,7 +1041,7 @@
                         @Html.HiddenFor(model => model.Data.MAF105Date)
                     }
                 </div>
-                <div class="editor-item">
+               @* <div class="editor-item">
                     @Html.LabelFor(model => model.Data.HAS2Date):
                     @if (Model.Data.HAS2Date == null || User.IsInRole(FixedRoles.Admin))
                     {
@@ -1024,7 +1055,7 @@
                     @Html.HiddenFor(model => model.Data.HAS2Date)
                     }
 
-                </div>
+                </div>*@
                 @*<div class="editor-item">
             @Html.LabelFor(model => model.Data.GfHours):
             @if (Model.Permissions.CanChangeGfHours)
@@ -1229,10 +1260,11 @@
 
 
     var $dcc = $('#@Html.FieldIdFor(model => model.Data.DCC_Subside)');
-	var $dcc_cost = $('#@Html.FieldIdFor(model => model.Data.DCC_VisitCost)');
-	var $sc = $('#@Html.FieldIdFor(model => model.Data.SC_MonthlyCost)');
+    var $dcc_cost = $('#@Html.FieldIdFor(model => model.Data.DCC_VisitCost)');
 
-	var $chk_support = $('#@Html.FieldIdFor(model => model.Data.SC_Client)');
+	var $sc = $('#@Html.FieldIdFor(model => model.Data.SC_MonthlyCost)');
+    var $chk_support = $('#@Html.FieldIdFor(model => model.Data.SC_Client)');
+       
 
 
 	$chk_support.change(function () {
@@ -1244,7 +1276,8 @@
 		}
 		else {
 			$(".sc1").hide();
-			$sc.val("");
+            $sc.val("");
+           
 		}
 	});
 

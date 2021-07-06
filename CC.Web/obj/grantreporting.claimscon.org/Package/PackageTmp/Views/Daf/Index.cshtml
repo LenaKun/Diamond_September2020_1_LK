@@ -5,17 +5,17 @@
 
 <h2>@ViewBag.Title</h2>
 <div>
-	<div>
-		<form>
-			<fieldset>
-				<legend>@Resources.Resource.Filter</legend>
-				<div>
-					@Html.LabelFor(model => model.Filter.Status)
-					@Html.EditorFor(model => model.Filter.Status)
+    <div>
+        <form>
+            <fieldset>
+                <legend>@Resources.Resource.Filter</legend>
+                <div>
+                    @Html.LabelFor(model => model.Filter.Status)
+                    @Html.EditorFor(model => model.Filter.Status)
 
-					@Html.LabelFor(model => model.Filter.SerId)
-					@Html.EditorFor(model => model.Filter.SerId)
-					<script>
+                    @Html.LabelFor(model => model.Filter.SerId)
+                    @Html.EditorFor(model => model.Filter.SerId)
+                    <script>
 						(function () {
 							var pageSize = 30;
 							var baseUrl = '@Url.Content("~/data/dataservice.svc/AgencyGroups")';
@@ -65,11 +65,11 @@
 								}
 							});
 						})();
-					</script>
+                    </script>
 
-					@Html.LabelFor(model => model.Filter.AgencyId)
-					@Html.EditorFor(model => model.Filter.AgencyId)
-					<script>
+                    @Html.LabelFor(model => model.Filter.AgencyId)
+                    @Html.EditorFor(model => model.Filter.AgencyId)
+                    <script>
 						(function () {
 							var pageSize = 30;
 							var baseUrl = '@Url.Content("~/data/dataservice.svc/Agencies")';
@@ -126,58 +126,61 @@
 								}
 							});
 						})();
-					</script>
+                    </script>
 
-				</div>
-				<div>
-					@Html.LabelFor(model => model.Filter.DafId)
-					@Html.EditorFor(model => model.Filter.DafId)
+                </div>
+                <div>
+                    @Html.LabelFor(model => model.Filter.DafId)
+                    @Html.EditorFor(model => model.Filter.DafId)
 
-					@Html.LabelFor(model => model.Filter.ClientId)
-					@Html.EditorFor(model => model.Filter.ClientId)
+                    @Html.LabelFor(model => model.Filter.ClientId)
+                    @Html.EditorFor(model => model.Filter.ClientId)
 
-					@Html.LabelFor(model => model.Filter.FirstName)
-					@Html.EditorFor(model => model.Filter.FirstName)
-				</div>
-				<div>
-					@Html.LabelFor(model => model.Filter.LastName)
-					@Html.EditorFor(model => model.Filter.LastName)
+                    @Html.LabelFor(model => model.Filter.FirstName)
+                    @Html.EditorFor(model => model.Filter.FirstName)
+                </div>
+                <div>
+                    @Html.LabelFor(model => model.Filter.LastName)
+                    @Html.EditorFor(model => model.Filter.LastName)
 
-					@Html.LabelFor(model => model.Filter.Search)
-					@Html.EditorFor(model => model.Filter.Search)
-				</div>
-				<div>
-					<button type="button" id="apply-filter">@Resources.Resource.Filter</button>
-					<button type="button" id="reset-filter">@Resources.Resource.Reset</button>
-					<script>
-						$('#apply-filter').click(function () {
-							$('#indexTable').DataTable().fnDraw();
-						});
-						$('#reset-filter').click(function () {
-							window.location.reload()
-						});
-					</script>
-				</div>
-			</fieldset>
-		</form>
+                    @Html.LabelFor(model => model.Filter.Search)
+                    @Html.EditorFor(model => model.Filter.Search)
+                </div>
+                <div>
+                    <button type="button" id="apply-filter">@Resources.Resource.Filter</button>
+                    <button type="button" id="reset-filter">@Resources.Resource.Reset</button>
+                    <script>
+                        $('#apply-filter').click(function () {
+                            $('#indexTable').DataTable().fnDraw();
+                        });
+                        $('#reset-filter').click(function () {
+                            window.location.reload()
+                        });
+                    </script>
+                </div>
+            </fieldset>
+        </form>
 
-	</div>
-	<table id="indexTable"></table>
-	<div>
-		@using (Html.BeginForm("Create", "Daf", FormMethod.Get))
-		{
-			@Html.LabelFor(f => f.ClientId)
-			@Html.EditorFor(f => f.ClientId)
-			<button type="submit">@Resources.Resource.Create</button>
-		}
+    </div>
+    <table id="indexTable"></table>
+    @if (!User.IsInRole(FixedRoles.AgencyUserAndReviewer))
+    {
+        <div>
+            @using (Html.BeginForm("Create", "Daf", FormMethod.Get))
+            {
+                @Html.LabelFor(f => f.ClientId)
+                @Html.EditorFor(f => f.ClientId)
+                <button type="submit">@Resources.Resource.Create</button>
+            }
 
-	</div>
-	@if (User.IsInRole(FixedRoles.Admin))
-	{
-		<div>
-			@Html.ActionLink(Resources.Resource.DeletedDafList, "Index", "DeletedDaf")
-		</div>
-	}
+        </div>
+    }
+    @if (User.IsInRole(FixedRoles.Admin))
+    {
+        <div>
+            @Html.ActionLink(Resources.Resource.DeletedDafList, "Index", "DeletedDaf")
+        </div>
+    }
 </div>
 
 <script>

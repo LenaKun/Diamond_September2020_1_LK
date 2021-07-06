@@ -290,7 +290,7 @@ function UpdateCountryAndStates(url, $states, countryId, emptyItemText) {
             dataType: "json"
         }).done(function (response) {
             var states = response.d;
-            if (states.length > 0) {
+            if (states.length > 0 ) {
                 $states.html('');
                 $states.html('<option value="">' + emptyItemText + '</option>');
                 $states.removeAttr('disabled');
@@ -300,12 +300,30 @@ function UpdateCountryAndStates(url, $states, countryId, emptyItemText) {
                     $states.append(option);
                 }
             }
+            //else if (states.length > 0 && stateId != "")
+            //{
+            //    $states.html('');
+            //    $states.removeAttr('disabled');
+            //    for (var i in states)
+            //    {
+            //        var item = states[i];
+            //        if (item.Id == stateId) {
+
+            //            $states.html('<option value="">' + states[i].item.Name + '</option>');
+            //        }
+            //            var option = $("<option></option>").attr("value", item.Id).text(item.Name);
+            //            $states.append(option);
+            //         }
+            //    }
+                
+           
+                   
             else {
                 $states.html('<option value="">N/A</option>');
             }
         }).fail(function () {
 
-        });;
+        });
     }
     else {
         $states.attr('disabled', 'disabled');

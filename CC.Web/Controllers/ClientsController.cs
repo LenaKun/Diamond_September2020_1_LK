@@ -260,7 +260,7 @@ namespace CC.Web.Controllers
 		}
 		public ActionResult ExportClients(ClientsListDataTableModel param)
 		{
-			db.CommandTimeout = 120;
+			db.CommandTimeout = 300;
 			var userRole = (FixedRoles)this.CcUser.RoleId;
 			var model = ClientsListDataTableModel.GetExportData(db, Permissions, param);
 			switch (userRole)
@@ -571,7 +571,7 @@ namespace CC.Web.Controllers
 		public ActionResult GFHours(NewGFHoursEntryModel model)
 		{
 			Dictionary<int, string> types = new Dictionary<int, string>();
-			types.Add(0, "Grandfathered");
+			types.Add(0, "Legacy");
 			types.Add(1, "Exceptional");
             types.Add(2, "BMF Approved");
 
@@ -624,7 +624,7 @@ namespace CC.Web.Controllers
 			var gfHours = db.GrandfatherHours.SingleOrDefault(f => f.ClientId == input.ClientId && f.StartDate == input.GFStartDate);
 			if (gfHours == null)
 			{
-				var coderesult = new HttpStatusCodeResult(404, "GF Hours entry could not be found.");
+				var coderesult = new HttpStatusCodeResult(404, "Legacy Hours entry could not be found.");
 				return coderesult;
 			}
 			var dbUser = db.Users.SingleOrDefault(f => f.UserName == User.Identity.Name);
@@ -651,7 +651,7 @@ namespace CC.Web.Controllers
 					}
 					if (inner.Message.Contains("CK_GFHours_Value"))
 					{
-						error = "Grandfather Hours value must be between 0 and 168.";
+						error = "Legacy Hours value must be between 0 and 168.";
 					}
 					else
 					{
@@ -1103,8 +1103,8 @@ namespace CC.Web.Controllers
 				}
 
 				var data = from f in Repo.Histories.Select
-						   where f.TableName == "Clients" || f.TableName == "GrandfatherHours"
-						   where f.ReferenceId == param.ClientId
+						   where f.TableName == "Clients" || f.TableName == "GrandfatherHours" 
+                           where f.ReferenceId == param.ClientId
 						   select f;
 				if (!this.Permissions.CanSeeProgramField)
 				{
@@ -1276,31 +1276,35 @@ namespace CC.Web.Controllers
 			ViewBag.FundStatuses = Repo.FundStatuses.Select.ToList();
 			ViewBag.FunctionalityLevels = Repo.FunctionalityLevels.Select.ToList().Select(f => new SelectListItem() { Text = f.Name, Value = f.Id.ToString() });
 			ViewBag.Countries = Repo.Countries.Select.OrderBy(f => f.Name);
+          
+                var countries = Repo.Countries.Select.OrderBy(f => f.Name).AsEnumerable().Select(f => new SelectListItem() { Text = f.Name, Value = f.Id.ToString() }).ToList();
+                countries.Insert(0, new SelectListItem() { Text = "", Value = "" });
+                model.Countries = countries;
 
-			var countries = Repo.Countries.Select.OrderBy(f => f.Name).AsEnumerable().Select(f => new SelectListItem() { Text = f.Name, Value = f.Id.ToString() }).ToList();
-			countries.Insert(0, new SelectListItem() { Text = "", Value = "" });
-			model.Countries = countries;
 
-			if (model.Data == null)
-			{
-				model.States =
-				new List<SelectListItem>();
-			}
-			else
-			{
-				var q = (from c in _db.Countries
-						 where c.Id == model.Data.CountryId
-						 from s in c.States
-						 select new
-						 {
-							 Id = s.Id,
-							 Name = s.Name
-						 }).OrderBy(f => f.Name);
 
-				model.States = new SelectList(q, "Id", "Name", model.Data.StateId);
-			}
+                if (model.Data == null)
+                {
+                    model.States =
+                    new List<SelectListItem>();
+                }
 
-			var agencies = Repo.Agencies.Select.OrderBy(f => f.Name).AsEnumerable().Select(f => new SelectListItem() { Text = f.Name, Value = f.Id.ToString() }).ToList();
+                else
+                {
+                    var q = (from c in _db.Countries
+                             where c.Id == model.Data.CountryId
+                             from s in c.States
+                             select new
+                             {
+                                 Id = s.Id,
+                                 Name = s.Name
+                             }).OrderBy(f => f.Name);
+
+                model.States = new SelectList(q, "Id", "Name", model.Data.StateId);
+            }
+
+
+            var agencies = Repo.Agencies.Select.OrderBy(f => f.Name).AsEnumerable().Select(f => new SelectListItem() { Text = f.Name, Value = f.Id.ToString() }).ToList();
 			agencies.Insert(0, new SelectListItem() { Text = "", Value = "" });
 			model.Agencies = agencies;
 
@@ -1356,10 +1360,10 @@ namespace CC.Web.Controllers
 			{
 				ModelState.AddModelError(string.Empty, "Leave Reason is required if Leave Date is specified");
 			}
-			else if (model.Data.LeaveReasonId.HasValue && !model.Data.LeaveDate.HasValue)
-			{
-				ModelState.AddModelError(string.Empty, "Leave Date ie required if Leave Reason is specified");
-			}
+			//else if (model.Data.LeaveReasonId.HasValue && !model.Data.LeaveDate.HasValue && model.Data.LeaveReasonId !=1)//Task_32; "Moved Away reason not required Leave EndDate
+			//{
+			//	ModelState.AddModelError(string.Empty, "Leave Date ie required if Leave Reason is specified");
+			//}
 			if (model.Data.LeaveReasonId.HasValue && model.Data.LeaveReasonId == (int)LeaveReasonEnum.NotEligible && this.CcUser.RoleId == (int)FixedRoles.Admin)
 			{
 				model.Data.AdministrativeLeave = true;
@@ -1390,7 +1394,7 @@ namespace CC.Web.Controllers
 				return this.RedirectToAction("Details", new { id = model.Data.Id, newClient = true });
 			}
 
-
+           
 			PopulateOptions(model);
 			return View(model);
 		}
@@ -1509,7 +1513,9 @@ namespace CC.Web.Controllers
 				.Include(f => f.Agency.AgencyGroup.Country)
 				.Include(f => f.FundStatus)
 				.Include(f => f.FunctionalityScores.Select(d => d.FunctionalityLevel))
-				.Select(f =>
+               // .Include(f => f.HomeCareEntitledPeriods.Select(d => d.StartDate))
+                
+                .Select(f =>
 					new
 					{
 						Client = f,
@@ -1521,6 +1527,7 @@ namespace CC.Web.Controllers
 			if (data == null) return null;
 			var client = data.Client;
 			client.CurrentFunctionalityLevel = data.CurrentFunctionalityLevel;
+            
 			client.CurrentGovHcHours = db.GovHcHours.Where(f => f.ClientId == client.Id)
 				.Where(f => f.StartDate <= DateTime.Now)
 				.OrderByDescending(f => f.StartDate)
@@ -1549,8 +1556,14 @@ namespace CC.Web.Controllers
             {
                 client.SC_MonthlyCost = 25;
             }
+            var NursingHome = client.NursingHome;
+            if(NursingHome == true)
+            {
+                client.HomeCareAllowedHours = 0;
 
-           // if (client.CountryId == 252) client.CurrentHomeCareApprovalStatus = 1;
+            }
+           
+            // if (client.CountryId == 252) client.CurrentHomeCareApprovalStatus = 1;
             var allowd = Permissions.ClientsFilter.Compile();
 
 			if (User.IsInRole("BMF"))
@@ -1698,8 +1711,8 @@ namespace CC.Web.Controllers
 					{
 						ModelState.AddModelError(string.Empty, "Leave Reason is required if Leave Date is specified");
 					}
-					else if (model.Data.LeaveReasonId.HasValue && !model.Data.LeaveDate.HasValue)
-					{
+					else if (model.Data.LeaveReasonId.HasValue && !model.Data.LeaveDate.HasValue )
+                    {
 						ModelState.AddModelError(string.Empty, "Leave Date ie required if Leave Reason is specified");
 					}
 					if (model.Data.LeaveReasonId.HasValue && model.Data.LeaveReasonId == (int)LeaveReasonEnum.NotEligible && this.CcUser.RoleId == (int)FixedRoles.Admin)
@@ -1833,7 +1846,15 @@ namespace CC.Web.Controllers
 								if (cfs != null)
 								{
 									var lastDay = new DateTime(DateTime.Today.Year, DateTime.Today.Month, DateTime.DaysInMonth(DateTime.Today.Year, DateTime.Today.Month));
-									cfs.EndDate = lastDay;
+                                    if (model.Data.LeaveReasonId == 1 && cfs.EndDate is null )//Leave reason "Moved Away",and CFS.EndDate is null then CFS.EndDate not populated Task_32
+                                    {
+                                        cfs.EndDate = null;
+                                       
+                                    }
+                                    else//Leave reason non "Moved Away"
+                                    {
+                                        cfs.EndDate = lastDay;
+                                    }
 									cfs.EndDateReasonId = db.CfsEndDateReasons.SingleOrDefault(f => f.Name == "A leave reason/leave date has been entered in the client details").Id;
 									cfs.UpdatedById = this.CcUser.Id;
 									try
@@ -1910,11 +1931,25 @@ namespace CC.Web.Controllers
 			{
 				target.AdministrativeLeave = source.AdministrativeLeave;
 			}
-			if (!target.AdministrativeLeave || permissions.User.RoleId == (int)FixedRoles.Admin || permissions.User.RoleId == (int)FixedRoles.GlobalOfficer)
-			{
-				target.LeaveDate = source.LeaveDate;
-				target.LeaveReasonId = source.LeaveReasonId;
-			}
+            if (!target.AdministrativeLeave || permissions.User.RoleId == (int)FixedRoles.Admin || permissions.User.RoleId == (int)FixedRoles.GlobalOfficer)
+           // {
+                { 
+                target.LeaveReasonId = source.LeaveReasonId;
+
+              // }
+          //  if (target.LeaveReasonId == 1) //if Leave Reason "Moved Away" don't put Leave End Date
+            //    {
+             //   target.LeaveDate = null;
+            //    }
+            //else
+                //   {
+                        target.LeaveDate = source.LeaveDate;
+                       // target.LeaveReasonId = source.LeaveReasonId;
+                      
+
+                 // }
+                  
+                }
 			target.LeaveRemarks = NormalizeString(source.LeaveRemarks);
 			target.DeceasedDate = source.DeceasedDate;
 
@@ -1963,6 +1998,8 @@ namespace CC.Web.Controllers
 			target.SC_MonthlyCost = source.SC_MonthlyCost;
 			target.HomecareWaitlist = source.HomecareWaitlist;
             target.UnableToSign = source.UnableToSign;
+            target.NursingHome = source.NursingHome;
+            target.AssistedLiving = source.AssistedLiving;
             target.OtherServicesWaitlist = source.OtherServicesWaitlist;
 			if (permissions.User.RoleId == (int)FixedRoles.Admin || permissions.User.RoleId == (int)FixedRoles.GlobalOfficer)
 			{
@@ -2610,12 +2647,14 @@ namespace CC.Web.Controllers
 					   Gender = i.Gender,
 					   HomecareWaitlist = i.HomecareWaitlist ?? false,
                        UnableToSign = i.UnableToSign ?? false,
-					   OtherServicesWaitlist = i.OtherServicesWaitlist ?? false,
+                       NursingHome = i.NursingHome ?? false,
+                       AssistedLiving = i.AssistedLiving ?? false,
+                       OtherServicesWaitlist = i.OtherServicesWaitlist ?? false,
 					   CommPrefs = commPref != null ? commPref.Name : "",
 					   CareReceivedVia = careReceived != null ? careReceived.Name : "",
 					   MAFDate = i.MAFDate,
 					   MAF105Date = i.MAF105Date,
-                       HAS2Date = i.HAS2Date,
+                    //   HAS2Date = i.HAS2Date,
                        Errors =
 						   ((i.FirstName == null || i.FirstName.Trim().Equals(string.Empty)) ? "FirstName is required.  " : "") +
 						   ((i.LastName == null || i.LastName.Trim().Equals(string.Empty)) ? "LastName is required.  " : "") +
@@ -2636,7 +2675,7 @@ namespace CC.Web.Controllers
 						   ((i.JoinDate >= tomorrow) ? "Join_Date can't be greater then the date of entry, " : "") +						   
 						   ((i.MAFDate != null && (i.MAFDate >= tomorrow || i.MAFDate < earliestMaf)) ? "MAF Date can't be future date or early than " + earliestMafStr + ", " : "") +
                            ((i.MAF105Date != null && (i.MAF105Date >= tomorrow || i.MAF105Date < earliestMaf)) ? "MAF 105+ Date can't be future date or early than " + earliestMafStr + ", " : "") +
-                           ((i.HAS2Date != null && (i.HAS2Date >= tomorrow || i.HAS2Date < earliestHAS2)) ? "HAS2Date can't be future date or early than " + earliestHAS2Str + ", " : "") + 
+                          // ((i.HAS2Date != null && (i.HAS2Date >= tomorrow || i.HAS2Date < earliestHAS2)) ? "HAS2Date can't be future date or early than " + earliestHAS2Str + ", " : "") + 
                            ((this.Permissions.User.RoleId != (int)FixedRoles.Admin && i.JoinDate < Client.MinEligibleJoinDate) ? "Join_Date can't be earlier than " + minJoinDayString + ".  " : "") +
 						   ((i.LeaveDate != null && i.LeaveReasonId == null) ? "Leave_Reason has to be specified if Leave_Date is not empty, " : "") +
 						   ((i.LeaveReasonId != null && i.LeaveDate == null) ? "Leave_Date is required if Leave_Reason_ID is not empty, " : "") +
@@ -2734,7 +2773,7 @@ namespace CC.Web.Controllers
 					   PobCity = (i.PobCity ?? existing.PobCity),
 					   BirthCountryName = bc.Name,
 					   CountryName = co.Name,
-					   NationaliIdTypeId = (i.NationalIdTypeId ?? existing.NationalIdTypeId),
+					   NationaliIdTypeId = (i.NationalIdTypeId ?? existing.NationalIdTypeId), 
 					   NationalIdTypeName = nationalIdType.Name,
 					   NationalId = (i.NationalId ?? existing.NationalId),
 					   LeaveReasonId = (i.LeaveReasonId ?? existing.LeaveReasonId),
@@ -2744,12 +2783,14 @@ namespace CC.Web.Controllers
 					   Gender = i.Gender,
 					   HomecareWaitlist = i.HomecareWaitlist ?? (bool?)existing.HomecareWaitlist,
                        UnableToSign = i.UnableToSign ?? (bool?)existing.UnableToSign,
+                       NursingHome = i.NursingHome ?? (bool?)existing.NursingHome,
+                       AssistedLiving = i.AssistedLiving ?? (bool?)existing.AssistedLiving,
                        OtherServicesWaitlist = i.OtherServicesWaitlist ?? (bool?)existing.OtherServicesWaitlist,
 					   CommPrefs = commPref != null ? commPref.Name : "",
 					   CareReceivedVia = careReceived != null ? careReceived.Name : "",
 					   MAFDate = i.MAFDate ?? existing.MAFDate,
 					   MAF105Date = i.MAF105Date ?? existing.MAF105Date,
-                       HAS2Date = i.HAS2Date ?? existing.HAS2Date,
+                     //  HAS2Date = i.HAS2Date ?? existing.HAS2Date,
 					   Errors =
 						   ((i.ClientId == null) ? "Client ID is required. " : "") +
 						   ((this.Permissions.User.RoleId != (int)FixedRoles.Admin && (i.FirstName ?? existing.FirstName).Equals(i.LastName ?? existing.LastName)) ? "First Name and Last Name can't be the same.  " : "") +
@@ -2775,7 +2816,7 @@ namespace CC.Web.Controllers
 						   (((i.JoinDate ?? existing.JoinDate) < EarliestJoinDate) ? "Join_Date can't be earlier than 09 Feb 1946, " : "") +						   
 						   (((i.MAFDate ?? existing.MAFDate) != null && ((i.MAFDate ?? existing.MAFDate) >= tomorrow || (i.MAFDate ?? existing.MAFDate) < earliestMaf)) ? "MAF Date can't be future date or early than " + earliestMafStr + ", " : "") +
                            (((i.MAF105Date ?? existing.MAF105Date) != null && ((i.MAF105Date ?? existing.MAF105Date) >= tomorrow || (i.MAF105Date ?? existing.MAF105Date) < earliestMaf)) ? "MAF 105+ Date can't be future date or early than " + earliestMafStr + ", " : "") +
-                           (((i.HAS2Date ?? existing.HAS2Date) != null && ((i.HAS2Date ?? existing.HAS2Date) >= tomorrow || (i.HAS2Date ?? existing.HAS2Date) < earliestHAS2)) ? "HAS2 Date can't be future date or early than " + earliestHAS2Str + ", " : "") +                     
+                         //  (((i.HAS2Date ?? existing.HAS2Date) != null && ((i.HAS2Date ?? existing.HAS2Date) >= tomorrow || (i.HAS2Date ?? existing.HAS2Date) < earliestHAS2)) ? "HAS2 Date can't be future date or early than " + earliestHAS2Str + ", " : "") +                     
                            ((this.Permissions.User.RoleId != (int)FixedRoles.Admin && i.JoinDate != null && existing.JoinDate != null && i.JoinDate != existing.JoinDate) ? "You are not allowed to change the Join_Date. " : "") +
 						   (((i.LeaveDate ?? existing.LeaveDate) != null && (i.LeaveReasonId ?? existing.LeaveReasonId) == null) ? "Leave_Reason has to be specified if Leave_Date is not empty, " : "") +
 						   ((i.LeaveDate != null && i.LeaveDate > now && !isAdmin && !isGO) ? "Leave Date can't be greater then the date of entry, " : "") +
@@ -2850,6 +2891,8 @@ namespace CC.Web.Controllers
 			public int? Gender { get; set; }
 			public bool? HomecareWaitlist { get; set; }
             public bool? UnableToSign { get; set; }
+            public bool? NursingHome { get; set; }
+            public bool? AssistedLiving { get; set; }
             public bool? OtherServicesWaitlist { get; set; }
 			public string CommPrefs { get; set; }
 			public string CareReceivedVia { get; set; }
@@ -2903,8 +2946,9 @@ namespace CC.Web.Controllers
 					}
 					else
 					{
-						email.To.Add("support@prog4biz.com");
-					}
+                        //email.To.Add("support@prog4biz.com");
+                        email.To.Add("Lena.Kunisky@claimscon.org");
+                    }
 					string[] newFileList = Directory.GetFiles(HostingEnvironment.MapPath("~/Files-CFS/NewClients/"), "*.csv");
 					foreach (var file in newFileList)
 					{

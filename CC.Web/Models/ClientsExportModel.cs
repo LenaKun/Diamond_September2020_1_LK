@@ -73,8 +73,8 @@ namespace CC.Web.Models
 		public string Gender { get; set; }
 		[Display(Name = "CC ID", Order = 2)]
 		public int CCID { get; set; }
-		[Display(Name = "MasterId", Order = 3)]
-		public int? MasterId { get; set; }
+	//	[Display(Name = "MasterId", Order = 3)]
+	//	public int? MasterId { get; set; }
 		[Display(Name = "Create Date", Order = 12)]
 		public DateTime? CreateDate { get; set; }
 		[Display(Name = "FunctionalityLevelName", Order = 20)]
@@ -83,9 +83,9 @@ namespace CC.Web.Models
 		public decimal? HCHours { get; set; }
 		[Display(Name = "GF Hours", Order = 22)]
 		public decimal? GrandfatheredHours { get; set; }
-		[Display(Name = "GF Start Date", Order = 23)]
+		[Display(Name = "Legacy Start Date", Order = 23)]
 		public DateTime? GFStartDate { get; set; }		
-		[Display(Name = "GF Type", Order = 24)]
+		[Display(Name = "Legacy Type", Order = 24)]
 		public string GFType { get; set; }
 		[Display(Name = "Approval Status", Order = 6)]
 		public string ApprovalStatus { get; set; }
@@ -115,10 +115,10 @@ namespace CC.Web.Models
 		public string PreviousaddressinIsrael { get; set; }
 		[Display(Name = "Phone", Order = 55)]
 		public string Phone { get; set; }
-		[Display(Name = "Austrian Eligible", Order = 37)]
-		public bool AustrianEligible { get; set; }
-		[Display(Name = "Romanian Eligible", Order = 36)]
-		public bool RomanianEligible { get; set; }		
+		//[Display(Name = "Austrian Eligible", Order = 37)]
+		//public bool AustrianEligible { get; set; }
+		//[Display(Name = "Romanian Eligible", Order = 36)]
+		//public bool RomanianEligible { get; set; }		
 		[Display(Name = "Unmet Needs Start Date (highest date if multiple entries)", Order = 27)]
 		public DateTime? UnmetNeedsStartDate { get; set; }
 		[Display(Name = "Unmet Needs Weekly Hours", Order = 28)]
@@ -131,30 +131,56 @@ namespace CC.Web.Models
 		public string HomecareWaitlist { get; set; }
         [Display(Name = "Unable To Sign", Order = 67)]
         public string UnableToSign { get; set; }
+        [Display(Name = "Nursing Home", Order = 69)]
+        public string NursingHome { get; set; }
+
+        [Display(Name = "Assisted Living", Order = 70)]
+        public string AssistedLiving { get; set; }
         [Display(Name = "Other Services Waitlist", Order = 64)]
         public string OtherServicesWaitlist { get; set; }
 		[Display(Name = "MAF Date", Order = 18)]
 		public DateTime? MAFDate { get; set; }
 		[Display(Name = "MAF 105+ Date", Order = 19)]
 		public DateTime? MAF105Date { get; set; }
-        [Display(Name = "HAS2 Date", Order = 68)] 
-        public DateTime? HAS2Date { get; set; }
+       // [Display(Name = "HAS2 Date", Order = 68)] 
+       // public DateTime? HAS2Date { get; set; }
 		[Display(Name = "Comm Prefs", Order = 65)]
 		public string CommPrefs { get; set; }
 		[Display(Name = "Care Received Via", Order = 66)]
 		public string CareReceivedVia { get; set; }
-	}
+      //  [Display(Name = "DAF ID", Order = 68)]
+       // public int? DAFID { get; set; }
+       
+        // [Display(Name = "GG Reported?", Order = 35)]
+        // public string GGReportedOnly { get; set; }
 
-	public class ClientsExportModel : ClientsExportModelBMF
-	{
-		[Display(Name = "GG Reported?", Order = 35)]
-		public string GGReportedOnly { get; set; }		
+        // [Display(Name = "Article 2 / CEEF recipient?", Order = 39)]
+        // public string IsCeefRecipient { get; set; }
 
-		[Display(Name = "Article 2 / CEEF recipient?", Order = 39)]
-		public string IsCeefRecipient { get; set; }
+        //  [Display(Name = "Article 2 / CEEF registration number", Order = 40)]
+        //  public string CeefId { get; set; }
+    }
 
-		[Display(Name = "Article 2 / CEEF registration number", Order = 40)]
-		public string CeefId { get; set; }
-	}
+    
+    public class ClientsExportModel : ClientsExportModelBMF
+    {
+    	[Display(Name = "GG Reported?", Order = 35)]
+    	public string GGReportedOnly { get; set; }		
+
+    	[Display(Name = "Article 2 / CEEF recipient?", Order = 39)]
+    	public string IsCeefRecipient { get; set; }
+
+    	[Display(Name = "Article 2 / CEEF registration number", Order = 40)]
+    	public string CeefId { get; set; }
+
+        [Display(Name = "Austrian Eligible", Order = 37)]
+         public bool AustrianEligible { get; set; }
+
+         [Display(Name = "Romanian Eligible", Order = 36)]
+         public bool RomanianEligible { get; set; }
+
+        [Display(Name = "MasterId", Order = 3)]
+        public int? MasterId { get; set; }
+    }
 
 }

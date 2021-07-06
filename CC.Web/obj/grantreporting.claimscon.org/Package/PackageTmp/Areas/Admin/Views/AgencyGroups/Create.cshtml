@@ -119,7 +119,7 @@
         @Html.EditorFor(model => model.DayCenter)
         @Html.ValidationMessageFor(model => model.DayCenter)
     </div>
-   
+
 
     <div class="editor-label">
         @Html.LabelFor(model => model.DefaultCurrency)
@@ -134,7 +134,13 @@
         @Html.EditorFor(model => model.CfsDate)
         @Html.ValidationMessageFor(model => model.CfsDate)
     </div>
-
+    <div class="editor-label">
+        @Html.LabelFor(model => model.FluxxId)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.FluxxId)
+        @Html.ValidationMessageFor(model => model.FluxxId)
+    </div>
     <p>
         <input type="submit" value="Create" />
     </p>

@@ -569,6 +569,7 @@ namespace CC.Web.Controllers
                     {
                         try
                         {
+                            Thread.Sleep(600);//delay 1 minute
                             Thread t = new Thread(this.RunCommandLineApp);
                             t.Start(appbudget.Id);
                         }
@@ -1185,6 +1186,9 @@ namespace CC.Web.Controllers
                     result.AppBudgetServices.Add(r);
                 }
             }
+
+
+
             return result;
         }
 
@@ -1340,11 +1344,12 @@ namespace CC.Web.Controllers
         [CcAuthorize(FixedRoles.RegionOfficer, FixedRoles.Admin)]
         [ConfirmPassword()]
         [ValidateInput(false)]
-        public ActionResult ApproveByRpo(AppBudget input)
+        public ActionResult ApproveByRpo(AppBudget input,bool FormASubmitted = false)
         {
             AppBudget appbudget = this.GetById(input.Id);
             if (ModelState.IsValid)
             {
+                
                 appbudget.FormASubmitted = input.FormASubmitted;
                 appbudget.PoRemarks = input.PoRemarks;
 
@@ -1518,28 +1523,31 @@ namespace CC.Web.Controllers
         [CcAuthorize(FixedRoles.GlobalOfficer, FixedRoles.Admin)]
         [ConfirmPassword()]
         [ValidateInput(false)]
-        public ActionResult ApproveByGpo(int id, string poremarks)
+        public ActionResult ApproveByGpo(AppBudget input)
         {
-            AppBudget appbudget = this.GetById(id);
-
+            AppBudget appbudget = this.GetById(input.Id);
             if (ModelState.IsValid)
             {
+               // appbudget.FormASubmitted = input.FormASubmitted;
+                appbudget.PoRemarks = input.PoRemarks;
+
                 appbudget.ApprovalStatus = AppBudgetApprovalStatuses.Approved;
-                appbudget.PoRemarks = poremarks;
                 appbudget.UpdatedAt = DateTime.Now;
                 appbudget.UpdatedById = this.CcUser.Id;
+
                 appbudget.UpdatedByGpoAt = DateTime.Now;
                 appbudget.UpdatedByGpoId = this.CcUser.Id;
+
                 TryValidateModel(appbudget);
                 if (ModelState.IsValid)
                 {
-                    this.SendGpoApprovalEmailNotification(appbudget);
                     db.SaveChanges();
+                    this.SendGpoApprovalEmailNotification(appbudget);
                     AddPdfToCteraAndFluxx(appbudget);
-                    return RedirectToAction("Details", new { id = id });
+                    return RedirectToAction("Details", new { id = appbudget.Id });
                 }
             }
-            return View("Details", appbudget);
+            return this.Details(input.Id);
         }
 
         [HttpPost]

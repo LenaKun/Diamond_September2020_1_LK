@@ -177,7 +177,7 @@
 			</span>
 		</div>
 		<div class="editor-item">
-			@Html.LabelFor(model => model.Data.State):
+			@Html.LabelFor(model => model.Data.StateId):
 			@Html.DropDownListFor(model => model.Data.StateId, Model.States)
 		</div>
 		<div class="editor-item">
@@ -354,14 +354,18 @@
 	});
 
 	$(function () {
-		$('select[name$=".CountryId"]').change(function () {
-			var stateId = $(this).val();
-			var emptyItemText = "Please select a State"
-			var $states = $('select[name$="Data.StateId"]');
-			var url = '@Url.Content("~/data/dataservice.svc/")';
-			UpdateCountryAndStates(url, $states, $(this).val(), emptyItemText);
+        $('select[name$=".CountryId"]').change(function () {
+           
+            var emptyItemText = "Please select a State";
+            var $states = $('select[name$="Data.StateId"]');
+            var stateId = $states.val();
+            var url = '@Url.Content("~/data/dataservice.svc/")';
+            if (stateId != emptyItemText && stateId != null && stateId != "") { return;}
+          
+                UpdateCountryAndStates(url, $states, $(this).val(), emptyItemText);
+         
 		}).change();
-	});
+    });
 
 
 	$(function () {

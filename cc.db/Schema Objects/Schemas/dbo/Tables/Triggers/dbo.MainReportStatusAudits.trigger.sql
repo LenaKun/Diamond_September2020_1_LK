@@ -23,8 +23,19 @@
 						i.updatedat,
 						i.updatedbyId
 						
-					from inserted as i left outer join deleted as d on i.id=d.id
+					from inserted as i join deleted as d on i.id=d.id
+				--where i.StatusId <> d.StatusId
+
+				
+						
 			    end	
+				
+				if exists(SELECT top 2 * FROM MainReportStatusAudits WHERE StatusChangeDate IN
+	  ( SELECT StatusChangeDate FROM MainReportStatusAudits  GROUP BY StatusChangeDate HAVING COUNT(*) > 1) order by StatusChangeDate desc, Id desc)
+
+	   delete from MainReportStatusAudits
+	  where id = (SELECT max(id)  FROM MainReportStatusAudits WHERE StatusChangeDate IN
+	  ( SELECT StatusChangeDate FROM MainReportStatusAudits  GROUP BY StatusChangeDate HAVING COUNT(*) > 1) )
 	end
 
 

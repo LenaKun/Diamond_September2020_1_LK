@@ -145,10 +145,12 @@
 					allowClear: true,
 					placeholder: "All States",
 					initSelection: function (element, callback) {
-						var id = $(element).val();
+                        var id = $(element).val();
+                        var q = {};
 						if (id !== "") {
 							$.ajax('@Url.Content("~/data/dataservice.svc/States")' + '(' + id + ')', {
-								dataType: "json",
+                                dataType: "json",
+                                data: q
 							}).done(function (data) {
 								var a = data.d;
 								callback({ id: a.Id, text: a.Name });
@@ -172,15 +174,17 @@
 								filters.push("substringof('" + escape(term) + "', Name) eq true");
 							}
 							return {
-								"$filter": filters.join(" and "),
-								"$expand": "Country",
-								"$select": "Id,Name,Country",
+                                "$filter": filters.join(" and "),
+                                "$select": "Id,Name",
+								//"$expand": "Country",
+								//"$select": "Id,Name,Country",
 								"$orderby": "Name"
 							};
 						},
 						results: function (data) {
 							return {
-								results: $.map(data.d, function (a) { return { id: a.Id, text: a.Name, country: a.Country } })
+								//results: $.map(data.d, function (a) { return { id: a.Id, text: a.Name, country: a.Country } })
+                                results: $.map(data.d, function (a) { return { id: a.Id, text: a.Name } })
 							};
 						}
 					}

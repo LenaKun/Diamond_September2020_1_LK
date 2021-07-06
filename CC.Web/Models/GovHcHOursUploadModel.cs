@@ -92,6 +92,7 @@ namespace CC.Web.Models
 
 		public IEnumerable<System.ComponentModel.DataAnnotations.ValidationResult> Validate(System.ComponentModel.DataAnnotations.ValidationContext validationContext)
 		{
+            db.CommandTimeout = 1000;
 			if (db != null && Permissions != null)
 			{
 
@@ -111,7 +112,7 @@ namespace CC.Web.Models
 		public CC.Data.Services.IPermissionsBase Permissions { get; set; }
 		public static IQueryable<DataRow> PreviewQuery(ccEntities db, CC.Data.Services.IPermissionsBase Permissions, Guid Id)
 		{
-
+            db.CommandTimeout = 1000;
 			var maxDate = DateTime.Now.Date;
 			var source =
 				from item in
@@ -181,26 +182,30 @@ namespace CC.Web.Models
 		}
 		public object GetData()
 		{
-			using (var db = new ccEntities())
-			{
-				var source = PreviewQuery(db, Permissions, Id);
 
-				var filtered = source;
-				IOrderedQueryable<DataRow> ordered = null;
-				if (this.sSortCol_0 == "RowErrors")
-				{
-					ordered = source.OrderBy(f => f.RowErrors.Any, this.sSortDir_0 == "asc");
-				}
-				else { ordered = source.OrderByField(this.sSortCol_0, this.sSortDir_0 == "asc"); }
+            using (var db = new ccEntities())
+                
+            {
+                db.CommandTimeout = 1000;
+                var source = PreviewQuery(db, Permissions, Id);
 
-				return new jQueryDataTableResult
-				{
-					aaData = ordered.Skip(this.iDisplayStart).Take(this.iDisplayLength).ToList(),
-					iTotalDisplayRecords = filtered.Count(),
-					iTotalRecords = source.Count(),
-					sEcho = sEcho
-				};
-			}
+                var filtered = source;
+                IOrderedQueryable<DataRow> ordered = null;
+                if (this.sSortCol_0 == "RowErrors")
+                {
+                    ordered = source.OrderBy(f => f.RowErrors.Any, this.sSortDir_0 == "asc");
+                }
+                else { ordered = source.OrderByField(this.sSortCol_0, this.sSortDir_0 == "asc"); }
+
+                return new jQueryDataTableResult
+                {
+                   
+                    aaData = ordered.Skip(this.iDisplayStart).Take(this.iDisplayLength).ToList(),
+                    iTotalDisplayRecords = filtered.Count(),
+                    iTotalRecords = source.Count(),
+                    sEcho = sEcho
+                };
+            }
 
 		}
 		public class DataRow

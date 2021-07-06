@@ -52,7 +52,8 @@ namespace CC.Web.Areas.Admin.Controllers
                              ExcludeFromReports = ag.ExcludeFromReports,
 							 ag.Culture,
 							 DefaultCurrency = ag.DefaultCurrency,
-							 CfsDate = ag.CfsDate
+							 CfsDate = ag.CfsDate,
+                             FluxxId = ag.FluxxId
 						 };
 
 			var sSortCol_0 = Request["mDataProp_" + p.iSortCol_0];
@@ -287,7 +288,8 @@ namespace CC.Web.Areas.Admin.Controllers
                             RequiredMatch = ag.RequiredMatch ? "true" : "false",
                             ExcludeFromReports = ag.ExcludeFromReports ? "true" : "false",
 							DefaultCurrency = ag.DefaultCurrency,
-							CfsDate = ag.CfsDate
+							CfsDate = ag.CfsDate,
+                            FluxxId =  (ag.FluxxId ?? 0) 
                         }).ToList();
             return this.Excel("SERs", "Sheet1", sers);
         }
@@ -324,6 +326,8 @@ namespace CC.Web.Areas.Admin.Controllers
 			public string DefaultCurrency { get; set; }
 			[Display(Name = "CFS Date")]
 			public DateTime? CfsDate { get; set; }
+            [Display(Name = "FluxxId")]
+            public int FluxxId { get; set; }
         }
 
 		protected override void Dispose(bool disposing)

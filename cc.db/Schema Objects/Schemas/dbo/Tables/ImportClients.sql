@@ -90,7 +90,9 @@
     [MAFDate] DATETIME NULL, 
     [MAF105Date] DATETIME NULL, 
     [UnableToSign] BIT NULL, 
-    [HAS2Date] DATETIME NULL ,    --personalDetails
+    [HAS2Date] DATETIME NULL, 
+    [NursingHome] BIT NULL, 
+    [AssistedLiving] BIT NULL ,    --personalDetails
 
 )
 GO

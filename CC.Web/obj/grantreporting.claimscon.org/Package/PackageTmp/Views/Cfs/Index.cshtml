@@ -33,32 +33,34 @@
 					$(nRow).attr("id", aData["Id"]);
 				}
 				return nRow;
-			},
-			"aoColumns": [{
-				"mData": "CreatedAt",
-				"sTitle": "Created At",
-				"mRender": function (val) { return renderDate(val); },
-			},
-			{
-				"mData": "ClientResponseIsYes",
-				"sTitle": "Client Response",
-				"mRender": function (val) { return val ? "Yes" : "No"; }
-			}, {
-				"mData": "StartDate",
-				"sTitle": "Start Date",
-				"mRender": function (val) { return renderDate(val); }
-			}, {
-				"mData": "EndDate",
-				"sTitle": "End Date",
-				"mRender": function (val) { return renderDate(val); }
-			}, {
-				"mData": "Id",
-				"sTitle": "",
-				"bVisible": '@(User.IsInRole(FixedRoles.Admin) || User.IsInRole(FixedRoles.CfsAdmin) || User.IsInRole(FixedRoles.Ser) || User.IsInRole(FixedRoles.AgencyUser) || User.IsInRole(FixedRoles.SerAndReviewer) || User.IsInRole(FixedRoles.AgencyUserAndReviewer))' == "True",
-				"mRender": function (val) {
-					return '<a href="@Url.Content("/Cfs/Details/")' + val + '">Details</a>';
-				}
-			}]
+            },
+           
+            "aoColumns": [{
+                "mData": "CreatedAt",
+                "sTitle": "Created At",
+                "mRender": function (val) { return renderDate(val); },
+            },
+            {
+                "mData": "ClientResponseIsYes",
+                "sTitle": "Client Response",
+                "mRender": function (val) { return val ? "Yes" : "No"; }
+            }, {
+                "mData": "StartDate",
+                "sTitle": "Start Date",
+                "mRender": function (val) { return renderDate(val); }
+            }, {
+                "mData": "EndDate",
+                "sTitle": "End Date",
+                "mRender": function (val) { return renderDate(val); }
+            }, {
+                "mData": "Id",
+                "sTitle": "",
+                "bVisible": '@(User.IsInRole(FixedRoles.Admin) || User.IsInRole(FixedRoles.CfsAdmin) || User.IsInRole(FixedRoles.Ser) || User.IsInRole(FixedRoles.AgencyUser) || User.IsInRole(FixedRoles.SerAndReviewer) || User.IsInRole(FixedRoles.AgencyUserAndReviewer))' == "True",
+                "mRender": function (val) {
+                    return '<a href="@Url.Content("/Cfs/Details/")' + val + '">Details</a>';
+                }
+            }]
+        
 		});
 	});
 </script>

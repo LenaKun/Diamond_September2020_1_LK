@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using CC.Data;
 using CsvHelper.Configuration;
+using System.Data.Objects.SqlClient;
+
 
 namespace CC.Web.Models.Import.ClientReports
 {
@@ -41,6 +43,32 @@ namespace CC.Web.Models.Import.ClientReports
             var Clients = this.GetClients(_db);
             var SubReports = this.GetSubReports(_db);
 			DateTime JoinDateToCompare = new DateTime(2018, 1, 1);
+
+            
+            //var ClientsPerNationalId = (from cl in db.Clients
+            //                            where cl.NationalId == NationalId
+            //                            select cl.Id).ToList();
+
+            //var ClientsCount = ClientsPerNationalId.Count();
+            //var ReportStart = subReport.MainReport.Start;
+            //int MonthCountClientPerNationalIdFinal = 0;
+
+            //for (int i = 0; i < ClientsCount; i++)
+            //{
+
+            //    var Clientid = ClientsPerNationalId[i];
+            //    var MonthCountPerNationalId = (from sucr in db.SupportiveCommunitiesReports//sucr in db.viewScRepSources//from sucr in db.SupportiveCommunitiesReports
+            //                                   join sr in db.SubReports on sucr.SubReportId equals sr.Id
+            //                                   join mr in db.MainReports on sr.MainReportId equals mr.Id
+            //                                   where sucr.ClientId == Clientid && Clientid != CurrentClientId && mr.Start == ReportStart
+            //                                   select sucr.MonthsCount).Sum();
+            //    MonthCountPerNationalId = MonthCountPerNationalId != null ? MonthCountPerNationalId : 0;
+            //    MonthCountClientPerNationalIdFinal = MonthCountPerNationalId.Value + MonthCountClientPerNationalIdFinal;
+            //}
+            //MonthCountClientPerNationalIdFinal = MonthCountClientPerNationalIdFinal + report.MonthsCount.Value;
+
+
+
             var source = (from item in objectSet
                           where item.ImportId == id
                           join client in Clients on item.ClientId equals client.Id into clientsGroup
@@ -50,7 +78,41 @@ namespace CC.Web.Models.Import.ClientReports
                           let ldx = System.Data.Objects.EntityFunctions.AddDays(client.LeaveDate, client.DeceasedDate == null ? 0 : 90)
                           let start = subReport.MainReport.Start
                           let end = subReport.MainReport.End
-						  let duplicate = objectSet.Where(f => f.ClientId == item.ClientId && f.ImportId == id).Count() > 1
+                          let duplicate = objectSet.Where(f => f.ClientId == item.ClientId && f.ImportId == id).Count() > 1
+                          let subreportservicetypeid = subReport.AppBudgetService.Service.TypeId
+                          let NationalId = (from cl in _db.Clients
+                                            where cl.Id == item.ClientId
+                                            select cl.NationalId).FirstOrDefault()
+                          
+                          let SCRMonthCountNationalId = (from scr in _db.SupportiveCommunitiesReports
+                                                         where scr.Client.NationalId == NationalId  
+                                                         join sr in _db.SubReports on scr.SubReportId equals sr.Id
+                                                         join mr in _db.MainReports on sr.MainReportId equals mr.Id
+                                                         where mr.Start == subReport.MainReport.Start //itemstart //&& subReport.Id ==item.SubReportId
+                                                          select scr.MonthsCount).FirstOrDefault()
+                           let TotalMonthCount = SCRMonthCountNationalId + item.MonthsCount
+                          //   select cl.Id).ToList()
+                          //  let ClientsCount = ClientsPerNationalId.Count()
+                          // let ReportStart = subReport.MainReport.Start
+                          //let MonthCountClientPerNationalIdFinal = 0
+
+                          // for (int i = 0; i < ClientsCount; i++)
+                          //{
+
+                          //    var Clientid = ClientsPerNationalId[i];
+                          //    var MonthCountPerNationalId = (from sucr in db.SupportiveCommunitiesReports//sucr in db.viewScRepSources//from sucr in db.SupportiveCommunitiesReports
+                          //                                   join sr in db.SubReports on sucr.SubReportId equals sr.Id
+                          //                                   join mr in db.MainReports on sr.MainReportId equals mr.Id
+                          //                                   where sucr.ClientId == Clientid && Clientid != CurrentClientId && mr.Start == ReportStart
+                          //                                   select sucr.MonthsCount).Sum();
+                          //    MonthCountPerNationalId = MonthCountPerNationalId != null ? MonthCountPerNationalId : 0;
+                          //    MonthCountClientPerNationalIdFinal = MonthCountPerNationalId.Value + MonthCountClientPerNationalIdFinal;
+                          //}
+                          //MonthCountClientPerNationalIdFinal = MonthCountClientPerNationalIdFinal + report.MonthsCount.Value;
+
+
+
+
                           select new CriSupportiveCommunitiesPreview
                           {
                               RowIndex = item.RowIndex,
@@ -65,12 +127,14 @@ namespace CC.Web.Models.Import.ClientReports
                                 (
 
                                   ((item.HoursHoldCost == null) ? "Household Cost is required." : "") +
+                                  ((client.ApprovalStatusId == 1024 && subreportservicetypeid != 8) ? "Approved, Homecare Only clients can only be reported for Homecare services." : "") +
                                   (client.JoinDate > end ? "Client has joined after report end date" : "") +
                                   (client.DeceasedDate == null && client.LeaveDate < start ? "Client has left before report start date" : "") +
                                   (client.DeceasedDate != null && client.DeceasedDate < start ? "Client has DOD before report start date" : "") +
                                   ((client == null) ? "Invalid ClientId" : "") +
                                   ((client.AgencyId != subReport.AppBudgetService.AgencyId) ? "Invalid Agency" : "") +
-								  (duplicate ? "There is a duplicate row for this client" : "")
+								  (duplicate ? "There is a duplicate row for this client" : "") +
+                                  ((TotalMonthCount > 3) ? "National ID: " + NationalId + " has been reported  more  than are allowed in this reporting period."  : "")
                                                 ))
 
                           });

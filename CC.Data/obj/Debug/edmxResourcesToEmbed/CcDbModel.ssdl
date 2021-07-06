@@ -45,6 +45,7 @@
     <Property Name="CfsDate" Type="datetime" />
     <Property Name="FluxxOrganizationId" Type="int" />
     <Property Name="FluxxOrganizationName" Type="nvarchar" MaxLength="255" />
+    <Property Name="FluxxId" Type="int" />
   </EntityType>
   <EntityType Name="AgencyOverRideReasons">
     <Key>
@@ -427,6 +428,8 @@
     <Property Name="MAF105Date" Type="datetime" />
     <Property Name="UnableToSign" Type="bit" Nullable="false" />
     <Property Name="HAS2Date" Type="datetime" />
+    <Property Name="NursingHome" Type="bit" Nullable="false" />
+    <Property Name="AssistedLiving" Type="bit" Nullable="false" />
   </EntityType>
   <EntityType Name="Comments">
     <Key>
@@ -902,6 +905,8 @@
     <Property Name="MAF105Date" Type="datetime" />
     <Property Name="UnableToSign" Type="bit" />
     <Property Name="HAS2Date" Type="datetime" />
+    <Property Name="NursingHome" Type="bit" />
+    <Property Name="AssistedLiving" Type="bit" />
   </EntityType>
   <EntityType Name="ImportFunctionalityScores">
     <Key>
@@ -1741,6 +1746,8 @@ warning 6002: The table/view 'cc_dev.dbo.ValidClientView' does not have a primar
     <Property Name="MAF105Date" Type="datetime" />
     <Property Name="HAS2Date" Type="datetime" />
     <Property Name="UnableToSign" Type="bit" />
+    <Property Name="NursingHome" Type="bit" />
+    <Property Name="AssistedLiving" Type="bit" />
   </EntityType>
   <!--Errors Found During Generation:
 warning 6002: The table/view 'cc_dev.dbo.ValidExistingClientsView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -1813,6 +1820,8 @@ warning 6002: The table/view 'cc_dev.dbo.ValidExistingClientsView' does not have
     <Property Name="MAF105Date" Type="datetime" />
     <Property Name="HAS2Date" Type="datetime" />
     <Property Name="UnableToSign" Type="bit" />
+    <Property Name="NursingHome" Type="bit" />
+    <Property Name="AssistedLiving" Type="bit" />
   </EntityType>
   <!--Errors Found During Generation:
 warning 6002: The table/view 'cc_dev.dbo.viewAppExchangeRates' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -1833,6 +1842,8 @@ warning 6002: The table/view 'cc_dev.dbo.viewClientDetails' does not have a prim
       <PropertyRef Name="HomecareWaitlist" />
       <PropertyRef Name="OtherServicesWaitlist" />
       <PropertyRef Name="UnableToSign" />
+      <PropertyRef Name="NursingHome" />
+      <PropertyRef Name="AssistedLiving" />
     </Key>
     <Property Name="AgencyId" Type="int" Nullable="false" />
     <Property Name="RegionId" Type="int" />
@@ -1911,6 +1922,8 @@ warning 6002: The table/view 'cc_dev.dbo.viewClientDetails' does not have a prim
     <Property Name="CareReceivedVia" Type="nvarchar" MaxLength="255" />
     <Property Name="CareReceivedId" Type="int" />
     <Property Name="UnableToSign" Type="bit" Nullable="false" />
+    <Property Name="NursingHome" Type="bit" Nullable="false" />
+    <Property Name="AssistedLiving" Type="bit" Nullable="false" />
   </EntityType>
   <!--Errors Found During Generation:
 warning 6002: The table/view 'cc_dev.dbo.ViewClientReports' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -2256,6 +2269,7 @@ warning 6002: The table/view 'cc_dev.rep.viewFinSumDet' does not have a primary 
     <Property Name="ExcludeFromReports" Type="bit" Nullable="false" />
     <Property Name="FirstName" Type="nvarchar" MaxLength="50" Nullable="false" />
     <Property Name="LastName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Remarks" Type="nvarchar" MaxLength="255" />
     <Property Name="MasterId" Type="int" />
   </EntityType>
   <Association Name="FK__Agencies__GroupI__526F16A8">
@@ -4910,7 +4924,9 @@ FROM [dbo].[HcCapsTableRaw_Original] AS [HcCapsTableRaw_Original]</DefiningQuery
 [ValidClientView].[MAFDate] AS [MAFDate], 
 [ValidClientView].[MAF105Date] AS [MAF105Date], 
 [ValidClientView].[HAS2Date] AS [HAS2Date], 
-[ValidClientView].[UnableToSign] AS [UnableToSign]
+[ValidClientView].[UnableToSign] AS [UnableToSign], 
+[ValidClientView].[NursingHome] AS [NursingHome], 
+[ValidClientView].[AssistedLiving] AS [AssistedLiving]
 FROM [dbo].[ValidClientView] AS [ValidClientView]</DefiningQuery>
     </EntitySet>
     <EntitySet Name="ValidExistingClientsView" EntityType="Self.ValidExistingClientsView" store:Type="Views" store:Schema="dbo">
@@ -4977,7 +4993,9 @@ FROM [dbo].[ValidClientView] AS [ValidClientView]</DefiningQuery>
 [ValidExistingClientsView].[MAFDate] AS [MAFDate], 
 [ValidExistingClientsView].[MAF105Date] AS [MAF105Date], 
 [ValidExistingClientsView].[HAS2Date] AS [HAS2Date], 
-[ValidExistingClientsView].[UnableToSign] AS [UnableToSign]
+[ValidExistingClientsView].[UnableToSign] AS [UnableToSign], 
+[ValidExistingClientsView].[NursingHome] AS [NursingHome], 
+[ValidExistingClientsView].[AssistedLiving] AS [AssistedLiving]
 FROM [dbo].[ValidExistingClientsView] AS [ValidExistingClientsView]</DefiningQuery>
     </EntitySet>
     <EntitySet Name="viewAppExchangeRates" EntityType="Self.viewAppExchangeRates" store:Type="Views" store:Schema="dbo">
@@ -5065,7 +5083,9 @@ FROM [dbo].[viewAppExchangeRates] AS [viewAppExchangeRates]</DefiningQuery>
 [viewClientDetails].[CommPrefsId] AS [CommPrefsId], 
 [viewClientDetails].[CareReceivedVia] AS [CareReceivedVia], 
 [viewClientDetails].[CareReceivedId] AS [CareReceivedId], 
-[viewClientDetails].[UnableToSign] AS [UnableToSign]
+[viewClientDetails].[UnableToSign] AS [UnableToSign], 
+[viewClientDetails].[NursingHome] AS [NursingHome], 
+[viewClientDetails].[AssistedLiving] AS [AssistedLiving]
 FROM [dbo].[viewClientDetails] AS [viewClientDetails]</DefiningQuery>
     </EntitySet>
     <EntitySet Name="ViewClientReports" EntityType="Self.ViewClientReports" store:Type="Views" store:Schema="dbo">
@@ -5277,6 +5297,7 @@ FROM [dbo].[viewSubreportAmounts] AS [viewSubreportAmounts]</DefiningQuery>
 [viewFinSumDet].[ExcludeFromReports] AS [ExcludeFromReports], 
 [viewFinSumDet].[FirstName] AS [FirstName], 
 [viewFinSumDet].[LastName] AS [LastName], 
+[viewFinSumDet].[Remarks] AS [Remarks], 
 [viewFinSumDet].[MasterId] AS [MasterId]
 FROM [rep].[viewFinSumDet] AS [viewFinSumDet]</DefiningQuery>
     </EntitySet>

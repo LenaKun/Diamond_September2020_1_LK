@@ -1211,6 +1211,7 @@
     <Content Include="Views\Cfs\CfsWaitingApproval.cshtml" />
     <Content Include="Views\LandingPage\Index.cshtml" />
     <Content Include="Views\SubReports\ClientAmount.cshtml" />
+    <None Include="Views\Cfs\Index1.cshtml" />
     <None Include="Web.grantreporting.claimscon.org.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

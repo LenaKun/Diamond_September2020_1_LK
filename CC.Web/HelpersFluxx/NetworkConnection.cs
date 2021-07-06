@@ -26,6 +26,8 @@ namespace CC.Web.HelpersFluxx
                 ? credentials.UserName
                 : string.Format(@"{0}\{1}", credentials.Domain, credentials.UserName);
 
+           // userName = "claimscon/FFMService"; //userName.Replace(@"\\", @"\");
+
             var result = WNetAddConnection2(
                 netResource,
                 credentials.Password,

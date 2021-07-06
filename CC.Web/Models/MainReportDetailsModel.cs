@@ -476,8 +476,26 @@ namespace CC.Web.Models
             public decimal? YtdCcExp { get { return this.AgencySubTotals.Sum(f => f.YtdCcExp); } }
             
             public decimal? YtdMatch { get { return this.AgencySubTotals.Sum(f => f.YtdMatchExp); } }
-			public decimal? CcExp { get { return this.AgencySubTotals.Sum(f => f.CcExp); } }
-           // public decimal? CcExpFE { get { return this.AgencySubTotals.Sum(f => f.CcExpFE); } }
+			//public decimal? CcExp1 { get { return this.AgencySubTotals.Sum(f => f.CcExp); } }
+
+     
+            public decimal? CcExp
+            {
+                get
+                {
+
+                    var Count = this.AgencySubTotals.Count();
+                    var  t  = this.AgencySubTotals.Sum(f => f.CcExp);
+
+                    if (Count == 1)
+                    {
+                        return Math.Round((decimal) t, 2);
+                    }
+                    else
+                        return this.AgencySubTotals.Sum(f => f.CcExp);
+                }
+            }
+            // public decimal? CcExpFE { get { return this.AgencySubTotals.Sum(f => f.CcExpFE); } }
             public decimal? CcGrant { get { return this.AgencySubTotals.Sum(f => f.CcGrant); } }
 			public decimal? AppAmount { get; set; }
 

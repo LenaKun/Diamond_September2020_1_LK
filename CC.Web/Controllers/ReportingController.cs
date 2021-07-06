@@ -22,7 +22,7 @@ using System.Data.Objects.SqlClient;
 namespace CC.Web.Controllers
 {
 
-	[CcAuthorize(FixedRoles.Admin, FixedRoles.GlobalOfficer, FixedRoles.GlobalReadOnly, FixedRoles.AuditorReadOnly)]
+	[CcAuthorize(FixedRoles.Admin, FixedRoles.GlobalOfficer, FixedRoles.GlobalReadOnly, FixedRoles.AuditorReadOnly, FixedRoles.RegionAssistant)]
 	public class ReportingController : PrivateCcControllerBase
 	{
 		public ReportingController()

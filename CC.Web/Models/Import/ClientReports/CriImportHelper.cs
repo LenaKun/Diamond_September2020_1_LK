@@ -47,7 +47,8 @@ namespace CC.Web.Models.Import.ClientReports
 						  let ldx = System.Data.Objects.EntityFunctions.AddDays(client.LeaveDate, client.DeceasedDate == null ? 0 : 90)
 						  let start = subReport.MainReport.Start
                           let end = subReport.MainReport.End
-						  select new CriPreview
+                          let subreportservicetypeid = subReport.AppBudgetService.Service.TypeId
+                          select new CriPreview
 						  {
 							  RowIndex = item.RowIndex,
 							  ClientId = item.ClientId,
@@ -56,21 +57,22 @@ namespace CC.Web.Models.Import.ClientReports
 							  Errors = item.Errors ??
 							  (
 									((client == null) ? "Invalid ClientId" : "") +
-									((client.AgencyId != subReport.AppBudgetService.AgencyId) ? "Invalid Agency" : "") +
-									( ldx < start ? "The Client has left the agency." : "" ) +
+                                    ((client.ApprovalStatusId == 1024 && subreportservicetypeid != 8) ? "Approved, Homecare Only clients can only be reported for Homecare services." : "") + " " +
+                                    ((client.AgencyId != subReport.AppBudgetService.AgencyId) ? "Invalid Agency" : "") +
+									( ldx < start ? "The Client has left the agency." : "" ) + " " +
 									( 
 										(client.LeaveDate < start && ldx >= start && (item.Remarks == null || item.Remarks.Trim().Length == 0)) ? 
 											"Deceased Client needs to be specified with Unique Circumstances." : ""
 									) +
                                     (client.JoinDate > end ? "Client has joined after report end date" : "") +
-                                    (client.DeceasedDate == null && client.LeaveDate < start ? "Client has left before report start date" : "") +
+                                    (client.DeceasedDate == null && client.LeaveDate < start ? "Client has left before report start date" : "") + " " +
                                     (client.DeceasedDate != null && client.DeceasedDate < start ? "Client has DOD before report start date" : "")
 
 									
 							  )
 
 						  });
-			return source;
+			return source.OrderByDescending(c => c.Errors); 
 		}
 
 

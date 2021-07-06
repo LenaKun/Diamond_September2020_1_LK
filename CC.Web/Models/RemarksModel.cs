@@ -236,7 +236,18 @@ namespace CC.Web.Models
 					UserName = f.User.UserName,
 					Date = f.Date
 				}).OrderByDescending(f => f.Date).ToList();
-		}
+
+            switch ((FixedRoles)this.User.RoleId)
+            {
+                case FixedRoles.Ser:
+                case FixedRoles.SerAndReviewer:
+                case FixedRoles.AgencyOfficer:
+                case FixedRoles.AgencyUser:
+                case FixedRoles.AgencyUserAndReviewer:
+                    this.CanAddRemarks = false;
+                    break;
+            }
+            }
 
 	}
 }
